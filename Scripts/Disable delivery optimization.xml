@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>
+    <lcid127>Disable delivery optimization</lcid127>
+    <lcid12>Désactiver l'optimisation de la distribution</lcid12>
+  </Name>
+  <Description>
+    <lcid127>By default, Windows downloads updates from other PCs on the network. Disabling this feature allows updates to be downloaded only from Microsoft servers.</lcid127>
+    <lcid12>Par défaut, Windows télécharge les mises à jour depuis d'autres PC sur le réseau. Désactiver cette fonctionnalité permet de télécharger les mises à jour uniquement depuis les serveurs Microsoft.</lcid12>
+  </Description>
+  <Category>Debloat</Category>
+  <Advised>Yes</Advised>
+  <Host>Regedit</Host>
+  <Impact>Privacy</Impact>
+  <Code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\DoSvc]
+"Start"=dword:00000004</Code>
+</Script>

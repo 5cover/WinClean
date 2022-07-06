@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>
+    <lcid127>Enable legacy Windows Photo Viewer</lcid127>
+    <lcid12>Activer la Visionneuse de Photos Windows héritée</lcid12>
+  </Name>
+  <Description>
+    <lcid127>Enable Windows Photo Viewer from Windows 7.</lcid127>
+    <lcid12>Activer la Visionneuse de Photos Windows de Windows 7.</lcid12>
+  </Description>
+  <Category>Customization</Category>
+  <Advised>Limited</Advised>
+  <Host>Regedit</Host>
+  <Impact>Ergonomics</Impact>
+  <Code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations]
+".tif"="PhotoViewer.FileAssoc.Tiff"
+".tiff"="PhotoViewer.FileAssoc.Tiff"
+".bmp"="PhotoViewer.FileAssoc.Tiff"
+".dib"="PhotoViewer.FileAssoc.Tiff"
+".gif"="PhotoViewer.FileAssoc.Tiff"
+".jfif"="PhotoViewer.FileAssoc.Tiff"
+".jpe"="PhotoViewer.FileAssoc.Tiff"
+".jpeg"="PhotoViewer.FileAssoc.Tiff"
+".jpg"="PhotoViewer.FileAssoc.Tiff"
+".jxr"="PhotoViewer.FileAssoc.Tiff"
+".png"="PhotoViewer.FileAssoc.Tiff"</Code>
+</Script>

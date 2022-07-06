@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>
+    <lcid127>Disable systematic short filename creation</lcid127>
+    <lcid12>Désactiver la création systématique de noms de fichier courts</lcid12>
+  </Name>
+  <Description>
+    <lcid127>By default, the file system preserves, with each folder and directory, its name, in 8.3 format. Disabling this slightly speeds up file system operations.</lcid127>
+    <lcid12>Par défaut, le système de fichiers conserve, avec chaque dossier et répertoire, son nom, en format 8.3. Désactiver cela accélère légèrement les opérations du système de fichier.</lcid12>
+  </Description>
+  <Category>Customization</Category>
+  <Advised>Limited</Advised>
+  <Host>Regedit</Host>
+  <Impact>StorageSpeed</Impact>
+  <Code>Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem]
+"NtfsDisable8dot3NameCreation"=dword:00000003</Code>
+</Script>

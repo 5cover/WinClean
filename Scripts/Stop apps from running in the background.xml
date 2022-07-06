@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>
+    <lcid127>Stop apps from running in the background</lcid127>
+    <lcid12>Interdire les processus en arrière-plan pour les applications</lcid12>
+  </Name>
+  <Description>
+    <lcid127>Some apps keep processes running in the background. Disabling this behavior frees up memory and decreases the number of running processes.</lcid127>
+    <lcid12>Certaines applications conservent des processus en arrière-plan. Inderdire ce comportement permet de libérer de la mémoire et diminue le nombre de processus en cours d'exécution.</lcid12>
+  </Description>
+  <Category>Debloat</Category>
+  <Advised>Yes</Advised>
+  <Host>Regedit</Host>
+  <Impact>MemoryUsage</Impact>
+  <Code>Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications]
+"GlobalUserDisabled"=dword:00000001</Code>
+</Script>

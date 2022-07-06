@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>
+    <lcid127>Aggressive disk cleaning</lcid127>
+    <lcid12>Nettoyage de disque aggressif</lcid12>
+  </Name>
+  <Description>
+    <lcid127>Aggressive disk cleanup removes all files from directories that contain temporary or unnecessary files. After an aggressive cleaning:
+- Windows updates will no longer be able to be uninstalled
+- Component Store backups will no longer be available
+- Windows log files will have been deleted
+The following directories will be emptied:
+- %temp%
+- %windir%\temp
+- %windir%\Logs
+- %windir%\SoftwareDistribution\Download
+- %windir%\WinSXS\Backup
+- %windir%\Servicing\LCU </lcid127>
+    <lcid12>Le nettoyage de disque aggressif supprime tous les fichiers de répertoires contenant des fichiers temporaires ou inutiles. Après un nettoyage aggressif :
+- Les mises à jour Windows Update ne pourront plus être désinstallées
+- Les sauvegardes du magasin de composants ne seront plus disponibles
+- Les fichiers journaux Windows auront été supprimés
+Les répertoires suivants seront vidés :
+- %temp%
+- %windir%\temp
+- %windir%\Logs
+- %windir%\SoftwareDistribution\Download
+- %windir%\WinSXS\Backup
+- %windir%\Servicing\LCU</lcid12>
+  </Description>
+  <Category>Maintenance</Category>
+  <Advised>Limited</Advised>
+  <Host>Cmd</Host>
+  <Impact>FreeStorageSpace</Impact>
+  <Code>cd %temp%
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd %windir%\temp
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd %windir%\Logs
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd %windir%\SoftwareDistribution\Download
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd %windir%\WinSXS\Backup
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd %windir%\servicing\LCU
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *</Code>
+</Script>

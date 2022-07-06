@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>
+    <lcid127>Disable ads</lcid127>
+    <lcid12>Désactiver les publicités</lcid12>
+  </Name>
+  <Description>
+    <lcid127>This script disables ads and app suggestions.</lcid127>
+    <lcid12>Ce script désactive les publicités et les suggestions d'applications.</lcid12>
+  </Description>
+  <Category>Debloat</Category>
+  <Advised>Yes</Advised>
+  <Host>Regedit</Host>
+  <Impact>Ergonomics</Impact>
+  <Code>Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
+"SilentInstalledAppsEnabled"=dword:00000000
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
+"SystemPaneSuggestionsEnabled"=dword:00000000
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"ShowSyncProviderNotifications"=dword:00000000
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
+"SoftLandingEnabled"=dword:00000000
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
+"RotatingLockScreenEnabled"=dword:00000000
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
+"RotatingLockScreenOverlayEnabled"=dword:00000000
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
+"SubscribedContent-310093Enabled"=dword:00000000</Code>
+</Script>

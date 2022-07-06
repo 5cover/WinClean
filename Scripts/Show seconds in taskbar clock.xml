@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>
+    <lcid127>Show seconds in taskbar clock</lcid127>
+    <lcid12>Afficher les secondes dans l'horloge de la barre des tâches</lcid12>
+  </Name>
+  <Description>
+    <lcid127>Display seconds in the clock at the bottom right corner of the screen.</lcid127>
+    <lcid12>Afficher les secondes dans l'horloge au coin inférieur droit de l'écran.</lcid12>
+  </Description>
+  <Category>Customization</Category>
+  <Advised>Limited</Advised>
+  <Host>Regedit</Host>
+  <Impact>Ergonomics</Impact>
+  <Code>Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"ShowSecondsInSystemClock"=dword:00000001</Code>
+</Script>

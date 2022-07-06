@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>
+    <lcid127>Disable shortcut suffix</lcid127>
+    <lcid12>Désactiver le suffixe de raccourci</lcid12>
+  </Name>
+  <Description>
+    <lcid127>By default, shortcuts are named with the suffix "- Shortcut".</lcid127>
+    <lcid12>Par défaut, les raccourcis sont nommés avec le suffixe " - Raccourci".</lcid12>
+  </Description>
+  <Category>Customization</Category>
+  <Advised>Limited</Advised>
+  <Host>Regedit</Host>
+  <Impact>Ergonomics</Impact>
+  <Code>Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer]
+"link"=hex:1b,00,00,00</Code>
+</Script>

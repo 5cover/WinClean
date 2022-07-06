@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>
+    <lcid127>Disable start menu web search</lcid127>
+    <lcid12>Désactiver la recherche web dans le menu Démarrer</lcid12>
+  </Name>
+  <Description>
+    <lcid127>By default, Start Menu search results are mixed with Bing and Microsoft Store search results.</lcid127>
+    <lcid12>Par défaut, les résultats des recherche dans le Menu Démarrer sont mélangés avec des résultats de recherche Bing et Microsoft Store.</lcid12>
+  </Description>
+  <Category>Customization</Category>
+  <Advised>Limited</Advised>
+  <Host>Regedit</Host>
+  <Impact>Ergonomics</Impact>
+  <Code>Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\Explorer]
+"DisableSearchBoxSuggestions"=dword:00000001</Code>
+</Script>

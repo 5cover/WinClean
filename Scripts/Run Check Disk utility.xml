@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>
+    <lcid127>Run Check Disk utility</lcid127>
+    <lcid12>Exécuter l'utilisaire de vérification de disque</lcid12>
+  </Name>
+  <Description>
+    <lcid127>The disk check and repair utility is provided by Microsoft. Executing this script will plan a disk check and repair for all local disks on next reboot.</lcid127>
+    <lcid12>L'utilitaire de vérification et de réparation des disques est fourni par Microsoft. Exécuter ce script planifiera la vérification et la réparation de tous les disques locaux au prochain redémarrage.</lcid12>
+  </Description>
+  <Category>Maintenance</Category>
+  <Advised>Yes</Advised>
+  <Host>Cmd</Host>
+  <Impact>StorageSpeed</Impact>
+  <Code>for /F "skip=1" %%C in ('wmic Volume where "DriveLetter is not Null" get DriveLetter') do for /F %%D in ("%%C") do fsutil dirty set %%D</Code>
+</Script>

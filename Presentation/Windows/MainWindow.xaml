@@ -1,0 +1,101 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:winclean="clr-namespace:Scover.WinClean"
+    xmlns:logic="clr-namespace:Scover.WinClean.Logic"
+    xmlns:controls="clr-namespace:Scover.WinClean.Presentation.Controls"
+    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    x:Class="Scover.WinClean.Presentation.Windows.MainWindow"
+    mc:Ignorable="d"
+    MinWidth="587" MinHeight="363"
+    Width="{Binding MinWidth, RelativeSource={RelativeSource Self}}" Height="{Binding MinHeight, RelativeSource={RelativeSource Self}}"
+    Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+    Title="{x:Static winclean:App.Name}"
+    Closed="MainWindow_Closed">
+    <Window.Resources>
+        <Style TargetType="{x:Type ListBox}">
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Style>
+                                <Style TargetType="{x:Type StackPanel}">
+                                    <Style.Resources>
+                                        <SolidColorBrush x:Key="Yes" Color="Green" Opacity="0.15" />
+                                        <SolidColorBrush x:Key="Limited" Color="Yellow" Opacity="0.15" />
+                                        <SolidColorBrush x:Key="No" Color="Red" Opacity="0.15" />
+                                    </Style.Resources>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Advised}" Value="{x:Static logic:Advised.Yes}">
+                                            <Setter Property="Background" Value="{StaticResource Yes}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Advised}" Value="{x:Static logic:Advised.Limited}">
+                                            <Setter Property="Background" Value="{StaticResource Limited}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Advised}" Value="{x:Static logic:Advised.No}">
+                                            <Setter Property="Background" Value="{StaticResource No}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <CheckBox x:Name="checkBox" Margin="3,3,3,3" VerticalContentAlignment="Center" IsChecked="{Binding Selected}" />
+                            <TextBlock Margin="0,3,3,3" Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Menu Margin="0,0,0,12" Grid.ColumnSpan="2" Height="18" VerticalAlignment="Center">
+            <MenuItem Header="{x:Static ui:MainWindow.MenuFile}">
+                <MenuItem Header="{x:Static ui:MainWindow.MenuClearLogs}" Click="MenuClearLogs_Click" />
+                <MenuItem Header="{x:Static ui:Buttons.Exit}" Click="MenuExit_Click" />
+            </MenuItem>
+            <MenuItem Header="{x:Static ui:MainWindow.MenuSelectScripts}">
+                <MenuItem Header="{x:Static ui:MainWindow.MenuAdvised}" Click="MenuAdvised_Click" />
+                <MenuItem Header="{x:Static ui:MainWindow.MenuAll}" Click="MenuAll_Click" />
+                <MenuItem Header="{x:Static ui:MainWindow.MenuNone}" Click="MenuNone_Click" />
+            </MenuItem>
+            <MenuItem Header="{x:Static ui:SettingsWindow.Title}" Click="MenuSettings_Click" />
+            <MenuItem Header="{x:Static ui:MainWindow.MenuHelp}">
+                <MenuItem Header="{x:Static ui:MainWindow.MenuOnlineWiki}" Click="MenuOnlineWiki_Click" />
+                <MenuItem  Header="{x:Static winclean:App.Name}" HeaderStringFormat="{x:Static ui:AboutWindow.Title}" Click="MenuAbout_Click" />
+            </MenuItem>
+        </Menu>
+
+        <TabControl x:Name="tabControlCategories" Grid.Row="1" Margin="0,0,6,12" SelectionChanged="TabControlCategories_SelectionChanged" />
+
+        <controls:ScriptEditor x:Name="scriptEditor"
+                               Margin="6,0,0,12"
+                               Grid.Column="1"
+                               Grid.Row="1"
+                               Owner="{Binding SelectedContent, ElementName=tabControlCategories}"
+                               ScriptChangedCategory="ScriptEditor_ScriptChangedCategory"
+                               Selected="{Binding Owner.SelectedItem, RelativeSource={RelativeSource Self}}" />
+
+        <Button Grid.Row="2"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Click="ButtonAddScripts_Click"
+                Content="{x:Static ui:Buttons.AddScripts}" />
+
+        <Button x:Name="ButtonExecuteScripts"
+                Grid.Row="2" Grid.Column="1"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Click="ButtonExecuteScripts_Click"
+                Content="{x:Static ui:Buttons.ExecuteScripts}" />
+    </Grid>
+</Window>

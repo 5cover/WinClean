@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>
+    <lcid127>Always show file extensions</lcid127>
+    <lcid12>Toujours afficher les extensions de fichier</lcid12>
+  </Name>
+  <Description>
+    <lcid127>By default, known file extensions are hidden.</lcid127>
+    <lcid12>Par défaut, les extensions de fichier connues sont masquées.</lcid12>
+  </Description>
+  <Category>Customization</Category>
+  <Advised>Limited</Advised>
+  <Host>Regedit</Host>
+  <Impact>Ergonomics</Impact>
+  <Code>Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"HideFileExt"=dword:00000000</Code>
+</Script>

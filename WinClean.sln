@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinClean", "WinClean.csproj", "{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_PrefixTranslations = False
+		SolutionGuid = {937A4B5E-93B9-4C78-B678-7D96F758D99D}
+	EndGlobalSection
+EndGlobal

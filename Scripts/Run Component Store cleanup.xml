@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>
+    <lcid127>Run Component Store cleanup</lcid127>
+    <lcid12>Exécuter le nettoyage du magasin de composants</lcid12>
+  </Name>
+  <Description>
+    <lcid127>The component store is located in the %windir%\WinSXS folder. All Windows optional feature files are stored there. Running this script will remove all disabled features, using the Dism utility. To reinstall these features, a download will be required.</lcid127>
+    <lcid12>Le magasin de composants se trouve dans le dossier %windir%\WinSXS. Y sont conservés tous les fichiers des fonctionnalités facultatives de Windows. Exécuter ce script supprimera toutes les fonctionnalités désactivées, à l'aide de l'utilisaire Dism. Pour réinstaller ces fonctionnalités, un téléchargement sera nécessaire.</lcid12>
+  </Description>
+  <Category>Maintenance</Category>
+  <Advised>Yes</Advised>
+  <Host>Cmd</Host>
+  <Impact>FreeStorageSpace</Impact>
+  <Code>dism /online /cleanup-image /StartComponentCleanup /ResetBase</Code>
+</Script>

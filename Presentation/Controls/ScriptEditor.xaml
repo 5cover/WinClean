@@ -1,0 +1,102 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:winclean="clr-namespace:Scover.WinClean"
+    xmlns:logic="clr-namespace:Scover.WinClean.Logic"
+    xmlns:operational="clr-namespace:Scover.WinClean.Operational"
+    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    x:Class="Scover.WinClean.Presentation.Controls.ScriptEditor"
+    mc:Ignorable="d" MinWidth="205" MinHeight="231.92" Content="{Binding Selected, RelativeSource={RelativeSource Self}}">
+    <UserControl.ContentTemplate>
+        <DataTemplate>
+            <DataTemplate.Resources>
+                <operational:IsNotNullConverter x:Key="isNotNullConverter" />
+            </DataTemplate.Resources>
+            <Grid IsEnabled="{Binding Converter={StaticResource isNotNullConverter}}">
+                <Grid.Resources>
+                    <Style TargetType="ComboBox">
+                        <Setter Property="MinHeight" Value="20" />
+                        <Setter Property="MinWidth" Value="100" />
+                    </Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="MinWidth" Value="205" />
+                    </Style>
+                    <Style TargetType="Button">
+                        <Setter Property="MaxWidth" Value="82.5" />
+                        <Setter Property="Grid.Row" Value="5" />
+                        <Setter Property="MinHeight" Value="23" />
+                        <Setter Property="MinWidth" Value="72" />
+                    </Style>
+                </Grid.Resources>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="43*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="85*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.ColumnSpan="2"
+                         Margin="0,0,0,5"
+                         MinHeight="20"
+                         MaxLines="1"
+                         Text="{Binding Name, Mode=TwoWay}" />
+
+                <TextBox Margin="0,0,0,5"
+                         Grid.Row="1"
+                         Grid.ColumnSpan="2"
+                         MinHeight="40"
+                         VerticalScrollBarVisibility="Auto"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         Text="{Binding Description, Mode=TwoWay}" />
+
+                <ComboBox Margin="0,0,2.5,5"
+                          Grid.Row="2"
+                          DisplayMemberPath="LocalizedName"
+                          ItemsSource="{x:Static logic:Category.Values}"
+                          SelectedItem="{Binding Category, Mode=TwoWay}"
+                          SelectionChanged="ComboBoxCategory_SelectionChanged" />
+
+                <ComboBox Margin="2.5,0,0,5"
+                          Grid.Column="1" Grid.Row="2"
+                          DisplayMemberPath="LocalizedName"
+                          ItemsSource="{x:Static logic:Advised.Values}"
+                          SelectedItem="{Binding Advised, Mode=TwoWay}" />
+
+                <ComboBox Margin="0,0,2.5,5"
+                          Grid.Row="3"
+                          ItemsSource="{x:Static operational:ScriptHost.HostsLocalizedNames}"
+                          SelectedItem="{Binding Host.LocalizedName, Mode=OneTime}"
+                          SelectionChanged="ComboBoxHost_SelectionChanged" />
+
+                <ComboBox Margin="2.5,0,0,5"
+                          Grid.Column="1" Grid.Row="3"
+                          DisplayMemberPath="LocalizedName"
+                          ItemsSource="{x:Static logic:Impact.Values}"
+                          SelectedItem="{Binding Impact, Mode=TwoWay}" />
+
+                <TextBox Margin="0,0,0,5"
+                         Grid.Row="4"
+                         Grid.ColumnSpan="2"
+                         MinHeight="80"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                         IsReadOnly="{Binding Path=(winclean:App.Settings).ForbidScriptCodeEdit}"
+                         Text="{Binding Code, Mode=TwoWay}" />
+
+                <Button Content="{x:Static ui:Buttons.Delete}" Margin="10,0,10,0" Click="ButtonDelete_Click" />
+                <Button Content="{x:Static ui:Buttons.Execute}" Grid.Column="1" Click="ButtonExecute_Click" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.ContentTemplate>
+</UserControl>

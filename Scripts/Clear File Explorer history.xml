@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>
+    <lcid127>Clear File Explorer history</lcid127>
+    <lcid12>Effacer l'historique de l'Explorateur de fichiers</lcid12>
+  </Name>
+  <Description>
+    <lcid127>When accessing files or folders in File Explorer, Windows keeps a shortcut to the folder/file in File Explorer history.</lcid127>
+    <lcid12>Lors de l'accès à des fichiers ou dossiers dans l'Explorateur de fichiers, Windows conserve un raccourci vers le dossier/fichier dans l'historique de l'Explorateur de fichiers.</lcid12>
+  </Description>
+  <Category>Maintenance</Category>
+  <Advised>Limited</Advised>
+  <Host>Cmd</Host>
+  <Impact>Privacy</Impact>
+  <Code>Del /F /Q %APPDATA%\Microsoft\Windows\Recent\*
+
+Del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\*
+
+Del /F /Q %APPDATA%\Microsoft\Windows\Recent\CustomDestinations\*
+
+REG Delete HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\RunMRU /VA /F
+
+REG Delete HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths /VA /F</Code>
+</Script>

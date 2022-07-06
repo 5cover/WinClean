@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>
+    <lcid127>Run Disk Cleanup tool</lcid127>
+    <lcid12>Exécuter l'utilitaire de nettoyage de disque</lcid12>
+  </Name>
+  <Description>
+    <lcid127>Disk Cleanup (cleanmgr.exe) is a Windows tool that deletes junk files and frees disk space.</lcid127>
+    <lcid12>Le nettoyage de disque (cleanmgr.exe) est un outil Windows qui supprime les fichiers inutiles et libère de l'espace disque.</lcid12>
+  </Description>
+  <Category>Maintenance</Category>
+  <Advised>Yes</Advised>
+  <Host>Cmd</Host>
+  <Impact>FreeStorageSpace</Impact>
+  <Code>cleanmgr /verylowdisk /sagerun:65535 /autoclean</Code>
+</Script>
