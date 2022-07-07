@@ -1,6 +1,6 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/5cover/winclean/badge)](https://www.codefactor.io/repository/github/5cover/winclean)
 
-### [Français](README.fr-FR.md)
+### [Français](README.fr.md)
 
 # WinClean
 Windows optimization and debloating utility. 

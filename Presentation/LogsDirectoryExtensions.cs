@@ -2,14 +2,14 @@
 
 namespace Scover.WinClean.Presentation;
 
-public static class LoggerExtensions
+public static class LogsDirectoryExtensions
 {
-    /// <inheritdoc cref="Logger.Log(string, LogLevel, string, int, string)"/>
+    /// <inheritdoc cref="LogsDirectory.Log(string, LogLevel, string, int, string)"/>
     public static void Log(this string str, LogLevel? lvl = null,
                            [CallerMemberName] string caller = "(error)",
                            [CallerLineNumber] int callLine = 0,
                            [CallerFilePath] string callFile = "(error)")
-        => Logger.Instance.Log(str, lvl, caller, callLine, callFile);
+        => LogsDirectory.Instance.Log(str, lvl, caller, callLine, callFile);
 
-    public static void SetAsHappening(this string str) => Logger.Instance.Happening = str;
+    public static void SetAsHappening(this string str) => LogsDirectory.Instance.Happening = str;
 }

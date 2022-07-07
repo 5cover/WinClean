@@ -10,9 +10,9 @@ using System.Diagnostics;
 namespace Scover.WinClean.Presentation;
 
 /// <summary>Represents the directory where scripts are stored.</summary>
-public class ScriptsDir : AppSubdirectory
+public class ScriptsDirectory : AppSubdirectory
 {
-    public static ScriptsDir Instance { get; } = new();
+    public static ScriptsDirectory Instance { get; } = new();
     public override string Name => "Scripts";
 
     /// <summary>Loads all the scripts present in the scripts directory.</summary>
@@ -40,15 +40,15 @@ public class ScriptsDir : AppSubdirectory
                 {
                     Logs.BadScriptData.FormatWith(script.Name).Log(LogLevel.Error);
 
-                    using CustomDialog badScriptData = new(Resources.ScriptsDir.EditTheScriptAndRetry, Resources.ScriptsDir.DeleteTheScript)
+                    using CustomDialog badScriptData = new(Resources.ScriptsDirectory.EditTheScriptAndRetry, Resources.ScriptsDirectory.DeleteTheScript)
                     {
                         MainIcon = TaskDialogIcon.Error,
-                        Content = Resources.ScriptsDir.BadScriptDataDialogContent.FormatWith(script.Name),
+                        Content = Resources.ScriptsDirectory.BadScriptDataDialogContent.FormatWith(script.Name),
                         ExpandedInformation = e.ToString()
                     };
                     string result = badScriptData.ShowDialog();
 
-                    if (result == Resources.ScriptsDir.EditTheScriptAndRetry)
+                    if (result == Resources.ScriptsDirectory.EditTheScriptAndRetry)
                     {
                         using Process notepad = Process.Start("notepad", script.FullName);
                         Logs.NotepadOpened.Log();
@@ -57,7 +57,7 @@ public class ScriptsDir : AppSubdirectory
 
                         retry = true;
                     }
-                    else if (result == Resources.ScriptsDir.DeleteTheScript && YesNoDialog.ScriptDeletion.ShowDialog() == DialogResult.Yes)
+                    else if (result == Resources.ScriptsDirectory.DeleteTheScript && YesNoDialog.ScriptDeletion.ShowDialog() == DialogResult.Yes)
                     {
                         script.Delete();
                         Logs.ScriptDeleted.FormatWith(script.Name).Log(LogLevel.Info);

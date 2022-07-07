@@ -25,6 +25,7 @@
     <Description>Windows debloating an optimization utility.</Description>
     <NeutralLanguage>en-US</NeutralLanguage>
     <UseWindowsForms>False</UseWindowsForms>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -33,7 +34,19 @@
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <WarningLevel>5</WarningLevel>
+    <NoWarn>NU1701;1702</NoWarn>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningLevel>5</WarningLevel>
+    <NoWarn>NU1701;1702</NoWarn>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <WarningLevel>5</WarningLevel>
     <NoWarn>NU1701;1702</NoWarn>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
@@ -55,7 +68,7 @@
     <PackageReference Include="CsvHelper" Version="27.2.1" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.3.0" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
-    <PackageReference Include="System.Management" Version="7.0.0-preview.4.22229.4" />
+    <PackageReference Include="System.Management" Version="6.0.0" />
     <PackageReference Include="WinCopies.WindowsAPICodePack.Shell" Version="3.10.0-preview" />
   </ItemGroup>
 
@@ -155,10 +168,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MainWindow.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\ScriptsDir.Designer.cs">
+    <Compile Update="Resources\ScriptsDirectory.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>ScriptsDir.resx</DependentUpon>
+      <DependentUpon>ScriptsDirectory.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\UI\Dialogs.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -269,12 +282,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MainWindow.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ScriptsDir.fr.resx">
+    <EmbeddedResource Update="Resources\ScriptsDirectory.fr.resx">
       <Generator></Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ScriptsDir.resx">
+    <EmbeddedResource Update="Resources\ScriptsDirectory.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ScriptsDir.Designer.cs</LastGenOutput>
+      <LastGenOutput>ScriptsDirectory.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\Dialogs.fr.resx">
       <Generator></Generator>
@@ -389,6 +402,10 @@
 	<None Update="Scripts\Uninstall One Drive.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Logs\" />
   </ItemGroup>
 
 </Project>

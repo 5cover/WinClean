@@ -40,7 +40,7 @@ public partial class MainWindow : Window
         {
             foreach (string filePath in ofd.FileNames)
             {
-                string destPath = ScriptsDir.Instance.Join(Path.GetFileName(filePath));
+                string destPath = ScriptsDirectory.Instance.Join(Path.GetFileName(filePath));
                 if (!File.Exists(destPath))
                 {
                     File.Copy(filePath, destPath);
@@ -84,7 +84,7 @@ public partial class MainWindow : Window
 
     private void MainWindow_Closed(object sender, EventArgs e)
     {
-        ScriptXmlSerializer serializer = new(ScriptsDir.Instance.Info);
+        ScriptXmlSerializer serializer = new(ScriptsDirectory.Instance.Info);
         foreach (Script script in Scripts)
         {
             serializer.Serialize(script);
@@ -97,7 +97,7 @@ public partial class MainWindow : Window
 
     private void MenuAll_Click(object sender, RoutedEventArgs e) => CheckScripts(true);
 
-    private void MenuClearLogs_Click(object sender, RoutedEventArgs e) => Logger.Instance.ClearLogsFolderAsync();
+    private void MenuClearLogs_Click(object sender, RoutedEventArgs e) => LogsDirectory.Instance.ClearLogsFolderAsync();
 
     private void MenuExit_Click(object sender, RoutedEventArgs e) => Close();
 
@@ -108,7 +108,7 @@ public partial class MainWindow : Window
     private void MenuSettings_Click(object sender, RoutedEventArgs e) => new SettingsWindow() { Owner = this }.ShowDialog();
 
     [MemberNotNull(nameof(_scripts))]
-    private void ReloadScripts() => _scripts = ScriptsDir.Instance.LoadAllScripts();
+    private void ReloadScripts() => _scripts = ScriptsDirectory.Instance.LoadAllScripts();
 
     /// <summary>Recreates the items of <see cref="tabControlCategories"/> and redistributes the scripts.</summary>
     private void ResetTabs()

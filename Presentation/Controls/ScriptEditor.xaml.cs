@@ -38,7 +38,7 @@ public partial class ScriptEditor : UserControl
     {
         if (Selected is not null && YesNoDialog.ScriptDeletion.ShowDialog() == DialogResult.Yes)
         {
-            File.Delete(ScriptsDir.Instance.Join(Selected.Filename));
+            File.Delete(ScriptsDirectory.Instance.Join(Selected.Filename));
             if (Owner is not null)
             {
                 Owner.ItemsSource = Owner.ItemsSource.OfType<Script>().Where(s => s != Selected);

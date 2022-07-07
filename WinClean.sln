@@ -5,22 +5,36 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinClean", "WinClean.csproj", "{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "..\Setup\Setup.vdproj", "{1B13F148-BCC3-4D50-ADE5-02E6FA347FB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|x64.ActiveCfg = Debug|x64
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|x64.Build.0 = Debug|x64
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|x64.ActiveCfg = Release|x64
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|x64.Build.0 = Release|x64
+		{1B13F148-BCC3-4D50-ADE5-02E6FA347FB9}.Debug|Any CPU.ActiveCfg = Debug
+		{1B13F148-BCC3-4D50-ADE5-02E6FA347FB9}.Debug|x64.ActiveCfg = Debug
+		{1B13F148-BCC3-4D50-ADE5-02E6FA347FB9}.Debug|x64.Build.0 = Debug
+		{1B13F148-BCC3-4D50-ADE5-02E6FA347FB9}.Release|Any CPU.ActiveCfg = Release
+		{1B13F148-BCC3-4D50-ADE5-02E6FA347FB9}.Release|x64.ActiveCfg = Release
+		{1B13F148-BCC3-4D50-ADE5-02E6FA347FB9}.Release|x64.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_PrefixTranslations = False
 		SolutionGuid = {937A4B5E-93B9-4C78-B678-7D96F758D99D}
+		RESX_PrefixTranslations = False
 	EndGlobalSection
 EndGlobal

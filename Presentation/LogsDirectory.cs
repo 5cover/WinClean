@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 namespace Scover.WinClean.Presentation;
 
 /// <summary>Provides CSV logging.</summary>
-public class Logger
+public class LogsDirectory : AppSubdirectory
 {
     private const string DateTimeFilenameFormat = "yyyy-MM-dd--HH-mm-ss";
 
@@ -16,27 +16,25 @@ public class Logger
 
     private readonly FileInfo _currentLogFile;
 
-    private readonly DirectoryInfo _logDir;
-
-    private Logger()
+    private LogsDirectory()
     {
-        _logDir = new(Path.Join(Path.GetDirectoryName(Environment.ProcessPath), "Logs"));
-        _logDir.Create();
-        _currentLogFile = new(Path.Join(_logDir.FullName, $"{Process.GetCurrentProcess().StartTime.ToString(DateTimeFilenameFormat, DateTimeFormatInfo.InvariantInfo)}.csv"));
+        _currentLogFile = new(Path.Join(Info.FullName, $"{Process.GetCurrentProcess().StartTime.ToString(DateTimeFilenameFormat, DateTimeFormatInfo.InvariantInfo)}.csv"));
         _csvWriter = new(new StreamWriter(_currentLogFile.FullName, true, System.Text.Encoding.Unicode), new CsvConfiguration(CultureInfo.InvariantCulture));
         _csvWriter.WriteHeader<LogEntry>();
     }
 
-    public static Logger Instance { get; } = new();
+    public static LogsDirectory Instance { get; } = new();
 
     /// <value>A string that briefly describes what's happening in the program right now.</value>
     public string? Happening { get; set; }
+
+    public override string Name => "Logs";
 
     /// <summary>Empties the log folder, except for the current log file.</summary>
     public async void ClearLogsFolderAsync()
         => await Task.Run(() =>
         {
-            IEnumerable<FileInfo> deletableLogFiles = _logDir.EnumerateFiles("*.csv").Where(csvFile => CanLogFileBeDeleted(csvFile));
+            IEnumerable<FileInfo> deletableLogFiles = Info.EnumerateFiles("*.csv").Where(csvFile => CanLogFileBeDeleted(csvFile));
 
             foreach (FileInfo logFile in deletableLogFiles)
             {
