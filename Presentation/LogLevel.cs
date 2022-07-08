@@ -1,12 +1,19 @@
-﻿namespace Scover.WinClean.Presentation;
+﻿using Scover.WinClean.DataAccess;
+
+using System.Globalization;
+
+namespace Scover.WinClean.Presentation;
 
 /// <summary>Specifies a minimum log level.</summary>
 public class LogLevel
 {
-    private LogLevel(string name, string? localizedName, int value)
+    private readonly Localized<string> _name = new();
+
+    private LogLevel(string name, string localizedName, int value)
     {
-        Name = name;
-        LocalizedName = localizedName;
+        _name.Set(CultureInfo.InvariantCulture, name);
+        _name.Set(CultureInfo.CurrentUICulture, localizedName);
+
         Value = value;
     }
 
@@ -34,7 +41,8 @@ public class LogLevel
     /// <summary>Warning-level entries minimum.</summary>
     public static LogLevel Warning { get; } = new(nameof(Warning), Resources.LogLevel.Warning, 2);
 
-    public string? LocalizedName { get; }
-    public string Name { get; }
+    public string Name => _name.Get(CultureInfo.CurrentUICulture);
     public int Value { get; }
+
+    public override string ToString() => _name.Get(CultureInfo.InvariantCulture);
 }

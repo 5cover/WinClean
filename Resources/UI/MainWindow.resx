@@ -106,8 +106,8 @@
   <data name="MenuSelectScripts" xml:space="preserve">
     <value>Select scripts</value>
   </data>
-  <data name="MenuAdvised" xml:space="preserve">
-    <value>Advised</value>
+  <data name="MenuRecommended" xml:space="preserve">
+    <value>Recommended</value>
   </data>
   <data name="MenuAll" xml:space="preserve">
     <value>All</value>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Categories>
+  <Category>
+    <Name>Maintenance</Name>
+    <Name xml:lang="fr">Maintenance</Name>
+    <Description>Scripts meant to be executed periodically and maintain the system.</Description>
+    <Description xml:lang="fr">Scripts destinés à être exécutés périodiquement et à maintenir le système.</Description>
+  </Category>
+  <Category>
+    <Name>Debloat</Name>
+    <Name xml:lang="fr">Nettoyage</Name>
+    <Description>Debloating scripts meant to be executed only once.</Description>
+    <Description xml:lang="fr">Scripts de nettoyage destinés à n'être exécutés qu'une seule fois.</Description>
+  </Category>
+  <Category>
+    <Name>Customization</Name>
+    <Name xml:lang="fr">Personnalisation</Name>
+    <Description>Customization scripts that do not bring any performance improvements.</Description>
+	<Description xml:lang="fr">Scripts de personnalisation n'apportant aucune amélioration des performances.</Description>
+  </Category>
+</Categories>

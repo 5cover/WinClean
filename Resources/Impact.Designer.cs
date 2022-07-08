@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Scover.WinClean.Resources.UI {
+namespace Scover.WinClean.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Scover.WinClean.Resources.UI {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class MainWindow {
+    public class Impact {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal MainWindow() {
+        internal Impact() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Scover.WinClean.Resources.UI {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scover.WinClean.Resources.UI.MainWindow", typeof(MainWindow).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scover.WinClean.Resources.Impact", typeof(Impact).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,92 +61,92 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à All.
+        ///   Recherche une chaîne localisée semblable à Ergonomics.
         /// </summary>
-        public static string MenuAll {
+        public static string Ergonomics {
             get {
-                return ResourceManager.GetString("MenuAll", resourceCulture);
+                return ResourceManager.GetString("Ergonomics", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Clear logs.
+        ///   Recherche une chaîne localisée semblable à Free storage space.
         /// </summary>
-        public static string MenuClearLogs {
+        public static string FreeStorageSpace {
             get {
-                return ResourceManager.GetString("MenuClearLogs", resourceCulture);
+                return ResourceManager.GetString("FreeStorageSpace", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à File.
+        ///   Recherche une chaîne localisée semblable à Memory usage.
         /// </summary>
-        public static string MenuFile {
+        public static string MemoryUsage {
             get {
-                return ResourceManager.GetString("MenuFile", resourceCulture);
+                return ResourceManager.GetString("MemoryUsage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Help.
+        ///   Recherche une chaîne localisée semblable à Network usage.
         /// </summary>
-        public static string MenuHelp {
+        public static string NetworkUsage {
             get {
-                return ResourceManager.GetString("MenuHelp", resourceCulture);
+                return ResourceManager.GetString("NetworkUsage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à None.
+        ///   Recherche une chaîne localisée semblable à Privacy.
         /// </summary>
-        public static string MenuNone {
+        public static string Privacy {
             get {
-                return ResourceManager.GetString("MenuNone", resourceCulture);
+                return ResourceManager.GetString("Privacy", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Online wiki.
+        ///   Recherche une chaîne localisée semblable à Shutdown time.
         /// </summary>
-        public static string MenuOnlineWiki {
+        public static string ShutdownTime {
             get {
-                return ResourceManager.GetString("MenuOnlineWiki", resourceCulture);
+                return ResourceManager.GetString("ShutdownTime", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Recommended.
+        ///   Recherche une chaîne localisée semblable à Stability.
         /// </summary>
-        public static string MenuRecommended {
+        public static string Stability {
             get {
-                return ResourceManager.GetString("MenuRecommended", resourceCulture);
+                return ResourceManager.GetString("Stability", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Select scripts.
+        ///   Recherche une chaîne localisée semblable à Startup time.
         /// </summary>
-        public static string MenuSelectScripts {
+        public static string StartupTime {
             get {
-                return ResourceManager.GetString("MenuSelectScripts", resourceCulture);
+                return ResourceManager.GetString("StartupTime", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à To select scripts, check their associated check box..
+        ///   Recherche une chaîne localisée semblable à Storage speed.
         /// </summary>
-        public static string NoScriptsSelectedContent {
+        public static string StorageSpeed {
             get {
-                return ResourceManager.GetString("NoScriptsSelectedContent", resourceCulture);
+                return ResourceManager.GetString("StorageSpeed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Can&apos;t execute scripts because no scripts are selected..
+        ///   Recherche une chaîne localisée semblable à Visuals.
         /// </summary>
-        public static string NoScriptsSelectedMainInstruction {
+        public static string Visuals {
             get {
-                return ResourceManager.GetString("NoScriptsSelectedMainInstruction", resourceCulture);
+                return ResourceManager.GetString("Visuals", resourceCulture);
             }
         }
     }

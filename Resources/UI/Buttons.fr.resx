@@ -162,4 +162,7 @@
   <data name="Execute" xml:space="preserve">
     <value>Exécuter</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Réinitialiser</value>
+  </data>
 </root>

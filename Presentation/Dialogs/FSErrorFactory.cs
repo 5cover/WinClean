@@ -1,6 +1,7 @@
 ﻿using Ookii.Dialogs.Wpf;
 
-using Scover.WinClean.Operational;
+using Scover.WinClean.BusinessLogic;
+using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.Presentation.Dialogs;
 

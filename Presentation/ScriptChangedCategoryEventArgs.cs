@@ -1,4 +1,4 @@
-﻿using Scover.WinClean.Logic;
+﻿using Scover.WinClean.BusinessLogic;
 
 namespace Scover.WinClean.Presentation;
 

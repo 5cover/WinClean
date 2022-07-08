@@ -11,25 +11,23 @@ namespace Scover.WinClean;
 
 public partial class App : Application
 {
-    public static string? Company => Assembly.GetExecutingAssembly()?
+    public static string Company => Assembly.GetExecutingAssembly()?
                                              .GetCustomAttributes()
                                              .OfType<AssemblyCompanyAttribute>()
                                              .SingleOrDefault()?
-                                             .Company;
+                                             .Company ?? string.Empty;
 
-    public static string? Copyright => Assembly.GetExecutingAssembly()?
+    public static string Copyright => Assembly.GetExecutingAssembly()?
                                                .GetCustomAttributes()
                                                .OfType<AssemblyCopyrightAttribute>()
                                                .SingleOrDefault()?
-                                               .Copyright;
+                                               .Copyright ?? string.Empty;
 
-    public static string? InstallDirectory => Path.GetDirectoryName(Environment.ProcessPath);
-
-    public static string? Name => Assembly.GetExecutingAssembly()?
+    public static string Name => Assembly.GetExecutingAssembly()?
                                           .GetCustomAttributes()
                                           .OfType<AssemblyProductAttribute>()
                                           .SingleOrDefault()?
-                                          .Product;
+                                          .Product ?? string.Empty;
 
     public static Uri? RepositoryUrl
     {
@@ -45,11 +43,11 @@ public partial class App : Application
 
     public static Properties.Settings Settings => WinClean.Properties.Settings.Default;
 
-    public static string? Version => Assembly.GetExecutingAssembly()?
+    public static string Version => Assembly.GetExecutingAssembly()?
                                              .GetCustomAttributes()
                                              .OfType<AssemblyInformationalVersionAttribute>()
                                              .SingleOrDefault()?
-                                             .InformationalVersion;
+                                             .InformationalVersion ?? string.Empty;
 
     private void Application_Exit(object sender, ExitEventArgs e)
     {

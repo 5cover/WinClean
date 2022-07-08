@@ -53,14 +53,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="README.md" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </Content>
     <Resource Include="Resources\WinClean.ico" />
   </ItemGroup>
 	
@@ -103,10 +95,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Happenings.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\ImpactEffect.Designer.cs">
+    <Compile Update="Resources\Impact.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>ImpactEffect.resx</DependentUpon>
+      <DependentUpon>Impact.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\LogLevel.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -118,10 +110,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Logs.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Advised.Designer.cs">
+    <Compile Update="Resources\RecommendationLevel.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Advised.resx</DependentUpon>
+      <DependentUpon>RecommendationLevel.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\UI\AboutWindow.Designer.cs">
       <DependentUpon>AboutWindow.resx</DependentUpon>
@@ -181,9 +173,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Category.fr.resx">
-      <Generator></Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Category.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Category.Designer.cs</LastGenOutput>
@@ -224,12 +213,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Happenings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ImpactEffect.fr.resx">
-      <Generator></Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ImpactEffect.resx">
+    <EmbeddedResource Update="Resources\Impact.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ImpactEffect.Designer.cs</LastGenOutput>
+      <LastGenOutput>Impact.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\LogLevel.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -239,12 +225,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Logs.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Advised.fr.resx">
-      <Generator></Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Advised.resx">
+    <EmbeddedResource Update="Resources\RecommendationLevel.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Advised.Designer.cs</LastGenOutput>
+      <LastGenOutput>RecommendationLevel.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\AboutWindow.resx">
       <LastGenOutput>AboutWindow.Designer.cs</LastGenOutput>
@@ -299,113 +282,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Categories.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Impacts.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Update="Scripts\Aggressive disk cleaning.xml">
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="RecommendationLevels.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-	<None Update="Scripts\Always show file extensions.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Always show folder merge conflicts.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Clear event logs.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Clear File Explorer history.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Delete all system restore points.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Delete junk files.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Disable ads.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Disable delivery optimization.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Disable downloaded files blocking.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Disable Explorer online help.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Disable hibernation.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Disable shortcut sufffix.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Disable start menu web search.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Disable systematic short filename creation.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Disable telemetry and data collection.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Disable Timeline.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Enable legacy Windows Photo Viewer.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Keep thumbnail cache after reboot.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Remove Cortana.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Remove Microsoft Windows Malware Removal Tool.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Remove useless apps.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Repair system using Dism's cleanup image.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Run Check Disk utility.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Run Component Store cleanup.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Run Disk Cleanup tool.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Run the System File Checker tool.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Show checkboxes near files and folders.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Show full path in Explorer title bar.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Show seconds in taskbar clock.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Stop apps from running in the background.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Uninstall Microsoft Edge.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	<None Update="Scripts\Uninstall One Drive.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Logs\" />
   </ItemGroup>
 
 </Project>

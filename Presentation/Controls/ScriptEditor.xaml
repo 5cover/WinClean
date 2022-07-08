@@ -4,15 +4,19 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winclean="clr-namespace:Scover.WinClean"
-    xmlns:logic="clr-namespace:Scover.WinClean.Logic"
-    xmlns:operational="clr-namespace:Scover.WinClean.Operational"
+    xmlns:businessLogic="clr-namespace:Scover.WinClean.BusinessLogic"
+    xmlns:scriptExecution="clr-namespace:Scover.WinClean.BusinessLogic.ScriptExecution"
+    xmlns:presentation="clr-namespace:Scover.WinClean.Presentation"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
     x:Class="Scover.WinClean.Presentation.Controls.ScriptEditor"
     mc:Ignorable="d" MinWidth="205" MinHeight="231.92" Content="{Binding Selected, RelativeSource={RelativeSource Self}}">
     <UserControl.ContentTemplate>
         <DataTemplate>
             <DataTemplate.Resources>
-                <operational:IsNotNullConverter x:Key="isNotNullConverter" />
+                <presentation:IsNotNullConverter x:Key="isNotNullConverter" />
+                <Style TargetType="ComboBoxItem">
+                    <Setter Property="ToolTip" Value="{Binding Content.Description, RelativeSource={RelativeSource Self}}" />
+                </Style>
             </DataTemplate.Resources>
             <Grid IsEnabled="{Binding Converter={StaticResource isNotNullConverter}}">
                 <Grid.Resources>
@@ -61,27 +65,28 @@
 
                 <ComboBox Margin="0,0,2.5,5"
                           Grid.Row="2"
-                          DisplayMemberPath="LocalizedName"
-                          ItemsSource="{x:Static logic:Category.Values}"
+                          DisplayMemberPath="Name"
+                          ItemsSource="{x:Static businessLogic:Category.Values}"
                           SelectedItem="{Binding Category, Mode=TwoWay}"
-                          SelectionChanged="ComboBoxCategory_SelectionChanged" />
+                          SelectionChanged="ComboBoxCategory_SelectionChanged">
+                </ComboBox>
 
                 <ComboBox Margin="2.5,0,0,5"
                           Grid.Column="1" Grid.Row="2"
-                          DisplayMemberPath="LocalizedName"
-                          ItemsSource="{x:Static logic:Advised.Values}"
-                          SelectedItem="{Binding Advised, Mode=TwoWay}" />
+                          DisplayMemberPath="Name"
+                          ItemsSource="{x:Static businessLogic:RecommendationLevel.Values}"
+                          SelectedItem="{Binding Recommended, Mode=TwoWay}" />
 
                 <ComboBox Margin="0,0,2.5,5"
                           Grid.Row="3"
-                          ItemsSource="{x:Static operational:ScriptHost.HostsLocalizedNames}"
-                          SelectedItem="{Binding Host.LocalizedName, Mode=OneTime}"
+                          ItemsSource="{x:Static scriptExecution:ScriptHost.HostsDisplayNames}"
+                          SelectedItem="{Binding Host.DisplayName, Mode=OneTime}"
                           SelectionChanged="ComboBoxHost_SelectionChanged" />
 
                 <ComboBox Margin="2.5,0,0,5"
                           Grid.Column="1" Grid.Row="3"
-                          DisplayMemberPath="LocalizedName"
-                          ItemsSource="{x:Static logic:Impact.Values}"
+                          DisplayMemberPath="Name"
+                          ItemsSource="{x:Static businessLogic:Impact.Values}"
                           SelectedItem="{Binding Impact, Mode=TwoWay}" />
 
                 <TextBox Margin="0,0,0,5"

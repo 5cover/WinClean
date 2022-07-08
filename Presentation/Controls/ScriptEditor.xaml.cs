@@ -1,5 +1,6 @@
-﻿using Scover.WinClean.Logic;
-using Scover.WinClean.Operational;
+﻿using Scover.WinClean.BusinessLogic;
+using Scover.WinClean.BusinessLogic.ScriptExecution;
+using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
 using Scover.WinClean.Presentation.ScriptExecution;
 
@@ -38,7 +39,7 @@ public partial class ScriptEditor : UserControl
     {
         if (Selected is not null && YesNoDialog.ScriptDeletion.ShowDialog() == DialogResult.Yes)
         {
-            File.Delete(ScriptsDirectory.Instance.Join(Selected.Filename));
+            File.Delete(AppDirectory.ScriptsDir.Join(Selected.Filename));
             if (Owner is not null)
             {
                 Owner.ItemsSource = Owner.ItemsSource.OfType<Script>().Where(s => s != Selected);
@@ -67,7 +68,7 @@ public partial class ScriptEditor : UserControl
     {
         if (Selected is not null)
         {
-            Selected.Host = ScriptHostFactory.FromLocalizedName((string)((ComboBox)sender).SelectedItem);
+            Selected.Host = ScriptHostFactory.FromDisplayName((string)((ComboBox)sender).SelectedItem);
         }
     }
 }

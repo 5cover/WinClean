@@ -1,11 +1,13 @@
-﻿using Microsoft.WindowsAPICodePack.Win32Native.Shell;
+﻿using Microsoft.WindowsAPICodePack.Shell;
+using Microsoft.WindowsAPICodePack.Win32Native.Shell;
 
 using Ookii.Dialogs.Wpf;
 
-using Scover.WinClean.Logic;
-using Scover.WinClean.Operational;
+using Scover.WinClean.BusinessLogic;
+using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
 
+using System.Drawing;
 using System.Runtime.InteropServices;
 
 using static Scover.WinClean.Resources.UI.Buttons;
@@ -30,7 +32,7 @@ public class ProgressDialog : Dialog
         Content = Resources.UI.ProgressDialog.Content;
         VerificationText = Resources.UI.ProgressDialog.VerificationText;
 
-        CustomMainIcon = StockIconIdentifier.Software.ToIcon();
+        CustomMainIcon = ToIcon(StockIconIdentifier.Software);
 
         Buttons.Add(new(Cancel));
 
@@ -92,6 +94,15 @@ public class ProgressDialog : Dialog
             e.Cancel = YesNoDialog.AbortOperation.ShowDialog() == DialogResult.No;
         }
         base.OnButtonClicked(e);
+    }
+
+    private static Icon ToIcon(StockIconIdentifier sii)
+    {
+        using StockIcon stockIcon = new(sii);
+        // Using stockIcon.Icon causes ComException (invalid cursor handle) when the icon is displayed. Using stockIcon.Bitmap
+        // causes the icon to display incorrectly (low quality and black transparency). We can assume the implementation of
+        // StockIcon in the Window API Code Pack is not compatible with the current Icon class.
+        return Icon.FromHandle(stockIcon.Icon.ToBitmap().GetHicon());
     }
 
     private void UpdateExpandedInfo()

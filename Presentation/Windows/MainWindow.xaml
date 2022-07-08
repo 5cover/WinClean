@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winclean="clr-namespace:Scover.WinClean"
-    xmlns:logic="clr-namespace:Scover.WinClean.Logic"
     xmlns:controls="clr-namespace:Scover.WinClean.Presentation.Controls"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
     x:Class="Scover.WinClean.Presentation.Windows.MainWindow"
@@ -23,21 +22,9 @@
                             <StackPanel.Style>
                                 <Style TargetType="{x:Type StackPanel}">
                                     <Style.Resources>
-                                        <SolidColorBrush x:Key="Yes" Color="Green" Opacity="0.15" />
-                                        <SolidColorBrush x:Key="Limited" Color="Yellow" Opacity="0.15" />
-                                        <SolidColorBrush x:Key="No" Color="Red" Opacity="0.15" />
+                                        <SolidColorBrush x:Key="BackgroundBrush" Color="{Binding Recommended.Color}" Opacity="0.15" />
                                     </Style.Resources>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Advised}" Value="{x:Static logic:Advised.Yes}">
-                                            <Setter Property="Background" Value="{StaticResource Yes}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Advised}" Value="{x:Static logic:Advised.Limited}">
-                                            <Setter Property="Background" Value="{StaticResource Limited}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Advised}" Value="{x:Static logic:Advised.No}">
-                                            <Setter Property="Background" Value="{StaticResource No}" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
+                                    <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
                                 </Style>
                             </StackPanel.Style>
                             <CheckBox x:Name="checkBox" Margin="3,3,3,3" VerticalContentAlignment="Center" IsChecked="{Binding Selected}" />
@@ -66,7 +53,7 @@
                 <MenuItem Header="{x:Static ui:Buttons.Exit}" Click="MenuExit_Click" />
             </MenuItem>
             <MenuItem Header="{x:Static ui:MainWindow.MenuSelectScripts}">
-                <MenuItem Header="{x:Static ui:MainWindow.MenuAdvised}" Click="MenuAdvised_Click" />
+                <MenuItem Header="{x:Static ui:MainWindow.MenuRecommended}" Click="MenuRecommended_Click" />
                 <MenuItem Header="{x:Static ui:MainWindow.MenuAll}" Click="MenuAll_Click" />
                 <MenuItem Header="{x:Static ui:MainWindow.MenuNone}" Click="MenuNone_Click" />
             </MenuItem>

@@ -142,4 +142,7 @@
   <data name="Execute" xml:space="preserve">
     <value>Execute</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
 </root>
