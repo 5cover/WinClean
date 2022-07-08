@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>Delete all system restore points</Name>
+  <Name xml:lang="fr">Supprimer tous les points de restauration système</Name>
+  <Description>A restore point is a system image used to undo changes to the system made after it was created.</Description>
+  <Description xml:lang="fr">Un point de restauration est une image du système permettant d'annuler les modifications du système apportées ultérieurement à sa création.</Description>
+  <Category>Maintenance</Category>
+  <Recommended>Limited</Recommended>
+  <Host>PowerShell</Host>
+  <Impact>Free storage space</Impact>
+  <Code>vssadmin delete shadows /all</Code>
+</Script>

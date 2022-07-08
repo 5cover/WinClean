@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>Show full path in Explorer title bar</Name>
+  <Name xml:lang="fr">Afficher le chemin d'accès complet dans la barre de titre de l'Explorateur de fichiers</Name>
+  <Description>Description anglaise</Description>
+  <Description xml:lang="fr">Afficher le chemin d'accès complet du répertoire actuel dans la barre de titre de l'Explorateur de Fichiers.</Description>
+  <Category>Customization</Category>
+  <Recommended>Limited</Recommended>
+  <Host>Regedit</Host>
+  <Impact>Ergonomics</Impact>
+  <Code>Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CabinetState]
+"FullPath"=dword:00000001</Code>
+</Script>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>Delete junk files</Name>
+  <Name xml:lang="fr">Supprimer les fichiers inutiles</Name>
+  <Description>This script goes through all files on all local disks and deletes any temporary files or log files. This type of cleaning can free up a considerable amount of disk space, especially if it has never been run.
+Affected file types:
+- Log files (*.log; *.etl; *.lck)
+- Temporary files (*.tmp; *.temp)
+- System error memory dump files (*.dmp)
+Warning: this script might delete useful files with these extensions.</Description>
+  <Description xml:lang="fr">Ce script parcourt tous les fichiers sur tous les disques locaux et supprime tous les fichiers temporaires ou fichier journaux. Ce type de nettoyage peut libérer une quantité considérable d'espace disque surtout s'il n'a jamais été exécuté.
+Types de fichiers concernés :
+- Fichiers journaux (*.log; *.etl; *.lck)
+- Fichiers temporaires (*.tmp; *.temp)
+- Fichiers de vidage mémoire d'erreurs système (*.dmp)
+Attention : ce script pourrait supprimer des fichiers utiles portant ces extensions.</Description>
+  <Category>Maintenance</Category>
+  <Recommended>Limited</Recommended>
+  <Host>Cmd</Host>
+  <Impact>Free storage space</Impact>
+  <Code>for /F "skip=1" %%C in ('wmic Volume where "DriveLetter is not Null" get DriveLetter') do for /F %%D in ("%%C") do cd /d %%D &amp; del /f /s /q *.log,*.etl,*.lck,*.tmp,*.temp,*.dmp</Code>
+</Script>

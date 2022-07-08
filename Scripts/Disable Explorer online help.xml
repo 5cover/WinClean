@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>Disable Explorer online help</Name>
+  <Name xml:lang="fr">Désactiver l'aide en ligne dans l'Explorateur de fichiers</Name>
+  <Description>By default, pressing F1 in File Explorer redirects to a web page.</Description>
+  <Description xml:lang="fr">Par défaut, appuyer sur F1 dans l'Explorateur de fichiers redirige vers une page Web.</Description>
+  <Category>Customization</Category>
+  <Recommended>Limited</Recommended>
+  <Host>Cmd</Host>
+  <Impact>Ergonomics</Impact>
+  <Code>taskkill /f /im HelpPane.exe
+takeown /f %WinDir%\HelpPane.exe
+icacls %WinDir%\HelpPane.exe /deny Everyone:(X)</Code>
+</Script>

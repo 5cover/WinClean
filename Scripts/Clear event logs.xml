@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>Clear event logs</Name>
+  <Name xml:lang="fr">Effacer les journaux d'évènements</Name>
+  <Description>System events and errors are stored in event logs. Tenths of thousands of events can accumulate there and occupy disk space.</Description>
+  <Description xml:lang="fr">Les évènements et des erreurs système sont stockés dans les journaux d'événements. Plusieurs dizaines de milliers d'évènements peuvent s'y accumuler et occuper de l'espace disque.</Description>
+  <Category>Maintenance</Category>
+  <Recommended>Limited</Recommended>
+  <Host>PowerShell</Host>
+  <Impact>Free storage space</Impact>
+  <Code>Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }</Code>
+</Script>

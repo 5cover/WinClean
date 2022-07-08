@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>Always show folder merge conflicts</Name>
+  <Name xml:lang="fr">Toujours afficher les conflits de fusion de dossier</Name>
+  <Description>Explorer will show a warning before merging folders.</Description>
+  <Description xml:lang="fr">L'Explorateur de fichiers affichera un avertissement avant de fusionner des fichiers.</Description>
+  <Category>Customization</Category>
+  <Recommended>Limited</Recommended>
+  <Host>Regedit</Host>
+  <Impact>Ergonomics</Impact>
+  <Code>Windows Registry Editor Version 5.00
+
+[HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"HideMergeConflicts"=dword:00000000</Code>
+</Script>

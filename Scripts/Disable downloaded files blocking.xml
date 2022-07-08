@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>Disable downloaded files blocking</Name>
+  <Name xml:lang="fr">Désactiver le blocage des fichiers téléchargés</Name>
+  <Description>By default, Windows displays a warning when the user opens a downloaded file.</Description>
+  <Description xml:lang="fr">Par défaut, Windows affiche un avertissement lorsque l'utilisateur ouvre un fichier téléchargé.</Description>
+   <Category>Customization</Category>
+  <Recommended>Limited</Recommended>
+  <Host>Regedit</Host>
+  <Impact>Ergonomics</Impact>
+  <Code>Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments]
+"SaveZoneInformation"=dword:00000001</Code>
+</Script>

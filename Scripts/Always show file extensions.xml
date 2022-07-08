@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>Always show file extensions</Name>
+  <Name xml:lang="fr">Toujours afficher les extensions de fichier</Name>
+  <Description>By default, known file extensions are hidden.</Description>
+  <Description xml:lang="fr">Par défaut, les extensions de fichier connues sont masquées.</Description>
+  <Category>Customization</Category>
+  <Recommended>Limited</Recommended>
+  <Host>Regedit</Host>
+  <Impact>Ergonomics</Impact>
+  <Code>Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"HideFileExt"=dword:00000000</Code>
+</Script>
