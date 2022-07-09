@@ -50,13 +50,14 @@ Global
 		{9D018572-7B90-4D10-80FE-AB71F50E78CF}.Release|ARM.ActiveCfg = Release
 		{9D018572-7B90-4D10-80FE-AB71F50E78CF}.Release|ARM64.ActiveCfg = Release
 		{9D018572-7B90-4D10-80FE-AB71F50E78CF}.Release|x64.ActiveCfg = Release
+		{9D018572-7B90-4D10-80FE-AB71F50E78CF}.Release|x64.Build.0 = Release
 		{9D018572-7B90-4D10-80FE-AB71F50E78CF}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_PrefixTranslations = False
 		SolutionGuid = {937A4B5E-93B9-4C78-B678-7D96F758D99D}
+		RESX_PrefixTranslations = False
 	EndGlobalSection
 EndGlobal

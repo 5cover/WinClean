@@ -39,7 +39,7 @@ public class RecommendationLevel
         List<RecommendationLevel> recommendationLevels = new();
 
         XmlDocument doc = new();
-        doc.LoadXml(File.ReadAllText(AppDirectory.InstallDir.Join("RecommendationLevels.xml")));
+        doc.Load(App.GetContentStream("RecommendationLevels.xml"));
 
         foreach (XmlElement element in doc.GetElementsByTagName("RecommendationLevel"))
         {
