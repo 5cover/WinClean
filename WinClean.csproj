@@ -53,24 +53,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Categories.xml" />
-    <None Remove="Impacts.xml" />
-    <None Remove="RecommendationLevels.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Categories.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Impacts.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="RecommendationLevels.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Resources\WinClean.ico" />
   </ItemGroup>
 	
@@ -80,10 +62,6 @@
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageReference Include="System.Management" Version="6.0.0" />
     <PackageReference Include="WinCopies.WindowsAPICodePack.Shell" Version="3.10.0-preview" />
-  </ItemGroup>
-	
-  <ItemGroup>
-    <Page Include="App.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -304,6 +282,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Categories.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Impacts.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -311,6 +295,9 @@
     <None Update="README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
+    </None>
+    <None Update="RecommendationLevels.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

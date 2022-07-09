@@ -35,7 +35,7 @@ public class Category
         List<Category> categories = new();
 
         XmlDocument doc = new();
-        doc.Load(App.GetContentStream("Categories.xml"));
+        doc.LoadXml(File.ReadAllText(AppDirectory.InstallDir.Join("Categories.xml")));
 
         foreach (XmlElement element in doc.GetElementsByTagName("Category"))
         {

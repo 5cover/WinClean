@@ -36,7 +36,7 @@ public class Impact
         List<Impact> impacts = new();
 
         XmlDocument doc = new();
-        doc.Load(App.GetContentStream("Impacts.xml"));
+        doc.LoadXml(File.ReadAllText(AppDirectory.InstallDir.Join("Impacts.xml")));
 
         foreach (XmlElement element in doc.GetElementsByTagName("Impact"))
         {

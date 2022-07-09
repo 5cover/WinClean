@@ -1,6 +1,5 @@
 ﻿global using System.IO;
 
-using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation;
 using Scover.WinClean.Presentation.Windows;
 using Scover.WinClean.Resources;
@@ -12,38 +11,39 @@ namespace Scover.WinClean;
 
 public partial class App : Application
 {
-    static App()
-    {
-        string? uriString = Assembly.GetExecutingAssembly()?.GetCustomAttributes()
-                            .OfType<AssemblyMetadataAttribute>()
-                            .SingleOrDefault(attr => attr.Key == "RepositoryUrl")?
-                            .Value;
-        RepositoryUrl = uriString is null ? null : new Uri(uriString);
-    }
-
-    public static string Company { get; } = Assembly.GetExecutingAssembly()?
+    public static string Company => Assembly.GetExecutingAssembly()?
                                              .GetCustomAttributes()
                                              .OfType<AssemblyCompanyAttribute>()
                                              .SingleOrDefault()?
                                              .Company ?? string.Empty;
 
-    public static string Copyright { get; } = Assembly.GetExecutingAssembly()?
+    public static string Copyright => Assembly.GetExecutingAssembly()?
                                                .GetCustomAttributes()
                                                .OfType<AssemblyCopyrightAttribute>()
                                                .SingleOrDefault()?
                                                .Copyright ?? string.Empty;
 
-    public static string Name { get; } = Assembly.GetExecutingAssembly()?
+    public static string Name => Assembly.GetExecutingAssembly()?
                                           .GetCustomAttributes()
                                           .OfType<AssemblyProductAttribute>()
                                           .SingleOrDefault()?
                                           .Product ?? string.Empty;
 
-    public static Uri? RepositoryUrl { get; }
+    public static Uri? RepositoryUrl
+    {
+        get
+        {
+            string? uriString = Assembly.GetExecutingAssembly()?.GetCustomAttributes()
+                                        .OfType<AssemblyMetadataAttribute>()
+                                        .SingleOrDefault(attr => attr.Key == "RepositoryUrl")?
+                                        .Value;
+            return uriString is null ? null : new Uri(uriString);
+        }
+    }
 
     public static Properties.Settings Settings => WinClean.Properties.Settings.Default;
 
-    public static string Version { get; } = Assembly.GetExecutingAssembly()?
+    public static string Version => Assembly.GetExecutingAssembly()?
                                              .GetCustomAttributes()
                                              .OfType<AssemblyInformationalVersionAttribute>()
                                              .SingleOrDefault()?
@@ -64,6 +64,4 @@ public partial class App : Application
 
         new MainWindow().Show();
     }
-
-    public static Stream GetContentStream(string filename) => GetContentStream(new Uri(filename, UriKind.Relative)).Stream;
 }
