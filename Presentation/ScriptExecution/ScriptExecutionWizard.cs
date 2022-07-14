@@ -37,10 +37,6 @@ public class ScriptExecutionWizard
     {
         Happenings.ScriptExecution.SetAsHappening();
 
-        using WarningDialog warning = new();
-
-        if (warning.ShowDialog() != Button.Continue) return;
-
         using TaskDialog restorePointDialog = new()
         {
             ButtonStyle = TaskDialogButtonStyle.CommandLinks,

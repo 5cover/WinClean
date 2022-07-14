@@ -148,11 +148,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SystemRestorePoint.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\UI\WarningDialog.Designer.cs">
-      <DependentUpon>WarningDialog.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <Compile Update="Resources\UI\SettingsWindow.Designer.cs">
       <DependentUpon>SettingsWindow.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -246,10 +241,6 @@
     <EmbeddedResource Update="Resources\UI\SystemRestorePoint.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SystemRestorePoint.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\UI\WarningDialog.resx">
-      <LastGenOutput>WarningDialog.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\SettingsWindow.resx">
       <LastGenOutput>SettingsWindow.Designer.cs</LastGenOutput>
