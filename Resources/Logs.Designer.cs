@@ -8,10 +8,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Resources;
+using System.Runtime.CompilerServices;
+
 namespace Scover.WinClean.Resources {
-    using System;
-    
-    
     /// <summary>
     ///   Une classe de ressource fortement typée destinée, entre autres, à la consultation des chaînes localisées.
     /// </summary>
@@ -19,27 +24,27 @@ namespace Scover.WinClean.Resources {
     // à l'aide d'un outil, tel que ResGen ou Visual Studio.
     // Pour ajouter ou supprimer un membre, modifiez votre fichier .ResX, puis réexécutez ResGen
     // avec l'option /str ou régénérez votre projet VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [GeneratedCode("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [DebuggerNonUserCode()]
+    [CompilerGenerated()]
     public class Logs {
         
-        private static global::System.Resources.ResourceManager resourceMan;
+        private static ResourceManager resourceMan;
         
-        private static global::System.Globalization.CultureInfo resourceCulture;
+        private static CultureInfo resourceCulture;
         
-        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Logs() {
         }
         
         /// <summary>
         ///   Retourne l'instance ResourceManager mise en cache utilisée par cette classe.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static ResourceManager ResourceManager {
             get {
-                if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scover.WinClean.Resources.Logs", typeof(Logs).Assembly);
+                if (ReferenceEquals(resourceMan, null)) {
+                    ResourceManager temp = new ResourceManager("Scover.WinClean.Resources.Logs", typeof(Logs).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -50,22 +55,13 @@ namespace Scover.WinClean.Resources {
         ///   Remplace la propriété CurrentUICulture du thread actuel pour toutes
         ///   les recherches de ressources à l'aide de cette classe de ressource fortement typée.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Bad data for script &quot;{0}&quot;..
-        /// </summary>
-        public static string BadScriptData {
-            get {
-                return ResourceManager.GetString("BadScriptData", resourceCulture);
             }
         }
         
@@ -93,6 +89,15 @@ namespace Scover.WinClean.Resources {
         public static string FileSystemErrorAcessingScript {
             get {
                 return ResourceManager.GetString("FileSystemErrorAcessingScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Script file &quot;{0}&quot; has invalid or missing data..
+        /// </summary>
+        public static string InvalidScriptData {
+            get {
+                return ResourceManager.GetString("InvalidScriptData", resourceCulture);
             }
         }
         
@@ -192,6 +197,15 @@ namespace Scover.WinClean.Resources {
         public static string StartingExecutionOfScripts {
             get {
                 return ResourceManager.GetString("StartingExecutionOfScripts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à An unhandled exception occured: {0}.
+        /// </summary>
+        public static string UnhandledException {
+            get {
+                return ResourceManager.GetString("UnhandledException", resourceCulture);
             }
         }
     }

@@ -1,17 +1,18 @@
-﻿using Ookii.Dialogs.Wpf;
+﻿using System.Diagnostics;
+
+using Ookii.Dialogs.Wpf;
 
 using Scover.WinClean.BusinessLogic;
-using Scover.WinClean.BusinessLogic.ScriptExecution;
+using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
 using Scover.WinClean.Resources;
-
-using System.Diagnostics;
+using Scover.WinClean.Resources.UI;
 
 namespace Scover.WinClean.Presentation.ScriptExecution;
 
 /// <summary>
-/// Walks the user through the multistep high-level operation executing multiple scripts asynchronously by displaying a task
+/// Walks the user through the multi-step high-level operation of executing multiple scripts asynchronously by displaying a task
 /// dialog tracking the progress.
 /// </summary>
 public class ScriptExecutionWizard
@@ -20,102 +21,131 @@ public class ScriptExecutionWizard
     private readonly IReadOnlyList<Script> _scripts;
 
     /// <param name="scripts">The scripts to execute.</param>
-    /// <exception cref="InvalidOperationException"><paramref name="scripts"/> is empty.</exception>
+    /// <exception cref="ArgumentException"><paramref name="scripts"/> is empty.</exception>
     public ScriptExecutionWizard(IEnumerable<Script> scripts)
     {
-        if (!scripts.Any())
-        {
-            throw new InvalidOperationException(DevException.CollectionEmpty);
-        }
         _scripts = scripts.ToList();
-        _executor.ProgressChanged += (sender, e) => Logs.ScriptExecuted.FormatWith(_scripts[e.ScriptIndex]);
+        if (!_scripts.Any())
+        {
+            throw new ArgumentException(DevException.CollectionEmpty, nameof(scripts));
+        }
+        _executor.ProgressChanged += (_, e) => Logs.ScriptExecuted.FormatWith(_scripts[e.ScriptIndex]);
     }
-
-    /// <param name="script">The script to execute.</param>
-    public ScriptExecutionWizard(Script script) : this(new List<Script> { script })
-    {
-    }
-
-    /// <summary>Executes the script(s) without displaying a dialog.</summary>
-    public void ExecuteNoUI() => ExecuteScriptsAsync().ConfigureAwait(false);
 
     /// <summary>Executes the script(s) and displays a dialog tracking the progress.</summary>
-    public void ExecuteUI()
+    public void Execute()
     {
         Happenings.ScriptExecution.SetAsHappening();
 
         using WarningDialog warning = new();
 
-        if (warning.ShowDialog() == DialogResult.Continue)
+        if (warning.ShowDialog() != Button.Continue) return;
+
+        using TaskDialog restorePointDialog = new()
         {
-            if (YesNoDialog.SystemRestorePoint.ShowDialog() == DialogResult.Yes)
+            ButtonStyle = TaskDialogButtonStyle.CommandLinks,
+            MainInstruction = SystemRestorePoint.MainInstruction,
+            CustomMainIcon = Helpers.GetRestorePointIcon(),
+            Buttons =
             {
-                bool retry;
-                do
+                new(ButtonType.Cancel),
+                new(SystemRestorePoint.CommandLinkYes)
                 {
-                    try
-                    {
-                        CreateRestorePoint();
-                        retry = false;
-                    }
-                    catch (SystemProtectionDisabledException e)
-                    {
-                        Logs.RestorePointCreationError.FormatWith(e.Message).Log(LogLevel.Error);
-
-                        DialogResult result = RetryIgnoreAbort.SystemRestoreDisabled.ShowDialog();
-                        if (result == DialogResult.Abort)
-                        {
-                            return;
-                        }
-                        retry = result == DialogResult.Retry;
-                    }
-                } while (retry);
+                    Default = true,
+                    CommandLinkNote = SystemRestorePoint.CommandLinkYesNote
+                },
+                new(SystemRestorePoint.CommandLinkNo)
             }
+        };
+        TaskDialogButton clickedButton = restorePointDialog.ShowDialog();
 
-            ShowProgressDialog();
+        if (clickedButton is null || clickedButton == restorePointDialog.Buttons[0]) return;
 
-            static void CreateRestorePoint()
+        if (clickedButton == restorePointDialog.Buttons[1])
+        {
+            try
             {
-                Logs.CreatingRestorePoint.Log();
-                new RestorePoint(App.Name ?? string.Empty,
-                                 EventType.BeginSystemChange,
-                                 RestorePointType.ModifySettings).Create();
-                Logs.RestorePointCreated.Log();
+                CreateRestorePoint();
             }
+            catch (InvalidOperationException e)
+            {
+                Logs.RestorePointCreationError.FormatWith(e.Message).Log(LogLevel.Error);
+
+                using TaskDialog systemRestoreDisabledDialog = new()
+                {
+                    ButtonStyle = TaskDialogButtonStyle.CommandLinks,
+                    MainInstruction = SystemProtectionDisabled.MainInstruction,
+                    MainIcon = TaskDialogIcon.Error,
+                    Buttons =
+                    {
+                        new(ButtonType.Cancel),
+                        new(SystemProtectionDisabled.CommandLinkEnable)
+                        {
+                            CommandLinkNote = SystemProtectionDisabled.CommandLinkEnableNote
+                        },
+                        new(SystemProtectionDisabled.CommandLinkContinueAnyway)
+                        {
+                            CommandLinkNote = SystemProtectionDisabled.CommandLinkContinueAnywayNote
+                        }
+                    }
+                };
+                TaskDialogButton? result = systemRestoreDisabledDialog.ShowDialog();
+                if (result is null || result == systemRestoreDisabledDialog.Buttons[0]) return;
+                if (result == systemRestoreDisabledDialog.Buttons[1])
+                {
+                    RestorePoint.EnableSystemRestore();
+                    CreateRestorePoint();
+                }
+            }
+        }
+
+        ShowProgressDialog();
+
+        static void CreateRestorePoint()
+        {
+            Logs.CreatingRestorePoint.Log();
+            new RestorePoint(AppInfo.Name,
+                EventType.BeginSystemChange,
+                RestorePointType.ModifySettings).Create();
+            Logs.RestorePointCreated.Log();
         }
     }
 
     private static void RebootForApplicationMaintenance()
     {
         Logs.RebootingForAppMaintenance.Log();
-        _ = Process.Start("shutdown", $"/g /t 0 /d p:4:1");
+        _ = Process.Start("shutdown", "/g /t 0 /d p:4:1");
+    }
+
+    private static bool ShowHungScriptDialog(string scriptName)
+    {
+        using Dialog hungScriptDialog = new(Button.EndTask, Button.Ignore)
+        {
+            Content = Resources.UI.Dialogs.HungScriptDialogContent,
+            Timeout = TimeSpan.FromSeconds(10),
+            TimeoutButton = Button.Ignore
+        };
+        return hungScriptDialog.ShowDialog() == Button.Ignore;
     }
 
     private async Task ExecuteScriptsAsync()
     {
         Logs.StartingExecutionOfScripts.FormatWith(_scripts.Count).Log(LogLevel.Info);
 
-        await _executor.ExecuteScriptsAsync(_scripts,
-                                            App.Settings.ScriptTimeout,
-                                            name => new CustomDialog(Resources.UI.Buttons.Ignore, Resources.UI.Buttons.EndTask)
-                                            {
-                                                MainIcon = TaskDialogIcon.Warning,
-                                                Content = Resources.UI.ScriptExecutionWizard.HungScriptDialogContent.FormatWith(name, App.Settings.ScriptTimeout)
-                                            }.ShowDialog() == Resources.UI.Buttons.EndTask,
-                                            (e, fSInfo, verb) => FSErrorFactory.MakeFSError<RetryExitDialog>(e, verb, fSInfo).ShowDialog() == DialogResult.Retry).ConfigureAwait(false);
+        await _executor.ExecuteScriptsAsync(_scripts, ShowHungScriptDialog).ConfigureAwait(false);
 
         Logs.ScriptsExecuted.Log(LogLevel.Info);
     }
 
-    private async void ProgressDialog_Created(object? sender, EventArgs e)
+    private async void ProgressDialogCreated(object? sender, EventArgs e)
     {
-        using ProgressDialog progress = (ProgressDialog)sender!; // ! : the dialog cannot be null, it was just created
+        using ProgressDialog progress = (ProgressDialog)sender.AssertNotNull();
         await ExecuteScriptsAsync().ConfigureAwait(true);
         progress.Close();
 
         using CompletedDialog completed = new(_scripts.Count, TimeSpan.FromSeconds(progress.ElapsedSeconds));
 
-        if (progress.AutoRestart || completed.ShowDialog() == DialogResult.Restart)
+        if (progress.AutoRestart || completed.ShowDialog() == Button.Restart)
         {
             RebootForApplicationMaintenance();
         }
@@ -125,14 +155,12 @@ public class ScriptExecutionWizard
     {
         using ProgressDialog progress = new(_scripts);
 
-        _executor.ProgressChanged += (sender, e) => progress.ScriptIndex = e.ScriptIndex;
+        _executor.ProgressChanged += (_, e) => progress.ScriptIndex = e.ScriptIndex;
 
-        progress.Created += ProgressDialog_Created;
+        progress.Created += ProgressDialogCreated;
 
-        if (progress.Show() is DialogResult.Cancel or DialogResult.Closed)
-        {
-            _executor.CancelScriptExecution();
-            Logs.ScriptExecutionCanceled.Log();
-        }
+        if (progress.Show() != Button.Stop) return;
+        _executor.CancelScriptExecution();
+        Logs.ScriptExecutionCanceled.Log();
     }
 }

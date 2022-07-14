@@ -1,57 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Impacts>
-  <Impact>
-    <Name>Ergonomics</Name>
-    <Name xml:lang="fr">Ergonomie</Name>
-    <Description>Improves system practicality, comfort and ease of use.</Description>
-    <Description xml:lang="fr">Améliore la fonctionnalité du système, son confort et sa facilité d'utilisation.</Description>
-  </Impact>
-  <Impact>
-    <Name>Free storage space</Name>
-    <Name xml:lang="fr">Espace de stockage libre</Name>
-    <Description>Frees up disk space.</Description>
-    <Description xml:lang="fr">Libère de l'espace disque.</Description>
-  </Impact>
-  <Impact>
-    <Name>Memory usage</Name>
-    <Name xml:lang="fr">Utilisation mémoire</Name>
-    <Description>Reduces idle system memory usage.</Description>
-    <Description xml:lang="fr">Limite l'utilisation mémoire du système inactif.</Description>
-  </Impact>
-  <Impact>
-    <Name>Network usage</Name>
-    <Name xml:lang="fr">Utilisation réseau</Name>
-    <Description>Reduces idle system network usage.</Description>
-    <Description xml:lang="fr">Limite l'utilisation réseau du système inactif.</Description>
-  </Impact>
-  <Impact>
-    <Name>Privacy</Name>
-    <Name xml:lang="fr">Confidentialité</Name>
-    <Description>Reduces the amout of diagnostic data and analytics sent to Microsoft.</Description>
-    <Description xml:lang="fr">Réduit la quantitié de données de diagnostic et analyses envoyées à Microsoft.</Description>
-  </Impact>
-  <Impact>
-    <Name>Shutdown time</Name>
-    <Name xml:lang="fr">Temps d'arrêt</Name>
-    <Description>Makes the shutdown process faster.</Description>
-    <Description xml:lang="fr">Rend le processus d'arrêt plus rapide.</Description>
-  </Impact>
-  <Impact>
-    <Name>Stability</Name>
-    <Name xml:lang="fr">Stabilité</Name>
-    <Description>Reduces the tendency of the system to crash, hang, or bluescreen.</Description>
-    <Description xml:lang="fr">Réduit la tendance du système à planter, à se bloquer ou à afficher un écran bleu.</Description>
-  </Impact>
-  <Impact>
-    <Name>Startup time</Name>
-    <Name xml:lang="fr">Temps de démarrage</Name>
-    <Description>Makes the startup process faster.</Description>
-    <Description xml:lang="fr">Rend le processus de démarrage plus rapide.</Description>
-  </Impact>
-  <Impact>
-    <Name>Storage speed</Name>
-    <Name xml:lang="fr">Vitesse disque</Name>
-    <Description>Improves the speed at which disk I/O operations are performed.</Description>
-    <Description xml:lang="fr">Améliore la vitesse à laquelle les opérations d'E/S de disque sont exécutées.</Description>
-  </Impact>
+	<Impact>
+		<Name>Ergonomics</Name>
+		<Name xml:lang="fr">Ergonomie</Name>
+		<Description>Improves system practicality, comfort and ease of use.</Description>
+		<Description xml:lang="fr">Améliore la fonctionnalité du système, son confort et sa facilité d'utilisation.</Description>
+	</Impact>
+	<Impact>
+		<Name>Free storage space</Name>
+		<Name xml:lang="fr">Espace de stockage libre</Name>
+		<Description>Frees up disk space.</Description>
+		<Description xml:lang="fr">Libère de l'espace disque.</Description>
+	</Impact>
+	<Impact>
+		<Name>Memory usage</Name>
+		<Name xml:lang="fr">Utilisation mémoire</Name>
+		<Description>Reduces idle system memory usage.</Description>
+		<Description xml:lang="fr">Limite l'utilisation mémoire du système inactif.</Description>
+	</Impact>
+	<Impact>
+		<Name>Network usage</Name>
+		<Name xml:lang="fr">Utilisation réseau</Name>
+		<Description>Reduces idle system network usage.</Description>
+		<Description xml:lang="fr">Limite l'utilisation réseau du système inactif.</Description>
+	</Impact>
+	<Impact>
+		<Name>Privacy</Name>
+		<Name xml:lang="fr">Confidentialité</Name>
+		<Description>Reduces the amout of diagnostic data and analytics sent to Microsoft.</Description>
+		<Description xml:lang="fr">Réduit la quantitié de données de diagnostic et analyses envoyées à Microsoft.</Description>
+	</Impact>
+	<Impact>
+		<Name>Shutdown time</Name>
+		<Name xml:lang="fr">Temps d'arrêt</Name>
+		<Description>Makes the shutdown process faster.</Description>
+		<Description xml:lang="fr">Rend le processus d'arrêt plus rapide.</Description>
+	</Impact>
+	<Impact>
+		<Name>Stability</Name>
+		<Name xml:lang="fr">Stabilité</Name>
+		<Description>Reduces the tendency of the system to crash, hang, or bluescreen.</Description>
+		<Description xml:lang="fr">Réduit la tendance du système à planter, à se bloquer ou à afficher un écran bleu.</Description>
+	</Impact>
+	<Impact>
+		<Name>Startup time</Name>
+		<Name xml:lang="fr">Temps de démarrage</Name>
+		<Description>Makes the startup process faster.</Description>
+		<Description xml:lang="fr">Rend le processus de démarrage plus rapide.</Description>
+	</Impact>
+	<Impact>
+		<Name>Storage speed</Name>
+		<Name xml:lang="fr">Vitesse disque</Name>
+		<Description>Improves the speed at which disk I/O operations are performed.</Description>
+		<Description xml:lang="fr">Améliore la vitesse à laquelle les opérations d'E/S de disque sont exécutées.</Description>
+	</Impact>
 </Impacts>

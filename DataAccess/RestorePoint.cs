@@ -1,5 +1,6 @@
 ﻿using System.Management;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Scover.WinClean.DataAccess;
 
@@ -27,7 +28,9 @@ public enum EventType
 public class RestorePoint
 {
     private readonly string _description;
+
     private readonly EventType _eventType;
+
     private readonly RestorePointType _type;
 
     /// <param name="description">The description to be displayed so the user can easily identify a restore point.</param>
@@ -40,17 +43,28 @@ public class RestorePoint
         _type = type;
     }
 
+    /// <summary>Enables system restore for all eligible drives.</summary>
+    public static void EnableSystemRestore()
+    {
+        // Some drives are non-eligible for system restore, but Enable-ComputerRestore will still enable the eligible ones.
+        StringBuilder sb = new(@"Enable-ComputerRestore -Drive """);
+        sb.AppendJoin(@"\"",""", DriveInfo.GetDrives().Select(di => di.Name))
+            .Append(@"\""");
+
+        Helpers.ExecutePowerShellCommand(sb.ToString());
+    }
+
     /// <summary>Creates a restore point on the local system.</summary>
     /// <exception cref="ManagementException">Access denied.</exception>
-    /// <exception cref="SystemProtectionDisabledException">System restore is disabled.</exception>
+    /// <exception cref="InvalidOperationException">System restore is disabled.</exception>
     public void Create()
     {
-        ManagementScope mScope = new("\\\\localhost\\root\\default");
+        ManagementScope mScope = new(@"\\localhost\root\default");
         ManagementPath mPath = new("SystemRestore");
         ObjectGetOptions options = new();
 
         using ManagementClass mClass = new(mScope, mPath, options);
-        using ManagementBaseObject parameters = mClass.GetMethodParameters("CreateRestorePoint");
+        using ManagementBaseObject? parameters = mClass.GetMethodParameters("CreateRestorePoint");
         parameters["Description"] = _description;
         parameters["EventType"] = (int)_eventType;
         parameters["RestorePointType"] = (int)_type;
@@ -62,7 +76,7 @@ public class RestorePoint
         // HRESULT -2147023838 = 0x80070422 : system restore is disabled
         catch (COMException e) when (e.HResult == -2147023838)
         {
-            throw new SystemProtectionDisabledException();
+            throw new InvalidOperationException(Resources.DevException.SystemProtectionDisabled, e);
         }
     }
 }

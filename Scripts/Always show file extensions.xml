@@ -10,6 +10,6 @@
   <Impact>Ergonomics</Impact>
   <Code>Windows Registry Editor Version 5.00
 
-[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+[HKEYCURRENTUSER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
 "HideFileExt"=dword:00000000</Code>
 </Script>

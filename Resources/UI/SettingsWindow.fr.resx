@@ -121,18 +121,18 @@
     <value>Paramètres</value>
   </data>
   <data name="ForbidScriptCodeEdit" xml:space="preserve">
-    <value>Interdire la modification du code des scripts</value>
+    <value>I_nterdire la modification du code des scripts</value>
   </data>
   <data name="LogLevel" xml:space="preserve">
-    <value>Niveau de journalisation</value>
+    <value>Ni_veau de journalisation</value>
   </data>
   <data name="ScriptTimeout" xml:space="preserve">
-    <value>Temps maximal d'exécution d'un script</value>
+    <value>_Temps maximal d'exécution d'un script</value>
   </data>
   <data name="ShowDetailsCompleted" xml:space="preserve">
-    <value>Afficher les détails lorsque l'exécution des scripts est terminée</value>
+    <value>_Afficher les détails lorsque l'exécution des scripts est terminée</value>
   </data>
   <data name="ShowDetailsDuring" xml:space="preserve">
-    <value>Afficher les détails pendant l'exécution des scripts</value>
+    <value>Afficher les _détails pendant l'exécution des scripts</value>
   </data>
 </root>

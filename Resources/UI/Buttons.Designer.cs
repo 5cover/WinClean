@@ -61,16 +61,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Abort.
-        /// </summary>
-        public static string Abort {
-            get {
-                return ResourceManager.GetString("Abort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Add scripts.
+        ///   Recherche une chaîne localisée semblable à Add scri_pts.
         /// </summary>
         public static string AddScripts {
             get {
@@ -88,7 +79,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Close.
+        ///   Recherche une chaîne localisée semblable à _Close.
         /// </summary>
         public static string Close {
             get {
@@ -97,7 +88,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Continue.
+        ///   Recherche une chaîne localisée semblable à _Continue.
         /// </summary>
         public static string Continue {
             get {
@@ -106,7 +97,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Delete.
+        ///   Recherche une chaîne localisée semblable à _Delete.
         /// </summary>
         public static string Delete {
             get {
@@ -115,7 +106,16 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à End task.
+        ///   Recherche une chaîne localisée semblable à _Delete the script.
+        /// </summary>
+        public static string DeleteScript {
+            get {
+                return ResourceManager.GetString("DeleteScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à En_d task.
         /// </summary>
         public static string EndTask {
             get {
@@ -124,7 +124,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Execute.
+        ///   Recherche une chaîne localisée semblable à _Execute.
         /// </summary>
         public static string Execute {
             get {
@@ -133,7 +133,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Execute scripts.
+        ///   Recherche une chaîne localisée semblable à Execute _scripts....
         /// </summary>
         public static string ExecuteScripts {
             get {
@@ -142,7 +142,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Exit.
+        ///   Recherche une chaîne localisée semblable à E_xit.
         /// </summary>
         public static string Exit {
             get {
@@ -151,7 +151,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Ignore.
+        ///   Recherche une chaîne localisée semblable à I_gnore.
         /// </summary>
         public static string Ignore {
             get {
@@ -160,7 +160,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à No.
+        ///   Recherche une chaîne localisée semblable à _No.
         /// </summary>
         public static string No {
             get {
@@ -169,7 +169,16 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Reset.
+        ///   Recherche une chaîne localisée semblable à OK.
+        /// </summary>
+        public static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à _Reset.
         /// </summary>
         public static string Reset {
             get {
@@ -178,7 +187,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Restart.
+        ///   Recherche une chaîne localisée semblable à _Restart.
         /// </summary>
         public static string Restart {
             get {
@@ -187,7 +196,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Retry.
+        ///   Recherche une chaîne localisée semblable à _Retry.
         /// </summary>
         public static string Retry {
             get {
@@ -196,7 +205,16 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Yes.
+        ///   Recherche une chaîne localisée semblable à _Stop.
+        /// </summary>
+        public static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à _Yes.
         /// </summary>
         public static string Yes {
             get {

@@ -88,6 +88,15 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Are you sure you want to overwrite this script? This action is irreversible..
+        /// </summary>
+        public static string ConfirmScriptOverwriteContent {
+            get {
+                return ResourceManager.GetString("ConfirmScriptOverwriteContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Cannot {0} {1} &quot;{2}&quot;. {3}.
         /// </summary>
         public static string FSErrorContent {
@@ -97,13 +106,38 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à In order to be able to revert the changes to the system, it is strongly recommended that you create a system restore point.
-        ///
-        ///Create a system restore point?.
+        ///   Recherche une chaîne localisée semblable à Script &quot;{0}&quot; has been running for {1} and is probably hung..
         /// </summary>
-        public static string SystemRestorePointContent {
+        public static string HungScriptDialogContent {
             get {
-                return ResourceManager.GetString("SystemRestorePointContent", resourceCulture);
+                return ResourceManager.GetString("HungScriptDialogContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à To select scripts, check their associated check box..
+        /// </summary>
+        public static string NoScriptsSelectedContent {
+            get {
+                return ResourceManager.GetString("NoScriptsSelectedContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Can&apos;t execute scripts because no scripts are selected..
+        /// </summary>
+        public static string NoScriptsSelectedMainInstruction {
+            get {
+                return ResourceManager.GetString("NoScriptsSelectedMainInstruction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à An unhandled exception occured..
+        /// </summary>
+        public static string UnhandledExceptionDialogContent {
+            get {
+                return ResourceManager.GetString("UnhandledExceptionDialogContent", resourceCulture);
             }
         }
     }

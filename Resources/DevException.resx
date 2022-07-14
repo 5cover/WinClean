@@ -117,10 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CollectionContainsNull" xml:space="preserve">
-    <value>Collection contains null.</value>
-    <comment>@Invariant</comment>
-  </data>
   <data name="CollectionEmpty" xml:space="preserve">
     <value>The collection is empty.</value>
     <comment>@Invariant</comment>
@@ -133,10 +129,11 @@
     <value>The script "{0}" is probably hung.</value>
     <comment>0 : string : the name of the hung script@Invariant</comment>
   </data>
-  <data name="InvalidTypeProp" xml:space="preserve">
-    <value>Not a valid {0} {1}.</value>
-    <comment>0 : string : the type name
-1 : string : invalid property name@Invariant</comment>
+  <data name="NotAValid" xml:space="preserve">
+    <value>"{0}" is not a valid {1} {2}.</value>
+    <comment>0 : string : the invalid value
+1 : string : the type name
+2 : string : invalid property name@Invariant</comment>
   </data>
   <data name="SystemProtectionDisabled" xml:space="preserve">
     <value>Cannot create system restore point because system protection is disabled.</value>
@@ -153,5 +150,21 @@
   <data name="WrongFormatItemCount" xml:space="preserve">
     <value>The composite format string doesn't contain exactly {0} format items.</value>
     <comment>0 : int : expected format item count@Invariant</comment>
+  </data>
+  <data name="NoStringFoundForThisCulture" xml:space="preserve">
+	  <value>No string was found for this culture or any of its parents.</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="EnumValueNoName" xml:space="preserve">
+	  <value>The specified enum value does not have a name.</value>
+	  <comment>@Invariant</comment>
+  </data>
+  <data name="NotAButtonOfInstance" xml:space="preserve">
+	  <value>Is not a button of this instance.</value>
+	  <comment>@Invariant</comment>
+  </data>
+  <data name="ValueCannotBeNegative" xml:space="preserve">
+	  <value>Cannnot be negative.</value>
+	  <comment>@Invariant</comment>
   </data>
 </root>

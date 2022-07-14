@@ -1,24 +1,30 @@
 ﻿<UserControl
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:winclean="clr-namespace:Scover.WinClean"
-    xmlns:businessLogic="clr-namespace:Scover.WinClean.BusinessLogic"
-    xmlns:scriptExecution="clr-namespace:Scover.WinClean.BusinessLogic.ScriptExecution"
-    xmlns:presentation="clr-namespace:Scover.WinClean.Presentation"
-    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
     x:Class="Scover.WinClean.Presentation.Controls.ScriptEditor"
-    mc:Ignorable="d" MinWidth="205" MinHeight="231.92" Content="{Binding Selected, RelativeSource={RelativeSource Self}}">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:businessLogic="clr-namespace:Scover.WinClean.BusinessLogic"
+    xmlns:converters="clr-namespace:Scover.WinClean.Presentation.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:scripts="clr-namespace:Scover.WinClean.BusinessLogic.Scripts"
+    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    MinWidth="205"
+    MinHeight="237.92"
+    Content="{Binding Selected, RelativeSource={RelativeSource Self}}"
+    mc:Ignorable="d">
     <UserControl.ContentTemplate>
-        <DataTemplate>
+        <DataTemplate DataType="scripts:Script">
             <DataTemplate.Resources>
-                <presentation:IsNotNullConverter x:Key="isNotNullConverter" />
+                <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
                 <Style TargetType="ComboBoxItem">
-                    <Setter Property="ToolTip" Value="{Binding Content.Description, RelativeSource={RelativeSource Self}}" />
+                    <Setter Property="ToolTip" Value="{Binding Content.(scripts:Script.Description), RelativeSource={RelativeSource Self}}" />
+                </Style>
+                <!--  Setting the style manually is needed because we need to use DynamicResource for applying it, otherwise the DisplayMemberPath setter will not work.  -->
+                <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
+                    <Setter Property="DisplayMemberPath" Value="Name" />
                 </Style>
             </DataTemplate.Resources>
-            <Grid IsEnabled="{Binding Converter={StaticResource isNotNullConverter}}">
+            <Grid IsEnabled="{Binding Converter={StaticResource IsNotNullConverter}}">
                 <Grid.Resources>
                     <Style TargetType="ComboBox">
                         <Setter Property="MinHeight" Value="20" />
@@ -41,66 +47,75 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="85*" />
-                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <TextBox Grid.ColumnSpan="2"
-                         Margin="0,0,0,5"
-                         MinHeight="20"
-                         MaxLines="1"
-                         Text="{Binding Name, Mode=TwoWay}" />
+                <TextBox
+                    Grid.ColumnSpan="2"
+                    MinHeight="20"
+                    Margin="0,0,0,6"
+                    MaxLines="1"
+                    Text="{Binding Name, Mode=TwoWay}" />
 
-                <TextBox Margin="0,0,0,5"
-                         Grid.Row="1"
-                         Grid.ColumnSpan="2"
-                         MinHeight="40"
-                         VerticalScrollBarVisibility="Auto"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True"
-                         Text="{Binding Description, Mode=TwoWay}" />
+                <TextBox
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    MinHeight="40"
+                    Margin="0,0,0,6"
+                    AcceptsReturn="True"
+                    Text="{Binding Description, Mode=TwoWay}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto" />
 
-                <ComboBox Margin="0,0,2.5,5"
-                          Grid.Row="2"
-                          DisplayMemberPath="Name"
-                          ItemsSource="{x:Static businessLogic:Category.Values}"
-                          SelectedItem="{Binding Category, Mode=TwoWay}"
-                          SelectionChanged="ComboBoxCategory_SelectionChanged">
-                </ComboBox>
+                <ComboBox
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Margin="0,0,3,6"
+                    ItemsSource="{x:Static businessLogic:AppInfo.Categories}"
+                    SelectedItem="{Binding Category, Mode=TwoWay}"
+                    SelectionChanged="ComboBoxCategorySelectionChanged"
+                    Style="{DynamicResource ComboBoxStyle}" />
 
-                <ComboBox Margin="2.5,0,0,5"
-                          Grid.Column="1" Grid.Row="2"
-                          DisplayMemberPath="Name"
-                          ItemsSource="{x:Static businessLogic:RecommendationLevel.Values}"
-                          SelectedItem="{Binding Recommended, Mode=TwoWay}" />
+                <ComboBox
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Margin="3,0,0,6"
+                    ItemsSource="{x:Static businessLogic:AppInfo.RecommendationLevels}"
+                    SelectedItem="{Binding Recommended, Mode=TwoWay}"
+                    Style="{DynamicResource ComboBoxStyle}" />
 
-                <ComboBox Margin="0,0,2.5,5"
-                          Grid.Row="3"
-                          ItemsSource="{x:Static scriptExecution:ScriptHost.HostsDisplayNames}"
-                          SelectedItem="{Binding Host.DisplayName, Mode=OneTime}"
-                          SelectionChanged="ComboBoxHost_SelectionChanged" />
+                <ComboBox
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Margin="0,0,3,6"
+                    ItemsSource="{x:Static businessLogic:AppInfo.Hosts}"
+                    SelectedItem="{Binding Host, Mode=TwoWay}"
+                    Style="{DynamicResource ComboBoxStyle}" />
 
-                <ComboBox Margin="2.5,0,0,5"
-                          Grid.Column="1" Grid.Row="3"
-                          DisplayMemberPath="Name"
-                          ItemsSource="{x:Static businessLogic:Impact.Values}"
-                          SelectedItem="{Binding Impact, Mode=TwoWay}" />
+                <ComboBox
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Margin="3,0,0,6"
+                    ItemsSource="{x:Static businessLogic:AppInfo.Impacts}"
+                    SelectedItem="{Binding Impact, Mode=TwoWay}"
+                    Style="{DynamicResource ComboBoxStyle}" />
 
-                <TextBox Margin="0,0,0,5"
-                         Grid.Row="4"
-                         Grid.ColumnSpan="2"
-                         MinHeight="80"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True"
-                         HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
-                         IsReadOnly="{Binding Path=(winclean:App.Settings).ForbidScriptCodeEdit}"
-                         Text="{Binding Code, Mode=TwoWay}" />
-
-                <Button Content="{x:Static ui:Buttons.Delete}" Margin="10,0,10,0" Click="ButtonDelete_Click" />
-                <Button Content="{x:Static ui:Buttons.Execute}" Grid.Column="1" Click="ButtonExecute_Click" />
+                <TextBox
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    MinHeight="80"
+                    Margin="0,0,0,6"
+                    AcceptsReturn="True"
+                    FontFamily="Consolas"
+                    HorizontalScrollBarVisibility="Auto"
+                    IsReadOnly="{Binding Path=(businessLogic:AppInfo.Settings).ForbidScriptCodeEdit}"
+                    Text="{Binding Code, Mode=TwoWay}"
+                    VerticalScrollBarVisibility="Auto" />
             </Grid>
         </DataTemplate>
     </UserControl.ContentTemplate>

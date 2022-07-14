@@ -61,7 +61,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Forbid script code edit.
+        ///   Recherche une chaîne localisée semblable à _Forbid script code edit.
         /// </summary>
         public static string ForbidScriptCodeEdit {
             get {
@@ -70,7 +70,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Log level.
+        ///   Recherche une chaîne localisée semblable à _Log level.
         /// </summary>
         public static string LogLevel {
             get {
@@ -79,7 +79,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Script timeout.
+        ///   Recherche une chaîne localisée semblable à Script _timeout.
         /// </summary>
         public static string ScriptTimeout {
             get {
@@ -88,7 +88,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Show details when script execution is completed.
+        ///   Recherche une chaîne localisée semblable à _Show details when script execution is completed.
         /// </summary>
         public static string ShowDetailsCompleted {
             get {
@@ -97,7 +97,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Show details during script execution.
+        ///   Recherche une chaîne localisée semblable à Show _details during script execution.
         /// </summary>
         public static string ShowDetailsDuring {
             get {

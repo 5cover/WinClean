@@ -7,7 +7,7 @@
 	<TargetFrameworkIdentifier>.NETCoreApp</TargetFrameworkIdentifier>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <StartupObject>Scover.WinClean.App</StartupObject>
+    <StartupObject>Scover.WinClean.Presentation.App</StartupObject>
     <ApplicationIcon>Resources\WinClean.ico</ApplicationIcon>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -29,28 +29,36 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <WarningLevel>5</WarningLevel>
+    <WarningLevel>9999</WarningLevel>
     <NoWarn>NU1701;1702</NoWarn>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <WarningLevel>5</WarningLevel>
+    <WarningLevel>9999</WarningLevel>
     <NoWarn>NU1701;1702</NoWarn>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <WarningLevel>5</WarningLevel>
+    <WarningLevel>9999</WarningLevel>
     <NoWarn>NU1701;1702</NoWarn>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <WarningLevel>5</WarningLevel>
+    <WarningLevel>9999</WarningLevel>
     <NoWarn>NU1701;1702</NoWarn>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Page Remove="Presentation\App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Include="Presentation\App.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\WinClean.ico" />
@@ -69,11 +77,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Category.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Category.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\DevException.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -95,11 +98,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Happenings.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Impact.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Impact.resx</DependentUpon>
-    </Compile>
     <Compile Update="Resources\LogLevel.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -110,10 +108,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Logs.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\RecommendationLevel.Designer.cs">
+    <Compile Update="Resources\Host.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>RecommendationLevel.resx</DependentUpon>
+      <DependentUpon>Host.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\UI\AboutWindow.Designer.cs">
       <DependentUpon>AboutWindow.resx</DependentUpon>
@@ -130,20 +128,25 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Update="Resources\UI\InvalidScript.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>InvalidScript.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\UI\ProgressDialog.Designer.cs">
       <DependentUpon>ProgressDialog.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Resources\UI\ScriptExecutionWizard.Designer.cs">
+    <Compile Update="Resources\UI\SystemProtectionDisabled.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>ScriptExecutionWizard.resx</DependentUpon>
+      <DependentUpon>SystemProtectionDisabled.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\UI\SystemProtectionDisabledDialog.Designer.cs">
+    <Compile Update="Resources\UI\SystemRestorePoint.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>SystemProtectionDisabledDialog.resx</DependentUpon>
+      <DependentUpon>SystemRestorePoint.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\UI\WarningDialog.Designer.cs">
       <DependentUpon>WarningDialog.resx</DependentUpon>
@@ -160,11 +163,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MainWindow.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\ScriptsDirectory.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ScriptsDirectory.resx</DependentUpon>
-    </Compile>
     <Compile Update="Resources\UI\Dialogs.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -173,10 +171,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Category.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Category.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\DevException.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DevException.Designer.cs</LastGenOutput>
@@ -213,10 +207,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Happenings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Impact.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Impact.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\LogLevel.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LogLevel.Designer.cs</LastGenOutput>
@@ -225,9 +215,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Logs.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\RecommendationLevel.resx">
+    <EmbeddedResource Update="Resources\Host.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>RecommendationLevel.Designer.cs</LastGenOutput>
+      <LastGenOutput>Host.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\AboutWindow.resx">
       <LastGenOutput>AboutWindow.Designer.cs</LastGenOutput>
@@ -241,17 +231,21 @@
       <LastGenOutput>Buttons.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\UI\InvalidScript.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>InvalidScript.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\ProgressDialog.resx">
       <LastGenOutput>ProgressDialog.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\UI\ScriptExecutionWizard.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ScriptExecutionWizard.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\UI\SystemProtectionDisabledDialog.resx">
+    <EmbeddedResource Update="Resources\UI\SystemProtectionDisabled.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SystemProtectionDisabledDialog.Designer.cs</LastGenOutput>
+      <LastGenOutput>SystemProtectionDisabled.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\UI\SystemRestorePoint.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SystemRestorePoint.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\WarningDialog.resx">
       <LastGenOutput>WarningDialog.Designer.cs</LastGenOutput>
@@ -264,13 +258,6 @@
     <EmbeddedResource Update="Resources\UI\MainWindow.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MainWindow.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ScriptsDirectory.fr.resx">
-      <Generator></Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ScriptsDirectory.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ScriptsDirectory.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\Dialogs.fr.resx">
       <Generator></Generator>

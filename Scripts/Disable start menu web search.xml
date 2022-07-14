@@ -10,6 +10,6 @@
   <Impact>Ergonomics</Impact>
   <Code>Windows Registry Editor Version 5.00
 
-[HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\Explorer]
+[HKEYCURRENTUSER\SOFTWARE\Policies\Microsoft\Windows\Explorer]
 "DisableSearchBoxSuggestions"=dword:00000001</Code>
 </Script>

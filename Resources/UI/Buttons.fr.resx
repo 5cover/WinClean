@@ -117,52 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Abort" xml:space="preserve">
-    <value>Abandonner</value>
+  <data name="Continue" xml:space="preserve">
+    <value>_Continuer</value>
+  </data>
+  <data name="EndTask" xml:space="preserve">
+    <value>Fi_n de tâche</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>_Quitter</value>
+  </data>
+  <data name="Ignore" xml:space="preserve">
+    <value>I_gnorer</value>
+  </data>
+  <data name="Restart" xml:space="preserve">
+    <value>_Redémarrer</value>
+  </data>
+  <data name="ExecuteScripts" xml:space="preserve">
+    <value>E_xécuter les scripts...</value>
+  </data>
+  <data name="AddScripts" xml:space="preserve">
+    <value>A_jouter des scripts</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Suppri_mer</value>
+  </data>
+  <data name="Execute" xml:space="preserve">
+    <value>_Exécuter</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>_Réinitialiser</value>
+  </data>
+  <data name="DeleteScript" xml:space="preserve">
+    <value>_Supprimer le script</value>
+  </data>
+  <data name="Retry" xml:space="preserve">
+    <value>_Réessayer</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>_Non</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>_Oui</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Annuler</value>
   </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
   <data name="Close" xml:space="preserve">
-    <value>Fermer</value>
+    <value>_Fermer</value>
   </data>
-  <data name="Continue" xml:space="preserve">
-    <value>Continuer</value>
-  </data>
-  <data name="EndTask" xml:space="preserve">
-    <value>Terminer tâche</value>
-  </data>
-  <data name="Exit" xml:space="preserve">
-    <value>Quitter</value>
-  </data>
-  <data name="Ignore" xml:space="preserve">
-    <value>Ignorer</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>Non</value>
-  </data>
-  <data name="Restart" xml:space="preserve">
-    <value>Redémarrer</value>
-  </data>
-  <data name="Retry" xml:space="preserve">
-    <value>Réessayer</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Oui</value>
-  </data>
-  <data name="ExecuteScripts" xml:space="preserve">
-    <value>Exécuter les scripts</value>
-  </data>
-  <data name="AddScripts" xml:space="preserve">
-    <value>Ajouter des scripts</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Supprimer</value>
-  </data>
-  <data name="Execute" xml:space="preserve">
-    <value>Exécuter</value>
-  </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Réinitialiser</value>
+  <data name="Stop" xml:space="preserve">
+    <value>_Arrêter</value>
   </data>
 </root>

@@ -104,7 +104,7 @@ Time elapsed: {1:g}</value>
 1 : TimeSpan : elapsed time</comment>
   </data>
   <data name="Content" xml:space="preserve">
-    <value>Scripts are executing. Console windows may appear. This operation may take some time.</value>
+    <value>Scripts are executing. This operation may take some time.</value>
   </data>
   <data name="VerificationText" xml:space="preserve">
     <value>When the operation is complete, automatically restart</value>

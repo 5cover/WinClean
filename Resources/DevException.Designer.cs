@@ -61,20 +61,20 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Collection contains null..
-        /// </summary>
-        public static string CollectionContainsNull {
-            get {
-                return ResourceManager.GetString("CollectionContainsNull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à The collection is empty..
         /// </summary>
         public static string CollectionEmpty {
             get {
                 return ResourceManager.GetString("CollectionEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à The specified enum value does not have a name..
+        /// </summary>
+        public static string EnumValueNoName {
+            get {
+                return ResourceManager.GetString("EnumValueNoName", resourceCulture);
             }
         }
         
@@ -97,11 +97,29 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Not a valid {0} {1}..
+        ///   Recherche une chaîne localisée semblable à No string was found for this culture or any of its parents..
         /// </summary>
-        public static string InvalidTypeProp {
+        public static string NoStringFoundForThisCulture {
             get {
-                return ResourceManager.GetString("InvalidTypeProp", resourceCulture);
+                return ResourceManager.GetString("NoStringFoundForThisCulture", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Is not a button of this instance..
+        /// </summary>
+        public static string NotAButtonOfInstance {
+            get {
+                return ResourceManager.GetString("NotAButtonOfInstance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à &quot;{0}&quot; is not a valid {1} {2}..
+        /// </summary>
+        public static string NotAValid {
+            get {
+                return ResourceManager.GetString("NotAValid", resourceCulture);
             }
         }
         
@@ -129,6 +147,15 @@ namespace Scover.WinClean.Resources {
         public static string TimeoutSpecified {
             get {
                 return ResourceManager.GetString("TimeoutSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Cannnot be negative..
+        /// </summary>
+        public static string ValueCannotBeNegative {
+            get {
+                return ResourceManager.GetString("ValueCannotBeNegative", resourceCulture);
             }
         }
         

@@ -101,18 +101,18 @@
     <value>Settings</value>
   </data>
   <data name="ForbidScriptCodeEdit" xml:space="preserve">
-    <value>Forbid script code edit</value>
+    <value>_Forbid script code edit</value>
   </data>
   <data name="LogLevel" xml:space="preserve">
-    <value>Log level</value>
+    <value>_Log level</value>
   </data>
   <data name="ScriptTimeout" xml:space="preserve">
-    <value>Script timeout</value>
+    <value>Script _timeout</value>
   </data>
   <data name="ShowDetailsCompleted" xml:space="preserve">
-    <value>Show details when script execution is completed</value>
+    <value>_Show details when script execution is completed</value>
   </data>
   <data name="ShowDetailsDuring" xml:space="preserve">
-    <value>Show details during script execution</value>
+    <value>Show _details during script execution</value>
   </data>
 </root>

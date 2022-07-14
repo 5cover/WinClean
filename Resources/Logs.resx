@@ -173,8 +173,12 @@
     <value>Starting the execution of {0} script(s)...</value>
     <comment>0 : int : number of scripts to execute@Invariant</comment>
   </data>
-  <data name="BadScriptData" xml:space="preserve">
-    <value>Bad data for script "{0}".</value>
+  <data name="InvalidScriptData" xml:space="preserve">
+    <value>Script file "{0}" has invalid or missing data.</value>
     <comment>0 : string : script filename@Invariant</comment>
+  </data>
+  <data name="UnhandledException" xml:space="preserve">
+    <value>An unhandled exception occured: {0}</value>
+    <comment>0 : Exception : the unhandled exception@Invariant</comment>
   </data>
 </root>

@@ -97,52 +97,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Close" xml:space="preserve">
-    <value>Close</value>
-  </data>
   <data name="Restart" xml:space="preserve">
-    <value>Restart</value>
+    <value>_Restart</value>
   </data>
   <data name="Exit" xml:space="preserve">
-    <value>Exit</value>
+    <value>E_xit</value>
   </data>
   <data name="EndTask" xml:space="preserve">
-    <value>End task</value>
+    <value>En_d task</value>
+  </data>
+  <data name="Ignore" xml:space="preserve">
+    <value>I_gnore</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>_Continue</value>
+  </data>
+  <data name="ExecuteScripts" xml:space="preserve">
+    <value>Execute _scripts...</value>
+  </data>
+  <data name="AddScripts" xml:space="preserve">
+    <value>Add scri_pts</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>_Delete</value>
+  </data>
+  <data name="Execute" xml:space="preserve">
+    <value>_Execute</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>_Reset</value>
+  </data>
+  <data name="DeleteScript" xml:space="preserve">
+    <value>_Delete the script</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Retry" xml:space="preserve">
+    <value>_Retry</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>_Yes</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>_No</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="Ignore" xml:space="preserve">
-    <value>Ignore</value>
+  <data name="Close" xml:space="preserve">
+    <value>_Close</value>
   </data>
-  <data name="Retry" xml:space="preserve">
-    <value>Retry</value>
-  </data>
-  <data name="Abort" xml:space="preserve">
-    <value>Abort</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="Continue" xml:space="preserve">
-    <value>Continue</value>
-  </data>
-  <data name="ExecuteScripts" xml:space="preserve">
-    <value>Execute scripts</value>
-  </data>
-  <data name="AddScripts" xml:space="preserve">
-    <value>Add scripts</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="Execute" xml:space="preserve">
-    <value>Execute</value>
-  </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Reset</value>
+  <data name="Stop" xml:space="preserve">
+    <value>_Stop</value>
   </data>
 </root>

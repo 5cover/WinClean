@@ -122,5 +122,6 @@
   </data>
   <data name="Version" xml:space="preserve">
     <value>Version {0}</value>
+    <comment>0 : any : version info</comment>
   </data>
 </root>

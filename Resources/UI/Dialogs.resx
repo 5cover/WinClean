@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConfirmAbortOperationContent" xml:space="preserve">
-    <value>Aborting the operation may make the system unstable. Are you sure you want to continue?</value>
-  </data>
   <data name="ConfirmProgramExitContent" xml:space="preserve">
     <value>Exit {0}?</value>
     <comment>0 : name of the program about to be exited</comment>
@@ -134,9 +131,24 @@
 2 : path of the affected filesystem element as a string
 3 : exception message string</comment>
   </data>
-  <data name="SystemRestorePointContent" xml:space="preserve">
-    <value>In order to be able to revert the changes to the system, it is strongly recommended that you create a system restore point.
-
-Create a system restore point?</value>
+  <data name="HungScriptDialogContent" xml:space="preserve">
+    <value>Script "{0}" has been running for {1} and is probably hung.</value>
+    <comment>0 : name of the affected script
+1 : script timeout</comment>
+  </data>
+  <data name="ConfirmScriptOverwriteContent" xml:space="preserve">
+    <value>Are you sure you want to overwrite this script? This action is irreversible.</value>
+  </data>
+  <data name="NoScriptsSelectedMainInstruction" xml:space="preserve">
+    <value>Can't execute scripts because no scripts are selected.</value>
+  </data>
+  <data name="NoScriptsSelectedContent" xml:space="preserve">
+    <value>To select scripts, check their associated check box.</value>
+  </data>
+  <data name="UnhandledExceptionDialogContent" xml:space="preserve">
+	  <value>An unhandled exception occured.</value>
+  </data>
+  <data name="ConfirmAbortOperationContent" xml:space="preserve">
+    <value>Aborting the operation may make the system unstable. Are you sure you want to continue?</value>
   </data>
 </root>

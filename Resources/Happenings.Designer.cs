@@ -61,6 +61,15 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Exception.
+        /// </summary>
+        public static string Exception {
+            get {
+                return ResourceManager.GetString("Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Exit.
         /// </summary>
         public static string Exit {

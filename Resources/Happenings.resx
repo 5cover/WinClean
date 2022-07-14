@@ -133,4 +133,8 @@
     <value>Start</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="Exception" xml:space="preserve">
+    <value>Exception</value>
+    <comment>@Invariant</comment>
+  </data>
 </root>

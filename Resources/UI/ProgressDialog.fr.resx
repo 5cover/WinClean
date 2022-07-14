@@ -125,6 +125,6 @@
 Temps écoulé : {1:g}</value>
   </data>
   <data name="Content" xml:space="preserve">
-    <value>Scripts en cours d'exécution. Il est possible que des fenêtres de console s'affichent. Cette opération peut prendre un certain temps.</value>
+    <value>Scripts en cours d'exécution. Cette opération peut prendre un certain temps.</value>
   </data>
 </root>

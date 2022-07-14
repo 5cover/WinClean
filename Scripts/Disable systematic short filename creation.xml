@@ -10,6 +10,6 @@
   <Impact>Storage speed</Impact>
   <Code>Windows Registry Editor Version 5.00
 
-[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem]
+[HKEYLOCALMACHINE\SYSTEM\CurrentControlSet\Control\FileSystem]
 "NtfsDisable8dot3NameCreation"=dword:00000003</Code>
 </Script>

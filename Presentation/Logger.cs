@@ -1,11 +1,12 @@
-﻿using CsvHelper;
-using CsvHelper.Configuration;
-
-using Scover.WinClean.DataAccess;
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Text;
+
+using CsvHelper;
+using CsvHelper.Configuration;
+
+using Scover.WinClean.BusinessLogic;
 
 namespace Scover.WinClean.Presentation;
 
@@ -21,7 +22,7 @@ public class Logger
     private Logger()
     {
         _currentLogFile = new(AppDirectory.LogDir.Join($"{Process.GetCurrentProcess().StartTime.ToString(DateTimeFilenameFormat, DateTimeFormatInfo.InvariantInfo)}.csv"));
-        _csvWriter = new(new StreamWriter(_currentLogFile.FullName, true, System.Text.Encoding.Unicode), new CsvConfiguration(CultureInfo.InvariantCulture));
+        _csvWriter = new(new StreamWriter(_currentLogFile.FullName, true, Encoding.Unicode), new CsvConfiguration(CultureInfo.InvariantCulture));
         _csvWriter.WriteHeader<LogEntry>();
     }
 
@@ -34,7 +35,7 @@ public class Logger
     public async void ClearLogsFolderAsync()
         => await Task.Run(() =>
         {
-            IEnumerable<FileInfo> deletableLogFiles = AppDirectory.LogDir.Info.EnumerateFiles("*.csv").Where(csvFile => CanLogFileBeDeleted(csvFile));
+            IEnumerable<FileInfo> deletableLogFiles = AppDirectory.LogDir.Info.EnumerateFiles("*.csv").Where(CanLogFileBeDeleted);
 
             foreach (FileInfo logFile in deletableLogFiles)
             {
@@ -54,21 +55,19 @@ public class Logger
                            [CallerFilePath] string callFile = "")
     {
         lvl ??= LogLevel.Verbose;
-        if (App.Settings.LogLevel <= lvl.Value)
+        if (AppInfo.Settings.LogLevel > lvl.Value) return;
+        _csvWriter.NextRecord();
+        _csvWriter.WriteRecord(new LogEntry
         {
-            _csvWriter.NextRecord();
-            _csvWriter.WriteRecord(new LogEntry()
-            {
-                Date = DateTime.Now,
-                Level = lvl.Name.ToString(),
-                Happening = Happening ?? string.Empty,
-                Message = message,
-                Caller = caller,
-                CallFile = Path.GetFileName(callFile), // Only keep the filename of the source file to avoid showing personal information about the path of the project.
-                CallLine = callLine
-            });
-            _csvWriter.Flush(); // This is to force the writer to be done when leaving the method.
-        }
+            Date = DateTime.Now,
+            Level = lvl.Name,
+            Happening = Happening ?? string.Empty,
+            Message = message,
+            Caller = caller,
+            CallFile = Path.GetFileName(callFile), // Only keep the filename of the source file to avoid showing personal information about the path of the project.
+            CallLine = callLine
+        });
+        _csvWriter.Flush(); // This is to force the writer to be done when leaving the method.
     }
 
     private bool CanLogFileBeDeleted(FileInfo logFile)

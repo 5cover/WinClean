@@ -16,6 +16,6 @@
     <Name>Customization</Name>
     <Name xml:lang="fr">Personnalisation</Name>
     <Description>Customization scripts that do not bring any performance improvements.</Description>
-	<Description xml:lang="fr">Scripts de personnalisation n'apportant aucune amélioration des performances.</Description>
+    <Description xml:lang="fr">Scripts de personnalisation n'apportant aucune amélioration des performances.</Description>
   </Category>
 </Categories>

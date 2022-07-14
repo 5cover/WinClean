@@ -10,6 +10,6 @@
   <Impact>Privacy</Impact>
   <Code>Windows Registry Editor Version 5.00
 
-[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\DoSvc]
+[HKEYLOCALMACHINE\SYSTEM\CurrentControlSet\Services\DoSvc]
 "Start"=dword:00000004</Code>
 </Script>

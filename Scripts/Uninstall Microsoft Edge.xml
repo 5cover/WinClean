@@ -14,7 +14,7 @@
 taskkill /im "msedge.exe" /f  >nul 2>&amp;1
 
 ::Do not install Edge from Windows Updates (Does not appear to work anymore)
-reg add HKLM\SOFTWARE\Microsoft\EdgeUpdate /t REG_DWORD /v DoNotUpdateToEdgeWithChromium /d 1 /f >nul 2>&amp;1
+reg add HKLM\SOFTWARE\Microsoft\EdgeUpdate /t REGDWORD /v DoNotUpdateToEdgeWithChromium /d 1 /f >nul 2>&amp;1
 
 :: Uninstall - 32Bit
 if exist "C:\Program Files (x86)\Microsoft\Edge\Application\" (

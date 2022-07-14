@@ -118,33 +118,33 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MenuRecommended" xml:space="preserve">
-    <value>Recommandés</value>
+    <value>Recomman_dés</value>
   </data>
   <data name="MenuAll" xml:space="preserve">
-    <value>Tous</value>
+    <value>_Tous</value>
   </data>
   <data name="MenuClearLogs" xml:space="preserve">
-    <value>Effacer les logs</value>
+    <value>Effacer les lo_gs</value>
   </data>
   <data name="MenuFile" xml:space="preserve">
-    <value>Fichier</value>
+    <value>_Fichier</value>
   </data>
   <data name="MenuHelp" xml:space="preserve">
-    <value>Aide</value>
+    <value>_Aide</value>
   </data>
   <data name="MenuNone" xml:space="preserve">
-    <value>Aucun</value>
+    <value>Au_cun</value>
   </data>
   <data name="MenuOnlineWiki" xml:space="preserve">
-    <value>Wiki en ligne</value>
+    <value>_Wiki en ligne</value>
   </data>
   <data name="MenuSelectScripts" xml:space="preserve">
-    <value>Sélectionner scripts</value>
+    <value>_Sélectionner scripts</value>
   </data>
-  <data name="NoScriptsSelectedMainInstruction" xml:space="preserve">
-    <value>Impossible d'exécuter les scripts car aucun script n'est sélectionné.</value>
+  <data name="MenuSettings" xml:space="preserve">
+    <value>_Paramètres</value>
   </data>
-  <data name="NoScriptsSelectedContent" xml:space="preserve">
-    <value>Pour sélectionner des scripts, cochez leur case à cocher associée.</value>
+  <data name="MenuAbout" xml:space="preserve">
+    <value>À pr_opos de {0}</value>
   </data>
 </root>
