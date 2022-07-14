@@ -1,7 +1,7 @@
-﻿using System.Windows.Media;
-using System.Xml;
+﻿using Scover.WinClean.BusinessLogic.Scripts;
 
-using Scover.WinClean.BusinessLogic.Scripts;
+using System.Windows.Media;
+using System.Xml;
 
 namespace Scover.WinClean.BusinessLogic.Xml;
 

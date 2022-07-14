@@ -5,9 +5,6 @@
     <Setting Name="WikiUrl" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">https://github.com/5cover/WinClean/wiki</Value>
     </Setting>
-    <Setting Name="LogLevel" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
     <Setting Name="ScriptTimeout" Type="System.TimeSpan" Scope="User">
       <Value Profile="(Default)">05:00:00</Value>
     </Setting>

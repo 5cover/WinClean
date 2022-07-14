@@ -152,19 +152,27 @@
     <comment>0 : int : expected format item count@Invariant</comment>
   </data>
   <data name="NoStringFoundForThisCulture" xml:space="preserve">
-	  <value>No string was found for this culture or any of its parents.</value>
+    <value>No string was found for this culture or any of its parents.</value>
     <comment>@Invariant</comment>
   </data>
   <data name="EnumValueNoName" xml:space="preserve">
-	  <value>The specified enum value does not have a name.</value>
-	  <comment>@Invariant</comment>
+    <value>The specified enum value does not have a name.</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="NotAButtonOfInstance" xml:space="preserve">
-	  <value>Is not a button of this instance.</value>
-	  <comment>@Invariant</comment>
+    <value>Is not a button of this instance.</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="ValueCannotBeNegative" xml:space="preserve">
-	  <value>Cannnot be negative.</value>
-	  <comment>@Invariant</comment>
+    <value>Cannnot be negative.</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="FileAlreadyExists" xml:space="preserve">
+    <value>The file "{0}" already exists.</value>
+    <comment>0 : string : file path@Invariant</comment>
+  </data>
+  <data name="CallbackNotSet" xml:space="preserve">
+    <value>Callback {0} not set.</value>
+    <comment>0 : string : callback name</comment>
   </data>
 </root>

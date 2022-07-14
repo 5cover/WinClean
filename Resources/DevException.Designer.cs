@@ -61,6 +61,15 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Callback {0} not set..
+        /// </summary>
+        public static string CallbackNotSet {
+            get {
+                return ResourceManager.GetString("CallbackNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à The collection is empty..
         /// </summary>
         public static string CollectionEmpty {
@@ -75,6 +84,15 @@ namespace Scover.WinClean.Resources {
         public static string EnumValueNoName {
             get {
                 return ResourceManager.GetString("EnumValueNoName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à The file &quot;{0}&quot; already exists..
+        /// </summary>
+        public static string FileAlreadyExists {
+            get {
+                return ResourceManager.GetString("FileAlreadyExists", resourceCulture);
             }
         }
         

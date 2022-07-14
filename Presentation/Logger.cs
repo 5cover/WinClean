@@ -1,12 +1,12 @@
-﻿using System.Diagnostics;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Text;
-
-using CsvHelper;
+﻿using CsvHelper;
 using CsvHelper.Configuration;
 
 using Scover.WinClean.BusinessLogic;
+
+using System.Diagnostics;
+using System.Globalization;
+using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace Scover.WinClean.Presentation;
 
@@ -55,7 +55,6 @@ public class Logger
                            [CallerFilePath] string callFile = "")
     {
         lvl ??= LogLevel.Verbose;
-        if (AppInfo.Settings.LogLevel > lvl.Value) return;
         _csvWriter.NextRecord();
         _csvWriter.WriteRecord(new LogEntry
         {

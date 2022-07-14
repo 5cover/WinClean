@@ -1,7 +1,7 @@
-﻿using System.Globalization;
-
-using Scover.WinClean.Resources;
+﻿using Scover.WinClean.Resources;
 using Scover.WinClean.Resources.UI;
+
+using System.Globalization;
 
 namespace Scover.WinClean.Presentation.Dialogs;
 

@@ -1,11 +1,11 @@
-﻿using System.Globalization;
-using System.Reflection;
-using System.Resources;
-
-using Scover.WinClean.BusinessLogic.Scripts;
+﻿using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Properties;
+
+using System.Globalization;
+using System.Reflection;
+using System.Resources;
 
 namespace Scover.WinClean.BusinessLogic;
 
@@ -27,11 +27,11 @@ public static class AppInfo
     public static IReadOnlyCollection<Impact> Impacts { get; } = MakeFactory("Impacts.xml").MakeImpacts().ToList();
     public static string Name => assembly.GetCustomAttribute<AssemblyProductAttribute>()?.Product ?? string.Empty;
     public static CultureInfo NeutralResourcesCulture => new(assembly.GetCustomAttribute<NeutralResourcesLanguageAttribute>()?.CultureName ?? string.Empty);
-    public static FSOperationCallback ReadAppFileRetryOrFail { get; set; } = (_, _, _) => throw new NotSupportedException($"{nameof(ReadAppFileRetryOrFail)} callback not set");
+    public static FSOperationCallback ReadAppFileRetryOrFail { get; set; } = (_, _, _) => throw new NotSupportedException(Resources.DevException.CallbackNotSet.FormatWith(nameof(ReadAppFileRetryOrFail)));
     public static IReadOnlyCollection<RecommendationLevel> RecommendationLevels { get; } = MakeFactory("RecommendationLevels.xml").MakeRecommendationLevels().ToList();
     public static string? RepositoryUrl => assembly.GetCustomAttributes<AssemblyMetadataAttribute>().SingleOrDefault(metadata => metadata.Key == "RepoUrl")?.Value;
     public static Settings Settings => Settings.Default;
-    public static string Version => assembly.GetCustomAttribute<AssemblyVersionAttribute>()?.Version ?? string.Empty;
+    public static string Version => assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? string.Empty;
 
     #endregion Assembly attributes
 

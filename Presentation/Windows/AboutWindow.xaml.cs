@@ -1,8 +1,8 @@
-﻿using System.Windows;
-using System.Windows.Navigation;
-
-using Scover.WinClean.BusinessLogic;
+﻿using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.DataAccess;
+
+using System.Windows;
+using System.Windows.Navigation;
 
 namespace Scover.WinClean.Presentation.Windows;
 

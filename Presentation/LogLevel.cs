@@ -1,6 +1,6 @@
-﻿using System.Globalization;
+﻿using Scover.WinClean.BusinessLogic;
 
-using Scover.WinClean.BusinessLogic;
+using System.Globalization;
 
 namespace Scover.WinClean.Presentation;
 
@@ -41,8 +41,8 @@ public class LogLevel
     /// <summary>Warning-level entries minimum.</summary>
     public static LogLevel Warning { get; } = new(nameof(Warning), Resources.LogLevel.Warning, 2);
 
-    public string Name => _name.Get(CultureInfo.CurrentUICulture);
     public string InvariantName => _name.Get(CultureInfo.InvariantCulture);
+    public string Name => _name.Get(CultureInfo.CurrentUICulture);
     public int Value { get; }
 
     public override string ToString() => _name.Get(CultureInfo.InvariantCulture);

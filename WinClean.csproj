@@ -53,6 +53,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\WinClean.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Page Remove="Presentation\App.xaml" />
   </ItemGroup>
 
@@ -61,6 +65,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\WinClean.png" />
     <Resource Include="Resources\WinClean.ico" />
   </ItemGroup>
 	

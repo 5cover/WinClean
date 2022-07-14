@@ -28,7 +28,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -49,27 +48,11 @@
         <Label
             Grid.Row="1"
             Grid.Column="0"
-            Content="{x:Static ui:SettingsWindow.LogLevel}"
-            Target="{Binding ElementName=LogLevelSetting}" />
-        <ComboBox
-            x:Name="LogLevelSetting"
-            Grid.Row="1"
-            Grid.Column="1"
-            Margin="0,0,0,12"
-            DataContext="{StaticResource Settings}"
-            DisplayMemberPath="Name"
-            ItemsSource="{x:Static presentation:LogLevel.Values}"
-            SelectedValue="{Binding Default.LogLevel, Mode=TwoWay}"
-            SelectedValuePath="Value" />
-
-        <Label
-            Grid.Row="2"
-            Grid.Column="0"
             Content="{x:Static ui:SettingsWindow.ScriptTimeout}"
             Target="{Binding ElementName=ScriptTimeoutSetting}" />
         <xctk:TimeSpanUpDown
             x:Name="ScriptTimeoutSetting"
-            Grid.Row="2"
+            Grid.Row="1"
             Grid.Column="1"
             Margin="0,0,0,12"
             DataContext="{StaticResource Settings}"
@@ -79,13 +62,13 @@
             Value="{Binding Default.ScriptTimeout, Mode=TwoWay}" />
 
         <Label
-            Grid.Row="3"
+            Grid.Row="2"
             Grid.Column="0"
             Content="{x:Static ui:SettingsWindow.ShowDetailsCompleted}"
             Target="{Binding ElementName=DetailsAfterExecutionSetting}" />
         <CheckBox
             x:Name="DetailsAfterExecutionSetting"
-            Grid.Row="3"
+            Grid.Row="2"
             Grid.Column="1"
             Margin="0,0,0,12"
             HorizontalAlignment="Center"
@@ -93,13 +76,13 @@
             IsChecked="{Binding Default.DetailsAfterExecution, Mode=TwoWay}" />
 
         <Label
-            Grid.Row="4"
+            Grid.Row="3"
             Grid.Column="0"
             Content="{x:Static ui:SettingsWindow.ShowDetailsDuring}"
             Target="{Binding ElementName=DetailsDuringExecutionSetting}" />
         <CheckBox
             x:Name="DetailsDuringExecutionSetting"
-            Grid.Row="4"
+            Grid.Row="3"
             Grid.Column="1"
             Margin="0,0,0,12"
             HorizontalAlignment="Center"
@@ -107,7 +90,7 @@
             IsChecked="{Binding Default.DetailsDuringExecution, Mode=TwoWay}" />
 
         <StackPanel
-            Grid.Row="5"
+            Grid.Row="4"
             Grid.Column="1"
             Orientation="Horizontal">
             <Button

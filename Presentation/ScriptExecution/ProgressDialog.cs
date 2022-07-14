@@ -63,9 +63,9 @@ public class ProgressDialog : Dialog
     /// <summary>Closes this dialog.</summary>
     public void Close()
     {
-        AreConfirmationsEnabled = false;
+        if (Handle == IntPtr.Zero) return;
+        IsClosed = true;
         GetButton(Button.Stop).Click();
-        AreConfirmationsEnabled = true;
     }
 
     private void UpdateExpandedInfo()

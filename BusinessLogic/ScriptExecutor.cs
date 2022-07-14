@@ -27,9 +27,9 @@ public class ScriptExecutor
         {
             for (int scriptIndex = 0; scriptIndex < scripts.Count && !_ct.IsCancellationRequested; ++scriptIndex)
             {
-                scripts[scriptIndex].Execute(keepRunningOrKill, _ct);
-                // Report the progress AFTER executing the script
+                // Report the progress before executing the script
                 ((IProgress<ScriptExecutionProgressChangedEventArgs>)_progress).Report(new(scriptIndex));
+                scripts[scriptIndex].Execute(keepRunningOrKill, _ct);
             }
         }, _ct).ConfigureAwait(false);
 }

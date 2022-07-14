@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using Scover.WinClean.BusinessLogic.Xml;
+using Scover.WinClean.DataAccess;
 
-using Scover.WinClean.BusinessLogic.Xml;
+using System.Collections;
 
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
@@ -11,7 +12,10 @@ public class ScriptCollection : IReadOnlyCollection<Script>
     public int Count => EnumerateScriptFiles().Count();
 
     /// <summary>Loads all the scripts present in the scripts directory.</summary>
-    /// <param name="reloadOnInvalidScriptData"><inheritdoc cref="InvalidScriptDataCallback" path="/summary"/> Returns <see langword="true"/> if the script should be reloaded, <see langword="false"/> if it should be ignored.</param>
+    /// <param name="reloadOnInvalidScriptData">
+    /// <inheritdoc cref="InvalidScriptDataCallback" path="/summary"/> Returns <see langword="true"/> if the script should be
+    /// reloaded, <see langword="false"/> if it should be ignored.
+    /// </param>
     /// <remarks>Will not load scripts located in subdirectories.</remarks>
     public static ScriptCollection LoadScripts(InvalidScriptDataCallback reloadOnInvalidScriptData)
     {
@@ -83,7 +87,7 @@ public class ScriptCollection : IReadOnlyCollection<Script>
         }
         catch (IOException e) when (e.HResult == -2147024816)// 0x80070050 : The file already exists
         {
-            throw new InvalidOperationException($"The file \"{dest}\" already exists.", e);
+            throw new InvalidOperationException(Resources.DevException.FileAlreadyExists.FormatWith(dest), e);
         }
     }
 

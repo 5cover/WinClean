@@ -181,4 +181,8 @@
     <value>An unhandled exception occured: {0}</value>
     <comment>0 : Exception : the unhandled exception@Invariant</comment>
   </data>
+  <data name="SystemRestoreEnabled" xml:space="preserve">
+    <value>In order to create a restore point, system restore was enabled for all eligible drives.</value>
+    <comment>@Invariant</comment>
+  </data>
 </root>

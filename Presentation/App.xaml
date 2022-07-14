@@ -7,9 +7,19 @@
     Startup="ApplicationStartup">
     <Application.Resources>
         <Style TargetType="Button">
-            <Setter Property="MinHeight" Value="23" />
-            <Setter Property="MinWidth" Value="75" />
-            <Setter Property="Padding" Value="6,3,6,3" />
+            <Setter Property="MinHeight" Value="24" />
+            <Setter Property="MinWidth" Value="85.7" />
+            <Setter Property="Padding" Value="15,3,15,3" />
+            <Setter Property="Background">
+                <Setter.Value>
+                    <SolidColorBrush Color="#E1E1E1" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush">
+                <Setter.Value>
+                    <SolidColorBrush Color="#ADADAD" />
+                </Setter.Value>
+            </Setter>
         </Style>
         <converters:GoldenRatioConverter x:Key="GoldenRatioConverter" />
         <converters:ToSolidColorBrushConverter x:Key="ToSolidColorBrushConverter" />

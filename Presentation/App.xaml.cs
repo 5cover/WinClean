@@ -1,5 +1,4 @@
 ﻿global using System.IO;
-using System.Windows;
 
 using Ookii.Dialogs.Wpf;
 
@@ -9,6 +8,8 @@ using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
 using Scover.WinClean.Presentation.Windows;
 using Scover.WinClean.Resources;
+
+using System.Windows;
 
 namespace Scover.WinClean.Presentation;
 
@@ -38,6 +39,19 @@ public partial class App
 
         return result == Button.Retry;
     });
+
+    private static void ShowUnhandledExceptionDialog(Exception e)
+    {
+        Happenings.Exception.SetAsHappening();
+        Logs.UnhandledException.FormatWith(e).Log(LogLevel.Critical);
+        using Dialog unhandledExceptionDialog = new(Button.Exit)
+        {
+            MainIcon = TaskDialogIcon.Error,
+            Content = WinClean.Resources.UI.Dialogs.UnhandledExceptionDialogContent,
+            ExpandedInformation = e.ToString()
+        };
+        unhandledExceptionDialog.Show();
+    }
 
     private void ApplicationExit(object? sender, ExitEventArgs? e)
     {
@@ -69,18 +83,5 @@ public partial class App
             ApplicationExit(null, null);
             throw;
         }
-    }
-
-    private static void ShowUnhandledExceptionDialog(Exception e)
-    {
-        Happenings.Exception.SetAsHappening();
-        Logs.UnhandledException.FormatWith(e).Log(LogLevel.Critical);
-        using Dialog unhandledExceptionDialog = new(Button.Exit)
-        {
-            MainIcon = TaskDialogIcon.Error,
-            Content = WinClean.Resources.UI.Dialogs.UnhandledExceptionDialogContent,
-            ExpandedInformation = e.ToString()
-        };
-        unhandledExceptionDialog.Show();
     }
 }

@@ -1,8 +1,8 @@
-﻿using System.Collections;
+﻿using Microsoft.Win32;
 
-using Microsoft.Win32;
+using System.Collections;
 
-namespace Scover.WinClean.BusinessLogic;
+namespace Scover.WinClean.DataAccess;
 
 /// <summary>A group of related extensions</summary>
 public class ExtensionGroup : IEnumerable<string>

@@ -44,7 +44,7 @@ public class Dialog : TaskDialog
         ButtonClicked += (_, e) =>
         {
             int clickedButtonIndex = Buttons.IndexOf(e.Item as TaskDialogButton);
-            if (AreConfirmationsEnabled && clickedButtonIndex != -1) e.Cancel = !_confirmations.GetValueOrDefault(clickedButtonIndex)?.Invoke() ?? false;
+            if (!IsClosed && clickedButtonIndex != -1) e.Cancel = !_confirmations.GetValueOrDefault(clickedButtonIndex)?.Invoke() ?? false;
         };
     }
 
@@ -61,12 +61,12 @@ public class Dialog : TaskDialog
         get => _defaultButtonIndex is null ? null : _buttons[_defaultButtonIndex.Value];
         set
         {
-            if (_defaultButtonIndex.HasValue)
+            if (_defaultButtonIndex is not null)
             {
                 Buttons[_defaultButtonIndex.Value].Default = false;
             }
 
-            if (value.HasValue)
+            if (value is not null)
             {
                 int newDefaultButtonIndex = _buttons.IndexOf(value.Value);
                 if (newDefaultButtonIndex == -1) throw new ArgumentException(DevException.NotAButtonOfInstance, nameof(value));
@@ -116,9 +116,13 @@ public class Dialog : TaskDialog
         set => _timeoutButton = GetButton(value);
     }
 
-    /// <summary>Gets or sets whether confirmation delegates will be invoked.</summary>
-    /// <value>Whether a click on a button will invoke its confirmation delegate. Default value is <see langword="true"/>.</value>
-    protected bool AreConfirmationsEnabled { get; set; } = true;
+    /// <summary>Gets or sets whether the dialog is closed or closing.</summary>
+    /// <value>
+    /// If <see langword="true"/>, confirmation delegates will not be shown, and <see cref="Show"/> and <see cref="ShowDialog"/>
+    /// will return <see langword="null"/>.
+    /// </value>
+    /// <remarks>Default value is <see langword="false"/>.</remarks>
+    protected bool IsClosed { get; set; }
 
     /// <summary>Sets the confirmation action for a button.</summary>
     /// <param name="button">The button to set a confirmation for.</param>
@@ -134,16 +138,10 @@ public class Dialog : TaskDialog
     }
 
     /// <inheritdoc cref="TaskDialog.Show"/>
-    public new Button? Show()
-    {
-        return GetClickedButton(base.Show());
-    }
+    public new Button? Show() => GetResult(base.Show());
 
     /// <inheritdoc cref="TaskDialog.ShowDialog"/>
-    public new Button? ShowDialog()
-    {
-        return GetClickedButton(base.ShowDialog());
-    }
+    public new Button? ShowDialog() => GetResult(base.ShowDialog());
 
     protected TaskDialogButton GetButton(Button button)
     {
@@ -151,10 +149,11 @@ public class Dialog : TaskDialog
         return index == -1 ? throw new ArgumentException(DevException.NotAButtonOfInstance, nameof(button)) : Buttons[index];
     }
 
-    private Button? GetClickedButton(TaskDialogButton clickedButton)
+    private Button? GetResult(TaskDialogButton clickedButton)
     {
         int clickedButtonIndex = Buttons.IndexOf(clickedButton);
-        return clickedButtonIndex == -1 ? null : _buttons[clickedButtonIndex];
+        Button? result = clickedButtonIndex == -1 ? null : _buttons[clickedButtonIndex];
+        return IsClosed ? null : result;
     }
 
     private void TimeoutTimer(object? sender, TimerEventArgs e)

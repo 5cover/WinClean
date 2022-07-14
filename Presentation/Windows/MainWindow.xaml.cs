@@ -1,8 +1,4 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 
 using Ookii.Dialogs.Wpf;
 
@@ -12,6 +8,10 @@ using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
 using Scover.WinClean.Presentation.ScriptExecution;
 using Scover.WinClean.Resources;
+
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
 
 using Button = Scover.WinClean.Presentation.Dialogs.Button;
 
@@ -67,7 +67,7 @@ public partial class MainWindow
                     Logs.InvalidScriptData.FormatWith(Path.GetFileName(filePath)).Log(LogLevel.Error);
 
                     using Dialog invalidScriptData = DialogFactory.MakeInvalidScriptDataDialog(ex, filePath, Button.Retry, Button.Ignore);
-                    _ = invalidScriptData.ShowDialog();
+                    if (invalidScriptData.ShowDialog() != Button.Retry) break;
                 }
                 catch (InvalidOperationException)
                 {
