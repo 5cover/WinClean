@@ -142,6 +142,15 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Scripts are not executing.
+        /// </summary>
+        public static string ScriptsAreNotExecuting {
+            get {
+                return ResourceManager.GetString("ScriptsAreNotExecuting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Cannot create system restore point because system protection is disabled..
         /// </summary>
         public static string SystemProtectionDisabled {

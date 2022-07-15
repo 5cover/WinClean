@@ -146,7 +146,9 @@
     <value>To select scripts, check their associated check box.</value>
   </data>
   <data name="UnhandledExceptionDialogContent" xml:space="preserve">
-	  <value>An unhandled exception occured.</value>
+	  <value>An unhandled exception occured: {0}
+&lt;A HREF="https://github.com/5cover/WinClean/issues/new"&gt;Report this issue...&lt;/A&gt;</value>
+    <comment>0 : string : exception message</comment>
   </data>
   <data name="ConfirmAbortOperationContent" xml:space="preserve">
     <value>Aborting the operation may make the system unstable. Are you sure you want to continue?</value>

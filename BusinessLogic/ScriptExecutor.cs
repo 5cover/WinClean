@@ -4,32 +4,39 @@ namespace Scover.WinClean.BusinessLogic;
 
 public class ScriptExecutor
 {
-    private readonly CancellationToken _ct;
-    private readonly CancellationTokenSource _cts;
     private readonly Progress<ScriptExecutionProgressChangedEventArgs> _progress = new();
-
-    public ScriptExecutor()
-    {
-        _cts = new();
-        _ct = _cts.Token;
-    }
+    private CancellationTokenSource? _cts;
 
     /// <summary>Occurs when a script has been executed.</summary>
     public event EventHandler<ScriptExecutionProgressChangedEventArgs> ProgressChanged { add => _progress.ProgressChanged += value; remove => _progress.ProgressChanged -= value; }
 
-    public void CancelScriptExecution() => _cts.Cancel(true);
+    /// <summary>Cancels script execution.</summary>
+    /// <exception cref="InvalidOperationException">Scripts are not executing</exception>
+    public void CancelScriptExecution()
+    {
+        if (_cts is null)
+        {
+            throw new InvalidOperationException(Resources.DevException.ScriptsAreNotExecuting);
+        }
+        _cts.Cancel(true);
+    }
 
     /// <summary>Executes a list of scripts asynchronously. Raises the <see cref="ProgressChanged"/> event.</summary>
     /// <param name="scripts">The scripts to execute.</param>
-    /// <inheritdoc cref="Script.Execute(HungScriptCallback)" path="/param"/>
+    /// <inheritdoc cref="Script.Execute(HungScriptCallback, CancellationToken?)" path="/param"/>
     public async Task ExecuteScriptsAsync(IReadOnlyList<Script> scripts, HungScriptCallback keepRunningOrKill)
-        => await Task.Run(() =>
+    {
+        _cts = new();
+        await Task.Run(() =>
         {
-            for (int scriptIndex = 0; scriptIndex < scripts.Count && !_ct.IsCancellationRequested; ++scriptIndex)
+            for (int scriptIndex = 0; scriptIndex < scripts.Count && !_cts.IsCancellationRequested; ++scriptIndex)
             {
-                // Report the progress before executing the script
-                ((IProgress<ScriptExecutionProgressChangedEventArgs>)_progress).Report(new(scriptIndex));
-                scripts[scriptIndex].Execute(keepRunningOrKill, _ct);
+                ReportProgress();
+                scripts[scriptIndex].Execute(keepRunningOrKill, _cts);
+                ReportProgress();
+
+                void ReportProgress() => ((IProgress<ScriptExecutionProgressChangedEventArgs>)_progress).Report(new(scriptIndex));
             }
-        }, _ct).ConfigureAwait(false);
+        }, _cts.Token).ConfigureAwait(false);
+    }
 }

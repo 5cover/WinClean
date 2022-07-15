@@ -132,11 +132,12 @@ public class ScriptExecutionWizard
     {
         using Dialog hungScriptDialog = new(Button.EndTask, Button.Ignore)
         {
-            Content = Resources.UI.Dialogs.HungScriptDialogContent,
+            MainIcon = TaskDialogIcon.Warning,
+            Content = Resources.UI.Dialogs.HungScriptDialogContent.FormatWith(scriptName, AppInfo.Settings.ScriptTimeout),
             Timeout = TimeSpan.FromSeconds(10),
             TimeoutButton = Button.Ignore
         };
-        return hungScriptDialog.ShowDialog() == Button.Ignore;
+        return hungScriptDialog.ShowDialog() != Button.EndTask;
     }
 
     private async Task ExecuteScriptsAsync()

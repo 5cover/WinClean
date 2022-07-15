@@ -103,7 +103,8 @@ public class Dialog : TaskDialog
                 _timeoutDisabledRaiseTimerEvent = RaiseTimerEvent;
 
                 ProgressBarStyle = ProgressBarStyle.ProgressBar;
-                ProgressBarMaximum = Convert.ToInt32(_timeout.TotalMilliseconds);
+                // Multiply by 0.9 so that the progress bar has the time to completely fill up before the dialog closes.
+                ProgressBarMaximum = Convert.ToInt32(_timeout.TotalMilliseconds * 0.9);
                 RaiseTimerEvent = true;
                 Timer += TimeoutTimer;
             }
@@ -143,6 +144,10 @@ public class Dialog : TaskDialog
     /// <inheritdoc cref="TaskDialog.ShowDialog"/>
     public new Button? ShowDialog() => GetResult(base.ShowDialog());
 
+    /// <inheritdoc cref="TaskDialog.ShowDialog(IntPtr)"/>
+    /// <param name="owner">The owner of the dialog.</param>
+    public Button? ShowDialog(Dialog owner) => GetResult(base.ShowDialog());
+
     protected TaskDialogButton GetButton(Button button)
     {
         int index = _buttons.IndexOf(button);
@@ -159,16 +164,13 @@ public class Dialog : TaskDialog
     private void TimeoutTimer(object? sender, TimerEventArgs e)
     {
         // TickCount is actually in milliseconds
-        if (e.TickCount > ProgressBarMaximum)
+        if (e.TickCount > Convert.ToInt32(_timeout.TotalMilliseconds))
         {
             _timeoutButton?.Click();
             // The timeout was reached, so stop raising timer events, we don't need them anymore.
             RaiseTimerEvent = false;
         }
-        else
-        {
-            ProgressBarValue = e.TickCount;
-        }
+        ProgressBarValue = Math.Min(e.TickCount, ProgressBarMaximum);
     }
 
     private readonly struct ProgressBarInfo

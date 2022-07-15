@@ -97,6 +97,15 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Copy details.
+        /// </summary>
+        public static string CopyDetails {
+            get {
+                return ResourceManager.GetString("CopyDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à _Delete.
         /// </summary>
         public static string Delete {

@@ -66,14 +66,14 @@ public class Host : IUserVisible
     /// A cancellation token that aborts the execution by killing the host process when the cancelled. Can be <see
     /// langword="null"/> to disable cancellation.
     /// </param>
-    public void ExecuteCode(string code, string scriptName, TimeSpan timeout, HungScriptCallback keepRunningOrKill, CancellationToken? cancellationToken)
+    public void ExecuteCode(string code, string scriptName, TimeSpan timeout, HungScriptCallback keepRunningOrKill, CancellationTokenSource? cancellationToken)
     {
         FileInfo tmpScriptFile = CreateTempFile(code, SupportedExtensions.First());
 
         using Process host = ExecuteHost(tmpScriptFile);
 
         // If the operation is cancelled, kill the host process. Then, WaitForExit() will take care of it.
-        var registration = cancellationToken?.Register(Kill);
+        var registration = cancellationToken?.Token.Register(Kill);
 
         while (true)
         {

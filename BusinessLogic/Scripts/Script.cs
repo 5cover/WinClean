@@ -104,7 +104,7 @@ public class Script : INotifyPropertyChanged, IUserVisible
     /// <summary>Executes the script.</summary>
     /// <inheritdoc cref="Host.ExecuteCode"/>
     /// <remarks>Returns when the script has finished executing or has been killed.</remarks>
-    public void Execute(HungScriptCallback keepRunningOrKill, CancellationToken? cancellationToken)
+    public void Execute(HungScriptCallback keepRunningOrKill, CancellationTokenSource? cancellationToken)
         => Host.ExecuteCode(Code, Name, AppInfo.Settings.ScriptTimeout, keepRunningOrKill, cancellationToken);
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new(propertyName));

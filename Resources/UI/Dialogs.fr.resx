@@ -139,7 +139,8 @@
     <value>Pour sélectionner des scripts, cochez leur case à cocher associée.</value>
   </data>
   <data name="UnhandledExceptionDialogContent" xml:space="preserve">
-	  <value>Une exception non gérée s'est produite.</value>
+	  <value>Une exception non gérée s'est produite : {0}
+&lt;A HREF="https://github.com/5cover/WinClean/issues/new"&gt;Signaler cette erreur...&lt;/A&gt;</value>
   </data>
   <data name="ConfirmAbortOperationContent" xml:space="preserve">
     <value>Abandonner l'opération risque de rendre le système instable. Voulez-vous vraiment continuer ?</value>

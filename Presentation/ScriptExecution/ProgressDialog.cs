@@ -21,7 +21,7 @@ public class ProgressDialog : Dialog
         MinimizeBox = true;
         ExpandedInformation = Resources.UI.ProgressDialog.ExpandedInformation.FormatWith(null, null);
         ExpandedByDefault = AppInfo.Settings.DetailsDuringExecution;
-        ProgressBarMaximum = scripts.Count;
+        ProgressBarMaximum = scripts.Count - 1;
         ProgressBarStyle = ProgressBarStyle.ProgressBar;
         Content = Resources.UI.ProgressDialog.Content;
         VerificationText = Resources.UI.ProgressDialog.VerificationText;
@@ -48,14 +48,14 @@ public class ProgressDialog : Dialog
     /// <summary>Gets the number of elapsed seconds since the scripts started executing.</summary>
     public int ElapsedSeconds => Convert.ToInt32(_elapsed.TotalSeconds);
 
-    /// <summary>The index of the last executed script.</summary>
+    /// <summary>The index of the currently executing script.</summary>
     public int ScriptIndex
     {
         get => _scriptIndex;
         set
         {
             _scriptIndex = value;
-            ProgressBarValue = value + 1;
+            ProgressBarValue = value;
             UpdateExpandedInfo();
         }
     }

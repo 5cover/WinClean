@@ -151,4 +151,7 @@
   <data name="Stop" xml:space="preserve">
     <value>_Stop</value>
   </data>
+  <data name="CopyDetails" xml:space="preserve">
+    <value>Copy details</value>
+  </data>
 </root>

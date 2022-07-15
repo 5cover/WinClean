@@ -44,13 +44,20 @@ public partial class App
     {
         Happenings.Exception.SetAsHappening();
         Logs.UnhandledException.FormatWith(e).Log(LogLevel.Critical);
-        using Dialog unhandledExceptionDialog = new(Button.Exit)
+        using Dialog unhandledExceptionDialog = new(Button.Exit, Button.CopyDetails)
         {
             MainIcon = TaskDialogIcon.Error,
-            Content = WinClean.Resources.UI.Dialogs.UnhandledExceptionDialogContent,
-            ExpandedInformation = e.ToString()
+            Content = WinClean.Resources.UI.Dialogs.UnhandledExceptionDialogContent.FormatWith(e.Message),
+            ExpandedInformation = e.ToString(),
+            EnableHyperlinks = true
         };
-        unhandledExceptionDialog.Show();
+        unhandledExceptionDialog.SetConfirmation(Button.CopyDetails, () =>
+        {
+            Clipboard.SetText(e.ToString());
+            return false;
+        });
+        unhandledExceptionDialog.HyperlinkClicked += (_, args) => Helpers.Open(args.Href);
+        unhandledExceptionDialog.ShowDialog();
     }
 
     private void ApplicationExit(object? sender, ExitEventArgs? e)
@@ -69,19 +76,10 @@ public partial class App
             return dialog.ShowDialog() == Button.Retry;
         };
 
+        Current.DispatcherUnhandledException += (_, args) => ShowUnhandledExceptionDialog(args.Exception);
+
         Happenings.Start.SetAsHappening();
         Logs.Started.Log();
-
-        try
-        {
-            new MainWindow().Show();
-        }
-        catch (Exception ex)
-        {
-            ShowUnhandledExceptionDialog(ex);
-            // throw will be a dirty exit, so we need to call the ApplicationExit event handler manually.
-            ApplicationExit(null, null);
-            throw;
-        }
+        new MainWindow().Show();
     }
 }

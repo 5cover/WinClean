@@ -175,4 +175,7 @@
     <value>Callback {0} not set.</value>
     <comment>0 : string : callback name</comment>
   </data>
+  <data name="ScriptsAreNotExecuting" xml:space="preserve">
+    <value>Scripts are not executing</value>
+  </data>
 </root>
