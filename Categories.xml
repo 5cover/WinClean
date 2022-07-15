@@ -18,8 +18,4 @@
 		<Description>Customization scripts that do not bring any performance improvements.</Description>
 		<Description xml:lang="fr">Scripts de personnalisation n'apportant aucune amélioration des performances.</Description>
 	</Category>
-	<Category>
-		<Name>Test</Name>
-		<Description>Testing scripts</Description>
-	</Category>
 </Categories>

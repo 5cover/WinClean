@@ -5,8 +5,6 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinClean", "WinClean.csproj", "{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "WinClean.Setup x64 en-US", "..\WinClean.Setup x64 en-US\WinClean.Setup x64 en-US.vdproj", "{9D018572-7B90-4D10-80FE-AB71F50E78CF}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,23 +39,13 @@ Global
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|x64.Build.0 = Release|x64
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|x86.ActiveCfg = Release|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|x86.Build.0 = Release|Any CPU
-		{9D018572-7B90-4D10-80FE-AB71F50E78CF}.Debug|Any CPU.ActiveCfg = Debug
-		{9D018572-7B90-4D10-80FE-AB71F50E78CF}.Debug|ARM.ActiveCfg = Debug
-		{9D018572-7B90-4D10-80FE-AB71F50E78CF}.Debug|ARM64.ActiveCfg = Debug
-		{9D018572-7B90-4D10-80FE-AB71F50E78CF}.Debug|x64.ActiveCfg = Debug
-		{9D018572-7B90-4D10-80FE-AB71F50E78CF}.Debug|x86.ActiveCfg = Debug
-		{9D018572-7B90-4D10-80FE-AB71F50E78CF}.Release|Any CPU.ActiveCfg = Release
-		{9D018572-7B90-4D10-80FE-AB71F50E78CF}.Release|ARM.ActiveCfg = Release
-		{9D018572-7B90-4D10-80FE-AB71F50E78CF}.Release|ARM64.ActiveCfg = Release
-		{9D018572-7B90-4D10-80FE-AB71F50E78CF}.Release|x64.ActiveCfg = Release
-		{9D018572-7B90-4D10-80FE-AB71F50E78CF}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_TranslatorConfiguration = {"Azure":"{\"AutoDetectHtml\":true,\"MaxCharactersPerMinute\":33300,\"AuthenticationKey\":null,\"Region\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","Baidu":"{\"AppId\":null,\"SecretKey\":null,\"ApiUrl\":null,\"Domain\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","DeepL":"{\"ApiKey\":null,\"ApiUrl\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","Google":"{\"ApiKey\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MSTerm":"{\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MyMemory":"{\"Key\":null,\"Mail\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}"}
-		SolutionGuid = {937A4B5E-93B9-4C78-B678-7D96F758D99D}
 		RESX_PrefixTranslations = False
+		SolutionGuid = {937A4B5E-93B9-4C78-B678-7D96F758D99D}
+		RESX_TranslatorConfiguration = {"Azure":"{\"AutoDetectHtml\":true,\"MaxCharactersPerMinute\":33300,\"AuthenticationKey\":null,\"Region\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","Baidu":"{\"AppId\":null,\"SecretKey\":null,\"ApiUrl\":null,\"Domain\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","DeepL":"{\"ApiKey\":null,\"ApiUrl\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","Google":"{\"ApiKey\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MSTerm":"{\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MyMemory":"{\"Key\":null,\"Mail\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}"}
 	EndGlobalSection
 EndGlobal
