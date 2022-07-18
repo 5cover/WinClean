@@ -23,7 +23,7 @@ Allows the average Windows user to improve performance in a few clicks.
 ## Specs
 - .NET 6
 - WPF
-- Created with Visual Studio 2019/2022
+- Created with Visual Studio 2022
 
 ## Contributing
 Feel free to request new features and report bugs.
