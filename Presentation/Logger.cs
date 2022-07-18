@@ -59,7 +59,7 @@ public class Logger
         _csvWriter.WriteRecord(new LogEntry
         {
             Date = DateTime.Now,
-            Level = lvl.Name,
+            Level = lvl.InvariantName,
             Happening = Happening ?? string.Empty,
             Message = message,
             Caller = caller,
