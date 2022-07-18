@@ -22,6 +22,7 @@ public partial class MainWindow
     public MainWindow()
     {
         InitializeComponent();
+        RestoreSizeAndLocation();
         ResetTabs();
     }
 
@@ -146,6 +147,24 @@ public partial class MainWindow
         TabControlCategories.SelectedIndex = selectedIndex;
     }
 
+    private void RestoreSizeAndLocation()
+    {
+        Top = AppInfo.Settings.Top;
+        Left = AppInfo.Settings.Left;
+        Width = AppInfo.Settings.Width;
+        Height = AppInfo.Settings.Height;
+        WindowState = AppInfo.Settings.IsMaximized ? WindowState.Maximized : WindowState.Normal;
+    }
+
+    private void SaveSizeAndLocation()
+    {
+        AppInfo.Settings.Top = Top;
+        AppInfo.Settings.Left = Left;
+        AppInfo.Settings.Width = Width;
+        AppInfo.Settings.Height = Height;
+        AppInfo.Settings.IsMaximized = WindowState == WindowState.Maximized;
+    }
+
     private void ScriptEditorScriptChangedCategory(object sender, EventArgs e) => ResetTabs();
 
     private void TabControlCategoriesSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -155,4 +174,6 @@ public partial class MainWindow
             ((ListBox)item.Content).SelectedItem = null;
         }
     }
+
+    private void Window_Closed(object sender, EventArgs e) => SaveSizeAndLocation();
 }

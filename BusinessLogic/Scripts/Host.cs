@@ -69,9 +69,10 @@ public class Host : IUserVisible
     public void ExecuteCode(string code, string scriptName, TimeSpan timeout, HungScriptCallback keepRunningOrKill, CancellationTokenSource? cancellationToken)
     {
         FileInfo tmpScriptFile = CreateTempFile(code, SupportedExtensions.First());
+        bool hostDisposed = false;
 
         using Process host = ExecuteHost(tmpScriptFile);
-
+        host.Disposed += (_, _) => hostDisposed = true;
         // If the operation is cancelled, kill the host process. Then, WaitForExit() will take care of it.
         var registration = cancellationToken?.Token.Register(Kill);
 
@@ -79,7 +80,6 @@ public class Host : IUserVisible
         {
             if (host.WaitForExit(Convert.ToInt32(timeout.TotalMilliseconds)))
             {
-                registration?.Unregister();
                 break;
             }
 
@@ -87,9 +87,16 @@ public class Host : IUserVisible
             Kill();
             break;
         }
+        registration?.Unregister();
         tmpScriptFile.Delete();
 
-        void Kill() => host.Kill(true);
+        void Kill()
+        {
+            if (!hostDisposed)
+            {
+                host.Kill(true);
+            }
+        }
     }
 
     private static FileInfo CreateTempFile(string text, string extension)

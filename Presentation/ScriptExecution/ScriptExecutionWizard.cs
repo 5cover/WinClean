@@ -29,7 +29,7 @@ public class ScriptExecutionWizard
         {
             throw new ArgumentException(DevException.CollectionEmpty, nameof(scripts));
         }
-        executor.ProgressChanged += (_, e) => Logs.ScriptExecuted.FormatWith(_scripts[e.ScriptIndex]);
+        executor.ProgressChanged += (_, e) => Logs.ScriptExecuting.FormatWith(_scripts[e.ScriptIndex]);
     }
 
     /// <summary>Executes the script(s) and displays a dialog tracking the progress.</summary>

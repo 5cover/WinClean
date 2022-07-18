@@ -33,7 +33,6 @@ public class ScriptExecutor
             {
                 ReportProgress();
                 scripts[scriptIndex].Execute(keepRunningOrKill, _cts);
-                ReportProgress();
 
                 void ReportProgress() => ((IProgress<ScriptExecutionProgressChangedEventArgs>)_progress).Report(new(scriptIndex));
             }

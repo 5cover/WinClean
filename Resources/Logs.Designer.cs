@@ -142,11 +142,11 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Script &quot;{0}&quot; executed..
+        ///   Recherche une chaîne localisée semblable à Script &quot;{0}&quot; executing.
         /// </summary>
-        public static string ScriptExecuted {
+        public static string ScriptExecuting {
             get {
-                return ResourceManager.GetString("ScriptExecuted", resourceCulture);
+                return ResourceManager.GetString("ScriptExecuting", resourceCulture);
             }
         }
         

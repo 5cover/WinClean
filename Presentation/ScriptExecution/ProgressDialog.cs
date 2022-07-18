@@ -21,7 +21,7 @@ public class ProgressDialog : Dialog
         MinimizeBox = true;
         ExpandedInformation = Resources.UI.ProgressDialog.ExpandedInformation.FormatWith(null, null);
         ExpandedByDefault = AppInfo.Settings.DetailsDuringExecution;
-        ProgressBarMaximum = scripts.Count - 1;
+        ProgressBarMaximum = scripts.Count;
         ProgressBarStyle = ProgressBarStyle.ProgressBar;
         Content = Resources.UI.ProgressDialog.Content;
         VerificationText = Resources.UI.ProgressDialog.VerificationText;
@@ -32,7 +32,8 @@ public class ProgressDialog : Dialog
         SetConfirmation(Button.Stop, () => new Dialog(Button.Yes, Button.No)
         {
             MainIcon = TaskDialogIcon.Warning,
-            Content = Resources.UI.Dialogs.ConfirmAbortOperationContent
+            Content = Resources.UI.Dialogs.ConfirmAbortOperationContent,
+            DefaultButton = Button.No
         }.ShowDialog() == Button.Yes);
 
         RaiseTimerEvent = true;

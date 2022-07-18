@@ -20,10 +20,7 @@ public static class DialogFactory
             EnableHyperlinks = true,
             ExpandedInformation = e.ToString()
         };
-        dialog.HyperlinkClicked += (_, _) =>
-        {
-            Helpers.Open(path);
-        };
+        dialog.HyperlinkClicked += (_, _) => Helpers.Open(path);
         return dialog;
     }
 

@@ -63,12 +63,26 @@ public partial class App
     private void ApplicationExit(object? sender, ExitEventArgs? e)
     {
         Scripts.Save();
+        AppInfo.Settings.Save();
+
 
         Happenings.Exit.SetAsHappening();
         Logs.Exiting.Log();
     }
 
     private void ApplicationStartup(object? sender, StartupEventArgs? e)
+    {
+        if (e?.Args.Any() ?? false)
+        {
+            StartConsole(e.Args);
+        }
+        else
+        {
+            StartGui();
+        }
+    }
+
+    private static void StartGui()
     {
         AppInfo.ReadAppFileRetryOrFail = (ex, verb, info) =>
         {
@@ -81,5 +95,10 @@ public partial class App
         Happenings.Start.SetAsHappening();
         Logs.Started.Log();
         new MainWindow().Show();
+    }
+
+    private static void StartConsole(IEnumerable<string> args)
+    {
+        //Environment.ExitCode = new CommandLineInterpreter(args).Execute();
     }
 }
