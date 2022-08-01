@@ -17,9 +17,6 @@ Allows the average Windows user to improve performance in a few clicks.
 - But if you don't have the time to do all of that, simply click on "Select scripts", "Recommended", "Yes", and "Run Scripts"
 - Inno Setup Installer
 
-> **Warning**
->By using this program, you agree that its creators may not be held responsible for any damage or loss of data it may cause. Refer to the license file for more information.
-
 ## Specs
 - .NET 6
 - WPF
