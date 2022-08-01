@@ -17,9 +17,6 @@ Permet à l'utilisateur moyen d'améliorer les performances de Windows en quelqu
 - Si vous n'avez pas le temps, vous pouvez juste cliquer sur "Sélectionner scripts", "Recommandés", "Oui", et "Exécuter les scripts".
 - Installateur Inno Setup
 
-> **Warning**
-> En utilisant cette application, vous acceptez que ses créateurs ne puissent être tenus responsables des dommages ou pertes de données qu'elle pourrait occasionner. Reportez-vous au fichier de licence pour plus d'informations.
-
 ## Spécifications
 - .NET 6
 - WPF
