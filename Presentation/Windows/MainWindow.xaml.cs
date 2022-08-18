@@ -121,6 +121,9 @@ public partial class MainWindow
 
     private void MenuOnlineWikiClick(object sender, RoutedEventArgs e) => Helpers.Open(AppInfo.Settings.WikiUrl);
 
+    private void MenuOpenLogsClick(object sender, RoutedEventArgs e) => Logger.Instance.OpenLogs();
+
+    private void MenuOpenScriptsDirClick(object sender, RoutedEventArgs e) => Helpers.Open(AppDirectory.ScriptsDir.Info.FullName);
     private void MenuSettingsClick(object sender, RoutedEventArgs e) => new SettingsWindow { Owner = this }.ShowDialog();
 
     /// <summary>Recreates the items of <see cref="TabControlCategories"/> and redistributes the scripts.</summary>

@@ -149,5 +149,17 @@ namespace Scover.WinClean.Resources.UI {
                 return ResourceManager.GetString("MenuSettings", resourceCulture);
             }
         }
+
+        public static string MenuOpenLogs {
+            get {
+                return ResourceManager.GetString("MenuOpenLogs", resourceCulture);
+            }
+        }
+
+        public static string MenuOpenScriptsDir {
+            get {
+                return ResourceManager.GetString("MenuOpenScriptsDir", resourceCulture);
+            }
+        }
     }
 }
