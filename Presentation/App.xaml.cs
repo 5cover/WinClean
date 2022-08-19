@@ -70,22 +70,15 @@ public partial class App
 
     private static void StartGui()
     {
-        WarnIfNewVersionAvailable(() =>
+        if (e?.Args.Any() ?? false)
         {
-            Dialog newVersionAvailableDialog = new(Button.OK)
-            {
-                MainInstruction = WinClean.Resources.UI.Dialogs.NewVersionAvailableMainInstruction,
-                Content = WinClean.Resources.UI.Dialogs
-                          .NewVersionAvailableContent.FormatWith(SourceControlClient.Instance.Value.LatestVersionName),
-                AllowDialogCancellation = true,
-                MinimizeBox = true,
-                MainIcon = TaskDialogIcon.Information,
-                EnableHyperlinks = true
-            };
-            newVersionAvailableDialog.HyperlinkClicked += (_, e) => Helpers.Open(SourceControlClient.Instance.Value.LatestVersionUrl);
-
-            _ = newVersionAvailableDialog.Show();
-        });
+            StartConsole(e.Args);
+        }
+        else
+        {
+            StartGui();
+        }
+    }
 
         AppInfo.ReadAppFileRetryOrFail = (ex, verb, info) =>
         {
@@ -99,40 +92,8 @@ public partial class App
         new MainWindow().Show();
     }
 
-    private static void WarnIfNewVersionAvailable(Action warnNewUpdateAvailable)
+    private static void StartConsole(IEnumerable<string> args)
     {
-        try
-        {
-            string latestVersion = SourceControlClient.Instance.Value.LatestVersionName;
-            if (latestVersion != AppInfo.Version)
-            {
-                warnNewUpdateAvailable();
-            }
-        }
-        catch (AggregateException)
-        {
-            // Network API init error. Assume that we have the latest version.
-        }
-    }
-
-    private void ApplicationExit(object? sender, ExitEventArgs? e)
-    {
-        Scripts.Save();
-        AppInfo.Settings.Save();
-
-        Happenings.Exit.SetAsHappening();
-        Logs.Exiting.Log();
-    }
-
-    private void ApplicationStartup(object? sender, StartupEventArgs? e)
-    {
-        if (e?.Args.Any() ?? false)
-        {
-            StartConsole(e.Args);
-        }
-        else
-        {
-            StartGui();
-        }
+        //Environment.ExitCode = new CommandLineInterpreter(args).Execute();
     }
 }
