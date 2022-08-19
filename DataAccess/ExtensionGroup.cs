@@ -1,6 +1,6 @@
-﻿using Microsoft.Win32;
+﻿using System.Collections;
 
-using System.Collections;
+using Microsoft.Win32;
 
 namespace Scover.WinClean.DataAccess;
 
@@ -19,9 +19,9 @@ public class ExtensionGroup : IEnumerable<string>
 
     public IEnumerator<string> GetEnumerator() => _extensions.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_extensions).GetEnumerator();
-
     public string GetName() => (Registry.ClassesRoot.OpenSubKey(_extensions.First())?.GetValue(null) is string name
                                         ? Registry.ClassesRoot.OpenSubKey(name)?.GetValue(null) as string
                                     : null) ?? string.Empty;
+
+    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_extensions).GetEnumerator();
 }

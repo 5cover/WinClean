@@ -1,6 +1,6 @@
-﻿using Scover.WinClean.BusinessLogic.Scripts;
+﻿using System.Xml;
 
-using System.Xml;
+using Scover.WinClean.BusinessLogic.Scripts;
 
 namespace Scover.WinClean.BusinessLogic.Xml;
 

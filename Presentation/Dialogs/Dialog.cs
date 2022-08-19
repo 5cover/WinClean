@@ -23,16 +23,12 @@ public class Dialog : TaskDialog
 
     /// <summary>Initializes a new instance of the <see cref="Dialog"/> class.</summary>
     /// <param name="buttons">The buttons to add to the dialog.</param>
-    /// <remarks>
-    /// Also sets the following properties: <br><see cref="TaskDialog.WindowTitle"/> to <see cref="AppInfo.Name"/>;</br><br><see
-    /// cref="TaskDialog.CenterParent"/> to <see langword="true"/>.</br>
-    /// </remarks>
+    /// <remarks>Also sets the following property: <br><see cref="TaskDialog.WindowTitle"/> to <see cref="AppInfo.Name"/>.</br></remarks>
     public Dialog(IEnumerable<Button> buttons)
     {
         _timeoutDisabledProgressBar = new(this);
 
         WindowTitle = AppInfo.Name;
-        CenterParent = true;
 
         _buttons = buttons.ToList();
         _buttons.Sort();
@@ -44,7 +40,10 @@ public class Dialog : TaskDialog
         ButtonClicked += (_, e) =>
         {
             int clickedButtonIndex = Buttons.IndexOf(e.Item as TaskDialogButton);
-            if (!IsClosed && clickedButtonIndex != -1) e.Cancel = !_confirmations.GetValueOrDefault(clickedButtonIndex)?.Invoke() ?? false;
+            if (!IsClosed && clickedButtonIndex != -1)
+            {
+                e.Cancel = !_confirmations.GetValueOrDefault(clickedButtonIndex)?.Invoke() ?? false;
+            }
         };
     }
 
@@ -69,7 +68,11 @@ public class Dialog : TaskDialog
             if (value is not null)
             {
                 int newDefaultButtonIndex = _buttons.IndexOf(value.Value);
-                if (newDefaultButtonIndex == -1) throw new ArgumentException(DevException.NotAButtonOfInstance, nameof(value));
+                if (newDefaultButtonIndex == -1)
+                {
+                    throw new ArgumentException(DevException.NotAButtonOfInstance, nameof(value));
+                }
+
                 _defaultButtonIndex = newDefaultButtonIndex;
                 Buttons[_defaultButtonIndex.Value].Default = true;
             }
@@ -97,7 +100,10 @@ public class Dialog : TaskDialog
             else
             {
                 _timeout = value;
-                if (value < TimeSpan.Zero) throw new ArgumentOutOfRangeException(nameof(value), DevException.ValueCannotBeNegative);
+                if (value < TimeSpan.Zero)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), DevException.ValueCannotBeNegative);
+                }
 
                 _timeoutDisabledProgressBar = new(this);
                 _timeoutDisabledRaiseTimerEvent = RaiseTimerEvent;
@@ -134,7 +140,11 @@ public class Dialog : TaskDialog
     public void SetConfirmation(Button button, Func<bool> confirmation)
     {
         int buttonIndex = _buttons.IndexOf(button);
-        if (buttonIndex == -1) throw new ArgumentException(DevException.NotAButtonOfInstance, nameof(button));
+        if (buttonIndex == -1)
+        {
+            throw new ArgumentException(DevException.NotAButtonOfInstance, nameof(button));
+        }
+
         _confirmations[buttonIndex] = confirmation;
     }
 
@@ -143,10 +153,6 @@ public class Dialog : TaskDialog
 
     /// <inheritdoc cref="TaskDialog.ShowDialog"/>
     public new Button? ShowDialog() => GetResult(base.ShowDialog());
-
-    /// <inheritdoc cref="TaskDialog.ShowDialog(IntPtr)"/>
-    /// <param name="owner">The owner of the dialog.</param>
-    public Button? ShowDialog(Dialog owner) => GetResult(base.ShowDialog());
 
     protected TaskDialogButton GetButton(Button button)
     {

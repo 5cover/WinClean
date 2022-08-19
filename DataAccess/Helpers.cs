@@ -64,7 +64,11 @@ public static class Helpers
     /// </remarks>
     public static void Open(string? path)
     {
-        if (string.IsNullOrWhiteSpace(path)) return;
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return;
+        }
+
         using Process? process = Process.Start(new ProcessStartInfo(path)
         {
             UseShellExecute = true

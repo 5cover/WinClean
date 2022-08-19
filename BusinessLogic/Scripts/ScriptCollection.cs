@@ -1,29 +1,30 @@
-﻿using Scover.WinClean.BusinessLogic.Xml;
-using Scover.WinClean.DataAccess;
+﻿using System.Collections;
 
-using System.Collections;
+using Scover.WinClean.BusinessLogic.Xml;
+using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
-public class ScriptCollection : IReadOnlyCollection<Script>
+/// <summary>A collection of scripts deserialized from files.</summary>
+public class ScriptCollection : IEnumerable<Script>
 {
     private static readonly IScriptSerializer serializer = new ScriptXmlSerializer();
     private readonly Dictionary<Script, string> _scriptFiles = new();
-    public int Count => EnumerateScriptFiles().Count();
 
-    /// <summary>Loads all the scripts present in the scripts directory.</summary>
+    /// <summary>Loads all the scripts present in the specified application directory.</summary>
+    /// <param name="directory">The application directory to load the scripts (represented as *.xml files) from.</param>
     /// <param name="reloadOnInvalidScriptData">
     /// <inheritdoc cref="InvalidScriptDataCallback" path="/summary"/> Returns <see langword="true"/> if the script should be
     /// reloaded, <see langword="false"/> if it should be ignored.
     /// </param>
     /// <remarks>Will not load scripts located in subdirectories.</remarks>
-    public static ScriptCollection LoadScripts(InvalidScriptDataCallback reloadOnInvalidScriptData)
+    public static ScriptCollection LoadScripts(AppDirectory directory, InvalidScriptDataCallback reloadOnInvalidScriptData)
     {
         ScriptCollection scripts = new();
 
-        foreach (string scriptFile in EnumerateScriptFiles())
+        foreach (string scriptFile in Directory.EnumerateFiles(directory.Info.FullName, "*.xml", SearchOption.TopDirectoryOnly))
         {
-            Script? deserializedScript = Deserialize(scriptFile, reloadOnInvalidScriptData);
+            Script? deserializedScript = DeserializeTolerantly(scriptFile, reloadOnInvalidScriptData);
             if (deserializedScript is not null)
             {
                 scripts.AddToDictionary(deserializedScript, scriptFile);
@@ -50,15 +51,13 @@ public class ScriptCollection : IReadOnlyCollection<Script>
 
         // 2. Try to copy the script file to the scripts directory. If overwrite is false and the destination file already
         // exists, this will throw.
-        CopyFile(sourceFile, GetDestFilePath(sourceFile), allowOverwrite);
+        CopyFile(sourceFile, GetSavingPath(sourceFile), allowOverwrite);
 
         // 3. Reaching this line means that there was no error, so the new script may be added to the dictionary.
         AddToDictionary(script, sourceFile);
     }
 
     public IEnumerator<Script> GetEnumerator() => _scriptFiles.Keys.GetEnumerator();
-
-    IEnumerator IEnumerable.GetEnumerator() => _scriptFiles.Keys.GetEnumerator();
 
     /// <summary>Removes a script from the collection. Also deletes its corresponding file in the scripts directory.</summary>
     /// <param name="item">The script to remove.</param>
@@ -79,19 +78,21 @@ public class ScriptCollection : IReadOnlyCollection<Script>
         }
     }
 
+    IEnumerator IEnumerable.GetEnumerator() => _scriptFiles.Keys.GetEnumerator();
+
     private static void CopyFile(string source, string dest, bool overwrite)
     {
         try
         {
             File.Copy(source, dest, overwrite);
         }
-        catch (IOException e) when (e.HResult == -2147024816)// 0x80070050 : The file already exists
+        catch (IOException e) when (e.HResult == -2147024816) // 0x80070050 : The file already exists
         {
             throw new InvalidOperationException(Resources.DevException.FileAlreadyExists.FormatWith(dest), e);
         }
     }
 
-    private static Script? Deserialize(string scriptFile, InvalidScriptDataCallback reloadOnInvalidScriptData)
+    private static Script? DeserializeTolerantly(string scriptFile, InvalidScriptDataCallback reloadOnInvalidScriptData)
     {
         while (true)
         {
@@ -110,10 +111,8 @@ public class ScriptCollection : IReadOnlyCollection<Script>
         }
     }
 
-    private static IEnumerable<string> EnumerateScriptFiles() => Directory.EnumerateFiles(AppDirectory.ScriptsDir.Info.FullName, "*.xml", SearchOption.TopDirectoryOnly);
-
-    private static string GetDestFilePath(string sourceFile) => AppDirectory.ScriptsDir.Join(Path.GetFileName(sourceFile));
+    private static string GetSavingPath(string sourceFile) => AppDirectory.ScriptsDir.Join(Path.GetFileName(sourceFile));
 
     private void AddToDictionary(Script item, string sourceFilePath)
-            => _scriptFiles.Add(item, GetDestFilePath(sourceFilePath));
+            => _scriptFiles.Add(item, GetSavingPath(sourceFilePath));
 }

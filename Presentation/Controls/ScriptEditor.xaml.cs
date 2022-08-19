@@ -1,13 +1,14 @@
-﻿using Scover.WinClean.BusinessLogic.Scripts;
-
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+
+using Scover.WinClean.BusinessLogic.Scripts;
 
 namespace Scover.WinClean.Presentation.Controls;
 
 public partial class ScriptEditor
 {
-    public static readonly DependencyProperty SelectedProperty = DependencyProperty.Register(nameof(Selected), typeof(Script), typeof(ScriptEditor));
+    public static readonly DependencyProperty SelectedProperty
+        = DependencyProperty.Register(nameof(Selected), typeof(Script), typeof(ScriptEditor));
 
     public ScriptEditor() => InitializeComponent();
 

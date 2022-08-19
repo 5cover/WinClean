@@ -1,4 +1,8 @@
-﻿using Microsoft.Win32;
+﻿using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+
+using Microsoft.Win32;
 
 using Ookii.Dialogs.Wpf;
 
@@ -8,10 +12,6 @@ using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
 using Scover.WinClean.Presentation.ScriptExecution;
 using Scover.WinClean.Resources;
-
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
 
 using Button = Scover.WinClean.Presentation.Dialogs.Button;
 
@@ -52,7 +52,11 @@ public partial class MainWindow
         };
         MakeFilter(ofd, new ExtensionGroup(".xml"));
 
-        if (!(ofd.ShowDialog(this) ?? false)) return;
+        if (!(ofd.ShowDialog(this) ?? false))
+        {
+            return;
+        }
+
         foreach (string? filePath in ofd.FileNames)
         {
             bool allowOverwrite = false;
@@ -68,7 +72,10 @@ public partial class MainWindow
                     Logs.InvalidScriptData.FormatWith(Path.GetFileName(filePath)).Log(LogLevel.Error);
 
                     using Dialog invalidScriptData = DialogFactory.MakeInvalidScriptDataDialog(ex, filePath, Button.Retry, Button.Ignore);
-                    if (invalidScriptData.ShowDialog() != Button.Retry) break;
+                    if (invalidScriptData.ShowDialog() != Button.Retry)
+                    {
+                        break;
+                    }
                 }
                 catch (InvalidOperationException)
                 {
@@ -113,7 +120,9 @@ public partial class MainWindow
 
     private void MenuItemRecommendedClick(object sender, RoutedEventArgs e)
     {
-        RecommendationLevel targetLevel = AppInfo.RecommendationLevels.ElementAt(((MenuItem)e.Source).ItemContainerGenerator.IndexFromContainer((DependencyObject)e.OriginalSource));
+        RecommendationLevel targetLevel = AppInfo.RecommendationLevels[((MenuItem)e.Source)
+                                                                       .ItemContainerGenerator
+                                                                       .IndexFromContainer((DependencyObject)e.OriginalSource)];
         CheckScripts(script => script.Recommended == targetLevel);
     }
 
@@ -124,6 +133,7 @@ public partial class MainWindow
     private void MenuOpenLogsClick(object sender, RoutedEventArgs e) => Logger.Instance.OpenLogs();
 
     private void MenuOpenScriptsDirClick(object sender, RoutedEventArgs e) => Helpers.Open(AppDirectory.ScriptsDir.Info.FullName);
+
     private void MenuSettingsClick(object sender, RoutedEventArgs e) => new SettingsWindow { Owner = this }.ShowDialog();
 
     /// <summary>Recreates the items of <see cref="TabControlCategories"/> and redistributes the scripts.</summary>

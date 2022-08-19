@@ -1,8 +1,8 @@
-﻿using Scover.WinClean.DataAccess;
-using Scover.WinClean.Resources;
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+
+using Scover.WinClean.DataAccess;
+using Scover.WinClean.Resources;
 
 using static System.IO.Path;
 
@@ -83,7 +83,11 @@ public class Host : IUserVisible
                 break;
             }
 
-            if (keepRunningOrKill(scriptName)) continue;
+            if (keepRunningOrKill(scriptName))
+            {
+                continue;
+            }
+
             Kill();
             break;
         }

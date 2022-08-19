@@ -1,4 +1,5 @@
 ﻿global using System.IO;
+using System.Windows;
 
 using Ookii.Dialogs.Wpf;
 
@@ -9,8 +10,6 @@ using Scover.WinClean.Presentation.Dialogs;
 using Scover.WinClean.Presentation.Windows;
 using Scover.WinClean.Resources;
 
-using System.Windows;
-
 namespace Scover.WinClean.Presentation;
 
 /// <summary>
@@ -19,7 +18,7 @@ namespace Scover.WinClean.Presentation;
 /// </summary>
 public partial class App
 {
-    public static ScriptCollection Scripts { get; } = ScriptCollection.LoadScripts((e, path) =>
+    private static readonly InvalidScriptDataCallback _invalidScriptDataCallback = (e, path) =>
     {
         string filename = Path.GetFileName(path);
         Logs.InvalidScriptData.FormatWith(filename).Log(LogLevel.Error);
@@ -38,7 +37,9 @@ public partial class App
         }
 
         return result == Button.Retry;
-    });
+    };
+
+    public static ScriptCollection Scripts { get; } = ScriptCollection.LoadScripts(AppDirectory.ScriptsDir, _invalidScriptDataCallback);
 
     private static void ShowUnhandledExceptionDialog(Exception e)
     {
@@ -60,11 +61,63 @@ public partial class App
         unhandledExceptionDialog.ShowDialog();
     }
 
+    private static void StartConsole(string[] args)
+    {
+        WarnIfNewUpdateAvailable(() => Console.WriteLine($"A new version {SourceControlClient.Instance.Value.LatestVersionName} is available. Consider updating to get new scripts and new features.\r\n" +
+            $"Download the new version at {SourceControlClient.Instance.Value.LatestVersionName}"));
+        //Environment.ExitCode = new CommandLineInterpreter(args).Execute();
+    }
+
+    private static void StartGui()
+    {
+        WarnIfNewUpdateAvailable(() =>
+        {
+            Dialog d = new(Button.OK)
+            {
+                MainInstruction = "New version available",
+                Content = $"Version {SourceControlClient.Instance.Value.LatestVersionName} is available. Consider updating to get new scripts and features. <A>See on GitHub</A>",
+                AllowDialogCancellation = true,
+                MinimizeBox = true,
+                MainIcon = TaskDialogIcon.Information,
+                EnableHyperlinks = true,
+            };
+            d.HyperlinkClicked += (_, e) => Helpers.Open(SourceControlClient.Instance.Value.LatestVersionUrl);
+
+            _ = d.Show();
+        });
+
+        AppInfo.ReadAppFileRetryOrFail = (ex, verb, info) =>
+        {
+            using FSErrorDialog dialog = new(ex, verb, info, Button.Retry, Button.Exit);
+            return dialog.ShowDialog() == Button.Retry;
+        };
+
+        Current.DispatcherUnhandledException += (_, args) => ShowUnhandledExceptionDialog(args.Exception);
+        Happenings.Start.SetAsHappening();
+        Logs.Started.Log();
+        new MainWindow().Show();
+    }
+
+    private static void WarnIfNewUpdateAvailable(Action warnNewUpdateAvailable)
+    {
+        try
+        {
+            string latestVersion = SourceControlClient.Instance.Value.LatestVersionName;
+            if (latestVersion != AppInfo.Version)
+            {
+                warnNewUpdateAvailable();
+            }
+        }
+        catch (AggregateException)
+        {
+            // Network API init error. Assume that we have the latest version.
+        }
+    }
+
     private void ApplicationExit(object? sender, ExitEventArgs? e)
     {
         Scripts.Save();
         AppInfo.Settings.Save();
-
 
         Happenings.Exit.SetAsHappening();
         Logs.Exiting.Log();
@@ -80,25 +133,5 @@ public partial class App
         {
             StartGui();
         }
-    }
-
-    private static void StartGui()
-    {
-        AppInfo.ReadAppFileRetryOrFail = (ex, verb, info) =>
-        {
-            using FSErrorDialog dialog = new(ex, verb, info, Button.Retry, Button.Exit);
-            return dialog.ShowDialog() == Button.Retry;
-        };
-
-        Current.DispatcherUnhandledException += (_, args) => ShowUnhandledExceptionDialog(args.Exception);
-
-        Happenings.Start.SetAsHappening();
-        Logs.Started.Log();
-        new MainWindow().Show();
-    }
-
-    private static void StartConsole(IEnumerable<string> args)
-    {
-        //Environment.ExitCode = new CommandLineInterpreter(args).Execute();
     }
 }

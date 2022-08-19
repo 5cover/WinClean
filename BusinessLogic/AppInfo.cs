@@ -1,21 +1,23 @@
-﻿using Scover.WinClean.BusinessLogic.Scripts;
+﻿using System.Globalization;
+using System.Reflection;
+using System.Resources;
+
+using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Properties;
-
-using System.Globalization;
-using System.Reflection;
-using System.Resources;
 
 namespace Scover.WinClean.BusinessLogic;
 
 public static class AppInfo
 {
+    private static readonly IScriptMetadataDeserializer _deserializer = new ScriptMetadataXmlDeserializer();
     private static readonly Assembly assembly = Assembly.GetExecutingAssembly();
 
-    #region Assembly attributes
+    #region Script metadata
 
-    public static IReadOnlyCollection<Category> Categories { get; } = MakeFactory("Categories.xml").MakeCategories().ToList();
+    public static IReadOnlyList<Category> Categories { get; }
+        = _deserializer.MakeCategories(OpenAppFile("Categories.xml")).ToList();
 
     public static IReadOnlyCollection<Host> Hosts { get; } = new[]
     {
@@ -24,27 +26,45 @@ public static class AppInfo
         Host.Regedit
     };
 
-    public static IReadOnlyCollection<Impact> Impacts { get; } = MakeFactory("Impacts.xml").MakeImpacts().ToList();
-    public static string Name => assembly.GetCustomAttribute<AssemblyProductAttribute>()?.Product ?? string.Empty;
-    public static CultureInfo NeutralResourcesCulture => new(assembly.GetCustomAttribute<NeutralResourcesLanguageAttribute>()?.CultureName ?? string.Empty);
-    public static FSOperationCallback ReadAppFileRetryOrFail { get; set; } = (_, _, _) => throw new NotSupportedException(Resources.DevException.CallbackNotSet.FormatWith(nameof(ReadAppFileRetryOrFail)));
-    public static IReadOnlyCollection<RecommendationLevel> RecommendationLevels { get; } = MakeFactory("RecommendationLevels.xml").MakeRecommendationLevels().ToList();
-    public static string? RepositoryUrl => assembly.GetCustomAttributes<AssemblyMetadataAttribute>().SingleOrDefault(metadata => metadata.Key == "RepoUrl")?.Value;
-    public static Settings Settings => Settings.Default;
-    public static string Version => assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? string.Empty;
+    public static IReadOnlyList<Impact> Impacts { get; }
+        = _deserializer.MakeImpacts(OpenAppFile("Impacts.xml")).ToList();
+
+    public static IReadOnlyList<RecommendationLevel> RecommendationLevels { get; }
+        = _deserializer.MakeRecommendationLevels(OpenAppFile("RecommendationLevels.xml")).ToList();
+
+    #endregion Script metadata
+
+    #region Assembly attributes
+
+    public static string Name
+        => assembly.GetCustomAttribute<AssemblyProductAttribute>().AssertNotNull().Product;
+
+    public static CultureInfo NeutralResourcesCulture
+        => new(assembly.GetCustomAttribute<NeutralResourcesLanguageAttribute>().AssertNotNull().CultureName);
+
+    public static string RepositoryUrl
+        => (assembly.GetCustomAttributes<AssemblyMetadataAttribute>().SingleOrDefault(metadata => metadata.Key == "RepoUrl")?.Value).AssertNotNull();
+
+    public static string Version
+        => assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().AssertNotNull().InformationalVersion;
 
     #endregion Assembly attributes
 
-    private static IScriptMetadataDeserializer MakeFactory(string filename) => new ScriptMetadataXmlDeserializer(ReadAppFile(filename));
+    /// <summary>Gets or sets the error callback for reading application files.</summary>
+    /// <remarks>This property must be set externally in the Presentation layer.</remarks>
+    public static FSOperationCallback ReadAppFileRetryOrFail { get; set; } = (_, _, _)
+        => throw new NotSupportedException(Resources.DevException.CallbackNotSet.FormatWith(nameof(ReadAppFileRetryOrFail)));
 
-    private static string ReadAppFile(string filename)
+    public static Settings Settings => Settings.Default;
+
+    private static Stream OpenAppFile(string filename)
     {
         string path = AppDirectory.InstallDir.Join(filename);
         while (true)
         {
             try
             {
-                return File.ReadAllText(path);
+                return File.OpenRead(path);
             }
             catch (Exception e) when (e.IsFileSystem())
             {

@@ -1,6 +1,6 @@
-﻿using Scover.WinClean.BusinessLogic;
+﻿using System.Windows;
 
-using System.Windows;
+using Scover.WinClean.BusinessLogic;
 
 namespace Scover.WinClean.Presentation.Windows;
 
