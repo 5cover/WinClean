@@ -115,6 +115,24 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Version {0} is available. Consider updating to get new scripts and features. &lt;A&gt;See on GitHub&lt;/A&gt;.
+        /// </summary>
+        public static string NewVersionAvailableContent {
+            get {
+                return ResourceManager.GetString("NewVersionAvailableContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à New version available.
+        /// </summary>
+        public static string NewVersionAvailableMainInstruction {
+            get {
+                return ResourceManager.GetString("NewVersionAvailableMainInstruction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à To select scripts, check their associated check box..
         /// </summary>
         public static string NoScriptsSelectedContent {

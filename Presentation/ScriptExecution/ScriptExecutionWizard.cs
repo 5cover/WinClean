@@ -1,4 +1,6 @@
-﻿using Ookii.Dialogs.Wpf;
+﻿using System.Diagnostics;
+
+using Ookii.Dialogs.Wpf;
 
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
@@ -6,8 +8,6 @@ using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
 using Scover.WinClean.Resources;
 using Scover.WinClean.Resources.UI;
-
-using System.Diagnostics;
 
 namespace Scover.WinClean.Presentation.ScriptExecution;
 
@@ -55,7 +55,10 @@ public class ScriptExecutionWizard
         };
         TaskDialogButton clickedButton = restorePointDialog.ShowDialog();
 
-        if (clickedButton is null || clickedButton == restorePointDialog.Buttons[0]) return;
+        if (clickedButton is null || clickedButton == restorePointDialog.Buttons[0])
+        {
+            return;
+        }
 
         if (clickedButton == restorePointDialog.Buttons[1])
         {
@@ -69,7 +72,11 @@ public class ScriptExecutionWizard
 
                 bool? result = ShowEnableSystemRestoreDialog();
 
-                if (result is null) return;
+                if (result is null)
+                {
+                    return;
+                }
+
                 if (result.Value)
                 {
                     RestorePoint.EnableSystemRestore();

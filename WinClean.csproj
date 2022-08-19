@@ -22,10 +22,11 @@
     <PackageProjectUrl>https://github.com/5cover/WinClean</PackageProjectUrl>
     <RootNamespace>Scover.WinClean</RootNamespace>
     <Company>$(Authors)</Company>
-    <Description>Windows debloating an optimization utility.</Description>
+    <Description>Windows debloating and optimization utility.</Description>
     <NeutralLanguage>en-US</NeutralLanguage>
     <UseWindowsForms>False</UseWindowsForms>
     <Platforms>AnyCPU;x64</Platforms>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -65,13 +66,26 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Categories.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+	  <None Include="Impacts.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+	  <None Include="RecommendationLevels.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Resources\WinClean.png" />
     <Resource Include="Resources\WinClean.ico" />
   </ItemGroup>
 	
   <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="27.2.1" />
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.3.0" />
+    <PackageReference Include="CsvHelper" Version="28.0.1" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.4.0" />
+    <PackageReference Include="Octokit" Version="2.0.1" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageReference Include="System.Management" Version="6.0.0" />
     <PackageReference Include="WinCopies.WindowsAPICodePack.Shell" Version="3.10.0-preview" />
@@ -265,12 +279,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Categories.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Impacts.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -278,9 +286,6 @@
     <None Update="README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
-    </None>
-    <None Update="RecommendationLevels.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

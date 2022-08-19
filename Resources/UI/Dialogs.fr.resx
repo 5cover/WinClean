@@ -145,4 +145,10 @@
   <data name="ConfirmAbortOperationContent" xml:space="preserve">
     <value>Abandonner l'opération risque de rendre le système instable. Voulez-vous vraiment continuer ?</value>
   </data>
+  <data name="NewVersionAvailableMainInstruction" xml:space="preserve">
+    <value>Nouvelle version disponible</value>
+  </data>
+  <data name="NewVersionAvailableContent" xml:space="preserve">
+    <value>La version {0} est disponible. Envisagez de mettre à jour pour obtenir de nouveaux scripts et de nouvelles fonctionnalités. &lt;A&gt;Voir sur GitHub&lt;/A&gt;</value>
+  </data>
 </root>

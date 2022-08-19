@@ -1,12 +1,12 @@
-﻿using CsvHelper;
-using CsvHelper.Configuration;
-
-using Scover.WinClean.BusinessLogic;
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
+
+using CsvHelper;
+using CsvHelper.Configuration;
+
+using Scover.WinClean.BusinessLogic;
 
 namespace Scover.WinClean.Presentation;
 
@@ -68,9 +68,10 @@ public class Logger
         });
         _csvWriter.Flush(); // This is to force the writer to be done when leaving the method.
     }
-    
+
     /// <summary>Opens the current log file.</summary>
     public void OpenLogs() => DataAccess.Helpers.Open(_currentLogFile.FullName);
+
     private bool CanLogFileBeDeleted(FileInfo logFile)
         => DateTime.TryParseExact(Path.GetFileNameWithoutExtension(logFile.Name), DateTimeFilenameFormat,
                                   DateTimeFormatInfo.InvariantInfo, DateTimeStyles.None, out _) && logFile.Name != _currentLogFile.Name;

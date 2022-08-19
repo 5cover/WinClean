@@ -64,7 +64,11 @@ public class ProgressDialog : Dialog
     /// <summary>Closes this dialog.</summary>
     public void Close()
     {
-        if (Handle == IntPtr.Zero) return;
+        if (Handle == IntPtr.Zero)
+        {
+            return;
+        }
+
         IsClosed = true;
         GetButton(Button.Stop).Click();
     }

@@ -2,9 +2,21 @@
 
 public interface IScriptMetadataDeserializer
 {
-    IEnumerable<Category> MakeCategories();
+    /// <summary>Deserializes a collection of categories from the specified stream.</summary>
+    /// <param name="stream">A stream with read access.</param>
+    /// <exception cref="InvalidDataException"><paramref name="stream"/> points to invalid data.</exception>
+    /// <returns>A collection of deserialized <see cref="Category"/> objects.</returns>
+    IEnumerable<Category> MakeCategories(Stream stream);
 
-    IEnumerable<Impact> MakeImpacts();
+    /// <summary>Deserializes a collection of impacts from the specified stream.</summary>
+    /// <param name="stream">A stream with read access.</param>
+    /// <exception cref="InvalidDataException"><paramref name="stream"/> points to invalid data.</exception>
+    /// <returns>A collection of deserialized <see cref="Impact"/> objects.</returns>
+    IEnumerable<Impact> MakeImpacts(Stream stream);
 
-    IEnumerable<RecommendationLevel> MakeRecommendationLevels();
+    /// <summary>Deserializes a collection of recommendation levels from the specified stream.</summary>
+    /// <param name="stream">A stream with read access.</param>
+    /// <exception cref="InvalidDataException"><paramref name="stream"/> points to invalid data.</exception>
+    /// <returns>A collection of deserialized <see cref="RecommendationLevel"/> objects.</returns>
+    IEnumerable<RecommendationLevel> MakeRecommendationLevels(Stream stream);
 }

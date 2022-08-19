@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:businessLogic="clr-namespace:Scover.WinClean.BusinessLogic"
     xmlns:scripts="clr-namespace:Scover.WinClean.BusinessLogic.Scripts"
-    xmlns:converters="clr-namespace:Scover.WinClean.Presentation.Converters"
+    xmlns:converters="clr-namespace:Scover.WinClean.Presentation.Converters" d:DataContext="{d:DesignInstance Type=scripts:Script}"
     MinWidth="205"
     MinHeight="237.92"
     Content="{Binding Selected, RelativeSource={RelativeSource Self}}"
