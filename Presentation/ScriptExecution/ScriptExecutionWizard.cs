@@ -64,7 +64,7 @@ public class ScriptExecutionWizard
             return;
         }
 
-        if (result.ClickedCommandLink == yes)
+        if (ReferenceEquals(result.ClickedCommandLink, yes))
         {
             try
             {
@@ -138,7 +138,7 @@ public class ScriptExecutionWizard
 
         // true if user chose to enable system restore; false if user chose to continue anyway; null if the user canceled or
         // closed the dialog.
-        return result.WasClosed || result.ClickedButton == Button.Cancel ? null : result.ClickedCommandLink == enable;
+        return result.WasClosed || result.ClickedButton == Button.Cancel ? null : ReferenceEquals(result.ClickedCommandLink, enable);
     }
 
     private static bool ShowHungScriptDialog(string scriptName)
@@ -164,9 +164,16 @@ public class ScriptExecutionWizard
 
     private void ShowCompletedDialog(int elapsedSeconds, bool autoRestart)
     {
-        using CompletedDialog completed = new(_scripts.Count, TimeSpan.FromSeconds(elapsedSeconds));
+        using Dialog completedDialog = new(Button.Restart, Button.OK)
+        {
+            ExpandedInformation = CompletedDialog.ExpandedInformation.FormatWith(_scripts.Count, TimeSpan.FromSeconds(elapsedSeconds)),
+            StartExpanded = AppInfo.Settings.DetailsAfterExecution,
+            MainInstruction = CompletedDialog.MainInstruction,
+            Content = CompletedDialog.Content,
+        };
+        completedDialog.ExpandButtonClicked += (_, _) => AppInfo.Settings.DetailsAfterExecution ^= true;
 
-        if (autoRestart || completed.ShowDialog().ClickedButton == Button.Restart)
+        if (autoRestart || completedDialog.ShowDialog().ClickedButton == Button.Restart)
         {
             RebootForApplicationMaintenance();
         }
