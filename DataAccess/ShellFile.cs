@@ -1,12 +1,11 @@
 ﻿using Microsoft.WindowsAPICodePack.PropertySystem;
-using Microsoft.WindowsAPICodePack.Shell;
 
 namespace Scover.WinClean.DataAccess;
 
-/// <summary>Wrapper for <see cref="ShellFile"/>.</summary>
+/// <summary>Wrapper for <see cref="Microsoft.WindowsAPICodePack.Shell.ShellFile"/>.</summary>
 public class ShellFile : IDisposable
 {
-    private readonly ShellFile _shFile;
+    private readonly Microsoft.WindowsAPICodePack.Shell.ShellFile _shFile;
 
     public ShellFile(string path) => _shFile = new(path);
 
