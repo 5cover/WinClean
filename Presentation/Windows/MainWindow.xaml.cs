@@ -72,7 +72,7 @@ public partial class MainWindow
                     Logs.InvalidScriptData.FormatWith(Path.GetFileName(filePath)).Log(LogLevel.Error);
 
                     using Dialog invalidScriptData = DialogFactory.MakeInvalidScriptDataDialog(ex, filePath, Button.Retry, Button.Ignore);
-                    if (invalidScriptData.ShowDialog() != Button.Retry)
+                    if (invalidScriptData.ShowDialog().ClickedButton != Button.Retry)
                     {
                         break;
                     }
@@ -85,7 +85,7 @@ public partial class MainWindow
                         Content = WinClean.Resources.UI.Dialogs.ConfirmScriptOverwriteContent
                     };
                     overwrite.DefaultButton = Button.Yes;
-                    allowOverwrite = overwrite.ShowDialog() == Button.Yes;
+                    allowOverwrite = overwrite.ShowDialog().ClickedButton == Button.Yes;
                 }
             }
         }

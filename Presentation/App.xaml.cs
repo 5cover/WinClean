@@ -27,9 +27,9 @@ public partial class App
         invalidScriptData.DefaultButton = Button.Retry;
         using Dialog deleteScript = DialogFactory.MakeScriptDeletionConfirmation();
 
-        invalidScriptData.SetConfirmation(Button.DeleteScript, () => deleteScript.ShowDialog() == Button.Yes);
+        invalidScriptData.SetConfirmation(Button.DeleteScript, () => deleteScript.ShowDialog().ClickedButton == Button.Yes);
 
-        Button? result = invalidScriptData.ShowDialog();
+        Button? result = invalidScriptData.ShowDialog().ClickedButton;
         if (result == Button.DeleteScript)
         {
             File.Delete(path);
@@ -50,7 +50,7 @@ public partial class App
             MainIcon = TaskDialogIcon.Error,
             Content = WinClean.Resources.UI.Dialogs.UnhandledExceptionDialogContent.FormatWith(e.Message),
             ExpandedInformation = e.ToString(),
-            EnableHyperlinks = true
+            AreHyperlinksEnabled = true
         };
         unhandledExceptionDialog.SetConfirmation(Button.CopyDetails, () =>
         {
@@ -78,9 +78,9 @@ public partial class App
                 Content = WinClean.Resources.UI.Dialogs
                           .NewVersionAvailableContent.FormatWith(SourceControlClient.Instance.Value.LatestVersionName),
                 AllowDialogCancellation = true,
-                MinimizeBox = true,
+                ShowMinimizeBox = true,
                 MainIcon = TaskDialogIcon.Information,
-                EnableHyperlinks = true
+                AreHyperlinksEnabled = true
             };
             newVersionAvailableDialog.HyperlinkClicked += (_, e) => Helpers.Open(SourceControlClient.Instance.Value.LatestVersionUrl);
 
@@ -90,7 +90,7 @@ public partial class App
         AppInfo.ReadAppFileRetryOrFail = (ex, verb, info) =>
         {
             using FSErrorDialog dialog = new(ex, verb, info, Button.Retry, Button.Exit);
-            return dialog.ShowDialog() == Button.Retry;
+            return dialog.ShowDialog().ClickedButton == Button.Retry;
         };
 
         Current.DispatcherUnhandledException += (_, args) => ShowUnhandledExceptionDialog(args.Exception);

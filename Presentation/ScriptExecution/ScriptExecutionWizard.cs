@@ -37,30 +37,34 @@ public class ScriptExecutionWizard
     {
         Happenings.ScriptExecution.SetAsHappening();
 
-        using TaskDialog restorePointDialog = new()
+        CommandLink yes = new()
         {
-            ButtonStyle = TaskDialogButtonStyle.CommandLinks,
+            Text = SystemRestorePoint.CommandLinkYes,
+            Note = SystemRestorePoint.CommandLinkYesNote
+        };
+
+        using CommandLinkDialog restorePointDialog = new()
+        {
             MainInstruction = SystemRestorePoint.MainInstruction,
             CustomMainIcon = Helpers.GetRestorePointIcon(),
-            Buttons =
+            CommandLinks =
             {
-                new(ButtonType.Cancel),
-                new(SystemRestorePoint.CommandLinkYes)
+                yes,
+                new()
                 {
-                    Default = true,
-                    CommandLinkNote = SystemRestorePoint.CommandLinkYesNote
-                },
-                new(SystemRestorePoint.CommandLinkNo)
-            }
+                    Text = SystemRestorePoint.CommandLinkNo
+                }
+            },
+            DefaultCommandLink = yes
         };
-        TaskDialogButton clickedButton = restorePointDialog.ShowDialog();
+        DialogResult result = restorePointDialog.ShowDialog();
 
-        if (clickedButton is null || clickedButton == restorePointDialog.Buttons[0])
+        if (result.WasClosed || result.ClickedButton == Button.Cancel)
         {
             return;
         }
 
-        if (clickedButton == restorePointDialog.Buttons[1])
+        if (result.ClickedCommandLink == yes)
         {
             try
             {
@@ -70,14 +74,14 @@ public class ScriptExecutionWizard
             {
                 Logs.RestorePointCreationError.FormatWith(e.Message).Log(LogLevel.Error);
 
-                bool? result = ShowEnableSystemRestoreDialog();
+                bool? enableSystemRestore = ShowEnableSystemRestoreDialog();
 
-                if (result is null)
+                if (enableSystemRestore is null)
                 {
                     return;
                 }
 
-                if (result.Value)
+                if (enableSystemRestore.Value)
                 {
                     RestorePoint.EnableSystemRestore();
                     Logs.SystemRestoreEnabled.Log(LogLevel.Info);
@@ -110,41 +114,43 @@ public class ScriptExecutionWizard
 
     private static bool? ShowEnableSystemRestoreDialog()
     {
-        using TaskDialog enableSystemRestore = new()
+        CommandLink enable = new()
         {
-            ButtonStyle = TaskDialogButtonStyle.CommandLinks,
+            Text = SystemProtectionDisabled.CommandLinkEnable,
+            Note = SystemProtectionDisabled.CommandLinkEnableNote
+        };
+
+        using CommandLinkDialog enableSystemRestore = new()
+        {
             MainInstruction = SystemProtectionDisabled.MainInstruction,
             MainIcon = TaskDialogIcon.Error,
-            Buttons =
+            CommandLinks =
             {
-                new(ButtonType.Cancel),
-                new(SystemProtectionDisabled.CommandLinkEnable)
+                enable,
+                new()
                 {
-                    CommandLinkNote = SystemProtectionDisabled.CommandLinkEnableNote
-                },
-                new(SystemProtectionDisabled.CommandLinkContinueAnyway)
-                {
-                    CommandLinkNote = SystemProtectionDisabled.CommandLinkContinueAnywayNote
+                    Text = SystemProtectionDisabled.CommandLinkContinueAnyway,
+                    Note = SystemProtectionDisabled.CommandLinkContinueAnywayNote
                 }
             }
         };
-        TaskDialogButton? result = enableSystemRestore.ShowDialog();
+        DialogResult result = enableSystemRestore.ShowDialog();
 
         // true if user chose to enable system restore; false if user chose to continue anyway; null if the user canceled or
         // closed the dialog.
-        return result is null || result == enableSystemRestore.Buttons[0] ? null : result == enableSystemRestore.Buttons[1];
+        return result.WasClosed || result.ClickedButton == Button.Cancel ? null : result.ClickedCommandLink == enable;
     }
 
     private static bool ShowHungScriptDialog(string scriptName)
     {
-        using Dialog hungScriptDialog = new(Button.EndTask, Button.Ignore)
+        using TimeoutDialog hungScriptDialog = new(Button.EndTask, Button.Ignore)
         {
             MainIcon = TaskDialogIcon.Warning,
             Content = Resources.UI.Dialogs.HungScriptDialogContent.FormatWith(scriptName, AppInfo.Settings.ScriptTimeout),
             Timeout = TimeSpan.FromSeconds(10),
             TimeoutButton = Button.Ignore
         };
-        return hungScriptDialog.ShowDialog() != Button.EndTask;
+        return hungScriptDialog.ShowDialog().ClickedButton != Button.EndTask;
     }
 
     private async Task ExecuteScriptsAsync()
@@ -160,7 +166,7 @@ public class ScriptExecutionWizard
     {
         using CompletedDialog completed = new(_scripts.Count, TimeSpan.FromSeconds(elapsedSeconds));
 
-        if (autoRestart || completed.ShowDialog() == Button.Restart)
+        if (autoRestart || completed.ShowDialog().ClickedButton == Button.Restart)
         {
             RebootForApplicationMaintenance();
         }
@@ -177,7 +183,7 @@ public class ScriptExecutionWizard
             await ExecuteScriptsAsync().ConfigureAwait(true);
             progress.Close();
         };
-        bool completed = progress.Show() != Button.Stop;
+        bool completed = progress.Show().ClickedButton != Button.Stop;
         if (!completed)
         {
             executor.CancelScriptExecution();

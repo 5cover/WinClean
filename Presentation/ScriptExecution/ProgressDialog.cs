@@ -18,11 +18,11 @@ public class ProgressDialog : Dialog
         _scripts = scripts;
 
         AllowDialogCancellation = false;
-        MinimizeBox = true;
+        ShowMinimizeBox = true;
         ExpandedInformation = Resources.UI.ProgressDialog.ExpandedInformation.FormatWith(null, null);
-        ExpandedByDefault = AppInfo.Settings.DetailsDuringExecution;
-        ProgressBarMaximum = scripts.Count;
-        ProgressBarStyle = ProgressBarStyle.ProgressBar;
+        StartExpanded = AppInfo.Settings.DetailsDuringExecution;
+        Dlg.ProgressBarMaximum = scripts.Count;
+        Dlg.ProgressBarStyle = ProgressBarStyle.ProgressBar;
         Content = Resources.UI.ProgressDialog.Content;
         VerificationText = Resources.UI.ProgressDialog.VerificationText;
 
@@ -34,10 +34,10 @@ public class ProgressDialog : Dialog
             MainIcon = TaskDialogIcon.Warning,
             Content = Resources.UI.Dialogs.ConfirmAbortOperationContent,
             DefaultButton = Button.No
-        }.ShowDialog() == Button.Yes);
+        }.ShowDialog().ClickedButton == Button.Yes);
 
-        RaiseTimerEvent = true;
-        Timer += (_, e) =>
+        Dlg.RaiseTimerEvent = true;
+        Dlg.Timer += (_, e) =>
         {
             _elapsed = TimeSpan.FromMilliseconds(e.TickCount);
             UpdateExpandedInfo();
@@ -56,21 +56,9 @@ public class ProgressDialog : Dialog
         set
         {
             _scriptIndex = value;
-            ProgressBarValue = value;
+            Dlg.ProgressBarValue = value;
             UpdateExpandedInfo();
         }
-    }
-
-    /// <summary>Closes this dialog.</summary>
-    public void Close()
-    {
-        if (Handle == IntPtr.Zero)
-        {
-            return;
-        }
-
-        IsClosed = true;
-        GetButton(Button.Stop).Click();
     }
 
     private void UpdateExpandedInfo()

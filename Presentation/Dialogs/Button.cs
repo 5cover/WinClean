@@ -30,6 +30,8 @@ public enum Button
 public static class ButtonExtensions
 {
     public static string GetText(this Button button)
-        => (Buttons.ResourceManager.GetString(Enum.GetName(button) ?? throw new ArgumentException(DevException.EnumValueNoName, nameof(button)),
-                                                          CultureInfo.CurrentUICulture) ?? string.Empty).Replace('_', '&'); // TaskDialog uses '&' for access key chars.
+        => (Buttons.ResourceManager
+                   .GetString(Enum.GetName(button) ?? throw new ArgumentException(DevException.EnumValueNoName, nameof(button)), CultureInfo.CurrentUICulture)
+                   ?? string.Empty)
+                   .Replace('_', '&'); // TaskDialog uses '&' for access key chars.
 }

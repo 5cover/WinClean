@@ -9,7 +9,7 @@ public class CompletedDialog : Dialog
     public CompletedDialog(int scriptsCount, TimeSpan elapsed) : base(Button.Restart, Button.OK)
     {
         ExpandedInformation = Resources.UI.CompletedDialog.ExpandedInformation.FormatWith(scriptsCount, elapsed);
-        ExpandedByDefault = AppInfo.Settings.DetailsAfterExecution;
+        StartExpanded = AppInfo.Settings.DetailsAfterExecution;
         MainInstruction = Resources.UI.CompletedDialog.MainInstruction;
         Content = Resources.UI.CompletedDialog.Content;
 

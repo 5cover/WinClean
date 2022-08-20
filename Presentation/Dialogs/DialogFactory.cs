@@ -17,7 +17,7 @@ public static class DialogFactory
             MainIcon = TaskDialogIcon.Error,
             MainInstruction = InvalidScript.MainInstruction,
             Content = InvalidScript.Content.FormatWith(Path.GetFileName(path)),
-            EnableHyperlinks = true,
+            AreHyperlinksEnabled = true,
             ExpandedInformation = e.ToString()
         };
         dialog.HyperlinkClicked += (_, _) => Helpers.Open(path);
