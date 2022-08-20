@@ -6,7 +6,8 @@ using Scover.WinClean.Resources.UI;
 namespace Scover.WinClean.Presentation.Dialogs;
 
 /// <summary>
-/// Implements factory methods for commonly used dialogs. Helps making the UI feel more consistent by centralizing dialog creation.
+/// Implements factory methods for commonly used dialogs than can have different buttons. Helps making the UI feel more
+/// consistent by centralizing dialog creation.
 /// </summary>
 public static class DialogFactory
 {
@@ -23,12 +24,4 @@ public static class DialogFactory
         dialog.HyperlinkClicked += (_, _) => Helpers.Open(path);
         return dialog;
     }
-
-    public static Dialog MakeScriptDeletionConfirmation() => new(Button.Yes, Button.No)
-    {
-        AllowDialogCancellation = true,
-        MainIcon = TaskDialogIcon.Warning,
-        Content = Resources.UI.Dialogs.ConfirmScriptDeletionContent,
-        DefaultButton = Button.No
-    };
 }

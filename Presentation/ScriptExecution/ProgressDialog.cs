@@ -26,7 +26,7 @@ public class ProgressDialog : Dialog
         Content = Resources.UI.ProgressDialog.Content;
         VerificationText = Resources.UI.ProgressDialog.VerificationText;
 
-        VerificationClicked += (_, _) => AutoRestart = IsVerificationChecked;
+        VerificationClicked += (_, _) => RestartQueried = IsVerificationChecked;
         ExpandButtonClicked += (_, _) => AppInfo.Settings.DetailsDuringExecution ^= true;
 
         SetConfirmation(Button.Stop, () => new Dialog(Button.Yes, Button.No)
@@ -44,10 +44,10 @@ public class ProgressDialog : Dialog
         };
     }
 
-    public bool AutoRestart { get; private set; }
-
     /// <summary>Gets the number of elapsed seconds since the scripts started executing.</summary>
     public int ElapsedSeconds => Convert.ToInt32(_elapsed.TotalSeconds);
+
+    public bool RestartQueried { get; private set; }
 
     /// <summary>The index of the currently executing script.</summary>
     public int ScriptIndex

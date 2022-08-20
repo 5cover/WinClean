@@ -25,7 +25,14 @@ public partial class App
 
         using Dialog invalidScriptData = DialogFactory.MakeInvalidScriptDataDialog(e, path, Button.DeleteScript, Button.Retry, Button.Ignore);
         invalidScriptData.DefaultButton = Button.Retry;
-        using Dialog deleteScript = DialogFactory.MakeScriptDeletionConfirmation();
+
+        using Dialog deleteScript = new(Button.Yes, Button.No)
+        {
+            AllowDialogCancellation = true,
+            MainIcon = TaskDialogIcon.Warning,
+            Content = WinClean.Resources.UI.Dialogs.ConfirmScriptDeletionContent,
+            DefaultButton = Button.No
+        };
 
         invalidScriptData.SetConfirmation(Button.DeleteScript, () => deleteScript.ShowDialog().ClickedButton == Button.Yes);
 

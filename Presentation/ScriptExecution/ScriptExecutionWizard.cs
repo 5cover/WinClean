@@ -57,14 +57,14 @@ public class ScriptExecutionWizard
             },
             DefaultCommandLink = yes
         };
-        DialogResult result = restorePointDialog.ShowDialog();
+        DialogResult restorePointDialogResult = restorePointDialog.ShowDialog();
 
-        if (result.WasClosed || result.ClickedButton == Button.Cancel)
+        if (restorePointDialogResult.WasClosed || restorePointDialogResult.ClickedButton == Button.Cancel)
         {
             return;
         }
 
-        if (ReferenceEquals(result.ClickedCommandLink, yes))
+        if (ReferenceEquals(restorePointDialogResult.ClickedCommandLink, yes))
         {
             try
             {
@@ -90,10 +90,10 @@ public class ScriptExecutionWizard
             }
         }
 
-        (bool completed, int elapsedSeconds, bool autoRestart) = ShowProgressDialog();
+        (bool completed, int elapsedSeconds, bool restartQueried) = ShowProgressDialog();
         if (completed)
         {
-            ShowCompletedDialog(elapsedSeconds, autoRestart);
+            ShowCompletedDialog(elapsedSeconds, restartQueried);
         }
     }
 
@@ -162,7 +162,7 @@ public class ScriptExecutionWizard
         Logs.ScriptsExecuted.Log(LogLevel.Info);
     }
 
-    private void ShowCompletedDialog(int elapsedSeconds, bool autoRestart)
+    private void ShowCompletedDialog(int elapsedSeconds, bool restartQueried)
     {
         using Dialog completedDialog = new(Button.Restart, Button.OK)
         {
@@ -173,13 +173,13 @@ public class ScriptExecutionWizard
         };
         completedDialog.ExpandButtonClicked += (_, _) => AppInfo.Settings.DetailsAfterExecution ^= true;
 
-        if (autoRestart || completedDialog.ShowDialog().ClickedButton == Button.Restart)
+        if (restartQueried || completedDialog.ShowDialog().ClickedButton == Button.Restart)
         {
             RebootForApplicationMaintenance();
         }
     }
 
-    private (bool completed, int elapsedSeconds, bool autoRestart) ShowProgressDialog()
+    private (bool completed, int elapsedSeconds, bool restartQueried) ShowProgressDialog()
     {
         using ProgressDialog progress = new(_scripts);
 
@@ -196,6 +196,6 @@ public class ScriptExecutionWizard
             executor.CancelScriptExecution();
             Logs.ScriptExecutionCanceled.Log(LogLevel.Info);
         }
-        return (completed, progress.ElapsedSeconds, progress.AutoRestart);
+        return (completed, progress.ElapsedSeconds, progress.RestartQueried);
     }
 }

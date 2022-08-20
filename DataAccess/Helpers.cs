@@ -34,17 +34,21 @@ public static class Helpers
     /// A copy of this instance in which the format items have been replaced by the string representation of the corresponding objects.
     /// </returns>
     /// <remarks>Uses <see cref="CultureInfo.CurrentCulture"/> as formatting information.</remarks>
-    public static string FormatWith(this string format, params object?[] args) => string.Format(CultureInfo.CurrentCulture, format, args);
+    public static string FormatWith(this string format, params object?[] args)
+        => string.Format(CultureInfo.CurrentCulture, format, args);
 
     /// <remarks>Uses <see cref="CultureInfo.InvariantCulture"/> formatting information.</remarks>
     /// <inheritdoc cref="FormatWith(string, object[])"/>
-    public static string FormatWithInvariant(this string format, params object?[] args) => string.Format(CultureInfo.InvariantCulture, format, args);
+    public static string FormatWithInvariant(this string format, params object?[] args)
+        => string.Format(CultureInfo.InvariantCulture, format, args);
 
     /// <summary>Returns the path of the PowerShell executable on this system.</summary>
-    public static string GetPowerShellPath() => Path.Join(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe");
+    public static string GetPowerShellPath()
+        => Path.Join(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe");
 
     /// <summary>Fetches the restore point icon as defined in rstrui.exe</summary>
-    public static Icon GetRestorePointIcon() => Icon.ExtractAssociatedIcon(Path.Join(Environment.SystemDirectory, "rstrui.exe")).AssertNotNull();
+    public static Icon GetRestorePointIcon()
+        => Icon.ExtractAssociatedIcon(Path.Join(Environment.SystemDirectory, "rstrui.exe")).AssertNotNull();
 
     /// <summary>Checks if an exception is related to the filesystem.</summary>
     /// <returns>
