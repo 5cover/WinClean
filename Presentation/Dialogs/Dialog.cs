@@ -41,7 +41,6 @@ public class Dialog : IDisposable
     /// </remarks>
     /// <param name="buttons">The buttons to add to the dialog.</param>
     /// <exception cref="ArgumentException">The same button is specified multiple times.</exception>
-
     public Dialog(IEnumerable<Button> buttons)
     {
         Dlg.WindowTitle = AppInfo.Name;
