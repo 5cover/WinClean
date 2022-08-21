@@ -54,18 +54,18 @@ public class Logger
                            [CallerLineNumber] int callLine = 0,
                            [CallerFilePath] string callFile = "")
     {
-        lvl ??= LogLevel.Verbose;
         _csvWriter.NextRecord();
         _csvWriter.WriteRecord(new LogEntry
-        {
-            Date = DateTime.Now,
-            Level = lvl.InvariantName,
-            Happening = Happening ?? string.Empty,
-            Message = message,
-            Caller = caller,
-            CallFile = Path.GetFileName(callFile), // Only keep the filename of the source file to avoid showing personal information about the path of the project.
-            CallLine = callLine
-        });
+        (
+            (lvl ?? LogLevel.Verbose).ToString(),
+            DateTime.Now,
+            Happening ?? string.Empty,
+            message,
+            caller,
+            callLine,
+            // Only keep the filename of the source file to avoid showing personal information about the path of the project.
+            Path.GetFileName(callFile)
+        ));
         _csvWriter.Flush(); // This is to force the writer to be done when leaving the method.
     }
 
@@ -76,15 +76,12 @@ public class Logger
         => DateTime.TryParseExact(Path.GetFileNameWithoutExtension(logFile.Name), DateTimeFilenameFormat,
                                   DateTimeFormatInfo.InvariantInfo, DateTimeStyles.None, out _) && logFile.Name != _currentLogFile.Name;
 
-    ///<remarks>The fields are in the order we want the CSV header to be in. Topmost = leftmost</remarks>
-    private record LogEntry
-    {
-        public string Level { get; init; } = LogLevel.Verbose.Name;
-        public DateTime Date { get; init; }
-        public string Happening { get; init; } = string.Empty;
-        public string Message { get; init; } = string.Empty;
-        public string Caller { get; init; } = string.Empty;
-        public int CallLine { get; init; }
-        public string CallFile { get; init; } = string.Empty;
-    }
+    ///<remarks>The properties are in the order we want the CSV header to be in. Topmost = leftmost.</remarks>
+    private record LogEntry(string Level,
+                            DateTime Date,
+                            string Happening,
+                            string Message,
+                            string Caller,
+                            int CallLine,
+                            string CallFile);
 }
