@@ -14,7 +14,7 @@ Allows the average Windows user to improve performance in a few clicks.
 ## Features
 - Run 33 *Batch*, *PowerShell*, and *Registry Editor* debloating scripts directly from the GUI.
 - Add custom scripts to futher debloat the system.
-- But if you don't have the time to do all of that, simply click on "Select scripts", "Recommended", "Yes", and "Run Scripts"
+- But if you don't have the time to do all of that, simply click on "Select scripts", "Recommended", "Yes", and "Execute Scripts"
 - Inno Setup Installer
 
 ## Specs
