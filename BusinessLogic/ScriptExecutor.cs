@@ -1,4 +1,6 @@
-﻿using Scover.WinClean.BusinessLogic.Scripts;
+﻿using System.Diagnostics;
+
+using Scover.WinClean.BusinessLogic.Scripts;
 
 namespace Scover.WinClean.BusinessLogic;
 
@@ -27,12 +29,19 @@ public class ScriptExecutor
     public async Task ExecuteScriptsAsync(IReadOnlyList<Script> scripts, HungScriptCallback keepRunningOrKill)
     {
         _cts = new();
+
+        Stopwatch stopwatch = new();
+
         await Task.Run(() =>
         {
             for (int scriptIndex = 0; scriptIndex < scripts.Count && !_cts.IsCancellationRequested; ++scriptIndex)
             {
+                stopwatch.Restart();
+
                 ReportProgress();
-                scripts[scriptIndex].Execute(keepRunningOrKill, _cts);
+                scripts[scriptIndex].Execute(keepRunningOrKill, _cts.Token);
+
+                scripts[scriptIndex].ExecutionTime = stopwatch.Elapsed;
 
                 void ReportProgress() => ((IProgress<ScriptExecutionProgressChangedEventArgs>)_progress).Report(new(scriptIndex));
             }

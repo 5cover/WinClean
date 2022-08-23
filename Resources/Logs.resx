@@ -125,14 +125,6 @@
     <value>Exiting the application.</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="FileSystemErrorAcessingScript" xml:space="preserve">
-    <value>A filesystem error occured while attempting to access script "{0}".</value>
-    <comment>0 : string : script filename@Invariant</comment>
-  </data>
-  <data name="NotepadOpened" xml:space="preserve">
-    <value>Notepad opened.</value>
-    <comment>@Invariant</comment>
-  </data>
   <data name="RebootingForAppMaintenance" xml:space="preserve">
     <value>Rebooting for application maintenance...</value>
     <comment>@Invariant</comment>
@@ -143,15 +135,15 @@
   </data>
   <data name="RestorePointCreationError" xml:space="preserve">
     <value>Error during restore point creation: {0}</value>
-    <comment>0 : string : message of the exception@Invariant</comment>
+    <comment>0 : message of the exception@Invariant</comment>
   </data>
   <data name="ScriptDeleted" xml:space="preserve">
     <value>Script "{0}" deleted.</value>
-    <comment>0 : string : script filename@Invariant</comment>
+    <comment>0 : script filename@Invariant</comment>
   </data>
   <data name="ScriptExecuting" xml:space="preserve">
-    <value>Script "{0}" executing</value>
-    <comment>0 : string : script filename@Invariant</comment>
+    <value>Script "{0}" executing...</value>
+    <comment>0 : script filename@Invariant</comment>
   </data>
   <data name="ScriptExecutionCanceled" xml:space="preserve">
     <value>Script execution canceled.</value>
@@ -161,28 +153,24 @@
     <value>Script(s) executed sucessfully.</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="ScriptsLoaded" xml:space="preserve">
-    <value>{0} script(s) loaded.</value>
-    <comment>0 : int : number of scripts loaded@Invariant</comment>
-  </data>
   <data name="Started" xml:space="preserve">
     <value>The application started.</value>
     <comment>@Invariant</comment>
   </data>
   <data name="StartingExecutionOfScripts" xml:space="preserve">
     <value>Starting the execution of {0} script(s)...</value>
-    <comment>0 : int : number of scripts to execute@Invariant</comment>
+    <comment>0 : number of scripts to execute@Invariant</comment>
   </data>
   <data name="InvalidScriptData" xml:space="preserve">
     <value>Script file "{0}" has invalid or missing data.</value>
-    <comment>0 : string : script filename@Invariant</comment>
+    <comment>0 : script filename@Invariant</comment>
   </data>
   <data name="UnhandledException" xml:space="preserve">
     <value>An unhandled exception occured: {0}</value>
-    <comment>0 : Exception : the unhandled exception@Invariant</comment>
+    <comment>0 : the unhandled exception@Invariant</comment>
   </data>
   <data name="SystemRestoreEnabled" xml:space="preserve">
-    <value>In order to create a restore point, system restore was enabled for all eligible drives.</value>
+    <value>System restore was enabled for all eligible drives to create a restore point.</value>
     <comment>@Invariant</comment>
   </data>
 </root>

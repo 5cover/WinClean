@@ -85,9 +85,9 @@
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="28.0.1" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.4.0" />
+    <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.2.6" />
     <PackageReference Include="Octokit" Version="2.0.1" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
-    <PackageReference Include="System.Management" Version="6.0.0" />
     <PackageReference Include="WinCopies.WindowsAPICodePack.Shell" Version="3.10.0-preview" />
   </ItemGroup>
 
@@ -111,11 +111,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>FileSystemVerbs.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Happenings.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Happenings.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\LogLevel.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -216,10 +211,6 @@
     <EmbeddedResource Update="Resources\FormattableStrings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>FormattableStrings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Happenings.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Happenings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\LogLevel.resx">
       <Generator>ResXFileCodeGenerator</Generator>

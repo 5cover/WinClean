@@ -10,6 +10,4 @@ public static class LoggerExtensions
                            [CallerLineNumber] int callLine = 0,
                            [CallerFilePath] string callFile = "")
         => Logger.Instance.Log(message, lvl, caller, callLine, callFile);
-
-    public static void SetAsHappening(this string str) => Logger.Instance.Happening = str;
 }

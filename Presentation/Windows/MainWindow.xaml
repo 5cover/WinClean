@@ -55,7 +55,7 @@
             VerticalAlignment="Center">
             <MenuItem Header="{x:Static ui:MainWindow.MenuFile}">
                 <MenuItem Click="MenuOpenScriptsDirClick" Header="{x:Static ui:MainWindow.MenuOpenScriptsDir}" />
-                <MenuItem Click="MenuOpenLogsClick" Header="{x:Static ui:MainWindow.MenuOpenLogs}" />
+                <MenuItem Click="MenuOpenLogsDirClick" Header="{x:Static ui:MainWindow.MenuOpenLogsDir}" />
                 <MenuItem Click="MenuClearLogsClick" Header="{x:Static ui:MainWindow.MenuClearLogs}" />
                 <MenuItem Click="MenuExitClick" Header="{x:Static ui:Buttons.Exit}" />
             </MenuItem>

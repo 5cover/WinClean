@@ -117,10 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConfirmProgramExitContent" xml:space="preserve">
-    <value>Exit {0}?</value>
-    <comment>0 : name of the program about to be exited</comment>
-  </data>
   <data name="ConfirmScriptDeletionContent" xml:space="preserve">
     <value>Are you sure you want to delete this script? This action is irreversible.</value>
   </data>
@@ -148,7 +144,7 @@
   <data name="UnhandledExceptionDialogContent" xml:space="preserve">
 	  <value>An unhandled exception occured: {0}
 &lt;A HREF="https://github.com/5cover/WinClean/issues/new"&gt;Report this issue...&lt;/A&gt;</value>
-    <comment>0 : string : exception message</comment>
+    <comment>0 : exception message</comment>
   </data>
   <data name="ConfirmAbortOperationContent" xml:space="preserve">
     <value>Aborting the operation may make the system unstable. Are you sure you want to continue?</value>

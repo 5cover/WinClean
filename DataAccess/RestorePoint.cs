@@ -1,28 +1,9 @@
 ﻿using System.Management;
+using System.Management.Automation;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Scover.WinClean.DataAccess;
-
-public enum EventType
-{
-    None,
-
-    /// <summary>
-    /// A system change has begun. A subsequent nested call does not create a new restore point.
-    /// <para>Subsequent calls must use <see cref="EndNestedSystemChange"/>, not <see cref="EndSystemChange"/>.</para>
-    /// </summary>
-    BeginNestedSystemChange = 0x66,
-
-    /// <summary>A system change has begun.</summary>
-    BeginSystemChange = 0x64,
-
-    /// <summary>A system change has ended.</summary>
-    EndNestedSystemChange = 0x67,
-
-    /// <summary>A system change has ended.</summary>
-    EndSystemChange = 0x65
-}
 
 /// <seealso href="https://stackoverflow.com/a/42733327/11718061"/>
 public class RestorePoint
@@ -45,20 +26,19 @@ public class RestorePoint
 
     /// <summary>Enables system restore for all eligible drives.</summary>
     public static void EnableSystemRestore()
-    {
         // Some drives are non-eligible for system restore, but Enable-ComputerRestore will still enable the eligible ones.
-        StringBuilder sb = new(@"Enable-ComputerRestore -Drive """);
-        sb.AppendJoin(@"\"",""", DriveInfo.GetDrives().Select(di => di.Name))
-            .Append(@"\""");
-
-        Helpers.ExecutePowerShellCommand(sb.ToString());
-    }
+        => PowerShell.Create()
+                  .AddCommand("Enable-ComputerRestore")
+                  .AddParameter("Drive", string.Join(',', DriveInfo.GetDrives().Select(di => @$"""{di.Name}\""")))
+                  .Invoke();
 
     /// <summary>Creates a restore point on the local system.</summary>
     /// <exception cref="ManagementException">Access denied.</exception>
     /// <exception cref="InvalidOperationException">System restore is disabled.</exception>
     public void Create()
     {
+        // Cannot use the CheckPoint-Computer cmdlet for creating the restore point because it only allows a restore point to be
+        // created every 24 hours.
         ManagementScope mScope = new(@"\\localhost\root\default");
         ManagementPath mPath = new("SystemRestore");
         ObjectGetOptions options = new();
@@ -79,25 +59,4 @@ public class RestorePoint
             throw new InvalidOperationException(Resources.DevException.SystemProtectionDisabled, e);
         }
     }
-}
-
-public enum RestorePointType
-{
-    /// <summary>An application has been installed.</summary>
-    ApplicationInstall = 0x0,
-
-    /// <summary>An application has been uninstalled.</summary>
-    ApplicationUninstall = 0x1,
-
-    /// <summary>
-    /// An application needs to delete the restore point it created. For example, an application would use this flag when a user
-    /// cancels an installation.
-    /// </summary>
-    CancelledOperation = 0xd,
-
-    /// <summary>A device driver has been installed.</summary>
-    DeviceDriverInstall = 0xa,
-
-    /// <summary>An application has had features added or removed.</summary>
-    ModifySettings = 0xc
 }

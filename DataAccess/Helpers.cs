@@ -16,18 +16,6 @@ public static class Helpers
         return t;
     }
 
-    /// <summary>Executes a single PowerShell command and waits until the command has finished executing.</summary>
-    /// <param name="command">The command to execute.</param>
-    public static void ExecutePowerShellCommand(string command)
-    {
-        using Process? powerShell = Process.Start(new ProcessStartInfo(GetPowerShellPath(), $"-Command {command}")
-        {
-            UseShellExecute = true,
-            WindowStyle = ProcessWindowStyle.Hidden
-        });
-        powerShell?.WaitForExit();
-    }
-
     /// <summary>Replaces the format items in this instance with the string representations of corresponding objects.</summary>
     /// <param name="args">An object array that contains zero or more objects to format.</param>
     /// <returns>
@@ -41,10 +29,6 @@ public static class Helpers
     /// <inheritdoc cref="FormatWith(string, object[])"/>
     public static string FormatWithInvariant(this string format, params object?[] args)
         => string.Format(CultureInfo.InvariantCulture, format, args);
-
-    /// <summary>Returns the path of the PowerShell executable on this system.</summary>
-    public static string GetPowerShellPath()
-        => Path.Join(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe");
 
     /// <summary>Fetches the restore point icon as defined in rstrui.exe</summary>
     public static Icon GetRestorePointIcon()
@@ -77,5 +61,15 @@ public static class Helpers
         {
             UseShellExecute = true
         });
+    }
+
+    /// <summary>Opens an Explorer window in the specified directory.</summary>
+    /// <param name="dirPath">
+    /// The directory the new Explorer window will be opened in. Can be <see langword="null"/> or empty to open Explorer to the
+    /// default directory (usually "My computer").
+    /// </param>
+    public static void OpenExplorerToDirectory(string? dirPath)
+    {
+        using Process? process = Process.Start("explorer", $"/root,{dirPath}");
     }
 }

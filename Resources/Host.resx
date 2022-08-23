@@ -101,7 +101,7 @@
     <value>The Windows Command line interpreter is a program that allows the entering of commands and then executes those commands to the operating system.</value>
   </data>
   <data name="PowerShellDescription" xml:space="preserve">
-    <value>PowerShell is an open source shell and scripting language built on top of Microsoft .NET technology.</value>
+    <value>Microsoft PowerShell is an open source shell and scripting language built on top of Microsoft .NET technology.</value>
   </data>
   <data name="RegeditDescription" xml:space="preserve">
     <value>The Windows Registry Editor is a graphical tool that enables authorized users to view the Windows registry and make changes.</value>

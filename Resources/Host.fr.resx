@@ -121,7 +121,7 @@
     <value>L'interpréteur de ligne de commande Windows est un programme qui permet de saisir des commandes, puis d'exécuter ces commandes sur le système d'exploitation.</value>
   </data>
   <data name="PowerShellDescription" xml:space="preserve">
-    <value>PowerShell est un shell open source et un langage de script construit sur la technologie Microsoft .NET.</value>
+    <value>Microsoft PowerShell est un shell open source et un langage de script construit sur la technologie Microsoft .NET.</value>
   </data>
   <data name="RegeditDescription" xml:space="preserve">
     <value>L'Éditeur du Registre Windows est un outil graphique qui permet aux utilisateurs autorisés d'afficher le Registre Windows et d'y apporter des modifications.</value>

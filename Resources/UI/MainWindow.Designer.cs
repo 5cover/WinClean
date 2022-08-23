@@ -124,6 +124,24 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Open _logs directory.
+        /// </summary>
+        public static string MenuOpenLogsDir {
+            get {
+                return ResourceManager.GetString("MenuOpenLogsDir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à _Open scripts directory.
+        /// </summary>
+        public static string MenuOpenScriptsDir {
+            get {
+                return ResourceManager.GetString("MenuOpenScriptsDir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à _Recommended.
         /// </summary>
         public static string MenuRecommended {
@@ -147,18 +165,6 @@ namespace Scover.WinClean.Resources.UI {
         public static string MenuSettings {
             get {
                 return ResourceManager.GetString("MenuSettings", resourceCulture);
-            }
-        }
-
-        public static string MenuOpenLogs {
-            get {
-                return ResourceManager.GetString("MenuOpenLogs", resourceCulture);
-            }
-        }
-
-        public static string MenuOpenScriptsDir {
-            get {
-                return ResourceManager.GetString("MenuOpenScriptsDir", resourceCulture);
             }
         }
     }

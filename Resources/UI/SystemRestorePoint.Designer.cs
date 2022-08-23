@@ -88,15 +88,6 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à What is a restore point?.
-        /// </summary>
-        public static string HelpLink {
-            get {
-                return ResourceManager.GetString("HelpLink", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Create a system restore point?.
         /// </summary>
         public static string MainInstruction {

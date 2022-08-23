@@ -1,12 +1,14 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
+using Scover.WinClean.BusinessLogic.Scripts.Hosts;
+
 using static System.Globalization.CultureInfo;
 
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
 /// <summary>A script that can be executed from a script host program.</summary>
-public class Script : INotifyPropertyChanged, IUserVisible
+public class Script : INotifyPropertyChanged, IScriptData
 {
     private RecommendationLevel _recommended;
     private bool _selected;
@@ -18,7 +20,8 @@ public class Script : INotifyPropertyChanged, IUserVisible
                   Category category,
                   RecommendationLevel recommended,
                   Impact impact,
-                  Host host)
+                  IHost host,
+                  TimeSpan executionTime)
     {
         _recommended = recommended;
         Category = category;
@@ -27,6 +30,7 @@ public class Script : INotifyPropertyChanged, IUserVisible
         Host = host;
         Impact = impact;
         LocalizedNames = name;
+        ExecutionTime = executionTime;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -45,8 +49,14 @@ public class Script : INotifyPropertyChanged, IUserVisible
         set => LocalizedDescriptions.Set(CurrentUICulture, value);
     }
 
+    /// <summary>Gets or sets an approximate of the time it would take to execute this script.</summary>
+    /// <value>
+    /// The estimated execution time of this script, or <see cref="AppInfo.Settings.ScriptTimeout"/> if the estimate is not available.
+    /// </value>
+    public TimeSpan ExecutionTime { get; set; }
+
     /// <summary>Gets or sets the host to use to run this script.</summary>
-    public Host Host { get; set; }
+    public IHost Host { get; set; }
 
     /// <summary>Gets or sets the impact of running this script on the system.</summary>
     public Impact Impact { get; set; }
@@ -104,7 +114,7 @@ public class Script : INotifyPropertyChanged, IUserVisible
     /// <summary>Executes the script.</summary>
     /// <inheritdoc cref="Host.ExecuteCode"/>
     /// <remarks>Returns when the script has finished executing or has been killed.</remarks>
-    public void Execute(HungScriptCallback keepRunningOrKill, CancellationTokenSource? cancellationToken)
+    public void Execute(HungScriptCallback keepRunningOrKill, CancellationToken cancellationToken)
         => Host.ExecuteCode(Code, Name, AppInfo.Settings.ScriptTimeout, keepRunningOrKill, cancellationToken);
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new(propertyName));

@@ -98,9 +98,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ExpandedInformation" xml:space="preserve">
-    <value>{0} scripts were executed successfully in {1:g}.</value>
-    <comment>0 : int : script count
-1 : TimeSpan : elapsed time
+    <value>{0} scripts were executed successfully.</value>
+    <comment>0 : script count
 </comment>
   </data>
   <data name="MainInstruction" xml:space="preserve">

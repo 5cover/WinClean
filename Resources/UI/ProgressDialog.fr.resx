@@ -122,7 +122,7 @@
   </data>
   <data name="ExpandedInformation" xml:space="preserve">
     <value>Script actuel : {0}
-Temps écoulé : {1:g}</value>
+Temps restant : {1:g}</value>
   </data>
   <data name="Content" xml:space="preserve">
     <value>Scripts en cours d'exécution. Cette opération peut prendre un certain temps.</value>

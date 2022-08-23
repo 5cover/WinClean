@@ -129,7 +129,4 @@
   <data name="CommandLinkNo" xml:space="preserve">
     <value>Ne pas créer de point de restauration</value>
   </data>
-  <data name="HelpLink" xml:space="preserve">
-    <value>Qu'est-ce qu'un point de restauration?</value>
-  </data>
 </root>

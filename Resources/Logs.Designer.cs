@@ -79,29 +79,11 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à A filesystem error occured while attempting to access script &quot;{0}&quot;..
-        /// </summary>
-        public static string FileSystemErrorAcessingScript {
-            get {
-                return ResourceManager.GetString("FileSystemErrorAcessingScript", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Script file &quot;{0}&quot; has invalid or missing data..
         /// </summary>
         public static string InvalidScriptData {
             get {
                 return ResourceManager.GetString("InvalidScriptData", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Notepad opened..
-        /// </summary>
-        public static string NotepadOpened {
-            get {
-                return ResourceManager.GetString("NotepadOpened", resourceCulture);
             }
         }
         
@@ -142,7 +124,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Script &quot;{0}&quot; executing.
+        ///   Recherche une chaîne localisée semblable à Script &quot;{0}&quot; executing....
         /// </summary>
         public static string ScriptExecuting {
             get {
@@ -169,15 +151,6 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à {0} script(s) loaded..
-        /// </summary>
-        public static string ScriptsLoaded {
-            get {
-                return ResourceManager.GetString("ScriptsLoaded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à The application started..
         /// </summary>
         public static string Started {
@@ -196,7 +169,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à In order to create a restore point, system restore was enabled for all eligible drives..
+        ///   Recherche une chaîne localisée semblable à System restore was enabled for all eligible drives to create a restore point..
         /// </summary>
         public static string SystemRestoreEnabled {
             get {

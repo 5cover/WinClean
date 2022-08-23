@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Resources;
 
 using Scover.WinClean.BusinessLogic.Scripts;
+using Scover.WinClean.BusinessLogic.Scripts.Hosts;
 using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Properties;
@@ -19,11 +20,11 @@ public static class AppInfo
     public static IReadOnlyList<Category> Categories { get; }
         = _deserializer.MakeCategories(OpenAppFile("Categories.xml")).ToList();
 
-    public static IReadOnlyCollection<Host> Hosts { get; } = new[]
+    public static IReadOnlyCollection<IHost> Hosts { get; } = new IHost[]
     {
-        Host.Cmd,
-        Host.PowerShell,
-        Host.Regedit
+        ProcessHost.Cmd,
+        PowerShell.Instance,
+        ProcessHost.Regedit
     };
 
     public static IReadOnlyList<Impact> Impacts { get; }

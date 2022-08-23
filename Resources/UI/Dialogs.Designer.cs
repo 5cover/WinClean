@@ -70,15 +70,6 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Exit {0}?.
-        /// </summary>
-        public static string ConfirmProgramExitContent {
-            get {
-                return ResourceManager.GetString("ConfirmProgramExitContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Are you sure you want to delete this script? This action is irreversible..
         /// </summary>
         public static string ConfirmScriptDeletionContent {

@@ -19,6 +19,7 @@ public class Dialog : IDisposable
 
     public bool AllowDialogCancellation { get => Dlg.AllowDialogCancellation; set => Dlg.AllowDialogCancellation = value; }
     public bool AreHyperlinksEnabled { get => Dlg.EnableHyperlinks; set => Dlg.EnableHyperlinks = value; }
+
     public string Content { get => Dlg.Content; set => Dlg.Content = value; }
     public System.Drawing.Icon CustomMainIcon { get => Dlg.CustomMainIcon; set => Dlg.CustomMainIcon = value; }
     public string ExpandedInformation { get => Dlg.ExpandedInformation; set => Dlg.ExpandedInformation = value; }
@@ -112,9 +113,11 @@ public class Dialog : IDisposable
     public void Close()
     {
         IsClosed = true;
-        // click any button, it doesnt matter.
-        Dlg.Buttons.First().Click();
-        IsClosed = false;
+        if (Dlg.Buttons.Any())
+        {
+            // click any button, it doesnt matter.
+            Dlg.Buttons.First().Click();
+        }
     }
 
     public void Dispose()
@@ -142,7 +145,7 @@ public class Dialog : IDisposable
 
     protected virtual DialogResult GetResult(TaskDialogButton? clickedButton)
     {
-        return new(Buttons.Keys.SingleOrDefault(b => ReferenceEquals(Buttons[b], clickedButton)),
+        return new(IsClosed ? null : Buttons.Keys.SingleOrDefault(b => ReferenceEquals(Buttons[b], clickedButton)),
                    null);
     }
 }

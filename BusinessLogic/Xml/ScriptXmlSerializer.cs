@@ -17,13 +17,16 @@ public class ScriptXmlSerializer : IScriptSerializer
         {
             doc.Load(data);
 
+            string? executionTime = GetOptionalNode("ExecutionTime");
+
             return new Script(GetLocalizedText("Name"),
                               GetLocalizedText("Description"),
-                              GetNode("Code").InnerText,
-                              ScriptMetadataFactory.GetCategory(GetNode("Category").InnerText),
-                              ScriptMetadataFactory.GetRecommendationLevel(GetNode("Recommended").InnerText),
-                              ScriptMetadataFactory.GetImpact(GetNode("Impact").InnerText),
-                              ScriptMetadataFactory.GetHost(GetNode("Host").InnerText));
+                              GetNode("Code"),
+                              ScriptMetadataFactory.GetCategory(GetNode("Category")),
+                              ScriptMetadataFactory.GetRecommendationLevel(GetNode("Recommended")),
+                              ScriptMetadataFactory.GetImpact(GetNode("Impact")),
+                              ScriptMetadataFactory.GetHost(GetNode("Host")),
+                              executionTime is null ? AppInfo.Settings.ScriptTimeout : TimeSpan.Parse(executionTime, System.Globalization.CultureInfo.InvariantCulture));
         }
         catch (Exception e) when (e is XmlException or ArgumentException)
         {
@@ -39,13 +42,17 @@ public class ScriptXmlSerializer : IScriptSerializer
             return localizedNodeTexts;
         }
 
-        XmlNode GetNode(string name)
+        string GetNode(string name) => GetNodeInternal(name, node => node?.InnerText ?? throw new ArgumentException($"\"{name}\" element missing from XML document."));
+
+        T GetNodeInternal<T>(string name, Func<XmlNode?, T> getNodeText)
         {
             XmlNodeList correspondingElements = doc.GetElementsByTagName(name);
             return correspondingElements.Count > 1
                 ? throw new ArgumentException($"Multiple \"{name}\" elements in XML document.")
-                : correspondingElements[0] ?? throw new ArgumentException($"\"{name}\" element missing from XML document.");
+                : getNodeText(correspondingElements[0]);
         }
+
+        string? GetOptionalNode(string name) => GetNodeInternal(name, node => node?.InnerText);
     }
 
     /// <inheritdoc/>
@@ -59,12 +66,12 @@ public class ScriptXmlSerializer : IScriptSerializer
 
         foreach ((string lang, string text) in script.LocalizedNames)
         {
-            Append("Name", text, ("xml:lang", lang));
+            Append("Name", text, lang);
         }
 
         foreach ((string lang, string text) in script.LocalizedDescriptions)
         {
-            Append("Description", text, ("xml:lang", lang));
+            Append("Description", text, lang);
         }
 
         Append("Category", script.Category.InvariantName);
@@ -72,15 +79,19 @@ public class ScriptXmlSerializer : IScriptSerializer
         Append("Host", script.Host.InvariantName);
         Append("Impact", script.Impact.InvariantName);
         Append("Code", script.Code);
+        if (script.ExecutionTime != TimeSpan.Zero)
+        {
+            Append("ExecutionTime", script.ExecutionTime.ToString("c"));
+        }
 
         _ = doc.AppendChild(root);
 
-        void Append(string name, string? innerText, params (string name, string? value)[] attributes)
+        void Append(string name, string? innerText, string xmlLang = "")
         {
             XmlElement e = doc.CreateElement(name);
-            foreach ((string name, string? value) attr in attributes)
+            if (xmlLang != "")
             {
-                e.SetAttribute(attr.name, attr.value);
+                e.SetAttribute("xml:lang", xmlLang);
             }
             e.InnerText = innerText ?? string.Empty;
             _ = root.AppendChild(e);

@@ -35,8 +35,6 @@ public class ScriptExecutionWizard
     /// <summary>Executes the script(s) and displays a dialog tracking the progress.</summary>
     public void Execute()
     {
-        Happenings.ScriptExecution.SetAsHappening();
-
         CommandLink yes = new()
         {
             Text = SystemRestorePoint.CommandLinkYes,
@@ -55,7 +53,8 @@ public class ScriptExecutionWizard
                     Text = SystemRestorePoint.CommandLinkNo
                 }
             },
-            DefaultCommandLink = yes
+            DefaultCommandLink = yes,
+            AreHyperlinksEnabled = true,
         };
         DialogResult restorePointDialogResult = restorePointDialog.ShowDialog();
 
@@ -90,10 +89,10 @@ public class ScriptExecutionWizard
             }
         }
 
-        (bool completed, int elapsedSeconds, bool restartQueried) = ShowProgressDialog();
+        (bool completed, bool restartQueried) = ShowProgressDialog();
         if (completed)
         {
-            ShowCompletedDialog(elapsedSeconds, restartQueried);
+            ShowCompletedDialog(restartQueried);
         }
     }
 
@@ -162,11 +161,11 @@ public class ScriptExecutionWizard
         Logs.ScriptsExecuted.Log(LogLevel.Info);
     }
 
-    private void ShowCompletedDialog(int elapsedSeconds, bool restartQueried)
+    private void ShowCompletedDialog(bool restartQueried)
     {
         using Dialog completedDialog = new(Button.Restart, Button.OK)
         {
-            ExpandedInformation = CompletedDialog.ExpandedInformation.FormatWith(_scripts.Count, TimeSpan.FromSeconds(elapsedSeconds)),
+            ExpandedInformation = CompletedDialog.ExpandedInformation.FormatWith(_scripts.Count),
             StartExpanded = AppInfo.Settings.DetailsAfterExecution,
             MainInstruction = CompletedDialog.MainInstruction,
             Content = CompletedDialog.Content,
@@ -179,7 +178,7 @@ public class ScriptExecutionWizard
         }
     }
 
-    private (bool completed, int elapsedSeconds, bool restartQueried) ShowProgressDialog()
+    private (bool completed, bool restartQueried) ShowProgressDialog()
     {
         using ProgressDialog progress = new(_scripts);
 
@@ -196,6 +195,6 @@ public class ScriptExecutionWizard
             executor.CancelScriptExecution();
             Logs.ScriptExecutionCanceled.Log(LogLevel.Info);
         }
-        return (completed, progress.ElapsedSeconds, progress.RestartQueried);
+        return (completed, progress.RestartQueried);
     }
 }

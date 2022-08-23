@@ -2,7 +2,7 @@
 
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
-public abstract class LocalizableScriptMetadata : IUserVisible
+public abstract class LocalizableScriptMetadata : IScriptData
 {
     protected LocalizableScriptMetadata(LocalizedString names, LocalizedString descriptions)
     {

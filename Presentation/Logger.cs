@@ -28,9 +28,6 @@ public class Logger
 
     public static Logger Instance { get; } = new();
 
-    /// <value>A string that briefly describes what's happening in the program right now.</value>
-    public string? Happening { get; set; }
-
     /// <summary>Empties the log folder, except for the current log file.</summary>
     public async void ClearLogsFolderAsync()
         => await Task.Run(() =>
@@ -59,7 +56,6 @@ public class Logger
         (
             (lvl ?? LogLevel.Verbose).ToString(),
             DateTime.Now,
-            Happening ?? string.Empty,
             message,
             caller,
             callLine,
@@ -69,9 +65,6 @@ public class Logger
         _csvWriter.Flush(); // This is to force the writer to be done when leaving the method.
     }
 
-    /// <summary>Opens the current log file.</summary>
-    public void OpenLogs() => DataAccess.Helpers.Open(_currentLogFile.FullName);
-
     private bool CanLogFileBeDeleted(FileInfo logFile)
         => DateTime.TryParseExact(Path.GetFileNameWithoutExtension(logFile.Name), DateTimeFilenameFormat,
                                   DateTimeFormatInfo.InvariantInfo, DateTimeStyles.None, out _) && logFile.Name != _currentLogFile.Name;
@@ -79,7 +72,6 @@ public class Logger
     ///<remarks>The properties are in the order we want the CSV header to be in. Topmost = leftmost.</remarks>
     private record LogEntry(string Level,
                             DateTime Date,
-                            string Happening,
                             string Message,
                             string Caller,
                             int CallLine,

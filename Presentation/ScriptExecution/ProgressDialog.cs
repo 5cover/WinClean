@@ -10,7 +10,7 @@ namespace Scover.WinClean.Presentation.ScriptExecution;
 public class ProgressDialog : Dialog
 {
     private readonly IReadOnlyList<Script> _scripts;
-    private TimeSpan _elapsed;
+    private double _estimatedRemainingMilliseconds;
     private int _scriptIndex;
 
     public ProgressDialog(IReadOnlyList<Script> scripts) : base(Button.Stop)
@@ -36,16 +36,15 @@ public class ProgressDialog : Dialog
             DefaultButton = Button.No
         }.ShowDialog().ClickedButton == Button.Yes);
 
-        Dlg.RaiseTimerEvent = true;
         Dlg.Timer += (_, e) =>
         {
-            _elapsed = TimeSpan.FromMilliseconds(e.TickCount);
+            // Here ticks are actually milliseconds
+            _estimatedRemainingMilliseconds -= e.TickCount;
             UpdateExpandedInfo();
+            e.ResetTickCount = true;
         };
+        Dlg.RaiseTimerEvent = true;
     }
-
-    /// <summary>Gets the number of elapsed seconds since the scripts started executing.</summary>
-    public int ElapsedSeconds => Convert.ToInt32(_elapsed.TotalSeconds);
 
     public bool RestartQueried { get; private set; }
 
@@ -57,11 +56,14 @@ public class ProgressDialog : Dialog
         {
             _scriptIndex = value;
             Dlg.ProgressBarValue = value;
+            _estimatedRemainingMilliseconds = _scripts.TakeLast(_scripts.Count - _scriptIndex).Select(s => s.ExecutionTime).Sum(t => t.TotalMilliseconds);
             UpdateExpandedInfo();
         }
     }
 
     private void UpdateExpandedInfo()
-                // Not using elapsed for elapsed time to hide the milliseconds. TimeSpan is used for formatting.
-                => ExpandedInformation = Resources.UI.ProgressDialog.ExpandedInformation.FormatWith(_scripts[ScriptIndex].Name, TimeSpan.FromSeconds(ElapsedSeconds));
+        => ExpandedInformation = Resources.UI.ProgressDialog.ExpandedInformation
+                                  .FormatWith(_scripts[ScriptIndex].Name,
+                                              // Seconds precision
+                                              TimeSpan.FromSeconds(Math.Round(_estimatedRemainingMilliseconds / 1000)));
 }

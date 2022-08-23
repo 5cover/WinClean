@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ExpandedInformation" xml:space="preserve">
-    <value>{0} scripts ont été exécutés avec succès en {1:g}.</value>
+    <value>{0} scripts ont été exécutés avec succès.</value>
   </data>
   <data name="MainInstruction" xml:space="preserve">
     <value>Nettoyage terminé</value>

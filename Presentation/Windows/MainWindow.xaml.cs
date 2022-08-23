@@ -130,7 +130,7 @@ public partial class MainWindow
 
     private void MenuOnlineWikiClick(object sender, RoutedEventArgs e) => Helpers.Open(AppInfo.Settings.WikiUrl);
 
-    private void MenuOpenLogsClick(object sender, RoutedEventArgs e) => Logger.Instance.OpenLogs();
+    private void MenuOpenLogsDirClick(object sender, RoutedEventArgs e) => Helpers.OpenExplorerToDirectory(AppDirectory.LogDir.Info.FullName);
 
     private void MenuOpenScriptsDirClick(object sender, RoutedEventArgs e) => Helpers.Open(AppDirectory.ScriptsDir.Info.FullName);
 

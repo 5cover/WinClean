@@ -50,7 +50,6 @@ public partial class App
 
     private static void ShowUnhandledExceptionDialog(Exception e)
     {
-        Happenings.Exception.SetAsHappening();
         Logs.UnhandledException.FormatWith(e).Log(LogLevel.Critical);
         using Dialog unhandledExceptionDialog = new(Button.Exit, Button.CopyDetails)
         {
@@ -101,8 +100,6 @@ public partial class App
         };
 
         Current.DispatcherUnhandledException += (_, args) => ShowUnhandledExceptionDialog(args.Exception);
-        Happenings.Start.SetAsHappening();
-        Logs.Started.Log();
         new MainWindow().Show();
     }
 
@@ -127,12 +124,13 @@ public partial class App
         Scripts.Save();
         AppInfo.Settings.Save();
 
-        Happenings.Exit.SetAsHappening();
         Logs.Exiting.Log();
     }
 
     private void ApplicationStartup(object? sender, StartupEventArgs? e)
     {
+        Logs.Started.Log();
+
         if (e?.Args.Any() ?? false)
         {
             StartConsole(e.Args);
