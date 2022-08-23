@@ -69,5 +69,5 @@ public class ProgressDialog : Dialog
         => ExpandedInformation = Resources.UI.ProgressDialog.ExpandedInformation
                                   .FormatWith(_scripts[ScriptIndex].Name,
                                               // Seconds precision
-                                              TimeSpan.FromMilliseconds(_estimatedRemainingMilliseconds).Humanize(precision: 3, minUnit: TimeUnit.Second));
+                                              _estimatedRemainingMilliseconds.Milliseconds().Humanize(precision: 3, minUnit: TimeUnit.Second));
 }
