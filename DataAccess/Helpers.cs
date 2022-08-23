@@ -16,20 +16,6 @@ public static class Helpers
         return t;
     }
 
-    /// <summary>Replaces the format items in this instance with the string representations of corresponding objects.</summary>
-    /// <param name="args">An object array that contains zero or more objects to format.</param>
-    /// <returns>
-    /// A copy of this instance in which the format items have been replaced by the string representation of the corresponding objects.
-    /// </returns>
-    /// <remarks>Uses <see cref="CultureInfo.CurrentCulture"/> as formatting information.</remarks>
-    public static string FormatWith(this string format, params object?[] args)
-        => string.Format(CultureInfo.CurrentCulture, format, args);
-
-    /// <remarks>Uses <see cref="CultureInfo.InvariantCulture"/> formatting information.</remarks>
-    /// <inheritdoc cref="FormatWith(string, object[])"/>
-    public static string FormatWithInvariant(this string format, params object?[] args)
-        => string.Format(CultureInfo.InvariantCulture, format, args);
-
     /// <summary>Fetches the restore point icon as defined in rstrui.exe</summary>
     public static Icon GetRestorePointIcon()
         => Icon.ExtractAssociatedIcon(Path.Join(Environment.SystemDirectory, "rstrui.exe")).AssertNotNull();

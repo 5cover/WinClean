@@ -60,7 +60,8 @@ public class ScriptXmlSerializer : IScriptSerializer
     {
         XmlDocument doc = new();
 
-        _ = doc.AppendChild(doc.CreateXmlDeclaration("1.0", null, null));
+        // Explicit UTF-8 for clarity
+        _ = doc.AppendChild(doc.CreateXmlDeclaration("1.0", "UTF-8", null));
 
         XmlElement? root = doc.CreateElement("Script");
 

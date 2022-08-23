@@ -1,4 +1,6 @@
-﻿global using System.IO;
+﻿global using static Humanizer.StringExtensions;
+global using System.IO;
+
 using System.Windows;
 
 using Ookii.Dialogs.Wpf;

@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using static System.IO.Path;
 using Scover.WinClean.DataAccess;
+using System.Globalization;
 
 using Scover.WinClean.Resources;
 
@@ -101,6 +102,6 @@ public class ProcessHost : IHost
         /// </param>
         public IncompleteArguments(string args) => _args = args;
 
-        public string Complete(FileInfo script) => _args.FormatWithInvariant(script.FullName);
+        public string Complete(FileInfo script) => _args.FormatWith(CultureInfo.InvariantCulture, script.FullName);
     }
 }

@@ -71,7 +71,7 @@ namespace Scover.WinClean.Resources.UI {
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Current script: {0}
-        ///Time remaining: {1:g}.
+        ///Time remaining: {1}.
         /// </summary>
         public static string ExpandedInformation {
             get {

@@ -99,9 +99,9 @@
   </resheader>
   <data name="ExpandedInformation" xml:space="preserve">
     <value>Current script: {0}
-Time remaining: {1:g}</value>
+Time remaining: {1}</value>
     <comment>0 : current script name
-1 : TimeSpan : time remaining</comment>
+1 : time remaining</comment>
   </data>
   <data name="Content" xml:space="preserve">
     <value>Scripts are executing. This operation may take some time.</value>

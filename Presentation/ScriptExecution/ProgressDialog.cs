@@ -1,5 +1,8 @@
-﻿using Ookii.Dialogs.Wpf;
+﻿using Humanizer;
+using Humanizer.Localisation;
 
+using Ookii.Dialogs.Wpf;
+using System.Globalization;
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.DataAccess;
@@ -19,7 +22,7 @@ public class ProgressDialog : Dialog
 
         AllowDialogCancellation = false;
         ShowMinimizeBox = true;
-        ExpandedInformation = Resources.UI.ProgressDialog.ExpandedInformation.FormatWith(null, null);
+        ExpandedInformation = Resources.UI.ProgressDialog.ExpandedInformation.FormatWith(CultureInfo.CurrentCulture, null, null);
         StartExpanded = AppInfo.Settings.DetailsDuringExecution;
         Dlg.ProgressBarMaximum = scripts.Count;
         Dlg.ProgressBarStyle = ProgressBarStyle.ProgressBar;
@@ -65,5 +68,5 @@ public class ProgressDialog : Dialog
         => ExpandedInformation = Resources.UI.ProgressDialog.ExpandedInformation
                                   .FormatWith(_scripts[ScriptIndex].Name,
                                               // Seconds precision
-                                              TimeSpan.FromSeconds(Math.Round(_estimatedRemainingMilliseconds / 1000)));
+                                              TimeSpan.FromMilliseconds(_estimatedRemainingMilliseconds).Humanize(precision: 3, minUnit: TimeUnit.Second));
 }
