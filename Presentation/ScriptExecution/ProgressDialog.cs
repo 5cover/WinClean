@@ -1,11 +1,12 @@
-﻿using Humanizer;
+﻿using System.Globalization;
+
+using Humanizer;
 using Humanizer.Localisation;
 
 using Ookii.Dialogs.Wpf;
-using System.Globalization;
+
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
-using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
 
 namespace Scover.WinClean.Presentation.ScriptExecution;

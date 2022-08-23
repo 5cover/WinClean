@@ -121,14 +121,6 @@
     <value>The collection is empty.</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="HungScript" xml:space="preserve">
-    <value>A script is probably hung.</value>
-    <comment>@Invariant</comment>
-  </data>
-  <data name="HungScriptSpecified" xml:space="preserve">
-    <value>The script "{0}" is probably hung.</value>
-    <comment>0 : the name of the hung script@Invariant</comment>
-  </data>
   <data name="NotAValid" xml:space="preserve">
     <value>"{0}" is not a valid {1} {2}.</value>
     <comment>0 : the invalid value
@@ -139,28 +131,12 @@
     <value>Cannot create system restore point because system protection is disabled.</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="Timeout" xml:space="preserve">
-    <value>A timeout was reached</value>
-    <comment>@Invariant</comment>
-  </data>
-  <data name="TimeoutSpecified" xml:space="preserve">
-    <value>A timeout of {0} was reached.</value>
-    <comment>0 : the timeout@Invariant</comment>
-  </data>
-  <data name="WrongFormatItemCount" xml:space="preserve">
-    <value>The composite format string doesn't contain exactly {0} format items.</value>
-    <comment>0 : expected format item count@Invariant</comment>
-  </data>
   <data name="NoStringFoundForThisCulture" xml:space="preserve">
     <value>No string was found for this culture or any of its parents.</value>
     <comment>@Invariant</comment>
   </data>
   <data name="EnumValueNoName" xml:space="preserve">
     <value>The specified enum value does not have a name.</value>
-    <comment>@Invariant</comment>
-  </data>
-  <data name="NotAButtonOfInstance" xml:space="preserve">
-    <value>Is not a button of this instance.</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ValueCannotBeNegative" xml:space="preserve">

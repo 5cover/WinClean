@@ -123,9 +123,6 @@
   <data name="ForbidScriptCodeEdit" xml:space="preserve">
     <value>I_nterdire la modification du code des scripts</value>
   </data>
-  <data name="LogLevel" xml:space="preserve">
-    <value>Ni_veau de journalisation</value>
-  </data>
   <data name="ScriptTimeout" xml:space="preserve">
     <value>_Temps maximal d'exécution d'un script</value>
   </data>

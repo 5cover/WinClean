@@ -1,6 +1,4 @@
-﻿using Scover.WinClean.DataAccess;
-
-namespace Scover.WinClean.BusinessLogic;
+﻿namespace Scover.WinClean.BusinessLogic;
 
 /// <summary>Common properties for scripts and their metadata.</summary>
 public interface IScriptData

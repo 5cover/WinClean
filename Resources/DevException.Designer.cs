@@ -97,38 +97,11 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à A script is probably hung..
-        /// </summary>
-        public static string HungScript {
-            get {
-                return ResourceManager.GetString("HungScript", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à The script &quot;{0}&quot; is probably hung..
-        /// </summary>
-        public static string HungScriptSpecified {
-            get {
-                return ResourceManager.GetString("HungScriptSpecified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à No string was found for this culture or any of its parents..
         /// </summary>
         public static string NoStringFoundForThisCulture {
             get {
                 return ResourceManager.GetString("NoStringFoundForThisCulture", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Is not a button of this instance..
-        /// </summary>
-        public static string NotAButtonOfInstance {
-            get {
-                return ResourceManager.GetString("NotAButtonOfInstance", resourceCulture);
             }
         }
         
@@ -160,38 +133,11 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à A timeout was reached.
-        /// </summary>
-        public static string Timeout {
-            get {
-                return ResourceManager.GetString("Timeout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à A timeout of {0} was reached..
-        /// </summary>
-        public static string TimeoutSpecified {
-            get {
-                return ResourceManager.GetString("TimeoutSpecified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Cannnot be negative..
         /// </summary>
         public static string ValueCannotBeNegative {
             get {
                 return ResourceManager.GetString("ValueCannotBeNegative", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à The composite format string doesn&apos;t contain exactly {0} format items..
-        /// </summary>
-        public static string WrongFormatItemCount {
-            get {
-                return ResourceManager.GetString("WrongFormatItemCount", resourceCulture);
             }
         }
     }

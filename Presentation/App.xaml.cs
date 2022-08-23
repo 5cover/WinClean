@@ -1,5 +1,6 @@
-﻿global using static Humanizer.StringExtensions;
-global using System.IO;
+﻿global using System.IO;
+
+global using static Humanizer.StringExtensions;
 
 using System.Windows;
 
@@ -11,6 +12,8 @@ using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
 using Scover.WinClean.Presentation.Windows;
 using Scover.WinClean.Resources;
+
+using static Scover.WinClean.Resources.UI.Dialogs;
 
 namespace Scover.WinClean.Presentation;
 
@@ -71,8 +74,7 @@ public partial class App
 
     private static void StartConsole(string[] args)
     {
-        WarnIfNewVersionAvailable(() => Console.WriteLine(WinClean.Resources.UI.Dialogs
-                          .NewVersionAvailableContent.FormatWith(SourceControlClient.Instance.Value.LatestVersionName)));
+        WarnIfNewVersionAvailable(() => Console.WriteLine(NewVersionAvailableContent.FormatWith(SourceControlClient.Instance.Value.LatestVersionName)));
         //Environment.ExitCode = new CommandLineInterpreter(args).Execute();
     }
 
@@ -82,7 +84,7 @@ public partial class App
         {
             Dialog newVersionAvailableDialog = new(Button.OK)
             {
-                MainInstruction = WinClean.Resources.UI.Dialogs.NewVersionAvailableMainInstruction,
+                MainInstruction = NewVersionAvailableMainInstruction,
                 Content = WinClean.Resources.UI.Dialogs
                           .NewVersionAvailableContent.FormatWith(SourceControlClient.Instance.Value.LatestVersionName),
                 AllowDialogCancellation = true,

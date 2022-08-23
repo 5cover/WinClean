@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Script>
   <Name>Always show folder merge conflicts</Name>
   <Name xml:lang="fr">Toujours afficher les conflits de fusion de dossier</Name>

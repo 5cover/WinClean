@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Script>
   <Name>Show full path in Explorer title bar</Name>
   <Name xml:lang="fr">Afficher le chemin d'accès complet dans la barre de titre de l'Explorateur de fichiers</Name>

@@ -1,5 +1,4 @@
 ﻿using Scover.WinClean.BusinessLogic.Scripts.Hosts;
-using Scover.WinClean.DataAccess;
 using Scover.WinClean.Resources;
 
 namespace Scover.WinClean.BusinessLogic.Scripts;

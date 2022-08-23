@@ -103,9 +103,6 @@
   <data name="ForbidScriptCodeEdit" xml:space="preserve">
     <value>_Forbid script code edit</value>
   </data>
-  <data name="LogLevel" xml:space="preserve">
-    <value>_Log level</value>
-  </data>
   <data name="ScriptTimeout" xml:space="preserve">
     <value>Script _timeout</value>
   </data>

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 
 using Scover.WinClean.BusinessLogic.Xml;
-using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.BusinessLogic.Scripts;
 

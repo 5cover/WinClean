@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Script>
   <Name>Disable systematic short filename creation</Name>
   <Name xml:lang="fr">Désactiver la création systématique de noms de fichier courts</Name>

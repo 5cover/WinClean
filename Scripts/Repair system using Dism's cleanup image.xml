@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Script>
   <Name>Repair system using Dism's cleanup image</Name>
   <Name xml:lang="fr">Réparer le système à l'aide de l'image de nettoyage Dism</Name>

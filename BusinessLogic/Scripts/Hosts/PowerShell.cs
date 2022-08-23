@@ -1,7 +1,5 @@
 ﻿using Scover.WinClean.DataAccess;
 
-using System.Management.Automation;
-
 namespace Scover.WinClean.BusinessLogic.Scripts.Hosts;
 
 public class PowerShell : IHost

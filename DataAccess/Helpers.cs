@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
 using System.Security;
 
 namespace Scover.WinClean.DataAccess;

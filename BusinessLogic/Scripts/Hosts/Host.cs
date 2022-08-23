@@ -1,10 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
-
-using Scover.WinClean.DataAccess;
-using Scover.WinClean.Resources;
-
-using static System.IO.Path;
+﻿using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.BusinessLogic.Scripts.Hosts;
 

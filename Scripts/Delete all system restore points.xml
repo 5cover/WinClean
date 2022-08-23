@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Script>
 	<Name>Delete all system restore points</Name>
 	<Name xml:lang="fr">Supprimer tous les points de restauration système</Name>

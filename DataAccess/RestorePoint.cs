@@ -1,7 +1,6 @@
 ﻿using System.Management;
 using System.Management.Automation;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Scover.WinClean.DataAccess;
 

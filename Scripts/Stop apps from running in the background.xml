@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Script>
   <Name>Stop apps from running in the background</Name>
   <Name xml:lang="fr">Interdire les processus en arrière-plan pour les applications</Name>

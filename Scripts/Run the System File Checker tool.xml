@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Script>
   <Name>Run the System File Checker tool</Name>
   <Name xml:lang="fr">Exécuter l'utilitaire de contrôle de l'intégrité système (SFC)</Name>

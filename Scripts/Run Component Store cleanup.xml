@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Script>
   <Name>Run Component Store cleanup</Name>
   <Name xml:lang="fr">Exécuter le nettoyage du magasin de composants</Name>

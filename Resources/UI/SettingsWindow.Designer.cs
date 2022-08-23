@@ -70,15 +70,6 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à _Log level.
-        /// </summary>
-        public static string LogLevel {
-            get {
-                return ResourceManager.GetString("LogLevel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Script _timeout.
         /// </summary>
         public static string ScriptTimeout {
