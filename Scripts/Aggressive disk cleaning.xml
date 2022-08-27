@@ -2,17 +2,15 @@
 <Script>
   <Name>Aggressive disk cleaning</Name>
   <Name xml:lang="fr">Nettoyage de disque aggressif</Name>
-  <Description>
-    Aggressive disk cleanup removes all files from directories that contain temporary or unnecessary files. After an aggressive cleaning:
-    - Windows updates will no longer be able to be uninstalled
-    - Component Store backups will no longer be available
-    - Windows log files will have been deleted
+  <Description>Aggressive disk cleanup removes all files from directories that contain temporary or unnecessary files. After an aggressive cleaning:
+- Windows updates will no longer be able to be uninstalled
+- Component Store backups will no longer be available
+- Windows log files will have been deleted
   </Description>
-  <Description xml:lang="fr">
-    Le nettoyage de disque aggressif supprime tous les fichiers de répertoires contenant des fichiers temporaires ou inutiles. Après un nettoyage aggressif :
-    - Les mises à jour Windows Update ne pourront plus être désinstallées
-    - Les sauvegardes du magasin de composants ne seront plus disponibles
-    - Les fichiers journaux Windows auront été supprimés
+  <Description xml:lang="fr">Le nettoyage de disque aggressif supprime tous les fichiers de répertoires contenant des fichiers temporaires ou inutiles. Après un nettoyage aggressif :
+- Les mises à jour Windows Update ne pourront plus être désinstallées
+- Les sauvegardes du magasin de composants ne seront plus disponibles
+- Les fichiers journaux Windows auront été supprimés
   </Description>
   <Category>Maintenance</Category>
   <Recommended>Limited</Recommended>

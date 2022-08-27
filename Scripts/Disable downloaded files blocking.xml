@@ -4,7 +4,7 @@
   <Name xml:lang="fr">Désactiver le blocage des fichiers téléchargés</Name>
   <Description>By default, Windows displays a warning when the user opens a downloaded file.</Description>
   <Description xml:lang="fr">Par défaut, Windows affiche un avertissement lorsque l'utilisateur ouvre un fichier téléchargé.</Description>
-   <Category>Customization</Category>
+  <Category>Customization</Category>
   <Recommended>Limited</Recommended>
   <Host>Regedit</Host>
   <Impact>Ergonomics</Impact>
