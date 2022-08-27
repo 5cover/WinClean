@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Script>
-	<Name>Keep thumbnail cache after reboot</Name>
-	<Name xml:lang="fr">Conserver le cache des miniatures après le redémarrage</Name>
-	<Description>By default, thumbnail cache is rebuilt after each reboot.</Description>
-	<Description xml:lang="fr">Par défaut, le cache des miniatures est reconstruit après chaque redémarrage.</Description>
-	<Category>Customization</Category>
-	<Recommended>Yes</Recommended>
-	<Host>Cmd</Host>
-	<Impact>Startup time</Impact>
-	<Code>reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" /v Autorun /t REGDWORD /d 0 /f
-reg add "HKEYLOCALMACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" /v Autorun /t REGDWORD /d 0 /f</Code>
+  <Name>Keep thumbnail cache after reboot</Name>
+  <Name xml:lang="fr">Conserver le cache des miniatures après le redémarrage</Name>
+  <Description>By default, thumbnail cache is rebuilt after each reboot.</Description>
+  <Description xml:lang="fr">Par défaut, le cache des miniatures est reconstruit après chaque redémarrage.</Description>
+  <Category>Customization</Category>
+  <Recommended>Yes</Recommended>
+  <Host>Regedit</Host>
+  <Impact>Startup time</Impact>
+  <Code>Windows Registry Editor Version 5.00
+[HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache]
+"Autorun"=dword:00000000
+[HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache]
+"Autorun"=dword:00000000</Code>
 </Script>

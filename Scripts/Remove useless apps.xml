@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Script>
-	<Name>Remove useless apps</Name>
-	<Name xml:lang="fr">Supprimer les applications inutiles</Name>
-	<Description>Dozens of useless application packages are installed by default. Removing them frees up disk space.</Description>
-	<Description xml:lang="fr">Plusieurs dizaines de packages d'application inutiles sont installés par défaut. Les supprimer libère de l'epace disque.</Description>
-	<Category>Debloat</Category>
-	<Recommended>Yes</Recommended>
-	<Host>PowerShell</Host>
-	<Impact>Free storage space</Impact>
-	<Code>$AppXApps = @(
+  <Name>Remove useless apps</Name>
+  <Name xml:lang="fr">Supprimer les applications inutiles</Name>
+  <Description>Dozens of useless application packages are installed by default. Removing them frees up disk space.</Description>
+  <Description xml:lang="fr">Plusieurs dizaines de packages d'application inutiles sont installés par défaut. Les supprimer libère de l'epace disque.</Description>
+  <Category>Debloat</Category>
+  <Recommended>Yes</Recommended>
+  <Host>PowerShell</Host>
+  <Impact>Free storage space</Impact>
+  <Code>$AppXApps = @(
 # Unnecessary Windows 10 AppX Apps
 "*Microsoft.BingNews*"
 "*Microsoft.GetHelp*"

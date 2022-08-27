@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Script>
-  <Name>Run Check Disk utility</Name>
-  <Name xml:lang="fr">Exécuter l'utilisaire de vérification de disque</Name>
+  <Name>Schedul Check Disk utility</Name>
+  <Name xml:lang="fr">Planifier l'exécution de l'utilisaire de vérification de disque</Name>
   <Description>The disk check and repair utility is provided by Microsoft. Executing this script will plan a disk check and repair for all local disks on next reboot.</Description>
   <Description xml:lang="fr">L'utilitaire de vérification et de réparation des disques est fourni par Microsoft. Exécuter ce script planifiera la vérification et la réparation de tous les disques locaux au prochain redémarrage.</Description>
   <Category>Maintenance</Category>
