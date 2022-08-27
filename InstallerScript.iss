@@ -160,9 +160,9 @@ var
     returnCode: Integer;
     output: AnsiString;  
 begin
-    // dotnet command unvailable OR result doesnt match 'Microsoft.NETCore.App 6.x.x'
+    // dotnet command unvailable OR result doesnt match 'Microsoft.NETCore.App 6.0.x'
     installed := ExecWithResult('dotnet', '--list-runtimes', '', SW_HIDE, returnCode, output)
-    Result := not installed or not RegExMatch(output, 'Microsoft\.NETCore\.App 6\.\d+\.\d+') 
+    Result := not installed or not RegExMatch(output, 'Microsoft\.NETCore\.App 6\.0\.\d+') 
 end;
 
 function InstallDotNetRuntime(): String;
