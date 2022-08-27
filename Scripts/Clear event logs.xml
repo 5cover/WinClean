@@ -8,5 +8,6 @@
   <Recommended>Limited</Recommended>
   <Host>PowerShell</Host>
   <Impact>Free storage space</Impact>
-  <Code>Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }</Code>
+  <Code>Import-Module Microsoft.PowerShell.Management
+Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }</Code>
 </Script>

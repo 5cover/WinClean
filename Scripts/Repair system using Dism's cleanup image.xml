@@ -8,5 +8,5 @@
   <Recommended>Yes</Recommended>
   <Host>Cmd</Host>
   <Impact>Stability</Impact>
-  <Code>DISM.exe /Online /Quiet /Cleanup-image /Restorehealth</Code>
+  <Code>dism /Online /Quiet /Cleanup-image /Restorehealth</Code>
 </Script>

@@ -8,20 +8,23 @@
   <Recommended>Limited</Recommended>
   <Host>PowerShell</Host>
   <Impact>Ergonomics</Impact>
-  <Code>$Cortana1 = "HKCU:\SOFTWARE\Microsoft\Personalization\Settings"
+  <Code>Import-Module Microsoft.PowerShell.Management
+Import-Module Appx
+
+$Cortana1 = "HKCU:\SOFTWARE\Microsoft\Personalization\Settings"
 $Cortana2 = "HKCU:\SOFTWARE\Microsoft\InputPersonalization"
 $Cortana3 = "HKCU:\SOFTWARE\Microsoft\InputPersonalization\TrainedDataStore"
 If (!(Test-Path $Cortana1)) {
-	New-Item $Cortana1
+    New-Item $Cortana1
 }
 Set-ItemProperty $Cortana1 AcceptedPrivacyPolicy -Value 0
 If (!(Test-Path $Cortana2)) {
-	New-Item $Cortana2
+    New-Item $Cortana2
 }
 Set-ItemProperty $Cortana2 RestrictImplicitTextCollection -Value 1
 Set-ItemProperty $Cortana2 RestrictImplicitInkCollection -Value 1
 If (!(Test-Path $Cortana3)) {
-	New-Item $Cortana3
+    New-Item $Cortana3
 }
 Set-ItemProperty $Cortana3 HarvestContacts -Value 0
 Get-AppxPackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</Code>

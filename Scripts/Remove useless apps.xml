@@ -8,7 +8,10 @@
   <Recommended>Yes</Recommended>
   <Host>PowerShell</Host>
   <Impact>Free storage space</Impact>
-  <Code>$AppXApps = @(
+  <Code>Import-Module Microsoft.PowerShell.Core
+Import-Module Appx
+Import-Module DISM
+$AppXApps = @(
 # Unnecessary Windows 10 AppX Apps
 "*Microsoft.BingNews*"
 "*Microsoft.GetHelp*"
@@ -62,7 +65,6 @@
 #"*Microsoft.WindowsStore*"
 )
 foreach ($App in $AppXApps) {
-Write-Verbose -Message ('Removing Package {0}' -f $App)
 Get-AppxPackage -Name $App | Remove-AppxPackage -ErrorAction SilentlyContinue
 Get-AppxPackage -Name $App -AllUsers | Remove-AppxPackage -AllUsers -ErrorAction SilentlyContinue
 Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like $App | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue

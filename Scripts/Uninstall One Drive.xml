@@ -8,9 +8,12 @@
   <Recommended>Limited</Recommended>
   <Host>PowerShell</Host>
   <Impact>Free storage space</Impact>
-  <Code>function force-mkdir($path) {
+  <Code>Import-Module Microsoft.PowerShell.Management
+Import-Module Microsoft.PowerShell.Utility
+Import-Module Microsoft.PowerShell.Security
+
+function force-mkdir($path) {
 if (!(Test-Path $path)) {
-    #Write-Host "-- Creating full path to: " $path -ForegroundColor White -BackgroundColor DarkGreen
     New-Item -ItemType Directory -Force -Path $path
 }}
     function Takeown-Registry($key) {
