@@ -35,7 +35,7 @@ public partial class App
         {
             AllowDialogCancellation = true,
             MainIcon = TaskDialogIcon.Warning,
-            Content = WinClean.Resources.UI.Dialogs.ConfirmScriptDeletionContent,
+            Content = ConfirmScriptDeletionContent,
             DefaultButton = Button.No
         };
 
@@ -59,7 +59,7 @@ public partial class App
         using Dialog unhandledExceptionDialog = new(Button.Exit, Button.CopyDetails)
         {
             MainIcon = TaskDialogIcon.Error,
-            Content = WinClean.Resources.UI.Dialogs.UnhandledExceptionDialogContent.FormatWith(e.Message),
+            Content = UnhandledExceptionDialogContent.FormatWith(e.Message),
             ExpandedInformation = e.ToString(),
             AreHyperlinksEnabled = true
         };
@@ -85,8 +85,8 @@ public partial class App
             Dialog newVersionAvailableDialog = new(Button.OK)
             {
                 MainInstruction = NewVersionAvailableMainInstruction,
-                Content = WinClean.Resources.UI.Dialogs
-                          .NewVersionAvailableContent.FormatWith(SourceControlClient.Instance.Value.LatestVersionName),
+                Content =
+                          NewVersionAvailableContent.FormatWith(SourceControlClient.Instance.Value.LatestVersionName),
                 AllowDialogCancellation = true,
                 ShowMinimizeBox = true,
                 MainIcon = TaskDialogIcon.Information,

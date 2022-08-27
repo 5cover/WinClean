@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 using Humanizer;
 using Humanizer.Localisation;
@@ -92,7 +93,7 @@ public class ScriptExecutionWizard
             }
         }
 
-        (bool completed, bool restartQueried) = ShowProgressDialog();
+        (bool completed, bool restartQueried) = ShowScriptExecutionProgressDialog();
         if (completed)
         {
             ShowCompletedDialog(restartQueried);
@@ -102,9 +103,47 @@ public class ScriptExecutionWizard
     private static void CreateRestorePoint()
     {
         Logs.CreatingRestorePoint.Log(LogLevel.Info);
-        new RestorePoint(AppInfo.Name,
-            EventType.BeginSystemChange,
-            RestorePointType.ModifySettings).Create();
+
+        using Dialogs.ProgressDialog creatingRestorePointProgressDialog = new(Button.Stop)
+        {
+            Content = Resources.UI.Dialogs.CreatingRestorePointContent,
+            Style = ProgressBarStyle.MarqueeProgressBar,
+            CustomMainIcon = Helpers.GetRestorePointIcon(),
+            ShowMinimizeBox = true,
+        };
+
+        Exception? systemProtectionDisabledException = null;
+
+        creatingRestorePointProgressDialog.Created += (_, _) =>
+        {
+            RestorePoint r = new(AppInfo.Name,
+                                 EventType.BeginSystemChange,
+                                 RestorePointType.ModifySettings);
+            try
+            {
+                r.Create();
+            }
+            catch (InvalidOperationException e)
+            {
+                // Save the thrown exception because the thrown SEHException does not track InnerException.
+                systemProtectionDisabledException = e;
+                throw;
+            }
+            finally
+            {
+                creatingRestorePointProgressDialog.Close();
+            }
+        };
+
+        try
+        {
+            creatingRestorePointProgressDialog.ShowDialog();
+        }
+        catch (SEHException) when (systemProtectionDisabledException is not null)
+        {
+            throw systemProtectionDisabledException;
+        }
+
         Logs.RestorePointCreated.Log(LogLevel.Info);
     }
 
@@ -177,27 +216,64 @@ public class ScriptExecutionWizard
 
         if (restartQueried || completedDialog.ShowDialog().ClickedButton == Button.Restart)
         {
+            // The ApplicationExit event handler will be called before the system reboots, so the scripts and settings will be
+            // properly saved.
             RebootForApplicationMaintenance();
         }
     }
 
-    private (bool completed, bool restartQueried) ShowProgressDialog()
+    private (bool completed, bool restartQueried) ShowScriptExecutionProgressDialog()
     {
-        using ProgressDialog progress = new(_scripts);
+        bool restartQueried = false;
+        int scriptIndex = 0;
+        TimeSpan timeRemaining = _scripts.Sum(s => s.ExecutionTime);
 
-        executor.ProgressChanged += (_, e) => progress.ScriptIndex = e.ScriptIndex;
+        using Dialogs.ProgressDialog scriptExecutionProgressDialog = new(Button.Stop)
+        {
+            Content = ScriptExecutionProgressDialog.Content,
+            // Needs to have a value to show expander.
+            ExpandedInformation = ScriptExecutionProgressDialog.ExpandedInformation,
+            Maximum = _scripts.Count,
+            ShowMinimizeBox = true,
+            StartExpanded = AppInfo.Settings.DetailsDuringExecution,
+            Style = ProgressBarStyle.ProgressBar,
+            VerificationText = ScriptExecutionProgressDialog.VerificationText
+        };
 
-        progress.Created += async (_, _) =>
+        scriptExecutionProgressDialog.ExpandButtonClicked += (_, _) => AppInfo.Settings.DetailsDuringExecution ^= true;
+        scriptExecutionProgressDialog.VerificationClicked += (_, _) => restartQueried = scriptExecutionProgressDialog.IsVerificationChecked;
+
+        scriptExecutionProgressDialog.Timer += (_, e) =>
+        {
+            timeRemaining -= e.Elapsed;
+            UpdateExpandedInfo();
+        };
+
+        executor.ProgressChanged += (_, e) =>
+        {
+            scriptIndex = e.ScriptIndex;
+
+            scriptExecutionProgressDialog.Value = scriptIndex;
+            timeRemaining = _scripts.TakeLast(_scripts.Count - scriptIndex).Sum(s => s.ExecutionTime);
+            UpdateExpandedInfo();
+        };
+
+        void UpdateExpandedInfo()
+            => scriptExecutionProgressDialog.ExpandedInformation = ScriptExecutionProgressDialog.ExpandedInformation
+                             .FormatWith(_scripts[scriptIndex].Name,
+                                         timeRemaining.Humanize(precision: 3, minUnit: TimeUnit.Second));
+
+        scriptExecutionProgressDialog.Created += async (_, _) =>
         {
             await ExecuteScriptsAsync().ConfigureAwait(true);
-            progress.Close();
+            scriptExecutionProgressDialog.Close();
         };
-        bool completed = progress.Show().ClickedButton != Button.Stop;
+        bool completed = scriptExecutionProgressDialog.Show().ClickedButton != Button.Stop;
         if (!completed)
         {
             executor.CancelScriptExecution();
             Logs.ScriptExecutionCanceled.Log(LogLevel.Info);
         }
-        return (completed, progress.RestartQueried);
+        return (completed, restartQueried);
     }
 }

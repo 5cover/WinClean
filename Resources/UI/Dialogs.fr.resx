@@ -148,4 +148,7 @@
   <data name="NewVersionAvailableContent" xml:space="preserve">
     <value>La version {0} est disponible. Envisagez de mettre à jour pour obtenir de nouveaux scripts et de nouvelles fonctionnalités. &lt;A&gt;Voir sur GitHub&lt;/A&gt;</value>
   </data>
+  <data name="CreatingRestorePointContent" xml:space="preserve">
+    <value>Point de restauration en cours de création...</value>
+  </data>
 </root>

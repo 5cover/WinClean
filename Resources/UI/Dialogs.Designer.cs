@@ -88,6 +88,15 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Creating restore point....
+        /// </summary>
+        public static string CreatingRestorePointContent {
+            get {
+                return ResourceManager.GetString("CreatingRestorePointContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Cannot {0} {1} &quot;{2}&quot;. {3}.
         /// </summary>
         public static string FSErrorContent {

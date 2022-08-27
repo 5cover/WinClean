@@ -57,4 +57,21 @@ public static class Helpers
     {
         using Process? process = Process.Start("explorer", $"/root,{dirPath}");
     }
+
+    /// <summary>
+    /// Computes the sum of a sequence of time intervals that are obtained by invoking a transform function on each element of
+    /// the input sequence.
+    /// </summary>
+    /// <typeparam name="TSource">The type of the elements of source.</typeparam>
+    /// <param name="source">A sequence of values that are used to calculate a sum.</param>
+    /// <param name="selector">A transform function to apply to each element.</param>
+    /// <returns>The sum of the projected values.</returns>
+    public static TimeSpan Sum<TSource>(this IEnumerable<TSource> source, Func<TSource, TimeSpan> selector)
+        => source.Aggregate(TimeSpan.Zero, (sumSoFar, nextSource) => sumSoFar + selector(nextSource));
+
+    /// <summary>Computes the sum of a sequence of <see cref="TimeSpan"/> values.</summary>
+    /// <param name="source">A sequence of <see cref="TimeSpan"/> values to calculate the sum of.</param>
+    /// <returns>The sum of the values in the sequence.</returns>
+    public static TimeSpan Sum(this IEnumerable<TimeSpan> source)
+        => source.Aggregate(TimeSpan.Zero, (sumSoFar, nextSource) => sumSoFar + nextSource);
 }

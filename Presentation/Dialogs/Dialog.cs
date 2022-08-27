@@ -45,6 +45,7 @@ public class Dialog : IDisposable
     public Dialog(IEnumerable<Button> buttons)
     {
         Dlg.WindowTitle = AppInfo.Name;
+        Dlg.CenterParent = true;
 
         foreach (Button button in buttons.OrderBy(b => b))
         {
@@ -137,11 +138,13 @@ public class Dialog : IDisposable
         _confirmations[Buttons[button]] = confirmation;
     }
 
+    /// <returns>A <see cref="DialogResult"/> containing the button or the command link that was clicked.</returns>
     /// <inheritdoc cref="TaskDialog.Show"/>
-    public DialogResult Show() => GetResult(Dlg.Show());
+    public virtual DialogResult Show() => GetResult(Dlg.Show());
 
+    /// <inheritdoc cref="Show" path="/returns"/>
     /// <inheritdoc cref="TaskDialog.ShowDialog"/>
-    public DialogResult ShowDialog() => GetResult(Dlg.ShowDialog());
+    public virtual DialogResult ShowDialog() => GetResult(Dlg.ShowDialog());
 
     protected virtual DialogResult GetResult(TaskDialogButton? clickedButton)
     {

@@ -14,7 +14,7 @@
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <SignAssembly>False</SignAssembly>
     <Authors>Scover</Authors>
-    <PackageIcon>Resources\main.png</PackageIcon>
+    <PackageIcon>WinClean.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
@@ -48,10 +48,6 @@
     <WarningLevel>9999</WarningLevel>
     <NoWarn>NU1701;1702</NoWarn>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Resources\WinClean.png" />
-  </ItemGroup>
 
   <ItemGroup>
     <Page Remove="Presentation\App.xaml" />
@@ -145,8 +141,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>InvalidScript.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\UI\ProgressDialog.Designer.cs">
-      <DependentUpon>ProgressDialog.resx</DependentUpon>
+    <Compile Update="Resources\UI\ScriptExecutionProgressDialog.Designer.cs">
+      <DependentUpon>ScriptExecutionProgressDialog.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
@@ -238,8 +234,8 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>InvalidScript.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\UI\ProgressDialog.resx">
-      <LastGenOutput>ProgressDialog.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Resources\UI\ScriptExecutionProgressDialog.resx">
+      <LastGenOutput>ScriptExecutionProgressDialog.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\SystemProtectionDisabled.resx">
@@ -273,6 +269,10 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="Resources\WinClean.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

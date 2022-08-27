@@ -20,6 +20,8 @@ public class PowerShell : IHost
         var ps = System.Management.Automation.PowerShell.Create();
         ps.AddScript(code);
 
+        using var registration = cancellationToken.Register(ps.Stop);
+
         try
         {
             while (!ps.InvokeAsync().Wait(Convert.ToInt32(timeout.TotalMilliseconds), cancellationToken))
@@ -35,5 +37,7 @@ public class PowerShell : IHost
             // Abort the execution by stopping PowerShell.
             ps.Stop();
         }
+
+        registration.Unregister();
     }
 }

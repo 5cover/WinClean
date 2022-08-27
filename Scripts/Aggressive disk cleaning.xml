@@ -16,7 +16,7 @@
   <Recommended>Limited</Recommended>
   <Host>Cmd</Host>
   <Impact>Free storage space</Impact>
-  <Code>cd "%temp%"
+  <Code>cd /d "%temp%"
 takeown  /r /d o /f *
 icacls * /t /c /grant:r "%username%":F
 del /f /s /q *

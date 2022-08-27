@@ -53,23 +53,18 @@ public class ProcessHost : IHost
         FileInfo tmpScriptFile = CreateTempFile(code, SupportedExtensions.First());
 
         using Process host = StartHost(tmpScriptFile);
+        using var registration = cancellationToken.Register(() => host.Kill(true));
 
-        try
+        while (!host.WaitForExit(Convert.ToInt32(timeout.TotalMilliseconds)))
         {
-            while (!host.WaitForExit(Convert.ToInt32(timeout.TotalMilliseconds)))
+            if (!keepRunningOrKill(scriptName))
             {
-                if (!keepRunningOrKill(scriptName))
-                {
-                    host.Kill(true);
-                    break;
-                }
+                host.Kill(true);
+                break;
             }
         }
-        catch (OperationCanceledException)
-        {
-            host.Kill(true);
-        }
 
+        registration.Unregister();
         tmpScriptFile.Delete();
     }
 
