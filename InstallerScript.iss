@@ -54,7 +54,7 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 Name: startmenuicon; Description: {cm:CreateStartMenuIcon}; GroupDescription: {cm:AdditionalIcons}
 
 [Files]
-Source: ".\bin\Release\net6.0-windows\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\bin\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ".\Scripts\*"; DestDir: "{userappdata}\{#Name}\Scripts"; Flags: ignoreversion
 
 [Icons]

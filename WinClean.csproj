@@ -26,7 +26,7 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <UseWindowsForms>False</UseWindowsForms>
     <Platforms>AnyCPU</Platforms>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
