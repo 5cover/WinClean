@@ -6,13 +6,15 @@ using Scover.WinClean.Resources;
 namespace Scover.WinClean.Presentation.Dialogs;
 
 public class FSErrorDialog : Dialog
-{    /// <summary>
-     /// Initializes a new instance of the <see cref="FSErrorDialog"/> class. </summary> <param name="e">The exception
-     /// responsible of the filesystem error.</param> <param name="verb">The filesystem verb that could apply to what was trying
-     /// to be done.</param> <param name="info">The file or directory on which the operation was applying.</param> <inheritdoc
-     /// cref="Dialog(IEnumerable{Button})" path="/param"/> <remarks>Also sets the following properties: <br><see
-     /// cref="Dialog.MainIcon"/> to <see cref="TaskDialogIcon.Error"/>;</br><br><see cref="Dialog.Content"/> to a formatted
-     /// localized error message.</br></remarks>
+{    /// <summary>Initializes a new instance of the <see cref="FSErrorDialog"/> class.</summary>
+     /// <param name="e">The exception responsible of the filesystem error.</param>
+     /// <param name="verb">The filesystem verb that could apply to what was trying to be done.</param>
+     /// <param name="info">The file or directory on which the operation was applying.</param>
+     /// <inheritdoc cref="Dialog(IEnumerable{Button})" path="/param"/>
+     /// <remarks>
+     /// Also sets the following properties: <br><see cref="Dialog.MainIcon"/> to <see
+     /// cref="TaskDialogIcon.Error"/>;</br><br><see cref="Dialog.Content"/> to a formatted localized error message.</br>
+     /// </remarks>
     public FSErrorDialog(Exception e, FSVerb verb, FileSystemInfo info, IEnumerable<Button> buttons) : base(buttons)
     {
         MainIcon = TaskDialogIcon.Error;

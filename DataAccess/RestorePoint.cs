@@ -1,5 +1,5 @@
-﻿using System.Management;
-using System.Management.Automation;
+﻿using System.Diagnostics;
+using System.Management;
 using System.Runtime.InteropServices;
 
 namespace Scover.WinClean.DataAccess;
@@ -25,13 +25,18 @@ public class RestorePoint
 
     /// <summary>Enables system restore for all eligible drives.</summary>
     public static void EnableSystemRestore()
-        // Some drives are non-eligible for system restore, but Enable-ComputerRestore will still enable the eligible ones.
-        => PowerShell.Create()
-                    .AddCommand("Import-Module")
-                        .AddArgument("Microsoft.PowerShell.Management")
-                    .AddCommand("Enable-ComputerRestore")
-                        .AddParameter("Drive", string.Join(',', DriveInfo.GetDrives().Select(di => @$"""{di.Name}\""")))
-                    .Invoke();
+    {
+        // Some drives are non-eligible for system restore, but Enable-ComputerRestore will still enable the eligible ones. We
+        // have to use Process for this because using the PowerShell API throws CommandNotFoundException for the
+        // Enable-ComputerRestore cmdlet for some reason
+        using Process? powerShell = Process.Start(new ProcessStartInfo(Path.Join(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe"),
+            $"-Command Enable-ComputerRestore -Drive {string.Join(',', DriveInfo.GetDrives().Select(di => @$"""{di.Name}\"""))}")
+        {
+            UseShellExecute = true,
+            WindowStyle = ProcessWindowStyle.Hidden
+        });
+        powerShell?.WaitForExit();
+    }
 
     /// <summary>Creates a restore point on the local system.</summary>
     /// <exception cref="ManagementException">Access denied.</exception>

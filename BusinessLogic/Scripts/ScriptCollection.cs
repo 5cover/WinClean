@@ -58,6 +58,8 @@ public class ScriptCollection : IEnumerable<Script>
 
     public IEnumerator<Script> GetEnumerator() => _scriptFiles.Keys.GetEnumerator();
 
+    IEnumerator IEnumerable.GetEnumerator() => _scriptFiles.Keys.GetEnumerator();
+
     /// <summary>Removes a script from the collection. Also deletes its corresponding file in the scripts directory.</summary>
     /// <param name="item">The script to remove.</param>
     public void Remove(Script item)
@@ -76,8 +78,6 @@ public class ScriptCollection : IEnumerable<Script>
             serializer.Serialize(script, stream);
         }
     }
-
-    IEnumerator IEnumerable.GetEnumerator() => _scriptFiles.Keys.GetEnumerator();
 
     private static void CopyFile(string source, string dest, bool overwrite)
     {

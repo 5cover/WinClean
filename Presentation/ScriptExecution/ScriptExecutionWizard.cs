@@ -138,9 +138,8 @@ public class ScriptExecutionWizard
         };
         DialogResult result = enableSystemRestore.ShowDialog();
 
-        // null if the user canceled or closed the dialog;
-        // true if user chose to enable system restore;
-        // false if user chose to continue anyway.
+        // null if the user canceled or closed the dialog; true if user chose to enable system restore; false if user chose to
+        // continue anyway.
         return result.WasClosed ? null : ReferenceEquals(result.ClickedCommandLink, enable);
     }
 
