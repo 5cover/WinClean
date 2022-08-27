@@ -25,32 +25,28 @@
     <Description>Windows debloating and optimization utility.</Description>
     <NeutralLanguage>en-US</NeutralLanguage>
     <UseWindowsForms>False</UseWindowsForms>
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platforms>AnyCPU</Platforms>
     <Version>1.0.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>9999</WarningLevel>
-    <NoWarn>NU1701;1702:CA1416</NoWarn>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <NoWarn>NU1701;1702</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <WarningLevel>9999</WarningLevel>
-    <NoWarn>NU1701;1702:CA1416</NoWarn>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <NoWarn>NU1701;1702</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <WarningLevel>9999</WarningLevel>
-    <NoWarn>NU1701;1702:CA1416</NoWarn>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <NoWarn>NU1701;1702</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <WarningLevel>9999</WarningLevel>
-    <NoWarn>NU1701;1702:CA1416</NoWarn>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <NoWarn>NU1701;1702</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
