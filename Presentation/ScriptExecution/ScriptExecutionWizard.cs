@@ -1,5 +1,8 @@
 ﻿using System.Diagnostics;
 
+using Humanizer;
+using Humanizer.Localisation;
+
 using Ookii.Dialogs.Wpf;
 
 using Scover.WinClean.BusinessLogic;
@@ -58,7 +61,7 @@ public class ScriptExecutionWizard
         };
         DialogResult restorePointDialogResult = restorePointDialog.ShowDialog();
 
-        if (restorePointDialogResult.WasClosed || restorePointDialogResult.ClickedButton == Button.Cancel)
+        if (restorePointDialogResult.WasClosed)
         {
             return;
         }
@@ -135,9 +138,10 @@ public class ScriptExecutionWizard
         };
         DialogResult result = enableSystemRestore.ShowDialog();
 
-        // true if user chose to enable system restore; false if user chose to continue anyway; null if the user canceled or
-        // closed the dialog.
-        return result.WasClosed || result.ClickedButton == Button.Cancel ? null : ReferenceEquals(result.ClickedCommandLink, enable);
+        // null if the user canceled or closed the dialog;
+        // true if user chose to enable system restore;
+        // false if user chose to continue anyway.
+        return result.WasClosed ? null : ReferenceEquals(result.ClickedCommandLink, enable);
     }
 
     private static bool ShowHungScriptDialog(string scriptName)
@@ -145,8 +149,8 @@ public class ScriptExecutionWizard
         using TimeoutDialog hungScriptDialog = new(Button.EndTask, Button.Ignore)
         {
             MainIcon = TaskDialogIcon.Warning,
-            Content = Resources.UI.Dialogs.HungScriptDialogContent.FormatWith(scriptName, AppInfo.Settings.ScriptTimeout),
-            Timeout = TimeSpan.FromSeconds(10),
+            Content = Resources.UI.Dialogs.HungScriptDialogContent.FormatWith(scriptName, AppInfo.Settings.ScriptTimeout.Humanize(3, minUnit: TimeUnit.Second)),
+            Timeout = 10.Seconds(),
             TimeoutButton = Button.Ignore
         };
         return hungScriptDialog.ShowDialog().ClickedButton != Button.EndTask;

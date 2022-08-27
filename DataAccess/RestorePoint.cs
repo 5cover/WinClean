@@ -27,9 +27,11 @@ public class RestorePoint
     public static void EnableSystemRestore()
         // Some drives are non-eligible for system restore, but Enable-ComputerRestore will still enable the eligible ones.
         => PowerShell.Create()
-                  .AddCommand("Enable-ComputerRestore")
-                  .AddParameter("Drive", string.Join(',', DriveInfo.GetDrives().Select(di => @$"""{di.Name}\""")))
-                  .Invoke();
+                    .AddCommand("Import-Module")
+                        .AddArgument("Microsoft.PowerShell.Management")
+                    .AddCommand("Enable-ComputerRestore")
+                        .AddParameter("Drive", string.Join(',', DriveInfo.GetDrives().Select(di => @$"""{di.Name}\""")))
+                    .Invoke();
 
     /// <summary>Creates a restore point on the local system.</summary>
     /// <exception cref="ManagementException">Access denied.</exception>

@@ -145,7 +145,15 @@ public class Dialog : IDisposable
 
     protected virtual DialogResult GetResult(TaskDialogButton? clickedButton)
     {
-        return new(IsClosed ? null : Buttons.Keys.SingleOrDefault(b => ReferenceEquals(Buttons[b], clickedButton)),
-                   null);
+        Button? clicked;
+        try
+        {
+            clicked = Buttons.Keys.Single(b => ReferenceEquals(Buttons[b], clickedButton));
+        }
+        catch (InvalidOperationException)
+        {
+            clicked = null;
+        }
+        return new(IsClosed ? null : clicked, null);
     }
 }

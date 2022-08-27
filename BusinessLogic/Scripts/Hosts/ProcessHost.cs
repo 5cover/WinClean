@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
 
+using Humanizer;
+
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Resources;
 
@@ -48,16 +50,13 @@ public class ProcessHost : IHost
 
     public void ExecuteCode(string code, string scriptName, TimeSpan timeout, HungScriptCallback keepRunningOrKill, CancellationToken cancellationToken)
     {
-        ManualResetEventSlim exited = new();
-
         FileInfo tmpScriptFile = CreateTempFile(code, SupportedExtensions.First());
 
-        using Process host = ExecuteHost(tmpScriptFile);
-        host.Exited += (_, _) => exited.Set();
+        using Process host = StartHost(tmpScriptFile);
 
         try
         {
-            while (!exited.Wait(timeout, cancellationToken))
+            while (!host.WaitForExit(Convert.ToInt32(timeout.TotalMilliseconds)))
             {
                 if (!keepRunningOrKill(scriptName))
                 {
@@ -85,7 +84,7 @@ public class ProcessHost : IHost
         return tmp;
     }
 
-    private Process ExecuteHost(FileInfo script)
+    private Process StartHost(FileInfo script)
         => Process.Start(new ProcessStartInfo(_executable, _arguments.Complete(script))
         {
             WindowStyle = ProcessWindowStyle.Hidden,

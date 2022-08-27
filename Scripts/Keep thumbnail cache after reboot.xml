@@ -8,8 +8,6 @@
 	<Recommended>Yes</Recommended>
 	<Host>Cmd</Host>
 	<Impact>Startup time</Impact>
-	<Code>
-		reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" /v Autorun /t REGDWORD /d 0 /f
-		reg add "HKEYLOCALMACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" /v Autorun /t REGDWORD /d 0 /f
-	</Code>
+	<Code>reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" /v Autorun /t REGDWORD /d 0 /f
+reg add "HKEYLOCALMACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" /v Autorun /t REGDWORD /d 0 /f</Code>
 </Script>

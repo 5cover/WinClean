@@ -51,7 +51,7 @@ public class CommandLinkDialog : Dialog
     {
         return base.GetResult(clickedButton) with
         {
-            ClickedCommandLink = IsClosed ? null : _commandLinks.Keys.Single(cl => ReferenceEquals(_commandLinks[cl], clickedButton))
+            ClickedCommandLink = IsClosed ? null : _commandLinks.Keys.SingleOrDefault(cl => ReferenceEquals(_commandLinks[cl], clickedButton))
         };
     }
 

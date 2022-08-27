@@ -7,7 +7,7 @@
 #define Version "1.1.0"
 #define RepoUrl "https://github.com/5cover/WinClean"
 #define ExeName "WinClean.exe"
-#define SetupName "WinClean Setup"
+#define SetupName "WinClean.Setup"
 #define Description "Windows optimization and debloating utility."
 
 [Setup]
@@ -71,6 +71,10 @@ Type: filesandordirs; Name: "{app}"
 Type: filesandordirs; Name: "{commonappdata}\{#Name}"
 
 [CustomMessages]
+
+InstallingDependencies=Installing dependencies
+fr.InstallingDependencies=Installation des dépendances
+
 InstallingDotNetRuntime=Installing .NET 6 Desktop Runtime. This might take a few minutes...
 fr.InstallingDotNetRuntime=.NET 6 Desktop Runtime est en cours d'installation. Cela peut prendre plusieurs minutes...
 
@@ -94,7 +98,8 @@ fr.DotNetRuntimeFailedOther=L'installeur de .NET Desktop Runtime a renvoyé un co
 [Code]
 
 var
-    g_requiresRestart: boolean;
+    g_requiresRestart: Boolean;
+    g_dotNetMissing : Boolean;
 
 function RegExMatch(const match, pattern: String): Boolean;
 var
@@ -105,7 +110,7 @@ begin
     except
         raiseException('VBScript RegExp is required to complete the post-installation process.'#13#10#13#10'(Error: ' + GetExceptionMessage)
     end
-    RegExp.Pattern := pattern
+    RegExp.Pattern := pattern;
     Result := RegExp.Test(match) 
 end;
 
@@ -113,7 +118,6 @@ end;
 // ResultString will only be altered if True is returned.
 function ExecWithResult(const Filename, Params, WorkingDir: String;
                         const ShowCmd: Integer;
-                        const Wait: TExecWait;
                         out ResultCode: Integer;
                         out ResultString: AnsiString
                         ): Boolean;
@@ -123,12 +127,12 @@ var
 begin
     TempFilename := ExpandConstant('{tmp}\~execwithresult.txt');
     // Exec via cmd and redirect output to file. Must use special string-behavior to work.
-    Command := Format('"%s" /S /C ""%s" %s > "%s""', [ExpandConstant('{cmd}'), Filename, Params, TempFilename])
-    Result := Exec(ExpandConstant('{cmd}'), Command, WorkingDir, ShowCmd, Wait, ResultCode)
+    Command := Format('"%s" /S /C ""%s" %s > "%s""', [ExpandConstant('{cmd}'), Filename, Params, TempFilename]);
+    Result := Exec(ExpandConstant('{cmd}'), Command, WorkingDir, ShowCmd, ewWaitUntilTerminated, ResultCode);
     if not Result then
         Exit;
-    LoadStringFromFile(TempFilename, ResultString) // Cannot fail
-    DeleteFile(TempFilename)
+    LoadStringFromFile(TempFilename, ResultString); // Cannot fail
+    DeleteFile(TempFilename);
     // Remove new-line at the end
     if (Length(ResultString) >= 2) and
        (ResultString[Length(ResultString) - 1] = #13) and
@@ -152,12 +156,13 @@ end;
 
 function NetRuntimeIsMissing(): Boolean;
 var
+    installed: Boolean;
     returnCode: Integer;
     output: AnsiString;  
 begin
-    ExecWithResult('dotnet', '--list-runtimes', '', SW_HIDE, ewWaitUntilTerminated, returnCode, output)
-    // Matches 'Microsoft.NETCore.App 6.x.x'
-    Result := not RegExMatch(output, 'Microsoft\.NETCore\.App 6\.\d+\.\d+') 
+    // dotnet command unvailable OR result doesnt match 'Microsoft.NETCore.App 6.x.x'
+    installed := ExecWithResult('dotnet', '--list-runtimes', '', SW_HIDE, returnCode, output)
+    Result := not installed or not RegExMatch(output, 'Microsoft\.NETCore\.App 6\.\d+\.\d+') 
 end;
 
 function InstallDotNetRuntime(): String;
@@ -165,14 +170,12 @@ var
     StatusText: string;
     ResultCode: Integer;
 begin
-    StatusText := WizardForm.StatusLabel.Caption
-    WizardForm.StatusLabel.Caption := CustomMessage('InstallingDotNetRuntime')
-    WizardForm.ProgressGauge.Style := npbstMarquee
+    StatusText := WizardForm.StatusLabel.Caption;
+    WizardForm.StatusLabel.Caption := CustomMessage('InstallingDotNetRuntime');
+    WizardForm.ProgressGauge.Style := npbstMarquee;
     try
-        if not Exec(ExpandConstant('{tmp}\NetRuntimeInstaller.exe'), '/passive /norestart /showrmui /showfinalerror', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then
-        begin
+        if not Exec(ExpandConstant('{tmp}\NetRuntimeInstaller.exe'), '/passive /norestart /q', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then
             Result := FmtMessage(CustomMessage('DotNetRuntimeFailedToLaunch'), [SysErrorMessage(resultCode)])
-        end
     else
     begin
         // See https://docs.microsoft.com/en-us/dotnet/framework/deployment/deployment-guide-for-developers#return-codes
@@ -186,8 +189,8 @@ begin
         end
     end;
     finally
-        WizardForm.StatusLabel.Caption := StatusText
-        WizardForm.ProgressGauge.Style := npbstNormal
+        WizardForm.StatusLabel.Caption := StatusText;
+        WizardForm.ProgressGauge.Style := npbstNormal;
     
         DeleteFile(ExpandConstant('{tmp}\NetRuntimeInstaller.exe'))
     end
@@ -198,23 +201,36 @@ end;
 // First, download the .NET Runtime Installer
 procedure InitializeWizard;
 begin
-    if NetRuntimeIsMissing() then
+    // Save the result in a variable so we only need to call NetRuntimeIsMissing() once
+    g_dotNetMissing := NetRuntimeIsMissing();
+    if g_dotNetMissing then
     begin
         // URL of the latest dotnet runtime installer
-        idpAddFile('https://download.visualstudio.microsoft.com/download/pr/5af3de9d-1e5f-48ff-bfb7-f93c0957ffae/e8dd664b0439f4725f8c968e7aae7dd1/dotnet-runtime-6.0.8-win-' + GetArchitecture + '.exe', ExpandConstant('{tmp}\NetRuntimeInstaller.exe'))
+        idpAddFile('https://download.visualstudio.microsoft.com/download/pr/b4a17a47-2fe8-498d-b817-30ad2e23f413/00020402af25ba40990c6cc3db5cb270/windowsdesktop-runtime-6.0.8-win-' + GetArchitecture + '.exe', ExpandConstant('{tmp}\NetRuntimeInstaller.exe'));
         idpDownloadAfter(wpReady)
     end
 end;
 
 // Then, run it.
 function PrepareToInstall(var NeedsRestart: Boolean): String;
+var
+    progressPage : TOutputMarqueeProgressWizardPage;
 begin
     // 'NeedsRestart' only has an effect if we return a non-empty string, thus aborting the installation.
     // If the installers indicate that they want a restart, this should be done at the end of installation.
     // Therefore we set the global 'restartRequired' if a restart is needed, and return this from NeedRestart()
 
-    if NetRuntimeIsMissing() then
-        Result := InstallDotNetRuntime()
+    if g_dotNetMissing then
+    begin
+        progressPage := CreateOutputMarqueeProgressPage(CustomMessage('InstallingDependencies'), CustomMessage('InstallingDotNetRuntime'));
+        progressPage.Show();
+        progressPage.Animate();
+        try
+            Result := InstallDotNetRuntime()
+        finally
+            progressPage.Hide()
+        end
+    end
 end;
 
 // Tell the setup program if the want to restart or not.

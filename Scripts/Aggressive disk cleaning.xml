@@ -32,35 +32,33 @@
 	<Recommended>Limited</Recommended>
 	<Host>Cmd</Host>
 	<Impact>Free storage space</Impact>
-	<Code>
-		cd %temp%
-		takeown  /r /d o /f *
-		icacls * /t /c /grant:r "%username%":F
-		del /f /s /q *
+	<Code>cd %temp%
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
 
-		cd %windir%\temp
-		takeown  /r /d o /f *
-		icacls * /t /c /grant:r "%username%":F
-		del /f /s /q *
+cd %windir%\temp
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
 
-		cd %windir%\Logs
-		takeown  /r /d o /f *
-		icacls * /t /c /grant:r "%username%":F
-		del /f /s /q *
+cd %windir%\Logs
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
 
-		cd %windir%\SoftwareDistribution\Download
-		takeown  /r /d o /f *
-		icacls * /t /c /grant:r "%username%":F
-		del /f /s /q *
+cd %windir%\SoftwareDistribution\Download
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
 
-		cd %windir%\WinSXS\Backup
-		takeown  /r /d o /f *
-		icacls * /t /c /grant:r "%username%":F
-		del /f /s /q *
+cd %windir%\WinSXS\Backup
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
 
-		cd %windir%\servicing\LCU
-		takeown  /r /d o /f *
-		icacls * /t /c /grant:r "%username%":F
-		del /f /s /q *
-	</Code>
+cd %windir%\servicing\LCU
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *</Code>
 </Script>
