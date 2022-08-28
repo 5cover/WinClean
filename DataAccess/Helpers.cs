@@ -23,7 +23,7 @@ public static class Helpers
     /// <returns>
     /// <para><see langword="true"/> if <paramref name="e"/> is of any of the following types :</para>
     /// <br><see cref="IOException"/> (including all derived exceptions)</br><br><see
-    /// cref="UnauthorizedAccessException"/></br><br><see cref="NotSupportedException"/></br><br><see cref="System.Security.SecurityException"/></br>
+    /// cref="UnauthorizedAccessException"/></br><br><see cref="NotSupportedException"/></br><br><see cref="SecurityException"/></br>
     /// <para>Otherwise; <see langword="false"/>.</para>
     /// </returns>
     /// <remarks>Note that unrelated methods may throw any of these exceptions.</remarks>

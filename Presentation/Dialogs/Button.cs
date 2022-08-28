@@ -8,7 +8,7 @@ namespace Scover.WinClean.Presentation.Dialogs;
 /// <summary>Represents a button displayed in a <see cref="Dialog"/>.</summary>
 /// <remarks>
 /// The order of the values describes the order of the button on the <see cref="Dialog"/>, from left (top) to right (bottom).
-/// <br>For example, in a dialog, <see cref="Button.OK"/> will be shown to the left of <see cref="Button.Cancel"/>.</br>
+/// <br>For example, in a dialog, <see cref="OK"/> will be shown to the left of <see cref="Cancel"/>.</br>
 /// </remarks>
 public enum Button
 {

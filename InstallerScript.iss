@@ -78,9 +78,6 @@ fr.InstallingDependencies=Installation des dépendances
 InstallingDotNetRuntime=Installing .NET 6 Desktop Runtime.
 fr.InstallingDotNetRuntime=.NET 6 Desktop Runtime est en cours d'installation.
 
-InstallingDotNetRuntimeDetails=The .NET 6 Desktop Runtime installer is executing. This might take a few minutes.
-fr.InstallingDotNetRuntimeDetails="L'installateur de .NET 6 Desktop Runtime est en cours d'exécution. Cela peut prendre quelques minutes.
-
 DotNetRuntimeFailedToLaunch=Failed to launch .NET Desktop Runtime Installer with error "%1". Please fix the error then run this installer again.
 fr.DotNetRuntimeFailedToLaunch=Le lancement de .NET Desktop Runtime Installer a échoué avec l'erreur "%1". Corrigez l'erreur puis redémarrez l'installeur.
 
@@ -226,7 +223,6 @@ begin
     if g_dotNetMissing then
     begin
         progressPage := CreateOutputMarqueeProgressPage(CustomMessage('InstallingDependencies'), CustomMessage('InstallingDotNetRuntime'));
-        progressPage.SetText(CustomMessage('InstallingDotNetRuntimeDetails'), '')
         progressPage.Show();
         progressPage.Animate();
         try

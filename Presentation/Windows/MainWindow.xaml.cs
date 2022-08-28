@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 
+using Humanizer;
+
 using Microsoft.Win32;
 
 using Ookii.Dialogs.Wpf;
@@ -108,6 +110,11 @@ public partial class MainWindow
             return;
         }
         new ScriptExecutionWizard(selectedScripts).Execute();
+    }
+
+    private void ListViewItem_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+    {
+        ((ListViewItem)sender).Content.AssertNotNull();
     }
 
     private void MenuAboutClick(object sender, RoutedEventArgs e) => new AboutWindow { Owner = this }.ShowDialog();
