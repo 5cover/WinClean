@@ -27,6 +27,7 @@
     <UseWindowsForms>False</UseWindowsForms>
     <Platforms>AnyCPU</Platforms>
     <Version>1.1.0</Version>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -277,5 +278,4 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
-
 </Project>

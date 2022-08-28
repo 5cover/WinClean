@@ -7,11 +7,12 @@
 #define Version "1.1.0"
 #define RepoUrl "https://github.com/5cover/WinClean"
 #define ExeName "WinClean.exe"
-#define SetupName "WinClean.Setup"
+#define SetupName "WinClean-Installer-x64"
 #define Description "Windows optimization and debloating utility."
 
 [Setup]
 AppId={{F7168958-5DC1-4316-B05E-A5D6E7851C84}
+ArchitecturesAllowed=x64
 AppName={#Name}
 AppComments={#Description}
 AppVersion={#Version}
@@ -26,13 +27,12 @@ VersionInfoDescription={#Description}
 VersionInfoOriginalFileName={#SetupName}.exe
 VersionInfoVersion={#Version}.0
 
-DefaultDirName={autopf}\{#Name}
+DefaultDirName={autopf64}\{#Name}
 DisableProgramGroupPage=yes
 LicenseFile=.\LICENSE
 OutputDir=.\bin\Setup
 OutputBaseFilename={#SetupName}
 SetupIconFile=.\Resources\WinClean.ico
-Compression=lzma
 SolidCompression=yes
 
 // IDP is not compatible with modern style
@@ -54,7 +54,7 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 Name: startmenuicon; Description: {cm:CreateStartMenuIcon}; GroupDescription: {cm:AdditionalIcons}
 
 [Files]
-Source: ".\bin\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\bin\publish\x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ".\Scripts\*"; DestDir: "{userappdata}\{#Name}\Scripts"; Flags: ignoreversion
 
 [Icons]
