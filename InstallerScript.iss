@@ -66,9 +66,9 @@ Name: "{group}\{cm:UninstallProgram,{#Name}}"; Filename: "{uninstallexe}"; Worki
 // shellexec because the app requires admin to run
 Filename: "{app}\{#ExeName}"; Description: "{cm:LaunchProgram,{#StringChange(Name, '&', '&&')}}"; Flags: nowait postinstall skipifsilent shellexec
 
-[InstallDelete]
-Type: filesandordirs; Name: "{app}"
-Type: filesandordirs; Name: "{commonappdata}\{#Name}"
+[Messages]
+UninstalledAll=%1 was successfully removed from your computer. However, .NET Dekstop Runtime was not uninstalled. You can manually uninstall it from the Add/Remove Programs Control Panel applet.
+fr.UninstalledAll=%1 a été correctement désinstallé de cet ordinateur. Cependant, .NET Desktop Runtime n'a pas été désinstallé. Vous pouvez le désinstaller manuellement à partir de l'applet Ajout/Suppression de programmes du Panneau de configuration.
 
 [CustomMessages]
 
