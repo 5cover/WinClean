@@ -7,6 +7,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 
 using Scover.WinClean.BusinessLogic;
+using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.Presentation;
 
@@ -36,7 +37,14 @@ public class Logger
 
             foreach (FileInfo logFile in deletableLogFiles)
             {
-                logFile.Delete();
+                try
+                {
+                    logFile.Delete();
+                }
+                catch (Exception e) when (e.IsFileSystem())
+                {
+                    // Swallow the filesystem exception and silenty fail to delete the log file. This will avoid unhandled exceptions.
+                }
             }
         }).ConfigureAwait(false);
 

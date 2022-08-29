@@ -7,20 +7,16 @@ namespace Scover.WinClean.BusinessLogic;
 public class ScriptExecutor
 {
     private readonly Progress<ScriptExecutionProgressChangedEventArgs> _progress = new();
-    private CancellationTokenSource? _cts;
+    private CancellationTokenSource? _cts = null;
 
     /// <summary>Occurs when a script has been executed.</summary>
     public event EventHandler<ScriptExecutionProgressChangedEventArgs> ProgressChanged { add => _progress.ProgressChanged += value; remove => _progress.ProgressChanged -= value; }
 
     /// <summary>Cancels script execution.</summary>
-    /// <exception cref="InvalidOperationException">Scripts are not executing</exception>
+    /// <remarks>Will do nothing if script execution is not running.</remarks>
     public void CancelScriptExecution()
     {
-        if (_cts is null)
-        {
-            throw new InvalidOperationException(Resources.DevException.ScriptsAreNotExecuting);
-        }
-        _cts.Cancel(true);
+        _cts?.Cancel(true);
     }
 
     /// <summary>Executes a list of scripts asynchronously. Raises the <see cref="ProgressChanged"/> event.</summary>
@@ -46,5 +42,7 @@ public class ScriptExecutor
                 void ReportProgress() => ((IProgress<ScriptExecutionProgressChangedEventArgs>)_progress).Report(new(scriptIndex));
             }
         }, _cts.Token).ConfigureAwait(false);
+
+        _cts.Dispose();
     }
 }

@@ -151,8 +151,4 @@
     <value>Callback {0} not set.</value>
     <comment>0 : callback name@Invariant</comment>
   </data>
-  <data name="ScriptsAreNotExecuting" xml:space="preserve">
-    <value>Scripts are not executing</value>
-    <comment>@Invariant</comment>
-  </data>
 </root>
