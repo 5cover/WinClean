@@ -1,7 +1,4 @@
 ﻿using System.Collections;
-using System.Runtime.Serialization;
-
-using Microsoft.WindowsAPICodePack.PortableDevices.CommandSystem.Object;
 
 using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;
@@ -115,13 +112,4 @@ public class ScriptCollection : IEnumerable<Script>
             }
         }
     }
-}
-
-public class ScriptAlreadyExistsException : Exception
-{
-    public ScriptAlreadyExistsException(Script existingScript, Exception? innerException = null)
-        : base(Resources.DevException.ScriptAlreadyExists.FormatWith(existingScript.InvariantName), innerException)
-        => ExistingScript = existingScript;
-
-    public Script ExistingScript { get; }
 }

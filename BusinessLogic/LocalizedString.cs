@@ -25,8 +25,6 @@ public class LocalizedString : IReadOnlyCollection<KeyValuePair<string, string>>
 
     public IEnumerator<KeyValuePair<string, string>> GetEnumerator() => ((IEnumerable<KeyValuePair<string, string>>)_values).GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_values).GetEnumerator();
-
     /// <summary>Sets the localized string for the specified culture.</summary>
     public void Set(CultureInfo culture, string value)
     {
@@ -39,4 +37,6 @@ public class LocalizedString : IReadOnlyCollection<KeyValuePair<string, string>>
 
     public void SetFromXml(XmlNode node)
         => Set(new(node.Attributes?["xml:lang"]?.Value ?? string.Empty), node.InnerText);
+
+    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_values).GetEnumerator();
 }

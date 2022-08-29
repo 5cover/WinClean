@@ -56,11 +56,3 @@ public class ProgressDialog : Dialog
     /// <remarks>The event is raised approximately every 200 milliseconds.</remarks>
     public event EventHandler<ProgressDialogTimerEventArgs>? Timer;
 }
-
-public class ProgressDialogTimerEventArgs : EventArgs
-{
-    public ProgressDialogTimerEventArgs(TimeSpan elapsed) => Elapsed = elapsed;
-
-    /// <summary>Gets the elapsed time since the last time the event was raised.</summary>
-    public TimeSpan Elapsed { get; }
-}

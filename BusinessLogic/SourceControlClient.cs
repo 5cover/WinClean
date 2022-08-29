@@ -1,8 +1,4 @@
-﻿using System.Net.Http;
-
-using Octokit;
-
-using Scover.WinClean.BusinessLogic.Scripts;
+﻿using Octokit;
 
 namespace Scover.WinClean.BusinessLogic;
 
