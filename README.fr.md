@@ -3,19 +3,17 @@
 ### [English](README.md)
 
 # WinClean
-Utilitaire d'optimisation des performances et de nettoyage de Windows.
+Utilitaire d'optimisation des performances et de nettoyage de Windows, accessible aux utilisateurs moyens tout comme aux administrateurs système.
 
-Permet à l'utilisateur moyen d'améliorer les performances de Windows en quelques clics.
+Améliorez les performances de Windows en quelques clics, dans le but de lutter contre la lenteur des ordinateurs alors que Windows devient de plus en plus gourmand et de moins en moins optimisé pour les configurations plus limitées, surfant sur les excellentes performances du matériel récent.
 
 ![Capture d'écran](https://raw.githubusercontent.com/wiki/5cover/WinClean/locale/fr-FR/img/MainWindow.png)
 
 ## ~~Encore une arnaque~~
 
 ## Fonctionnalités
-- Exécuter des scripts *Batch*, *PowerShell* et *Éditeur du Registre* de nettoyage directement depuis l'interface utilisateur.
+- Exécuter des scripts *Batch*, *PowerShell* et *Éditeur du Registre* directement depuis l'interface utilisateur.
 - Ajouter des scripts personnalisés pour aller plus loin dans le nettoyage et l'optimisation.
-- Si vous n'avez pas le temps, vous pouvez juste cliquer sur "Sélectionner scripts", "Recommandés", "Oui", et "Exécuter les scripts".
-- Installateur Inno Setup
 
 ## Spécifications
 - .NET 6

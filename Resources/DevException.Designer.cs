@@ -88,15 +88,6 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à The file &quot;{0}&quot; already exists..
-        /// </summary>
-        public static string FileAlreadyExists {
-            get {
-                return ResourceManager.GetString("FileAlreadyExists", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à No string was found for this culture or any of its parents..
         /// </summary>
         public static string NoStringFoundForThisCulture {
@@ -111,6 +102,15 @@ namespace Scover.WinClean.Resources {
         public static string NotAValid {
             get {
                 return ResourceManager.GetString("NotAValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à The script &quot;{0}&quot; already exists..
+        /// </summary>
+        public static string ScriptAlreadyExists {
+            get {
+                return ResourceManager.GetString("ScriptAlreadyExists", resourceCulture);
             }
         }
         

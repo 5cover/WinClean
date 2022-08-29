@@ -1,6 +1,10 @@
 ﻿using System.Collections;
+using System.Runtime.Serialization;
+
+using Microsoft.WindowsAPICodePack.PortableDevices.CommandSystem.Object;
 
 using Scover.WinClean.BusinessLogic.Xml;
+using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
@@ -26,7 +30,7 @@ public class ScriptCollection : IEnumerable<Script>
             Script? deserializedScript = DeserializeTolerantly(scriptFile, reloadOnInvalidScriptData);
             if (deserializedScript is not null)
             {
-                scripts.AddToDictionary(deserializedScript, scriptFile);
+                scripts._scriptFiles.Add(deserializedScript, scriptFile);
             }
         }
 
@@ -38,27 +42,34 @@ public class ScriptCollection : IEnumerable<Script>
     /// <exception cref="InvalidDataException">
     /// The deserialization process failed because <paramref name="sourceFile"/> has invalid or missing data.
     /// </exception>
-    /// <exception cref="InvalidOperationException">
-    /// <paramref name="allowOverwrite"/> is <see langword="true"/> and <paramref name="sourceFile"/> already exists in the
+    /// <exception cref="ScriptAlreadyExistsException">
+    /// <paramref name="allowOverwrite"/> is <see langword="false"/> and <paramref name="sourceFile"/> already exists in the
     /// scripts directory.
     /// </exception>
+    /// <inheritdoc cref="File.OpenRead(string)" path="/exception"/>
     public void AddNew(string sourceFile, bool allowOverwrite)
     {
         // 1. Try to deserialize the script. This line will throw an exception if sourceFile contains invalid data or can't be read.
         using Stream stream = File.OpenRead(sourceFile);
         Script script = serializer.Deserialize(stream);
 
-        // 2. Try to copy the script file to the scripts directory. If overwrite is false and the destination file already
-        // exists, this will throw.
-        CopyFile(sourceFile, GetSavingPath(sourceFile), allowOverwrite);
+        string savingPath = AppDirectory.ScriptsDir.Join(Path.GetFileName(sourceFile));
+
+        // 2. Try to copy the script file to the scripts directory.
+        try
+        {
+            File.Copy(sourceFile, savingPath, allowOverwrite);
+        }
+        catch (IOException e) when (e.HResult == -2147024816)
+        {
+            throw new ScriptAlreadyExistsException(serializer.Deserialize(File.OpenRead(savingPath)), e);
+        }
 
         // 3. Reaching this line means that there was no error, so the new script may be added to the dictionary.
-        AddToDictionary(script, sourceFile);
+        _scriptFiles.Add(script, savingPath);
     }
 
     public IEnumerator<Script> GetEnumerator() => _scriptFiles.Keys.GetEnumerator();
-
-    IEnumerator IEnumerable.GetEnumerator() => _scriptFiles.Keys.GetEnumerator();
 
     /// <summary>Removes a script from the collection. Also deletes its corresponding file in the scripts directory.</summary>
     /// <param name="item">The script to remove.</param>
@@ -79,17 +90,7 @@ public class ScriptCollection : IEnumerable<Script>
         }
     }
 
-    private static void CopyFile(string source, string dest, bool overwrite)
-    {
-        try
-        {
-            File.Copy(source, dest, overwrite);
-        }
-        catch (IOException e) when (e.HResult == -2147024816) // 0x80070050 : The file already exists
-        {
-            throw new InvalidOperationException(Resources.DevException.FileAlreadyExists.FormatWith(dest), e);
-        }
-    }
+    IEnumerator IEnumerable.GetEnumerator() => _scriptFiles.Keys.GetEnumerator();
 
     private static Script? DeserializeTolerantly(string scriptFile, InvalidScriptDataCallback reloadOnInvalidScriptData)
     {
@@ -107,11 +108,20 @@ public class ScriptCollection : IEnumerable<Script>
                     return null;
                 }
             }
+            catch (Exception e) when (e.IsFileSystem())
+            {
+                // Fail silently and skip loading the script if it cannot be loaded due to a filesystem errro.
+                return null;
+            }
         }
     }
+}
 
-    private static string GetSavingPath(string sourceFile) => AppDirectory.ScriptsDir.Join(Path.GetFileName(sourceFile));
+public class ScriptAlreadyExistsException : Exception
+{
+    public ScriptAlreadyExistsException(Script existingScript, Exception? innerException = null)
+        : base(Resources.DevException.ScriptAlreadyExists.FormatWith(existingScript.InvariantName), innerException)
+        => ExistingScript = existingScript;
 
-    private void AddToDictionary(Script item, string sourceFilePath)
-            => _scriptFiles.Add(item, GetSavingPath(sourceFilePath));
+    public Script ExistingScript { get; }
 }

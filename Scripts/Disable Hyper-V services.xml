@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Disable Hyper-V services</Name>
+  <Name xml:lang="fr">Désactiver les services Hyper-V</Name>
+  <Description>The following services will be disabled :
+- Hyper-V Guest Shutdown Service;
+- Hyper-V Remote Desktop Virtualization Service;
+- Hyper-V PowerShell Direct Service;
+- Hyper-V Heartbeat Service;
+- Hyper-V Time Synchronization Service;
+- Hyper-V Data Exchange Service;
+- Hyper-V Guest Service Interface;
+- Microsoft Hyper-V Generation Counter;
+- Microsoft Hyper-V Guest Infrastructure Driver;
+- Microsoft Hyper-V Storage Accelerator;
+- Hyper-V Volume Shadow Copy Requestor.</Description>
+  <Description xml:lang="fr">Les services suivants seront désactivés :
+- Service Arrêt de l’invité Microsoft Hyper-V ;
+- Service de virtualisation Bureau à distance Hyper-V ;
+- Service Hyper-V PowerShell Direct ;
+- Service Pulsation Microsoft Hyper-V ;
+- Service Synchronisation date/heure Microsoft Hyper-V ;
+- Service Échange de données Microsoft Hyper-V ;
+- Services d'intégration Hyper-V ;
+- Microsoft Hyper-V Generation Counter ;
+- Microsoft Hyper-V Guest Infrastructure Driver ;
+- Microsoft Hyper-V Storage Accelerator ;
+- Requête du service VSS Microsoft Hyper-V.</Description>
+  <Category>Debloat</Category>
+  <Recommended>Limited</Recommended>
+  <Host>Cmd</Host>
+  <Impact>Memory usage</Impact>
+  <Code>sc config vmicshutdown start= disabled
+sc config vmicrdv start= disabled
+sc config vmicvmsession start= disabled
+sc config vmicheartbeat start= disabled
+sc config vmictimesync start= disabled
+sc config vmickvpexchange start= disabled
+sc config vmicguestinterface start= disabled
+sc config gencounter start= disabled
+sc config vmgid start= disabled
+sc config storflt start= disabled
+sc config vmicvss start= disabled</Code>
+</Script>

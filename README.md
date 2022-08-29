@@ -3,19 +3,17 @@
 ### [Français](README.fr.md)
 
 # WinClean
-Windows optimization and debloating utility. 
+Windows performance optimization and debloating utility, accessible to the average user as well as system administrators.
 
-Allows the average Windows user to improve performance in a few clicks.
+Improve Windows performance in a few clicks, in order to fight against sluggish computers as Windows becomes more and more demanding and less and less optimized for more limited configurations, surfing on the excellent performance of recent hardware.
 
 ![Screenshot](https://raw.githubusercontent.com/wiki/5cover/WinClean/img/MainWindow.png)
 
 ## ~~Yet Another PC Optimizer Scam~~
 
 ## Features
-- Run 33 *Batch*, *PowerShell*, and *Registry Editor* debloating scripts directly from the GUI.
-- Add custom scripts to futher debloat the system.
-- But if you don't have the time to do all of that, simply click on "Select scripts", "Recommended", "Yes", and "Execute Scripts"
-- Inno Setup Installer
+- Run *Batch*, *PowerShell*, and *Registry Editor* scripts directly from the GUI.
+- Add custom scripts to futher clean the system.
 
 ## Specs
 - .NET 6

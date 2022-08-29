@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Disable smart card services</Name>
+  <Name xml:lang="fr">Désactiver les services de carte à puce</Name>
+  <Description>The following services will be disabled :
+- Smart Card;
+- Smart Card Device Enumeration Service;
+- Smart card PnP Class Filter Driver;
+- Smart Card Removal Policy;
+- Smartlocker Filter Driver.</Description>
+  <Description xml:lang="fr">Les services suivants seront désactivés :
+- Service Carte à puce ;
+- Service d’énumération de périphériques de carte à puce ;
+- Microsoft Smart Card Reader Filter Driver ;
+- Service Stratégie de retrait de la carte à puce ;
+- Smartlocker Filter Driver.</Description>
+  <Category>Debloat</Category>
+  <Recommended>Limited</Recommended>
+  <Host>Cmd</Host>
+  <Impact>Memory usage</Impact>
+  <Code>sc config SCardSvr start= disabled
+sc config ScDeviceEnum start= disabled
+sc config scfilter start= disabled
+sc config SCPolicySvc start= disabled
+sc config applockerfltr start= disabled</Code>
+</Script>

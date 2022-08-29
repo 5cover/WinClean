@@ -1,5 +1,4 @@
-﻿using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 using Humanizer;
@@ -39,18 +38,20 @@ public partial class MainWindow
     }
 
     private static void MakeFilter(FileDialog ofd, params ExtensionGroup[] extensions)
-                                => ofd.Filter = new StringBuilder().AppendJoin('|', extensions.SelectMany(group => new[]
-                                                                              {
-                                                                                  $"{group.GetName()} ({string.Join(';', group.Select(ext => $"*{ext}"))})",
-                                                                                  string.Join(';', group.Select(ext => $"*{ext}"))
-                                                                              })).ToString();
+        => ofd.Filter = string.Join('|', extensions.SelectMany(group => new[]
+        {
+            $"{group.Name} ({string.Join(';', group.Select(ext => $"*{ext}"))})",
+            string.Join(';', group.Select(ext => $"*{ext}"))
+        }));
 
     private void ButtonAddScriptsClick(object sender, RoutedEventArgs e)
     {
         OpenFileDialog ofd = new()
         {
             DefaultExt = ".xml",
-            Multiselect = true
+            Multiselect = true,
+            ReadOnlyChecked = true,
+            ValidateNames = false
         };
         MakeFilter(ofd, new ExtensionGroup(".xml"));
 
@@ -79,15 +80,27 @@ public partial class MainWindow
                         break;
                     }
                 }
-                catch (InvalidOperationException)
+                catch (ScriptAlreadyExistsException ex)
                 {
                     using Dialog overwrite = new(Button.Yes, Button.No)
                     {
                         MainIcon = TaskDialogIcon.Warning,
-                        Content = WinClean.Resources.UI.Dialogs.ConfirmScriptOverwriteContent
+                        Content = WinClean.Resources.UI.Dialogs.ConfirmScriptOverwriteContent.FormatWith(ex.ExistingScript.Name)
                     };
                     overwrite.DefaultButton = Button.Yes;
                     allowOverwrite = overwrite.ShowDialog().ClickedButton == Button.Yes;
+                }
+                catch (Exception ex) when (ex.IsFileSystem())
+                {
+                    using FSErrorDialog fsErrorDialog = new(ex, FSVerb.Access, new FileInfo(filePath), Button.Retry, Button.Ignore)
+                    {
+                        MainInstruction = WinClean.Resources.UI.Dialogs.FSErrorAddingScriptMainInstruction
+                    };
+                    DialogResult result = fsErrorDialog.ShowDialog();
+                    if (result.WasClosed || result.ClickedButton == Button.Ignore)
+                    {
+                        break;
+                    }
                 }
             }
         }

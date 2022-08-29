@@ -121,16 +121,17 @@
     <value>Êtes-vous sûr de vouloir supprimer ce script ? Cette action est irréversible.</value>
   </data>
   <data name="FSErrorContent" xml:space="preserve">
-    <value>Impossible {0} {1} "{2}". {3}</value>
+    <value>Impossible {0} {1} "{2}".
+{3}</value>
   </data>
   <data name="HungScriptDialogContent" xml:space="preserve">
     <value>Le script "{0}" est en cours d'exécution depuis {1} et ne s'arrêtera probablement jamais.</value>
   </data>
   <data name="ConfirmScriptOverwriteContent" xml:space="preserve">
-    <value>Êtes-vous sûr de vouloir écraser ce script ? Cette action est irréversible.</value>
+    <value>Le script "{0}" existe déjà. Êtes-vous sûr de vouloir l'écraser ?</value>
   </data>
   <data name="NoScriptsSelectedMainInstruction" xml:space="preserve">
-    <value>Impossible d'exécuter les scripts car aucun script n'est sélectionné.</value>
+    <value>Impossible d'exécuter les scripts car aucun script n'est sélectionné</value>
   </data>
   <data name="NoScriptsSelectedContent" xml:space="preserve">
     <value>Pour sélectionner des scripts, cochez leur case à cocher associée.</value>
@@ -150,5 +151,8 @@
   </data>
   <data name="CreatingRestorePointContent" xml:space="preserve">
     <value>Point de restauration en cours de création...</value>
+  </data>
+  <data name="FSErrorAddingScriptMainInstruction" xml:space="preserve">
+    <value>Impossible d'ajouter le script</value>
   </data>
 </root>

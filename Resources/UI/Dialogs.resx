@@ -121,9 +121,10 @@
     <value>Are you sure you want to delete this script? This action is irreversible.</value>
   </data>
   <data name="FSErrorContent" xml:space="preserve">
-    <value>Cannot {0} {1} "{2}". {3}</value>
-    <comment>0 : FileSystemVerbs string
-1 : FileSystemElements string
+    <value>Cannot {0} {1} "{2}".
+{3}</value>
+    <comment>0 : FileSystemVerb string
+1 : FileSystemElement string
 2 : path of the affected filesystem element as a string
 3 : exception message string</comment>
   </data>
@@ -133,10 +134,10 @@
 1 : script timeout</comment>
   </data>
   <data name="ConfirmScriptOverwriteContent" xml:space="preserve">
-    <value>Are you sure you want to overwrite this script? This action is irreversible.</value>
+    <value>The script "{0}" already exists. Are you sure you want to overwrite it?</value>
   </data>
   <data name="NoScriptsSelectedMainInstruction" xml:space="preserve">
-    <value>Can't execute scripts because no scripts are selected.</value>
+    <value>Can't execute scripts because no scripts are selected</value>
   </data>
   <data name="NoScriptsSelectedContent" xml:space="preserve">
     <value>To select scripts, check their associated check box.</value>
@@ -158,5 +159,9 @@
   </data>
   <data name="CreatingRestorePointContent" xml:space="preserve">
     <value>Creating restore point...</value>
+  </data>
+  <data name="FSErrorAddingScriptMainInstruction" xml:space="preserve">
+    <value>Could not add script</value>
+    
   </data>
 </root>

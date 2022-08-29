@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Disable network and business services</Name>
+  <Name xml:lang="fr">Désactiver les services de réseau et d'entreprise</Name>
+  <Description>These services provide enterprise, workgroup, and shared folder functionality. The following services will be disabled:
+- Distributed Link Tracking Client;
+- TCP/IP NetBIOS Helper;
+- Net.Tcp Port Sharing Service;
+- Netlogon;
+- Remote Access Connection Manager;
+- Remote Access Auto Connection Manager;
+- Routing and Remote Access;
+- Microsoft iSCSI Initiator Service;
+- Remote Desktop Configuration;
+- Remote Registry;
+- Work Folders;
+- Telnet;
+- OpenSSH Authentication Agent.</Description>
+  <Description xml:lang="fr">Ces services assurent des fonctionnalités d'entreprise, de groupe de travail et les dossiers partagés. Les services suivants seront désactivés :
+- Client de suivi de lien distribué ;
+- Assistance NetBIOS sur TCP/IP ;
+- Service de partage de ports Net.Tcp ;
+- Netlogon ;
+- Gestionnaire des connexions d’accès à distance ;
+- Gestionnaire des connexions automatiques d’accès à distance ;
+- Routage et accès distant ;
+- Service Initiateur iSCSI de Microsoft ;
+- Configuration des services Bureau à distance ;
+- Service Routeur SMS Microsoft Windows ;
+- Registre à distance ;
+- Client Dossiers de travail ;
+- Client Telnet ;
+- Client OpenSSH ;</Description>
+  <Category>Debloat</Category>
+  <Recommended>Limited</Recommended>
+  <Host>Cmd</Host>
+  <Impact>Memory usage</Impact>
+  <Code>sc config TrkWks start= disabled
+sc config lmhosts start= disabled
+sc config NetTcpPortSharing start= disabled
+sc config Netlogon start= disabled
+sc config RasMan start= disabled
+sc config RasAuto start= disabled
+sc config RemoteAccess start= disabled
+sc config MSiSCSI start= disabled
+sc config SessionEnv start= disabled
+sc config SmsRouter start= disabled
+sc config RemoteRegistry start= disabled
+sc config workfolderssvc start= disabled
+sc config TlntSvr start= disabled
+sc config ssh-agent start= disabled</Code>
+</Script>

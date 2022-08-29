@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Disable useless services</Name>
+  <Name xml:lang="fr">Désactiver les services inutiles</Name>
+  <Description>These services are present for backward compatibility and telemetry. They can be safely disabled. The following services will be disabled:
+- WebClient;
+- Telephony;
+- Fax;
+- Téléphonie;
+- Geolocation Service;
+- Retail Demo Service;
+- Connected User Experiences and Telemetry;
+- Microsoft (R) Diagnostics Hub Standard Collector Service;
+- Shared PC Account Manager.</Description>
+  <Description xml:lang="fr">Ces services sont présents pour des raisons de rétrocompatibilité ou de télémétrie. Ils peuvent êtres désactivés sans risque. Les services suivants seront désactivés :
+- WebClient ;
+- Service téléphonique ;
+- Télécopie ;
+- Téléphonie ;
+- Service de géolocalisation ;
+- Service de démo du magasin ;
+- Expériences des utilisateurs connectés et télémétrie ;
+- Service Collecteur standard du concentrateur de diagnostic Microsoft ;
+- Service Partage réseau du Lecteur Windows Media ;
+- Shared PC Account Manager.</Description>
+  <Category>Debloat</Category>
+  <Recommended>Yes</Recommended>
+  <Host>Cmd</Host>
+  <Impact>Memory usage</Impact>
+  <Code>sc config WebClient start= disabled
+sc config PhoneSvc start= disabled
+sc config TapiSrv start= disabled
+sc config Fax start= disabled
+sc config lfsvc start= disabled
+sc config RetailDemo start= disabled
+sc config DiagTrack start= disabled
+sc config diagnosticshub.standardcollector.service start= disabled
+sc config WMPNetworkSvc start= disabled
+sc config shpamsvc start= disabled</Code>
+</Script>

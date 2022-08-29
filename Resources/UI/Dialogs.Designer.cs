@@ -79,7 +79,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Are you sure you want to overwrite this script? This action is irreversible..
+        ///   Recherche une chaîne localisée semblable à The script &quot;{0}&quot; already exists. Are you sure you want to overwrite it?.
         /// </summary>
         public static string ConfirmScriptOverwriteContent {
             get {
@@ -97,7 +97,17 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Cannot {0} {1} &quot;{2}&quot;. {3}.
+        ///   Recherche une chaîne localisée semblable à Could not add script.
+        /// </summary>
+        public static string FSErrorAddingScriptMainInstruction {
+            get {
+                return ResourceManager.GetString("FSErrorAddingScriptMainInstruction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Cannot {0} {1} &quot;{2}&quot;.
+        ///{3}.
         /// </summary>
         public static string FSErrorContent {
             get {
@@ -142,7 +152,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Can&apos;t execute scripts because no scripts are selected..
+        ///   Recherche une chaîne localisée semblable à Can&apos;t execute scripts because no scripts are selected.
         /// </summary>
         public static string NoScriptsSelectedMainInstruction {
             get {
