@@ -19,14 +19,14 @@ public class ScriptXmlSerializer : IScriptSerializer
 
             string? executionTime = GetOptionalNode("ExecutionTime");
 
-            return new Script(GetLocalizedText("Name"),
-                              GetLocalizedText("Description"),
+            return new Script(AppInfo.Categories[GetNode("Category")],
                               GetNode("Code"),
-                              ScriptMetadataFactory.GetCategory(GetNode("Category")),
-                              ScriptMetadataFactory.GetRecommendationLevel(GetNode("Recommended")),
-                              ScriptMetadataFactory.GetImpact(GetNode("Impact")),
-                              ScriptMetadataFactory.GetHost(GetNode("Host")),
-                              executionTime is null ? AppInfo.Settings.ScriptTimeout : TimeSpan.Parse(executionTime, System.Globalization.CultureInfo.InvariantCulture));
+                              executionTime is null ? AppInfo.Settings.ScriptTimeout : TimeSpan.Parse(executionTime, System.Globalization.CultureInfo.InvariantCulture),
+                              AppInfo.Hosts[GetNode("Host")],
+                              AppInfo.Impacts[GetNode("Impact")],
+                              AppInfo.RecommendationLevels[GetNode("Recommended")],
+                              GetLocalizedText("Description"),
+                              GetLocalizedText("Name"));
         }
         catch (Exception e) when (e is XmlException or ArgumentException)
         {
@@ -37,7 +37,7 @@ public class ScriptXmlSerializer : IScriptSerializer
             LocalizedString localizedNodeTexts = new();
             foreach (XmlElement element in doc.GetElementsByTagName(name))
             {
-                localizedNodeTexts.SetFromXml(element);
+                SetFromXml(localizedNodeTexts, element);
             }
             return localizedNodeTexts;
         }
@@ -99,4 +99,7 @@ public class ScriptXmlSerializer : IScriptSerializer
         }
         doc.Save(stream);
     }
+
+    private static void SetFromXml(LocalizedString str, XmlNode node)
+                    => str.Set(new(node.Attributes?["xml:lang"]?.Value ?? string.Empty), node.InnerText);
 }

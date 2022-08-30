@@ -2,9 +2,10 @@
 
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
-public abstract class LocalizableScriptMetadata : IScriptData
+/// <summary>Common properties for script metadata objects.</summary>
+public abstract class ScriptMetadata : IScriptData
 {
-    protected LocalizableScriptMetadata(LocalizedString names, LocalizedString descriptions)
+    protected ScriptMetadata(LocalizedString names, LocalizedString descriptions)
     {
         Names = names;
         Descriptions = descriptions;
@@ -13,6 +14,6 @@ public abstract class LocalizableScriptMetadata : IScriptData
     public string Description => Descriptions.Get(CultureInfo.CurrentUICulture);
     public string InvariantName => Names.Get(CultureInfo.InvariantCulture);
     public string Name => Names.Get(CultureInfo.CurrentUICulture);
-    protected LocalizedString Descriptions { get; }
-    protected LocalizedString Names { get; }
+    private LocalizedString Descriptions { get; }
+    private LocalizedString Names { get; }
 }

@@ -10,36 +10,56 @@ namespace Scover.WinClean.BusinessLogic.Scripts;
 /// <summary>A script that can be executed from a script host program.</summary>
 public class Script : INotifyPropertyChanged, IScriptData
 {
+    private Category _category;
+    private string _code;
+    private TimeSpan _executionTime;
+    private IHost _host;
+    private Impact _impact;
     private RecommendationLevel _recommended;
     private bool _selected;
 
     /// <summary>Initializes a new instance of the <see cref="Script"/> class with the specified data.</summary>
-    public Script(LocalizedString name,
-                  LocalizedString description,
+    public Script(Category category,
                   string code,
-                  Category category,
-                  RecommendationLevel recommended,
-                  Impact impact,
+                  TimeSpan executionTime,
                   IHost host,
-                  TimeSpan executionTime)
+                  Impact impact,
+                  RecommendationLevel recommended,
+                  LocalizedString descriptions,
+                  LocalizedString names)
     {
+        _category = category;
+        _code = code;
+        _executionTime = executionTime;
+        _host = host;
+        _impact = impact;
         _recommended = recommended;
-        Category = category;
-        Code = code;
-        LocalizedDescriptions = description;
-        Host = host;
-        Impact = impact;
-        LocalizedNames = name;
-        ExecutionTime = executionTime;
+        LocalizedDescriptions = descriptions;
+        LocalizedNames = names;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <summary>Get or sets the category of this script.</summary>
-    public Category Category { get; set; }
+    public Category Category
+    {
+        get => _category; set
+        {
+            _category = value;
+            OnPropertyChanged();
+        }
+    }
 
     /// <summary>Get or sets the code of this script.</summary>
-    public string Code { get; set; }
+    public string Code
+    {
+        get => _code;
+        set
+        {
+            _code = value;
+            OnPropertyChanged();
+        }
+    }
 
     /// <summary>Gets or sets the description of this script</summary>
     /// <inheritdoc/>
@@ -53,13 +73,37 @@ public class Script : INotifyPropertyChanged, IScriptData
     /// <value>
     /// The estimated execution time of this script, or <see cref="AppInfo.Settings.ScriptTimeout"/> if the estimate is not available.
     /// </value>
-    public TimeSpan ExecutionTime { get; set; }
+    public TimeSpan ExecutionTime
+    {
+        get => _executionTime;
+        set
+        {
+            _executionTime = value;
+            OnPropertyChanged();
+        }
+    }
 
     /// <summary>Gets or sets the host to use to run this script.</summary>
-    public IHost Host { get; set; }
+    public IHost Host
+    {
+        get => _host;
+        set
+        {
+            _host = value;
+            OnPropertyChanged();
+        }
+    }
 
     /// <summary>Gets or sets the impact of running this script on the system.</summary>
-    public Impact Impact { get; set; }
+    public Impact Impact
+    {
+        get => _impact;
+        set
+        {
+            _impact = value;
+            OnPropertyChanged();
+        }
+    }
 
     /// <summary>Gets or sets the invariant name of this instance</summary>
     /// <inheritdoc/>
