@@ -5,7 +5,7 @@ using Scover.WinClean.Resources;
 namespace Scover.WinClean.Presentation.Dialogs;
 
 /// <summary>A dialog with a timeout.</summary>
-public class TimeoutDialog : Dialog
+public sealed class TimeoutDialog : Dialog
 {
     private TimeSpan _timeout;
 

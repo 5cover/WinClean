@@ -1,6 +1,6 @@
 ﻿namespace Scover.WinClean.BusinessLogic;
 
-public class ScriptExecutionProgressChangedEventArgs : EventArgs
+public sealed class ScriptExecutionProgressChangedEventArgs : EventArgs
 {
     public ScriptExecutionProgressChangedEventArgs(int scriptIndex) => ScriptIndex = scriptIndex;
 

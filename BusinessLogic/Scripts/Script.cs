@@ -8,7 +8,7 @@ using static System.Globalization.CultureInfo;
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
 /// <summary>A script that can be executed from a script host program.</summary>
-public class Script : INotifyPropertyChanged, IScriptData
+public sealed class Script : INotifyPropertyChanged, IScriptData
 {
     private Category _category;
     private string _code;

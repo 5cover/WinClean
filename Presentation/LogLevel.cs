@@ -4,7 +4,7 @@ using Scover.WinClean.BusinessLogic;
 
 namespace Scover.WinClean.Presentation;
 
-public class LogLevel
+public sealed class LogLevel
 {
     private readonly LocalizedString _name = new();
 

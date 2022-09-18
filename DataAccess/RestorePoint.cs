@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace Scover.WinClean.DataAccess;
 
 /// <seealso href="https://stackoverflow.com/a/42733327/11718061"/>
-public class RestorePoint
+public sealed class RestorePoint
 {
     private readonly string _description;
 

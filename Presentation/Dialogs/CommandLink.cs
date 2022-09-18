@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Scover.WinClean.Presentation.Dialogs;
 
-public class CommandLink : INotifyPropertyChanged
+public sealed class CommandLink : INotifyPropertyChanged
 {
     private bool _isEnabled = true;
     private string _note = string.Empty;

@@ -4,7 +4,7 @@ using Scover.WinClean.BusinessLogic.Scripts;
 
 namespace Scover.WinClean.BusinessLogic;
 
-public class ScriptExecutor
+public sealed class ScriptExecutor
 {
     private readonly Progress<ScriptExecutionProgressChangedEventArgs> _progress = new();
     private CancellationTokenSource? _cts = null;

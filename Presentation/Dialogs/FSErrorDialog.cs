@@ -5,7 +5,7 @@ using Scover.WinClean.Resources;
 
 namespace Scover.WinClean.Presentation.Dialogs;
 
-public class FSErrorDialog : Dialog
+public sealed class FSErrorDialog : Dialog
 {    /// <summary>Initializes a new instance of the <see cref="FSErrorDialog"/> class.</summary>
      /// <param name="e">The exception responsible of the filesystem error.</param>
      /// <param name="verb">The filesystem verb that could apply to what was trying to be done.</param>

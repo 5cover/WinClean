@@ -5,7 +5,7 @@ using Scover.WinClean.DataAccess;
 namespace Scover.WinClean.BusinessLogic.Scripts.Hosts;
 
 /// <summary>PowerShell script host.</summary>
-public class PowerShell : IHost
+public sealed class PowerShell : IHost
 {
     private PowerShell()
     {

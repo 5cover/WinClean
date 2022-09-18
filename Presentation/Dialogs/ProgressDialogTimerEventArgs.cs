@@ -1,6 +1,6 @@
 ﻿namespace Scover.WinClean.Presentation.Dialogs;
 
-public class ProgressDialogTimerEventArgs : EventArgs
+public sealed class ProgressDialogTimerEventArgs : EventArgs
 {
     public ProgressDialogTimerEventArgs(TimeSpan elapsed) => Elapsed = elapsed;
 

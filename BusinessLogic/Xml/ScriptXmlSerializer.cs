@@ -1,10 +1,11 @@
 ﻿using System.Xml;
 
 using Scover.WinClean.BusinessLogic.Scripts;
+using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.BusinessLogic.Xml;
 
-public class ScriptXmlSerializer : IScriptSerializer
+public sealed class ScriptXmlSerializer : IScriptSerializer
 {
     /// <summary>Deserializes a script from XML code.</summary>
     /// <param name="data">A <see cref="string"/> containing the XML code.</param>
@@ -37,7 +38,7 @@ public class ScriptXmlSerializer : IScriptSerializer
             LocalizedString localizedNodeTexts = new();
             foreach (XmlElement element in doc.GetElementsByTagName(name))
             {
-                SetFromXml(localizedNodeTexts, element);
+                localizedNodeTexts.SetFromXml(element);
             }
             return localizedNodeTexts;
         }
@@ -99,7 +100,4 @@ public class ScriptXmlSerializer : IScriptSerializer
         }
         doc.Save(stream);
     }
-
-    private static void SetFromXml(LocalizedString str, XmlNode node)
-                    => str.Set(new(node.Attributes?["xml:lang"]?.Value ?? string.Empty), node.InnerText);
 }

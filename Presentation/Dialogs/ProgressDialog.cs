@@ -5,7 +5,7 @@ using Ookii.Dialogs.Wpf;
 namespace Scover.WinClean.Presentation.Dialogs;
 
 /// <summary>Dialog that tracks the progress of a lengthy operation. Has a single button for stopping or aborting the operation.</summary>
-public class ProgressDialog : Dialog
+public sealed class ProgressDialog : Dialog
 {
     #region Wrapped TaskDialog properties
 

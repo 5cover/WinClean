@@ -5,7 +5,7 @@ using Microsoft.Win32;
 namespace Scover.WinClean.DataAccess;
 
 /// <summary>A group of related extensions</summary>
-public class ExtensionGroup : IEnumerable<string>
+public sealed class ExtensionGroup : IEnumerable<string>
 {
     private readonly IEnumerable<string> _extensions;
 

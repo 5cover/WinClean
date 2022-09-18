@@ -2,7 +2,7 @@
 
 namespace Scover.WinClean.BusinessLogic;
 
-public class SourceControlClient
+public sealed class SourceControlClient
 {
     private readonly IGitHubClient _github;
     private readonly Release _latestRelease;

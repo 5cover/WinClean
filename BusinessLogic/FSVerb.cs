@@ -2,7 +2,7 @@
 
 namespace Scover.WinClean.BusinessLogic;
 
-public class FSVerb
+public sealed class FSVerb
 {
     private FSVerb(string localizedVerb)
     {

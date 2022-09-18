@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace Scover.WinClean.Presentation.Converters;
 
-public class IsNotNullConverter : IValueConverter
+public sealed class IsNotNullConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object parameter, CultureInfo culture) => value is not null;
 

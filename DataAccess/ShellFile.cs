@@ -3,7 +3,7 @@
 namespace Scover.WinClean.DataAccess;
 
 /// <summary>Wrapper for <see cref="Microsoft.WindowsAPICodePack.Shell.ShellFile"/>.</summary>
-public class ShellFile : IDisposable
+public sealed class ShellFile : IDisposable
 {
     private readonly Microsoft.WindowsAPICodePack.Shell.ShellFile _shFile;
 

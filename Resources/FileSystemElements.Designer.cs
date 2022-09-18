@@ -27,7 +27,7 @@ namespace Scover.WinClean.Resources {
     [GeneratedCode("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [DebuggerNonUserCode()]
     [CompilerGenerated()]
-    public class FileSystemElements {
+    public sealed class FileSystemElements {
         
         private static ResourceManager resourceMan;
         

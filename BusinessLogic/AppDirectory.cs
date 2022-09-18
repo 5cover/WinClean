@@ -3,7 +3,7 @@
 namespace Scover.WinClean.BusinessLogic;
 
 /// <summary>Represents a directory containing files related to the application.</summary>
-public class AppDirectory
+public sealed class AppDirectory
 {
     private AppDirectory(params string[] paths)
     {

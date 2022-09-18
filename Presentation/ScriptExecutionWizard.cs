@@ -19,7 +19,7 @@ namespace Scover.WinClean.Presentation.ScriptExecution;
 /// Walks the user through the multi-step high-level operation of executing multiple scripts asynchronously by displaying a task
 /// dialog tracking the progress.
 /// </summary>
-public class ScriptExecutionWizard
+public sealed class ScriptExecutionWizard
 {
     private static readonly ScriptExecutor executor = new();
     private readonly IReadOnlyList<Script> _scripts;

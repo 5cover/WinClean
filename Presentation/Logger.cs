@@ -8,11 +8,12 @@ using CsvHelper.Configuration;
 
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.DataAccess;
+using Scover.WinClean.Resources;
 
 namespace Scover.WinClean.Presentation;
 
 /// <summary>Provides CSV logging.</summary>
-public class Logger
+public sealed class Logger
 {
     private const string DateTimeFilenameFormat = "yyyy-MM-dd--HH-mm-ss";
 
@@ -31,22 +32,23 @@ public class Logger
 
     /// <summary>Empties the log folder, except for the current log file.</summary>
     public async void ClearLogsFolderAsync()
-        => await Task.Run(() =>
-        {
-            IEnumerable<FileInfo> deletableLogFiles = AppDirectory.LogDir.Info.EnumerateFiles("*.csv").Where(CanLogFileBeDeleted);
-
-            foreach (FileInfo logFile in deletableLogFiles)
+    {
+        await Task.Run(() =>
             {
-                try
+                foreach (FileInfo logFile in AppDirectory.LogDir.Info.EnumerateFiles("*.csv").Where(CanLogFileBeDeleted))
                 {
-                    logFile.Delete();
+                    try
+                    {
+                        logFile.Delete();
+                    }
+                    catch (Exception e) when (e.IsFileSystem())
+                    {
+                        // Swallow the filesystem exception and silenty fail to delete the log file. This will avoid unhandled exceptions.
+                    }
                 }
-                catch (Exception e) when (e.IsFileSystem())
-                {
-                    // Swallow the filesystem exception and silenty fail to delete the log file. This will avoid unhandled exceptions.
-                }
-            }
-        }).ConfigureAwait(false);
+            }).ConfigureAwait(false);
+        Logs.ClearedLogsFolder.Log();
+    }
 
     /// <summary>Logs a string.</summary>
     /// <param name="message">The string to log.</param>

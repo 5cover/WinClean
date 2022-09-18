@@ -6,7 +6,7 @@ using Scover.WinClean.Resources;
 
 namespace Scover.WinClean.BusinessLogic;
 
-public class LocalizedString : IReadOnlyCollection<KeyValuePair<string, string>>
+public sealed class LocalizedString : IReadOnlyCollection<KeyValuePair<string, string>>
 {
     private readonly Dictionary<string, string> _values = new();
 

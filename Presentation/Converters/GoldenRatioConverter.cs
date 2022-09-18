@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace Scover.WinClean.Presentation.Converters;
 
-public class GoldenRatioConverter : IValueConverter
+public sealed class GoldenRatioConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

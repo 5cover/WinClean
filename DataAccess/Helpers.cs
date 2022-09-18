@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
 using System.Security;
+using System.Xml;
+
+using Scover.WinClean.BusinessLogic;
 
 namespace Scover.WinClean.DataAccess;
 
@@ -15,7 +18,7 @@ public static class Helpers
         return t;
     }
 
-    /// <summary>Fetches the restore point icon as defined in rstrui.exe</summary>
+    /// <summary>Fetches the restore point icon as defined in rstrui.exe.</summary>
     public static Icon GetRestorePointIcon()
         => Icon.ExtractAssociatedIcon(Path.Join(Environment.SystemDirectory, "rstrui.exe")).AssertNotNull();
 
@@ -57,6 +60,9 @@ public static class Helpers
     {
         using Process? process = Process.Start("explorer", $"/root,{dirPath}");
     }
+
+    public static void SetFromXml(this LocalizedString str, XmlNode node)
+                                => str.Set(new(node.Attributes?["xml:lang"]?.Value ?? string.Empty), node.InnerText);
 
     /// <summary>
     /// Computes the sum of a sequence of time intervals that are obtained by invoking a transform function on each element of

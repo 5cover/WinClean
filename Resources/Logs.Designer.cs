@@ -61,6 +61,15 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Cleared logs folder..
+        /// </summary>
+        public static string ClearedLogsFolder {
+            get {
+                return ResourceManager.GetString("ClearedLogsFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Creating restore point....
         /// </summary>
         public static string CreatingRestorePoint {

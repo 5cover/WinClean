@@ -2,10 +2,11 @@
 using System.Xml;
 
 using Scover.WinClean.BusinessLogic.Scripts;
+using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.BusinessLogic.Xml;
 
-public class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
+public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
 {
     private readonly XmlDocument _doc = new();
 

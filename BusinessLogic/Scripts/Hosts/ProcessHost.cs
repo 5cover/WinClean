@@ -10,7 +10,7 @@ using static System.IO.Path;
 
 namespace Scover.WinClean.BusinessLogic.Scripts.Hosts;
 
-public class ProcessHost : IHost
+public sealed class ProcessHost : IHost
 {
     /// <summary>Arguments to pass to <see cref="Executable"/> when executing.</summary>
     private readonly IncompleteArguments _arguments;

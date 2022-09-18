@@ -6,7 +6,7 @@ using Scover.WinClean.DataAccess;
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
 /// <summary>A collection of scripts deserialized from files.</summary>
-public class ScriptCollection : IEnumerable<Script>
+public sealed class ScriptCollection : IEnumerable<Script>
 {
     private static readonly IScriptSerializer serializer = new ScriptXmlSerializer();
     private readonly Dictionary<Script, string> _scriptFiles = new();

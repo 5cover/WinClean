@@ -5,7 +5,7 @@ using Ookii.Dialogs.Wpf;
 
 namespace Scover.WinClean.Presentation.Dialogs;
 
-public class CommandLinkDialog : Dialog
+public sealed class CommandLinkDialog : Dialog
 {
     private readonly Dictionary<CommandLink, TaskDialogButton> _commandLinks = new();
     private CommandLink? _defaultCommandLink;
