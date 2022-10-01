@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
+using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
 
 namespace Scover.WinClean.Presentation.Controls;

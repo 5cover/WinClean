@@ -60,7 +60,14 @@ public partial class MainWindow
             return;
         }
 
-        foreach (string? filePath in ofd.FileNames)
+        foreach (string filePath in ofd.FileNames)
+        {
+            AddScript(filePath);
+        }
+
+        ResetTabs();
+
+        static void AddScript(string filePath)
         {
             bool allowOverwrite = false;
             while (true)
@@ -104,8 +111,6 @@ public partial class MainWindow
                 }
             }
         }
-
-        ResetTabs();
     }
 
     private void ButtonExecuteScriptsClick(object sender, RoutedEventArgs e)

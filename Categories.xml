@@ -18,4 +18,8 @@
     <Description>Customization scripts that do not bring any performance improvements. Similarily to the "Delobat" scripts, they are meant to be executed only once.</Description>
     <Description xml:lang="fr">Scripts de personnalisation n'apportant aucune amélioration des performances. Tout comme les scripts "Nettoyage", ils sont destinés à n'être exécutés qu'une seule fois.</Description>
   </Category>
+	<Category>
+		<Name>Test</Name>
+		<Description>Testing scripts</Description>
+	</Category>
 </Categories>
