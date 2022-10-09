@@ -11,6 +11,7 @@ using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
+using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Presentation.ScriptExecution;
 using Scover.WinClean.Resources;
 
@@ -139,7 +140,7 @@ public partial class MainWindow
 
     private void MenuAllClick(object sender, RoutedEventArgs e) => CheckScripts(true);
 
-    private void MenuClearLogsClick(object sender, RoutedEventArgs e) => Logger.Instance.ClearLogsFolderAsync();
+    private void MenuClearLogsClick(object sender, RoutedEventArgs e) => (App.Logger as CsvLogger)?.ClearLogsFolderAsync();
 
     private void MenuExitClick(object sender, RoutedEventArgs e) => Close();
 
@@ -165,6 +166,7 @@ public partial class MainWindow
     private void ResetTabs()
     {
         int selectedIndex = TabControlCategories.SelectedIndex;
+
         TabControlCategories.Items.Clear();
 
         foreach (Category category in AppInfo.Categories.Values)

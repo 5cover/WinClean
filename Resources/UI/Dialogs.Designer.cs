@@ -22,7 +22,7 @@ namespace Scover.WinClean.Resources.UI {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public sealed class Dialogs {
+    public class Dialogs {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -125,24 +125,6 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Version {0} is available. Consider updating to get new scripts and features. &lt;A&gt;See on GitHub&lt;/A&gt;.
-        /// </summary>
-        public static string NewVersionAvailableContent {
-            get {
-                return ResourceManager.GetString("NewVersionAvailableContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à New version available.
-        /// </summary>
-        public static string NewVersionAvailableMainInstruction {
-            get {
-                return ResourceManager.GetString("NewVersionAvailableMainInstruction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à To select scripts, check their associated check box..
         /// </summary>
         public static string NoScriptsSelectedContent {
@@ -167,6 +149,24 @@ namespace Scover.WinClean.Resources.UI {
         public static string UnhandledExceptionDialogContent {
             get {
                 return ResourceManager.GetString("UnhandledExceptionDialogContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Version {0} is available. Consider updating to get new scripts and features. &lt;A&gt;See on GitHub&lt;/A&gt;.
+        /// </summary>
+        public static string UpdateContent {
+            get {
+                return ResourceManager.GetString("UpdateContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à New version available.
+        /// </summary>
+        public static string UpdateMainInstruction {
+            get {
+                return ResourceManager.GetString("UpdateMainInstruction", resourceCulture);
             }
         }
     }

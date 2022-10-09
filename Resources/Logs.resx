@@ -177,4 +177,13 @@
     <value>Cleared logs folder.</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="HungScript" xml:space="preserve">
+    <value>Script "{0}" has been executing for {1} and is probably hung.</value>
+    <comment>0 : script name
+1 : script timeout@Invariant</comment>
+  </data>
+  <data name="HungScriptAborted" xml:space="preserve">
+    <value>Hung script "{0}" aborted.</value>
+    <comment>0 : script name@Invariant</comment>
+  </data>
 </root>

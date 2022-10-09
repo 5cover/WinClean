@@ -4,7 +4,6 @@ using System.Globalization;
 using Humanizer;
 
 using Scover.WinClean.DataAccess;
-using Scover.WinClean.Resources;
 
 using static System.IO.Path;
 
@@ -31,13 +30,13 @@ public sealed class ProcessHost : IHost
     }
 
     public static ProcessHost Cmd { get; } = new(nameof(Cmd),
-                                                 Host.CmdDescription,
+                                                 Resources.Hosts.CmdDescription,
                                                  Join(Environment.SystemDirectory, "cmd.exe"),
                                                  "/d /c \"{0}\"",
                                                  ".cmd", ".bat");
 
     public static ProcessHost Regedit { get; } = new(nameof(Regedit),
-                                                     Host.RegeditDescription,
+                                                     Resources.Hosts.RegeditDescription,
                                                      Join(Environment.SystemDirectory, "..", "regedit.exe"),
                                                      "/s {0}",
                                                      ".reg");
@@ -48,7 +47,7 @@ public sealed class ProcessHost : IHost
 
     public ExtensionGroup SupportedExtensions { get; }
 
-    public void ExecuteCode(string code, string scriptName, TimeSpan timeout, HungScriptCallback keepRunningOrKill, CancellationToken cancellationToken)
+    public void ExecuteCode(string code, string scriptName, TimeSpan timeout, HungScriptCallback keepRunningElseKill, CancellationToken cancellationToken)
     {
         FileInfo tmpScriptFile = CreateTempFile(code, SupportedExtensions.First());
 
@@ -57,7 +56,7 @@ public sealed class ProcessHost : IHost
 
         while (!host.WaitForExit(Convert.ToInt32(timeout.TotalMilliseconds)))
         {
-            if (!keepRunningOrKill(scriptName))
+            if (!keepRunningElseKill(scriptName))
             {
                 host.Kill(true);
                 break;

@@ -88,6 +88,24 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Script &quot;{0}&quot; has been executing for {1} and is probably hung..
+        /// </summary>
+        public static string HungScript {
+            get {
+                return ResourceManager.GetString("HungScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Hung script &quot;{0}&quot; aborted..
+        /// </summary>
+        public static string HungScriptAborted {
+            get {
+                return ResourceManager.GetString("HungScriptAborted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Script file &quot;{0}&quot; has invalid or missing data..
         /// </summary>
         public static string InvalidScriptData {

@@ -13,18 +13,18 @@ public sealed class ScriptCollection : IEnumerable<Script>
 
     /// <summary>Loads all the scripts present in the specified application directory.</summary>
     /// <param name="directory">The application directory to load the scripts (represented as *.xml files) from.</param>
-    /// <param name="reloadOnInvalidScriptData">
+    /// <param name="reloadElseIgnore">
     /// <inheritdoc cref="InvalidScriptDataCallback" path="/summary"/> Returns <see langword="true"/> if the script should be
     /// reloaded, <see langword="false"/> if it should be ignored.
     /// </param>
     /// <remarks>Will not load scripts located in subdirectories.</remarks>
-    public static ScriptCollection LoadScripts(AppDirectory directory, InvalidScriptDataCallback reloadOnInvalidScriptData)
+    public static ScriptCollection LoadScripts(AppDirectory directory, InvalidScriptDataCallback reloadElseIgnore)
     {
         ScriptCollection scripts = new();
 
         foreach (string scriptFile in Directory.EnumerateFiles(directory.Info.FullName, "*.xml", SearchOption.TopDirectoryOnly))
         {
-            Script? deserializedScript = DeserializeTolerantly(scriptFile, reloadOnInvalidScriptData);
+            Script? deserializedScript = DeserializeTolerantly(scriptFile, reloadElseIgnore);
             if (deserializedScript is not null)
             {
                 scripts._scriptFiles.Add(deserializedScript, scriptFile);
@@ -89,7 +89,7 @@ public sealed class ScriptCollection : IEnumerable<Script>
 
     IEnumerator IEnumerable.GetEnumerator() => _scriptFiles.Keys.GetEnumerator();
 
-    private static Script? DeserializeTolerantly(string scriptFile, InvalidScriptDataCallback reloadOnInvalidScriptData)
+    private static Script? DeserializeTolerantly(string scriptFile, InvalidScriptDataCallback reloadElseReturnNull)
     {
         while (true)
         {
@@ -100,7 +100,7 @@ public sealed class ScriptCollection : IEnumerable<Script>
             }
             catch (InvalidDataException e)
             {
-                if (!reloadOnInvalidScriptData(e, scriptFile))
+                if (!reloadElseReturnNull(e, scriptFile))
                 {
                     return null;
                 }

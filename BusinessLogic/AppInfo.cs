@@ -10,6 +10,7 @@ using Scover.WinClean.Properties;
 
 namespace Scover.WinClean.BusinessLogic;
 
+/// <summary>Holds data related to the Business Logic layer.</summary>
 public static class AppInfo
 {
     private static readonly IScriptMetadataDeserializer _deserializer = new ScriptMetadataXmlDeserializer();
@@ -39,10 +40,14 @@ public static class AppInfo
 
     #endregion Script metadata
 
-    /// <summary>Gets or sets the error callback for reading application files.</summary>
+    /// <summary>Gets or sets the error callback for opening application files.</summary>
     /// <remarks>This property must be set externally in the Presentation layer.</remarks>
-    public static FSOperationCallback ReadAppFileRetryOrFail { get; set; } = (_, _, _)
-        => throw new NotSupportedException(Resources.DevException.CallbackNotSet.FormatWith(nameof(ReadAppFileRetryOrFail)));
+    /// <returns>
+    /// <see langword="true"/> if the filesystem operation should be retried; <see langword="false"/> if it should fail and
+    /// throw <paramref name="exception"/>.
+    /// </returns>
+    public static FSOperationCallback OpenAppFileRetryElseFail { get; set; } = (_, _, _)
+        => throw new NotSupportedException(Resources.DevException.CallbackNotSet.FormatWith(nameof(OpenAppFileRetryElseFail)));
 
     public static Settings Settings => Settings.Default;
 
@@ -60,7 +65,7 @@ public static class AppInfo
             }
             catch (Exception e) when (e.IsFileSystem())
             {
-                if (!ReadAppFileRetryOrFail(e, FSVerb.Access, new FileInfo(path)))
+                if (!OpenAppFileRetryElseFail(e, FSVerb.Access, new FileInfo(path)))
                 {
                     throw;
                 }

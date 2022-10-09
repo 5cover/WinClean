@@ -2,7 +2,11 @@
 
 global using static Humanizer.StringExtensions;
 
+using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Windows;
+
+using CommandLine;
 
 using Ookii.Dialogs.Wpf;
 
@@ -10,6 +14,7 @@ using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
+using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Presentation.Windows;
 using Scover.WinClean.Resources;
 
@@ -17,110 +22,141 @@ using static Scover.WinClean.Resources.UI.Dialogs;
 
 namespace Scover.WinClean.Presentation;
 
-/// <summary>
-/// This class statically stores data only available to the <see cref="Presentation"/> layer. It also handles the startup /
-/// shutdown strategy.
-/// </summary>
+/// <summary>Handles the startup / shutdown strategy and hold data related to the Presentation layer.</summary>
 public partial class App
 {
-    private static readonly InvalidScriptDataCallback _invalidScriptDataCallback = (e, path) =>
+    private static Logger? _logger;
+    private static ScriptCollection? _scripts;
+
+    /// <summary>The application's logger, available after startup.</summary>
+    public static Logger Logger { get => _logger.AssertNotNull(); }
+
+    /// <summary>The application's scripts, available after startup.</summary>
+    public static ScriptCollection Scripts { get => _scripts.AssertNotNull(); }
+
+    private static void Initialize(Logger logger,
+                              Action warnUpdate,
+                              InvalidScriptDataCallback reloadOnInvalidScriptData,
+                              Action<Exception> onUnhandledException,
+                              FSOperationCallback retryElseFail)
     {
-        string filename = Path.GetFileName(path);
-        Logs.InvalidScriptData.FormatWith(filename).Log(LogLevel.Error);
+        //1. Set the logger
+        _logger = logger;
 
-        using Dialog invalidScriptData = DialogFactory.MakeInvalidScriptDataDialog(e, path, Button.DeleteScript, Button.Retry, Button.Ignore);
-        invalidScriptData.DefaultButton = Button.Retry;
+        //2. Add the unhandled exception handler
+        Current.DispatcherUnhandledException += (_, args) => onUnhandledException(args.Exception);
 
-        using Dialog deleteScript = new(Button.Yes, Button.No)
+        //3. Set the app file callback
+        AppInfo.OpenAppFileRetryElseFail = retryElseFail;
+
+        //4. Check for updates
+        if (SourceControlClient.Instance.Value.LatestVersionName != AppInfo.Version)
         {
-            AllowDialogCancellation = true,
-            MainIcon = TaskDialogIcon.Warning,
-            Content = ConfirmScriptDeletionContent,
-            DefaultButton = Button.No
-        };
-
-        invalidScriptData.SetConfirmation(Button.DeleteScript, () => deleteScript.ShowDialog().ClickedButton == Button.Yes);
-
-        Button? result = invalidScriptData.ShowDialog().ClickedButton;
-        if (result == Button.DeleteScript)
-        {
-            File.Delete(path);
-            Logs.ScriptDeleted.FormatWith(filename).Log();
+            warnUpdate();
         }
 
-        return result == Button.Retry;
-    };
-
-    public static ScriptCollection Scripts { get; } = ScriptCollection.LoadScripts(AppDirectory.ScriptsDir, _invalidScriptDataCallback);
-
-    private static void ShowUnhandledExceptionDialog(Exception e)
-    {
-        Logs.UnhandledException.FormatWith(e).Log(LogLevel.Critical);
-        using Dialog unhandledExceptionDialog = new(Button.Exit, Button.CopyDetails)
-        {
-            MainIcon = TaskDialogIcon.Error,
-            Content = UnhandledExceptionDialogContent.FormatWith(e.Message),
-            ExpandedInformation = e.ToString(),
-            AreHyperlinksEnabled = true
-        };
-        unhandledExceptionDialog.SetConfirmation(Button.CopyDetails, () =>
-        {
-            Clipboard.SetText(e.ToString());
-            return false;
-        });
-        unhandledExceptionDialog.HyperlinkClicked += (_, args) => Helpers.Open(args.Href);
-        unhandledExceptionDialog.ShowDialog();
+        //5. Load scripts.
+        _scripts = ScriptCollection.LoadScripts(AppDirectory.ScriptsDir, reloadOnInvalidScriptData);
     }
 
     private static void StartConsole(string[] args)
     {
-        WarnIfNewVersionAvailable(() => Console.WriteLine(NewVersionAvailableContent.FormatWith(SourceControlClient.Instance.Value.LatestVersionName)));
-        //Environment.ExitCode = new CommandLineInterpreter(args).Execute();
+        // Get invariant (en-US) output.
+        CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
+
+        // Enable console
+        [DllImport("kernel32.dll")]
+        static extern bool AttachConsole(uint dwProcessId);
+        const uint ATTACH_PARENT_PROCESS = 0x0ffffffff;
+        AttachConsole(ATTACH_PARENT_PROCESS);
+
+        Initialize(new ConsoleLogger(),
+            () => Logger.Log(WinClean.Resources.CommandLine.Update.FormatWith(SourceControlClient.Instance.Value.LatestVersionName,
+                                                                              SourceControlClient.Instance.Value.LatestVersionUrl), LogLevel.Info),
+            (e, path) =>
+            {
+                // Log the error, but ignore invalid scripts.
+                Logger.Log($"{Logs.InvalidScriptData.FormatWith(Path.GetFileName(path))}\n{e}", LogLevel.Error);
+                return false;
+            }, e => Logger.Log(Logs.UnhandledException.FormatWith(e), LogLevel.Critical),
+            (ex, verb, info) =>
+                // Fail immediately. Let it turn into an unhandled exception.
+                false);
+        _ = Parser.Default.ParseArguments<CommandLineOptions>(args)
+            .WithParsed(options => Environment.ExitCode = options.Execute());
+
+        Current.Shutdown();
     }
 
     private static void StartGui()
     {
-        WarnIfNewVersionAvailable(() =>
+        Initialize(new CsvLogger(), () =>
         {
-            Dialog newVersionAvailableDialog = new(Button.OK)
+            Dialog updateDialog = new(Button.OK)
             {
-                MainInstruction = NewVersionAvailableMainInstruction,
-                Content =
-                          NewVersionAvailableContent.FormatWith(SourceControlClient.Instance.Value.LatestVersionName),
+                MainInstruction = UpdateMainInstruction,
+                Content = UpdateContent.FormatWith(SourceControlClient.Instance.Value.LatestVersionName),
                 AllowDialogCancellation = true,
                 ShowMinimizeBox = true,
                 MainIcon = TaskDialogIcon.Information,
                 AreHyperlinksEnabled = true
             };
-            newVersionAvailableDialog.HyperlinkClicked += (_, e) => Helpers.Open(SourceControlClient.Instance.Value.LatestVersionUrl);
+            updateDialog.HyperlinkClicked += (_, e) => Helpers.Open(SourceControlClient.Instance.Value.LatestVersionUrl);
 
-            _ = newVersionAvailableDialog.Show();
-        });
+            if (updateDialog.Show().WasClosed)
+            {
+                Current.Shutdown();
+            };
+        },
+        (e, path) =>
+        {
+            string filename = Path.GetFileName(path);
+            Logger.Log(Logs.InvalidScriptData.FormatWith(filename), LogLevel.Error);
 
-        AppInfo.ReadAppFileRetryOrFail = (ex, verb, info) =>
+            using Dialog invalidScriptData = DialogFactory.MakeInvalidScriptDataDialog(e, path, Button.DeleteScript, Button.Retry, Button.Ignore);
+            invalidScriptData.DefaultButton = Button.Retry;
+
+            using Dialog deleteScript = new(Button.Yes, Button.No)
+            {
+                AllowDialogCancellation = true,
+                MainIcon = TaskDialogIcon.Warning,
+                Content = ConfirmScriptDeletionContent,
+                DefaultButton = Button.No
+            };
+
+            invalidScriptData.SetConfirmation(Button.DeleteScript, () => deleteScript.ShowDialog().ClickedButton == Button.Yes);
+
+            Button? result = invalidScriptData.ShowDialog().ClickedButton;
+            if (result == Button.DeleteScript)
+            {
+                File.Delete(path);
+                Logger.Log(Logs.ScriptDeleted.FormatWith(filename));
+            }
+
+            return result == Button.Retry;
+        }, e =>
+        {
+            Logger.Log(Logs.UnhandledException.FormatWith(e), LogLevel.Critical);
+            using Dialog unhandledExceptionDialog = new(Button.Exit, Button.CopyDetails)
+            {
+                MainIcon = TaskDialogIcon.Error,
+                Content = UnhandledExceptionDialogContent.FormatWith(e.Message),
+                ExpandedInformation = e.ToString(),
+                AreHyperlinksEnabled = true
+            };
+            unhandledExceptionDialog.SetConfirmation(Button.CopyDetails, () =>
+            {
+                Clipboard.SetText(e.ToString());
+                return false;
+            });
+            unhandledExceptionDialog.HyperlinkClicked += (_, args) => Helpers.Open(args.Href);
+            unhandledExceptionDialog.ShowDialog();
+        }, (ex, verb, info) =>
         {
             using FSErrorDialog dialog = new(ex, verb, info, Button.Retry, Button.Exit);
             return dialog.ShowDialog().ClickedButton == Button.Retry;
-        };
-
-        Current.DispatcherUnhandledException += (_, args) => ShowUnhandledExceptionDialog(args.Exception);
+        });
         new MainWindow().Show();
-    }
-
-    private static void WarnIfNewVersionAvailable(Action warnNewUpdateAvailable)
-    {
-        try
-        {
-            string latestVersion = SourceControlClient.Instance.Value.LatestVersionName;
-            if (latestVersion != AppInfo.Version)
-            {
-                warnNewUpdateAvailable();
-            }
-        }
-        catch (AggregateException)
-        {
-            // Network API init error. Assume that we have the latest version.
-        }
     }
 
     private void ApplicationExit(object? sender, ExitEventArgs? e)
@@ -128,13 +164,11 @@ public partial class App
         Scripts.Save();
         AppInfo.Settings.Save();
 
-        Logs.Exiting.Log();
+        Logger.Log(Logs.Exiting);
     }
 
     private void ApplicationStartup(object? sender, StartupEventArgs? e)
     {
-        Logs.Started.Log();
-
         if (e?.Args.Any() ?? false)
         {
             StartConsole(e.Args);

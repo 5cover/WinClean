@@ -25,8 +25,8 @@ Global
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|ARM.Build.0 = Debug|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|ARM64.ActiveCfg = Debug|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|x64.ActiveCfg = Debug|x64
-		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|x64.Build.0 = Debug|x64
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|x64.Build.0 = Debug|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|x86.Build.0 = Debug|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -35,8 +35,8 @@ Global
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|ARM.Build.0 = Release|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|ARM64.ActiveCfg = Release|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|ARM64.Build.0 = Release|Any CPU
-		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|x64.ActiveCfg = Release|x64
-		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|x64.Build.0 = Release|x64
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|x64.ActiveCfg = Release|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|x64.Build.0 = Release|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|x86.ActiveCfg = Release|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
@@ -44,8 +44,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_PrefixTranslations = False
-		SolutionGuid = {937A4B5E-93B9-4C78-B678-7D96F758D99D}
 		RESX_TranslatorConfiguration = {"Azure":"{\"AutoDetectHtml\":true,\"MaxCharactersPerMinute\":33300,\"AuthenticationKey\":null,\"Region\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","Baidu":"{\"AppId\":null,\"SecretKey\":null,\"ApiUrl\":null,\"Domain\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","DeepL":"{\"ApiKey\":null,\"ApiUrl\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","Google":"{\"ApiKey\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MSTerm":"{\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MyMemory":"{\"Key\":null,\"Mail\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}"}
+		SolutionGuid = {937A4B5E-93B9-4C78-B678-7D96F758D99D}
+		RESX_PrefixTranslations = False
 	EndGlobalSection
 EndGlobal

@@ -21,8 +21,8 @@ public sealed class ScriptExecutor
 
     /// <summary>Executes a list of scripts asynchronously. Raises the <see cref="ProgressChanged"/> event.</summary>
     /// <param name="scripts">The scripts to execute.</param>
-    /// <inheritdoc cref="Script.Execute(HungScriptCallback, CancellationToken?)" path="/param"/>
-    public async Task ExecuteScriptsAsync(IReadOnlyList<Script> scripts, HungScriptCallback keepRunningOrKill)
+    /// <inheritdoc cref="Script.Execute(HungScriptCallback, CancellationToken)" path="/param"/>
+    public async Task ExecuteScriptsAsync(IReadOnlyList<Script> scripts, HungScriptCallback keepRunningElseKill)
     {
         _cts = new();
 
@@ -35,7 +35,7 @@ public sealed class ScriptExecutor
                 stopwatch.Restart();
 
                 ReportProgress();
-                scripts[scriptIndex].Execute(keepRunningOrKill, _cts.Token);
+                scripts[scriptIndex].Execute(keepRunningElseKill, _cts.Token);
 
                 scripts[scriptIndex].ExecutionTime = stopwatch.Elapsed;
 

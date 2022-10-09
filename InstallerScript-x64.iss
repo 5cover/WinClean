@@ -4,7 +4,7 @@
 #include <idplang\french.iss>
 
 #define Name "WinClean"
-#define Version "1.1.0"
+#define Version "1.2.0"
 #define RepoUrl "https://github.com/5cover/WinClean"
 #define ExeName "WinClean.exe"
 #define SetupName "WinClean-Installer-x64"
@@ -140,20 +140,6 @@ begin
         Delete(ResultString, Length(ResultString) - 1, 2)
 end;
 
-function GetArchitecture(): String;
-var
-    S: string;
-begin
-    case ProcessorArchitecture of
-        paX86: S := 'x86';
-        paX64: S := 'x64';
-        paARM64: S := 'arm64'
-    else
-        S := 'Unrecognized'
-    end
-    result := S;
-end;
-
 function NetRuntimeIsMissing(): Boolean;
 var
     installed: Boolean;
@@ -198,7 +184,7 @@ end;
  
 { EVENT FUNCTIONS } 
 
-// First, download the .NET Runtime Installer
+// Firstly, download the .NET Runtime Installer
 procedure InitializeWizard;
 begin
     // Save the result in a variable so we only need to call NetRuntimeIsMissing() once
@@ -206,7 +192,7 @@ begin
     if g_dotNetMissing then
     begin
         // URL of the latest dotnet runtime installer
-        idpAddFile('https://download.visualstudio.microsoft.com/download/pr/b4a17a47-2fe8-498d-b817-30ad2e23f413/00020402af25ba40990c6cc3db5cb270/windowsdesktop-runtime-6.0.8-win-' + GetArchitecture + '.exe', ExpandConstant('{tmp}\NetRuntimeInstaller.exe'));
+        idpAddFile('https://download.visualstudio.microsoft.com/download/pr/fe8415d4-8a35-4af9-80a5-51306a96282d/05f9b2a1b4884238e69468e49b3a5453/windowsdesktop-runtime-6.0.9-win-x64.exe', ExpandConstant('{tmp}\NetRuntimeInstaller.exe'));
         idpDownloadAfter(wpReady)
     end
 end;

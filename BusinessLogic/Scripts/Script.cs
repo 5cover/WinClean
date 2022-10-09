@@ -156,10 +156,10 @@ public sealed class Script : INotifyPropertyChanged, IScriptData
     }
 
     /// <summary>Executes the script.</summary>
-    /// <inheritdoc cref="Host.ExecuteCode"/>
+    /// <inheritdoc cref="IHost.ExecuteCode(string, string, TimeSpan, HungScriptCallback, CancellationToken)"/>
     /// <remarks>Returns when the script has finished executing or has been killed.</remarks>
-    public void Execute(HungScriptCallback keepRunningOrKill, CancellationToken cancellationToken)
-        => Host.ExecuteCode(Code, Name, AppInfo.Settings.ScriptTimeout, keepRunningOrKill, cancellationToken);
+    public void Execute(HungScriptCallback keepRunningElseKill, CancellationToken cancellationToken)
+        => Host.ExecuteCode(Code, Name, AppInfo.Settings.ScriptTimeout, keepRunningElseKill, cancellationToken);
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new(propertyName));
 }

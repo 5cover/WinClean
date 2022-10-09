@@ -11,9 +11,6 @@ public sealed class AppDirectory
         Info.Create();
     }
 
-    /// <summary>The application's default scripts directory.</summary>
-    public static AppDirectory DefaultScriptsDir { get; } = new(AppContext.BaseDirectory, "Scripts");
-
     /// <summary>The application's install directory.</summary>
     public static AppDirectory InstallDir { get; } = new(AppContext.BaseDirectory);
 

@@ -10,6 +10,7 @@ using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
+using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Resources;
 using Scover.WinClean.Resources.UI;
 
@@ -184,6 +185,7 @@ public sealed class ScriptExecutionWizard
 
     private static bool ShowHungScriptDialog(string scriptName)
     {
+        Logs.HungScript.FormatWith(scriptName, AppInfo.Settings.ScriptTimeout).Log(LogLevel.Warning);
         using TimeoutDialog hungScriptDialog = new(Button.EndTask, Button.Ignore)
         {
             MainIcon = TaskDialogIcon.Warning,
@@ -191,7 +193,12 @@ public sealed class ScriptExecutionWizard
             Timeout = 10.Seconds(),
             TimeoutButton = Button.Ignore
         };
-        return hungScriptDialog.ShowDialog().ClickedButton != Button.EndTask;
+        Button? clickedButton = hungScriptDialog.ShowDialog().ClickedButton;
+        if (clickedButton == Button.EndTask)
+        {
+            Logs.HungScriptAborted.FormatWith(scriptName).Log(LogLevel.Info);
+        }
+        return clickedButton != Button.EndTask;
     }
 
     private async Task ExecuteScriptsAsync()

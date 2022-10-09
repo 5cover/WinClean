@@ -150,10 +150,10 @@
   <data name="ConfirmAbortOperationContent" xml:space="preserve">
     <value>Aborting the operation may make the system unstable. Are you sure you want to continue?</value>
   </data>
-  <data name="NewVersionAvailableMainInstruction" xml:space="preserve">
+  <data name="UpdateMainInstruction" xml:space="preserve">
     <value>New version available</value>
   </data>
-  <data name="NewVersionAvailableContent" xml:space="preserve">
+  <data name="UpdateContent" xml:space="preserve">
     <value>Version {0} is available. Consider updating to get new scripts and features. &lt;A&gt;See on GitHub&lt;/A&gt;</value>
     <comment>0 : latest version number</comment>
   </data>
