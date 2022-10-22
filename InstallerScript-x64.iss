@@ -4,7 +4,7 @@
 #include <idplang\french.iss>
 
 #define Name "WinClean"
-#define Version "1.2.0"
+#define Version "1.2.1"
 #define RepoUrl "https://github.com/5cover/WinClean"
 #define ExeName "WinClean.exe"
 #define SetupName "WinClean-Installer-x64"
@@ -55,7 +55,7 @@ Name: startmenuicon; Description: {cm:CreateStartMenuIcon}; GroupDescription: {c
 
 [Files]
 Source: ".\bin\publish\x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: ".\Scripts\*"; DestDir: "{userappdata}\{#Name}\Scripts"; Flags: ignoreversion
+Source: ".\Scripts\*"; DestDir: "{autoappdata}\{#Name}\Scripts"; Flags: ignoreversion
 
 [Icons]
 Name: "{autoprograms}\{#Name}"; Filename: "{app}\{#ExeName}"; WorkingDir: "{app}"; Tasks: startmenuicon
@@ -192,7 +192,7 @@ begin
     if g_dotNetMissing then
     begin
         // URL of the latest dotnet runtime installer
-        idpAddFile('https://download.visualstudio.microsoft.com/download/pr/fe8415d4-8a35-4af9-80a5-51306a96282d/05f9b2a1b4884238e69468e49b3a5453/windowsdesktop-runtime-6.0.9-win-x64.exe', ExpandConstant('{tmp}\NetRuntimeInstaller.exe'));
+        idpAddFile('https://download.visualstudio.microsoft.com/download/pr/a6e878eb-d1da-40cb-8b6a-7f5b9390f09c/e4431ce2aa28b6c9956db672209be500/windowsdesktop-runtime-6.0.10-win-x64.exe', ExpandConstant('{tmp}\NetRuntimeInstaller.exe'));
         idpDownloadAfter(wpReady)
     end
 end;
