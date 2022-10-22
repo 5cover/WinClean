@@ -22,7 +22,7 @@ namespace Scover.WinClean.Resources.UI {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public sealed class SettingsWindow {
+    public class SettingsWindow {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -61,11 +61,11 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à _Forbid script code edit.
+        ///   Recherche une chaîne localisée semblable à _Allow script edit.
         /// </summary>
-        public static string ForbidScriptCodeEdit {
+        public static string AllowScriptEdit {
             get {
-                return ResourceManager.GetString("ForbidScriptCodeEdit", resourceCulture);
+                return ResourceManager.GetString("AllowScriptEdit", resourceCulture);
             }
         }
         
@@ -93,6 +93,15 @@ namespace Scover.WinClean.Resources.UI {
         public static string ShowDetailsDuring {
             get {
                 return ResourceManager.GetString("ShowDetailsDuring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Show _update warning.
+        /// </summary>
+        public static string ShowUpdateDialog {
+            get {
+                return ResourceManager.GetString("ShowUpdateDialog", resourceCulture);
             }
         }
         

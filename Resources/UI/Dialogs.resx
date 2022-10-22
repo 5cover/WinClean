@@ -164,4 +164,7 @@
     <value>Could not add script</value>
     
   </data>
+  <data name="UpdateVerificationText" xml:space="preserve">
+    <value>Don't show again</value>
+  </data>
 </root>

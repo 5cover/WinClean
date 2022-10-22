@@ -155,4 +155,7 @@
   <data name="FSErrorAddingScriptMainInstruction" xml:space="preserve">
     <value>Impossible d'ajouter le script</value>
   </data>
+  <data name="UpdateVerificationText" xml:space="preserve">
+    <value>Ne plus afficher</value>
+  </data>
 </root>

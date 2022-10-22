@@ -146,7 +146,7 @@ public partial class MainWindow
 
     private void MenuItemRecommendedClick(object sender, RoutedEventArgs e)
     {
-        RecommendationLevel targetLevel = AppInfo.RecommendationLevels[((Category)((MenuItem)e.Source)
+        RecommendationLevel targetLevel = AppInfo.RecommendationLevels[((RecommendationLevel)((MenuItem)e.Source)
                                                                        .ItemContainerGenerator
                                                                        .ItemFromContainer((DependencyObject)e.OriginalSource)).InvariantName];
         CheckScripts(script => script.Recommended == targetLevel);

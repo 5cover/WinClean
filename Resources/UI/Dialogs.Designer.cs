@@ -169,5 +169,14 @@ namespace Scover.WinClean.Resources.UI {
                 return ResourceManager.GetString("UpdateMainInstruction", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Don&apos;t show again.
+        /// </summary>
+        public static string UpdateVerificationText {
+            get {
+                return ResourceManager.GetString("UpdateVerificationText", resourceCulture);
+            }
+        }
     }
 }

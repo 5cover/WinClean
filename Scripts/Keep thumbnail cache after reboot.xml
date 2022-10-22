@@ -4,7 +4,7 @@
   <Name xml:lang="fr">Conserver le cache des miniatures après le redémarrage</Name>
   <Description>By default, thumbnail cache is rebuilt after each reboot.</Description>
   <Description xml:lang="fr">Par défaut, le cache des miniatures est reconstruit après chaque redémarrage.</Description>
-  <Category>Customization</Category>
+  <Category>Debloat</Category>
   <Recommended>Yes</Recommended>
   <Host>Regedit</Host>
   <Impact>Startup time</Impact>

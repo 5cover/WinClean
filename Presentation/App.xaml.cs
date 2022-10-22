@@ -92,6 +92,11 @@ public partial class App
     {
         Initialize(new CsvLogger(), () =>
         {
+            if (!AppInfo.Settings.ShowUpdateDialog)
+            {
+                return;
+            }
+
             Dialog updateDialog = new(Button.OK)
             {
                 MainInstruction = UpdateMainInstruction,
@@ -99,9 +104,11 @@ public partial class App
                 AllowDialogCancellation = true,
                 ShowMinimizeBox = true,
                 MainIcon = TaskDialogIcon.Information,
-                AreHyperlinksEnabled = true
+                AreHyperlinksEnabled = true,
+                VerificationText = UpdateVerificationText,
             };
-            updateDialog.HyperlinkClicked += (_, e) => Helpers.Open(SourceControlClient.Instance.Value.LatestVersionUrl);
+            updateDialog.HyperlinkClicked += (_, _) => Helpers.Open(SourceControlClient.Instance.Value.LatestVersionUrl);
+            updateDialog.VerificationClicked += (_, _) => AppInfo.Settings.ShowUpdateDialog ^= true;
 
             if (updateDialog.Show().WasClosed)
             {

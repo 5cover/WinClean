@@ -11,7 +11,7 @@
     Title="{x:Static businessLogic:AppInfo.Name}"
     MinWidth="{Binding MinHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource GoldenRatioConverter}}"
     MinHeight="369"
-    Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+    Background="{x:Static SystemColors.ControlBrush}"
     Closed="Window_Closed"
     mc:Ignorable="d">
     <Window.Resources>
@@ -26,7 +26,7 @@
                                 </Style>
                             </StackPanel.Style>
                             <CheckBox
-                                Margin="3,3,3,3"
+                                Margin="3"
                                 VerticalContentAlignment="Center"
                                 IsChecked="{Binding IsSelected}" />
                             <TextBlock Margin="0,3,3,3" Text="{Binding Name}" />
@@ -64,7 +64,13 @@
                     Click="MenuItemRecommendedClick"
                     DisplayMemberPath="Name"
                     Header="{x:Static ui:MainWindow.MenuRecommended}"
-                    ItemsSource="{x:Static businessLogic:AppInfo.RecommendationLevels}" />
+                    ItemsSource="{Binding Path=Values, Source={x:Static businessLogic:AppInfo.RecommendationLevels}}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Background" Value="{Binding Color, Converter={StaticResource ToSolidColorBrushConverter}, ConverterParameter=0.15}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
                 <MenuItem Click="MenuAllClick" Header="{x:Static ui:MainWindow.MenuAll}" />
                 <MenuItem Click="MenuNoneClick" Header="{x:Static ui:MainWindow.MenuNone}" />
             </MenuItem>

@@ -15,32 +15,31 @@
     <UserControl.ContentTemplate>
         <DataTemplate DataType="scripts:Script">
             <DataTemplate.Resources>
+                <!--  Cannot use the converters resources defined in App.xaml because they are not accessible from UserControls.  -->
+                <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
                 <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
+
                 <Style TargetType="ComboBoxItem">
                     <Setter Property="ToolTip" Value="{Binding Content.(scripts:Script.Description), RelativeSource={RelativeSource Self}}" />
                 </Style>
-                <!--  Setting the style manually is needed because we need to use DynamicResource for applying it, otherwise the DisplayMemberPath setter will not work.  -->
-                <Style x:Key="ComboBoxStyle" TargetType="ComboBox">
+                <Style TargetType="ComboBox">
                     <Setter Property="DisplayMemberPath" Value="Name" />
+                    <Setter Property="IsReadOnly" Value="{Binding Path=(businessLogic:AppInfo.Settings).AllowScriptEdit, Converter={StaticResource InvertBoolConverter}}" />
+                    <Setter Property="MinHeight" Value="20" />
+                    <Setter Property="MinWidth" Value="100" />
+                </Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="MinWidth" Value="205" />
+                    <Setter Property="IsReadOnly" Value="{Binding Path=(businessLogic:AppInfo.Settings).AllowScriptEdit, Converter={StaticResource InvertBoolConverter}}" />
+                </Style>
+                <Style TargetType="Button">
+                    <Setter Property="MaxWidth" Value="82.5" />
+                    <Setter Property="Grid.Row" Value="5" />
+                    <Setter Property="MinHeight" Value="23" />
+                    <Setter Property="MinWidth" Value="72" />
                 </Style>
             </DataTemplate.Resources>
             <Grid IsEnabled="{Binding Converter={StaticResource IsNotNullConverter}}">
-                <Grid.Resources>
-                    <Style TargetType="ComboBox">
-                        <Setter Property="MinHeight" Value="20" />
-                        <Setter Property="MinWidth" Value="100" />
-                    </Style>
-                    <Style TargetType="TextBox">
-                        <Setter Property="MinWidth" Value="205" />
-                    </Style>
-                    <Style TargetType="Button">
-                        <Setter Property="MaxWidth" Value="82.5" />
-                        <Setter Property="Grid.Row" Value="5" />
-                        <Setter Property="MinHeight" Value="23" />
-                        <Setter Property="MinWidth" Value="72" />
-                    </Style>
-                </Grid.Resources>
-
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="43*" />
@@ -77,32 +76,28 @@
                     Margin="0,0,3,6"
                     ItemsSource="{Binding Path=Values, Source={x:Static businessLogic:AppInfo.Categories}}"
                     SelectedItem="{Binding Category, Mode=TwoWay}"
-                    SelectionChanged="ComboBoxCategorySelectionChanged"
-                    Style="{DynamicResource ComboBoxStyle}" />
+                    SelectionChanged="ComboBoxCategorySelectionChanged" />
 
                 <ComboBox
                     Grid.Row="2"
                     Grid.Column="1"
                     Margin="3,0,0,6"
                     ItemsSource="{Binding Path=Values, Source={x:Static businessLogic:AppInfo.RecommendationLevels}}"
-                    SelectedItem="{Binding Recommended, Mode=TwoWay}"
-                    Style="{DynamicResource ComboBoxStyle}" />
+                    SelectedItem="{Binding Recommended, Mode=TwoWay}" />
 
                 <ComboBox
                     Grid.Row="3"
                     Grid.Column="0"
                     Margin="0,0,3,6"
                     ItemsSource="{Binding Path=Values, Source={x:Static businessLogic:AppInfo.Hosts}}"
-                    SelectedItem="{Binding Host, Mode=TwoWay}"
-                    Style="{DynamicResource ComboBoxStyle}" />
+                    SelectedItem="{Binding Host, Mode=TwoWay}" />
 
                 <ComboBox
                     Grid.Row="3"
                     Grid.Column="1"
                     Margin="3,0,0,6"
                     ItemsSource="{Binding Path=Values, Source={x:Static businessLogic:AppInfo.Impacts}}"
-                    SelectedItem="{Binding Impact, Mode=TwoWay}"
-                    Style="{DynamicResource ComboBoxStyle}" />
+                    SelectedItem="{Binding Impact, Mode=TwoWay}" />
 
                 <TextBox
                     Grid.Row="4"
@@ -113,7 +108,6 @@
                     AcceptsReturn="True"
                     FontFamily="Consolas"
                     HorizontalScrollBarVisibility="Auto"
-                    IsReadOnly="{Binding Path=(businessLogic:AppInfo.Settings).ForbidScriptCodeEdit}"
                     Text="{Binding Code, Mode=TwoWay}"
                     VerticalScrollBarVisibility="Auto" />
             </Grid>

@@ -120,16 +120,19 @@
   <data name="Title" xml:space="preserve">
     <value>Paramètres</value>
   </data>
-  <data name="ForbidScriptCodeEdit" xml:space="preserve">
-    <value>I_nterdire la modification du code des scripts</value>
+  <data name="AllowScriptEdit" xml:space="preserve">
+    <value>_Autoriser la modification des scripts</value>
   </data>
   <data name="ScriptTimeout" xml:space="preserve">
     <value>_Temps maximal d'exécution d'un script</value>
   </data>
   <data name="ShowDetailsCompleted" xml:space="preserve">
-    <value>_Afficher les détails lorsque l'exécution des scripts est terminée</value>
+    <value>A_fficher les détails lorsque l'exécution des scripts est terminée</value>
   </data>
   <data name="ShowDetailsDuring" xml:space="preserve">
     <value>Afficher les _détails pendant l'exécution des scripts</value>
+  </data>
+  <data name="ShowUpdateDialog" xml:space="preserve">
+    <value>Afficher l'a_vertissement de mise à jour</value>
   </data>
 </root>
