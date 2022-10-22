@@ -238,7 +238,7 @@ public sealed class ScriptExecutionWizard
         using Dialogs.ProgressDialog scriptExecutionProgressDialog = new(Button.Stop)
         {
             Content = ScriptExecutionProgressDialog.Content,
-            // Needs to have a value to show expander.
+            // ExpandedInformation needs to have a value for the expander control to be visible.
             ExpandedInformation = ScriptExecutionProgressDialog.ExpandedInformation,
             Maximum = _scripts.Count,
             ShowMinimizeBox = true,

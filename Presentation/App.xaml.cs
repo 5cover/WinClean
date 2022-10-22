@@ -35,8 +35,8 @@ public partial class App
     public static ScriptCollection Scripts { get => _scripts.AssertNotNull(); }
 
     private static void Initialize(Logger logger,
-                              Action warnUpdate,
-                              InvalidScriptDataCallback reloadOnInvalidScriptData,
+                              Action warnUserOnUpdate,
+                              InvalidScriptDataCallback reloadElseIgnore,
                               Action<Exception> onUnhandledException,
                               FSOperationCallback retryElseFail)
     {
@@ -52,11 +52,11 @@ public partial class App
         //4. Check for updates
         if (SourceControlClient.Instance.Value.LatestVersionName != AppInfo.Version)
         {
-            warnUpdate();
+            warnUserOnUpdate();
         }
 
         //5. Load scripts.
-        _scripts = ScriptCollection.LoadScripts(AppDirectory.ScriptsDir, reloadOnInvalidScriptData);
+        _scripts = ScriptCollection.LoadScripts(AppDirectory.ScriptsDir, reloadElseIgnore);
     }
 
     private static void StartConsole(string[] args)
