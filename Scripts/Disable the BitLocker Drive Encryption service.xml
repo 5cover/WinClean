@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Disable the BitLocker Drive Encryption service</Name>
+  <Name xml:lang="fr">Désactiver le service de chiffrement de lecteur BitLocker</Name>
+  <Description>This service handles Bitlocker drive encryption. Disable it if you don't use Bitlocker.</Description>
+  <Description xml:lang="fr">Ce service gère le chiffrement de lecteur BitLocker. Désactivez si vous n'utilisez pas Bitlocker.</Description>
+  <Category>Debloat</Category>
+  <Recommended>Limited</Recommended>
+  <Host>Cmd</Host>
+  <Impact>Memory usage</Impact>
+  <Code>sc config BDESVC start= disabled</Code>
+</Script>

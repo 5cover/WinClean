@@ -6,7 +6,7 @@
     <Description>This script is for any user. It won't hinder common Windows features.</Description>
     <Description xml:lang="fr">Ce script est destiné n'importe quel utilisateur. Il n'entravera aucune fonctionnalité Windows commune.</Description>
   </RecommendationLevel>
-  <RecommendationLevel Color="Yellow">
+  <RecommendationLevel Color="Gray">
     <Name>Limited</Name>
     <Name xml:lang="fr">Limité</Name>
     <Description>This script is safe, but it will hinder features that are useful for a minority of users.</Description>

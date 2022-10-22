@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Disable the Downloaded Maps Manager service</Name>
+  <Name xml:lang="fr">Désactiver le service Gestionnaire des cartes téléchargées</Name>
+  <Description>This service provides application access to downloaded maps. Disable it if you don't use this feature.</Description>
+  <Description xml:lang="fr">Ce service assure l’accès des applications aux cartes téléchargées. Désactivez-le si vous n'utilisez pas cette fonctionnalité.</Description>
+  <Category>Debloat</Category>
+  <Recommended>Limited</Recommended>
+  <Host>Cmd</Host>
+  <Impact>Memory usage</Impact>
+  <Code>sc config MapsBroker start= disabled</Code>
+</Script>

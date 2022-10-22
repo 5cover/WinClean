@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Disable the Windows Camera Frame Server service</Name>
+  <Name xml:lang="fr">Désactiver le service Serveur de trame de la Caméra Windows</Name>
+  <Description>This service enables multiple clients to access video frames from cameras devices. Disable it if you don't have a webcam.</Description>
+  <Description xml:lang="fr">Ce service permet à plusieurs clients d’accéder aux trames vidéo des appareils photo. Désactivez-le si vous n’avez pas de webcam.</Description>
+  <Category>Debloat</Category>
+  <Recommended>Limited</Recommended>
+  <Host>Cmd</Host>
+  <Impact>Memory usage</Impact>
+  <Code>sc config FrameServer start= disabled</Code>
+</Script>

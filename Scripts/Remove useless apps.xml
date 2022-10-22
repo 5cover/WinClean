@@ -8,11 +8,11 @@
   <Recommended>Yes</Recommended>
   <Host>PowerShell</Host>
   <Impact>Free storage space</Impact>
-  <Code>Import-Module Microsoft.PowerShell.Core
+  <Code># Based on https://github.com/Sycnex/Windows10Debloater/blob/master/Individual%20Scripts/Debloat%20Windows
+Import-Module Microsoft.PowerShell.Core
 Import-Module Appx
 Import-Module DISM
 $AppXApps = @(
-# Unnecessary Windows 10 AppX Apps
 "*Microsoft.BingNews*"
 "*Microsoft.GetHelp*"
 "*Microsoft.Getstarted*"
@@ -39,9 +39,6 @@ $AppXApps = @(
 "*Microsoft.XboxSpeechToTextOverlay*"
 "*Microsoft.ZuneMusic*"
 "*Microsoft.ZuneVideo*"
-
-# Sponsored Windows 10 AppX Apps
-# Add sponsored/featured apps to remove in the "*AppName*" format
 "*EclipseManager*"
 "*ActiproSoftwareLLC*"
 "*AdobeSystemsIncorporated.AdobePhotoshopExpress*"
@@ -53,16 +50,11 @@ $AppXApps = @(
 "*Twitter*"
 "*Facebook*"
 "*Spotify*"
-
-# Optional: Typically not removed but you can if you need to for some reason
-#"*Microsoft.Advertising.Xaml_10.1712.5.0x64__8wekyb3d8bbwe*"
-#"*Microsoft.Advertising.Xaml_10.1712.5.0x86__8wekyb3d8bbwe*"
-#"*Microsoft.BingWeather*"
-#"*Microsoft.MSPaint*"
-#"*Microsoft.MicrosoftStickyNotes*"
-#"*Microsoft.Windows.Photos*"
-#"*Microsoft.WindowsCalculator*"
-#"*Microsoft.WindowsStore*"
+"*Microsoft.Advertising.Xaml_10.1712.5.0x64__8wekyb3d8bbwe*"
+"*Microsoft.Advertising.Xaml_10.1712.5.0x86__8wekyb3d8bbwe*"
+"*Microsoft.BingWeather*"
+"*Microsoft.MicrosoftStickyNotes*"
+"*Microsoft.WindowsStore*"
 )
 foreach ($App in $AppXApps) {
 Get-AppxPackage -Name $App | Remove-AppxPackage -ErrorAction SilentlyContinue

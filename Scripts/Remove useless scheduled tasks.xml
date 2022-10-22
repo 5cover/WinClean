@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Remove useless scheduled tasks</Name>
+  <Name xml:lang="fr">Supprimer les tâches planifiées inutiles</Name>
+  <Description>Several scheduled tasks run regularly by default. Removing them improves privacy and decreases the system's memory footprint.</Description>
+  <Description xml:lang="fr">Plusieurs tâches planifiées s'exécutent régulièrement par défaut. Les supprimer améliore la confidentialité et diminue l'empreinte mémoire du système.</Description>
+  <Category>Debloat</Category>
+  <Recommended>Yes</Recommended>
+  <Host>PowerShell</Host>
+  <Impact>Privacy</Impact>
+  <Code>Import-Module ScheduledTasks
+Get-ScheduledTask  XblGameSaveTaskLogon | Disable-ScheduledTask
+Get-ScheduledTask  XblGameSaveTask | Disable-ScheduledTask
+Get-ScheduledTask  Consolidator | Disable-ScheduledTask
+Get-ScheduledTask  UsbCeip | Disable-ScheduledTask
+Get-ScheduledTask  DmClient | Disable-ScheduledTask
+Get-ScheduledTask  DmClientOnScenarioDownload | Disable-ScheduledTask</Code>
+</Script>
