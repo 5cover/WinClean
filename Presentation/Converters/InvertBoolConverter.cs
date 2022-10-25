@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
+
 namespace Scover.WinClean.Presentation.Converters;
 
 public sealed class InvertBoolConverter : IValueConverter

@@ -47,13 +47,13 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
         {
             switch (child.Name)
             {
-                case "Name":
-                    name.SetFromXml(child);
-                    break;
+            case "Name":
+                name.SetFromXml(child);
+                break;
 
-                case "Description":
-                    description.SetFromXml(child);
-                    break;
+            case "Description":
+                description.SetFromXml(child);
+                break;
             }
         }
         return (name, description);
