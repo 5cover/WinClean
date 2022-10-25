@@ -5,7 +5,7 @@
 # WinClean
 Utilitaire d'optimisation des performances et de nettoyage de Windows, accessible aux utilisateurs moyens tout comme aux administrateurs système.
 
-Améliorez les performances de Windows en quelques clics, dans le but de lutter contre la lenteur des ordinateurs alors que Windows devient de plus en plus gourmand et de moins en moins optimisé pour les configurations plus limitées, surfant sur les excellentes performances du matériel récent.
+Améliorez les performances de Windows en quelques clics, alors alors que Windows devient de plus en plus gourmand et de moins en moins optimisé.
 
 ![Capture d'écran](https://raw.githubusercontent.com/wiki/5cover/WinClean/locale/fr-FR/img/MainWindow.png)
 

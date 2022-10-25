@@ -5,7 +5,7 @@
 # WinClean
 Windows performance optimization and debloating utility, accessible to the average user as well as system administrators.
 
-Improve Windows performance in a few clicks, in order to fight against sluggish computers as Windows becomes more and more demanding and less and less optimized for more limited configurations, surfing on the excellent performance of recent hardware.
+Improve Windows performance in a few clicks, as Windows becomes more and more resource-intensive and unoptimized.
 
 ![Screenshot](https://raw.githubusercontent.com/wiki/5cover/WinClean/img/MainWindow.png)
 
