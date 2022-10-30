@@ -17,7 +17,7 @@ using Scover.WinClean.Resources;
 
 namespace Scover.WinClean.Presentation;
 
-/// <summary>Handles the startup / shutdown strategy and hold data related to the Presentation layer.</summary>
+/// <summary>Handles the startup / shutdown strategy and holds data related to the Presentation layer.</summary>
 public sealed partial class App
 {
     private record Callbacks(Action WarnOnUpdate,

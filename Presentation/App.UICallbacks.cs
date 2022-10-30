@@ -70,19 +70,24 @@ public partial class App
         {
             Logger.Log(Logs.UnhandledException.FormatWith(e), LogLevel.Critical);
 
-            using Dialog dlg = new(Button.Exit, Button.CopyDetails)
+            using Dialog dlg = new(Button.Exit)
             {
                 MainIcon = TaskDialogIcon.Error,
                 Content = UnhandledExceptionDialogContent.FormatWith(e.Message),
                 ExpandedInformation = e.ToString(),
                 AreHyperlinksEnabled = true
             };
-            dlg.SetConfirmation(Button.CopyDetails, () =>
+            dlg.HyperlinkClicked += (_, args) =>
             {
-                Clipboard.SetText(e.ToString());
-                return false;
-            });
-            dlg.HyperlinkClicked += (_, args) => Helpers.Open(args.Href);
+                if (string.IsNullOrEmpty(args.Href))
+                {
+                    Clipboard.SetText(e.ToString());
+                }
+                else
+                {
+                    Helpers.Open(args.Href);
+                }
+            };
             dlg.ShowDialog();
         },
         (ex, verb, info) =>

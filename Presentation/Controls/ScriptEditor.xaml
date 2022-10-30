@@ -74,7 +74,7 @@
                     Grid.Row="2"
                     Grid.Column="0"
                     Margin="0,0,3,6"
-                    ItemsSource="{Binding Path=Values, Source={x:Static businessLogic:AppInfo.Categories}}"
+                    ItemsSource="{Binding Path=Value.Values, Source={x:Static businessLogic:AppInfo.Categories}}"
                     SelectedItem="{Binding Category, Mode=TwoWay}"
                     SelectionChanged="ComboBoxCategorySelectionChanged" />
 
@@ -82,7 +82,7 @@
                     Grid.Row="2"
                     Grid.Column="1"
                     Margin="3,0,0,6"
-                    ItemsSource="{Binding Path=Values, Source={x:Static businessLogic:AppInfo.RecommendationLevels}}"
+                    ItemsSource="{Binding Path=Value.Values, Source={x:Static businessLogic:AppInfo.RecommendationLevels}}"
                     SelectedItem="{Binding Recommended, Mode=TwoWay}" />
 
                 <ComboBox
@@ -96,7 +96,7 @@
                     Grid.Row="3"
                     Grid.Column="1"
                     Margin="3,0,0,6"
-                    ItemsSource="{Binding Path=Values, Source={x:Static businessLogic:AppInfo.Impacts}}"
+                    ItemsSource="{Binding Path=Value.Values, Source={x:Static businessLogic:AppInfo.Impacts}}"
                     SelectedItem="{Binding Impact, Mode=TwoWay}" />
 
                 <TextBox

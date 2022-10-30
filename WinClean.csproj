@@ -59,15 +59,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Categories.xml">
+    <Content Include="Categories.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	  <None Include="Impacts.xml">
+    </Content>
+	  <Content Include="Impacts.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-	  <None Include="RecommendationLevels.xml">
+    </Content>
+	  <Content Include="RecommendationLevels.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

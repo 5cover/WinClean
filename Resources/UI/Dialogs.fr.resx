@@ -138,6 +138,7 @@
   </data>
   <data name="UnhandledExceptionDialogContent" xml:space="preserve">
 	  <value>Une exception non gérée s'est produite : {0}
+&lt;A&gt;Copier les détails&lt;/A&gt;
 &lt;A HREF="https://github.com/5cover/WinClean/issues/new"&gt;Signaler cette erreur...&lt;/A&gt;</value>
   </data>
   <data name="ConfirmAbortOperationContent" xml:space="preserve">

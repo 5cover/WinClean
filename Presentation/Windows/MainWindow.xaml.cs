@@ -146,7 +146,7 @@ public partial class MainWindow
 
     private void MenuItemRecommendedClick(object sender, RoutedEventArgs e)
     {
-        RecommendationLevel targetLevel = AppInfo.RecommendationLevels[((RecommendationLevel)((MenuItem)e.Source)
+        RecommendationLevel targetLevel = AppInfo.RecommendationLevels.Value[((RecommendationLevel)((MenuItem)e.Source)
                                                                        .ItemContainerGenerator
                                                                        .ItemFromContainer((DependencyObject)e.OriginalSource)).InvariantName];
         CheckScripts(script => script.Recommended == targetLevel);
@@ -169,7 +169,7 @@ public partial class MainWindow
 
         TabControlCategories.Items.Clear();
 
-        foreach (Category category in AppInfo.Categories.Values)
+        foreach (Category category in AppInfo.Categories.Value.Values)
         {
             ListBox listBox = new()
             {

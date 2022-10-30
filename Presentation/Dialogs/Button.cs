@@ -23,8 +23,7 @@ public enum Button
     Yes,
     No,
     Ignore,
-    Cancel,
-    CopyDetails
+    Cancel
 }
 
 public static class ButtonExtensions

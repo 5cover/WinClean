@@ -20,12 +20,12 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
 
             string? executionTime = GetOptionalNode("ExecutionTime");
 
-            return new Script(AppInfo.Categories[GetNode("Category")],
+            return new Script(AppInfo.Categories.Value[GetNode("Category")],
                               GetNode("Code"),
                               executionTime is null ? AppInfo.Settings.ScriptTimeout : TimeSpan.Parse(executionTime, System.Globalization.CultureInfo.InvariantCulture),
                               AppInfo.Hosts[GetNode("Host")],
-                              AppInfo.Impacts[GetNode("Impact")],
-                              AppInfo.RecommendationLevels[GetNode("Recommended")],
+                              AppInfo.Impacts.Value[GetNode("Impact")],
+                              AppInfo.RecommendationLevels.Value[GetNode("Recommended")],
                               GetLocalizedText("Description"),
                               GetLocalizedText("Name"));
         }

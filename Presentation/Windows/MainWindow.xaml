@@ -64,7 +64,7 @@
                     Click="MenuItemRecommendedClick"
                     DisplayMemberPath="Name"
                     Header="{x:Static ui:MainWindow.MenuRecommended}"
-                    ItemsSource="{Binding Path=Values, Source={x:Static businessLogic:AppInfo.RecommendationLevels}}">
+                    ItemsSource="{Binding Path=Value.Values, Source={x:Static businessLogic:AppInfo.RecommendationLevels}}">
                     <MenuItem.ItemContainerStyle>
                         <Style TargetType="MenuItem">
                             <Setter Property="Background" Value="{Binding Color, Converter={StaticResource ToSolidColorBrushConverter}, ConverterParameter=0.15}" />

@@ -171,7 +171,4 @@
   <data name="Stop" xml:space="preserve">
     <value>_Arrêter</value>
   </data>
-  <data name="CopyDetails" xml:space="preserve">
-    <value>Copier les détails</value>
-  </data>
 </root>

@@ -22,7 +22,7 @@ namespace Scover.WinClean.Resources.UI {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public sealed class Buttons {
+    public class Buttons {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -93,15 +93,6 @@ namespace Scover.WinClean.Resources.UI {
         public static string Continue {
             get {
                 return ResourceManager.GetString("Continue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Copy details.
-        /// </summary>
-        public static string CopyDetails {
-            get {
-                return ResourceManager.GetString("CopyDetails", resourceCulture);
             }
         }
         

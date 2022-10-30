@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using System.Resources;
+using System.Windows;
+using System.Windows.Resources;
 
 using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.BusinessLogic.Scripts.Hosts;
@@ -16,12 +18,6 @@ public static class AppInfo
     private static readonly IScriptMetadataDeserializer _deserializer = new ScriptMetadataXmlDeserializer();
     private static readonly Assembly assembly = Assembly.GetExecutingAssembly();
 
-    #region Script metadata
-
-    /// <summary>Gets a dictionary that contains all available script categories, keyed by <see cref="IScriptData.InvariantName"/>.</summary>
-    public static IDictionary<string, Category> Categories { get; }
-        = MakeDictionary(_deserializer.MakeCategories(OpenAppFile("Categories.xml")));
-
     /// <summary>Gets a dictionary that contains all available script hosts, keyed by <see cref="IScriptData.InvariantName"/>.</summary>
     public static IDictionary<string, IHost> Hosts { get; } = MakeDictionary(new IHost[]
     {
@@ -30,15 +26,21 @@ public static class AppInfo
         ProcessHost.Regedit
     });
 
+    #region Lazy script metadata
+
+    /// <summary>Gets a dictionary that contains all available script categories, keyed by <see cref="IScriptData.InvariantName"/>.</summary>
+    public static Lazy<IDictionary<string, Category>> Categories { get; }
+        = new(() => MakeDictionary(_deserializer.MakeCategories(OpenContentFile("Categories.xml"))));
+
     /// <summary>Gets a dictionary that contains all available script impacts, keyed by <see cref="IScriptData.InvariantName"/>.</summary>
-    public static IDictionary<string, Impact> Impacts { get; }
-        = MakeDictionary(_deserializer.MakeImpacts(OpenAppFile("Impacts.xml")));
+    public static Lazy<IDictionary<string, Impact>> Impacts { get; }
+        = new(() => MakeDictionary(_deserializer.MakeImpacts(OpenContentFile("Impacts.xml"))));
 
     /// <summary>Gets a dictionary that contains all available script recommendation levels, keyed by <see cref="IScriptData.InvariantName"/>.</summary>
-    public static IDictionary<string, RecommendationLevel> RecommendationLevels { get; }
-        = MakeDictionary(_deserializer.MakeRecommendationLevels(OpenAppFile("RecommendationLevels.xml")));
+    public static Lazy<IDictionary<string, RecommendationLevel>> RecommendationLevels { get; }
+        = new(() => MakeDictionary(_deserializer.MakeRecommendationLevels(OpenContentFile("RecommendationLevels.xml"))));
 
-    #endregion Script metadata
+    #endregion Lazy script metadata
 
     /// <summary>Gets or sets the error callback for opening application files.</summary>
     /// <remarks>This property must be set externally in the Presentation layer.</remarks>
@@ -51,21 +53,21 @@ public static class AppInfo
 
     public static Settings Settings => Settings.Default;
 
-    private static Dictionary<string, T> MakeDictionary<T>(IEnumerable<T> source) where T : IScriptData
-                    => new(source.Select(c => new KeyValuePair<string, T>(c.InvariantName, c)));
+    private static IDictionary<string, T> MakeDictionary<T>(IEnumerable<T> source) where T : IScriptData
+                    => new Dictionary<string, T>(source.Select(c => new KeyValuePair<string, T>(c.InvariantName, c)));
 
-    private static Stream OpenAppFile(string filename)
+    private static Stream OpenContentFile(string filename)
     {
-        string path = AppDirectory.InstallDir.Join(filename);
+        Uri uri = new('/' + filename, UriKind.Relative);
         while (true)
         {
             try
             {
-                return File.OpenRead(path);
+                return Application.GetContentStream(uri).AssertNotNull().Stream;
             }
             catch (Exception e) when (e.IsFileSystem())
             {
-                if (!OpenAppFileRetryElseFail(e, FSVerb.Access, new FileInfo(path)))
+                if (!OpenAppFileRetryElseFail(e, FSVerb.Access, new FileInfo(filename)))
                 {
                     throw;
                 }
