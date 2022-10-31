@@ -111,10 +111,10 @@ begin
         raiseException('VBScript RegExp is required to complete the post-installation process.'#13#10#13#10'(Error: ' + GetExceptionMessage)
     end
     RegExp.Pattern := pattern;
-    Result := RegExp.Test(match) 
+    Result := RegExp.Test(match)
 end;
 
-// Exec with output stored in result.    
+// Exec with output stored in result.
 // ResultString will only be altered if True is returned.
 function ExecWithResult(const Filename, Params, WorkingDir: String;
                         const ShowCmd: Integer;
@@ -144,7 +144,7 @@ function NetRuntimeIsMissing(): Boolean;
 var
     installed: Boolean;
     returnCode: Integer;
-    output: AnsiString;  
+    output: AnsiString;
 begin
     // dotnet command unvailable OR result doesnt match 'Microsoft.NETCore.App 6.0.x'
     installed := ExecWithResult('dotnet', '--list-runtimes', '', SW_HIDE, returnCode, output)
@@ -182,7 +182,7 @@ begin
     end
 end;
  
-{ EVENT FUNCTIONS } 
+{ EVENT FUNCTIONS }
 
 // Firstly, download the .NET Runtime Installer
 procedure InitializeWizard;
