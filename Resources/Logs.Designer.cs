@@ -178,15 +178,6 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à The application started..
-        /// </summary>
-        public static string Started {
-            get {
-                return ResourceManager.GetString("Started", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Starting the execution of {0} script(s)....
         /// </summary>
         public static string StartingExecutionOfScripts {

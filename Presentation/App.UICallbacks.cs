@@ -33,7 +33,7 @@ public partial class App
                 VerificationText = UpdateVerificationText,
             };
             updateDialog.HyperlinkClicked += (_, _) => Helpers.Open(SourceControlClient.Instance.Value.LatestVersionUrl);
-            updateDialog.VerificationClicked += (_, _) => AppInfo.Settings.ShowUpdateDialog ^= true;
+            updateDialog.VerificationClicked += (_, _) => AppInfo.Settings.ShowUpdateDialog = !updateDialog.IsVerificationChecked;
 
             if (updateDialog.Show().WasClosed)
             {
@@ -89,10 +89,5 @@ public partial class App
                 }
             };
             dlg.ShowDialog();
-        },
-        (ex, verb, info) =>
-        {
-            using FSErrorDialog dialog = new(ex, verb, info, Button.Retry, Button.Exit);
-            return dialog.ShowDialog().ClickedButton == Button.Retry;
         });
 }

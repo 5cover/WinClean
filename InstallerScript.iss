@@ -1,18 +1,20 @@
 // Requires Inno Download Plugin
-// See at https://mitrichsoftware.wordpress.com/inno-setup-tools/inno-download-plugin/
+// See https://mitrichsoftware.wordpress.com/inno-setup-tools/inno-download-plugin/
 #include <idp.iss>            
 #include <idplang\french.iss>
+
+// _Arch _AllowedArchs are emulated #defines with the /D command line compiler option. See https://jrsoftware.org/ispphelp/index.php?topic=isppcc
 
 #define Name "WinClean"
 #define Version "1.2.0"
 #define RepoUrl "https://github.com/5cover/WinClean"
 #define ExeName "WinClean.exe"
-#define SetupName "WinClean-Installer-x86"
+#define SetupName "WinClean-Installer-" + _Arch
 #define Description "Windows optimization and debloating utility."
 
 [Setup]
 AppId={{F7168958-5DC1-4316-B05E-A5D6E7851C84}
-ArchitecturesAllowed=x86 x64
+ArchitecturesAllowed = {#_AllowedArchs}
 AppName={#Name}
 AppComments={#Description}
 AppVersion={#Version}
@@ -27,7 +29,7 @@ VersionInfoDescription={#Description}
 VersionInfoOriginalFileName={#SetupName}.exe
 VersionInfoVersion={#Version}.0
 
-DefaultDirName={autopf32}\{#Name}
+DefaultDirName={autopf}\{#Name}
 DisableProgramGroupPage=yes
 LicenseFile=.\LICENSE
 OutputDir=.\bin\Setup
@@ -54,11 +56,15 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 Name: startmenuicon; Description: {cm:CreateStartMenuIcon}; GroupDescription: {cm:AdditionalIcons}
 
 [Files]
-Source: ".\bin\publish\x86\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\bin\publish\{#_Arch}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
-// 1.2.0 specific
+// 1.2.0 specific. Remove old default scripts
 [InstallDelete]
-Type: files; Name: "{autoappdata}\{#Name}\Scripts\*"
+Type: files; Name: "{userappdata}\{#Name}\Scripts\*"
+
+[UninstallDelete]
+// Log files
+Type: filesandordirs; Name: "{#GetEnv('TEMP')}\{#Name}"
 
 [Icons]
 Name: "{autoprograms}\{#Name}"; Filename: "{app}\{#ExeName}"; WorkingDir: "{app}"; Tasks: startmenuicon
@@ -101,7 +107,7 @@ fr.DotNetRuntimeFailedOther=L'installeur de .NET Desktop Runtime a renvoyé un co
 
 var
     g_requiresRestart: Boolean;
-    g_dotNetMissing : Boolean;
+    g_dotNetMissing: Boolean;
 
 function RegExMatch(const match, pattern: String): Boolean;
 var
@@ -186,23 +192,30 @@ end;
  
 { EVENT FUNCTIONS }
 
-// Firstly, download the .NET Runtime Installer
+// Firstly, download the .NET Runtime Installer:
+// .NET 6.0.10
 procedure InitializeWizard;
+var
+    dotNetUrl: String;
 begin
-    // Save the result in a variable so we only need to call NetRuntimeIsMissing() once
+    // Save the result in a global variable so we only need to call NetRuntimeIsMissing() once.
     g_dotNetMissing := NetRuntimeIsMissing();
     if g_dotNetMissing then
     begin
-        // URL of the latest dotnet runtime installer
-        idpAddFile('https://download.visualstudio.microsoft.com/download/pr/6f8cf899-4800-400e-a196-867e7593c8e4/351213f8ae397c30efcfbb78fb10def2/windowsdesktop-runtime-6.0.10-win-x86.exe', ExpandConstant('{tmp}\NetRuntimeInstaller.exe'));
+        case ProcessorArchitecture of
+            paX86: dotNetUrl := 'https://download.visualstudio.microsoft.com/download/pr/6f8cf899-4800-400e-a196-867e7593c8e4/351213f8ae397c30efcfbb78fb10def2/windowsdesktop-runtime-6.0.10-win-x86.exe';
+            paX64: dotNetUrl := 'https://download.visualstudio.microsoft.com/download/pr/a6e878eb-d1da-40cb-8b6a-7f5b9390f09c/e4431ce2aa28b6c9956db672209be500/windowsdesktop-runtime-6.0.10-win-x64.exe';
+            paARM64: dotNetUrl := 'https://download.visualstudio.microsoft.com/download/pr/b05a38ca-a434-473c-b031-07f05c75487e/0dfe9108f47050d81f1bc09002de6881/windowsdesktop-runtime-6.0.10-win-arm64.exe'
+        end
+        idpAddFile(dotNetUrl, ExpandConstant('{tmp}\NetRuntimeInstaller.exe'));
         idpDownloadAfter(wpReady)
     end
 end;
 
-// Then, run it.
+// Then, run it:
 function PrepareToInstall(var NeedsRestart: Boolean): String;
 var
-    progressPage : TOutputMarqueeProgressWizardPage;
+    progressPage: TOutputMarqueeProgressWizardPage;
 begin
     // 'NeedsRestart' only has an effect if we return a non-empty string, thus aborting the installation.
     // If the installers indicate that they want a restart, this should be done at the end of installation.

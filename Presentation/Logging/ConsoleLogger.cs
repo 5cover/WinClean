@@ -2,8 +2,6 @@
 
 public sealed class ConsoleLogger : Logger
 {
-    protected override void Log(LogEntry e)
-    {
-        Console.Error.WriteLine($"[{e.Level} at {e.Date}] ({e.CallFile}, line {e.CallLine}): {e.Message}");
-    }
+    protected override void Log(LogEntry entry)
+        => Console.Error.WriteLine($"[{entry.Level} at {entry.Date}] ({entry.CallFile}, line {entry.CallLine}): {entry.Message}");
 }

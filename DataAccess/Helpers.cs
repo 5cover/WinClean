@@ -20,8 +20,7 @@ public static class Helpers
     }
 
     /// <summary>Fetches the restore point icon as defined in rstrui.exe.</summary>
-    public static Icon GetRestorePointIcon()
-        => Icon.ExtractAssociatedIcon(Path.Join(Environment.SystemDirectory, "rstrui.exe")).AssertNotNull();
+    public static Icon GetRestorePointIcon() => Icon.ExtractAssociatedIcon(Path.Join(Environment.SystemDirectory, "rstrui.exe")).AssertNotNull();
 
     /// <summary>Checks if an exception is related to the filesystem.</summary>
     /// <returns>
@@ -62,6 +61,12 @@ public static class Helpers
 
     public static void SetFromXml(this LocalizedString str, XmlNode node)
                                 => str.Set(new(node.Attributes?["xml:lang"]?.Value ?? string.Empty), node.InnerText);
+
+    public static Process? StartPowerShell(string arguments) => Process.Start(new ProcessStartInfo(Path.Join(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe"), arguments)
+    {
+        UseShellExecute = true,
+        WindowStyle = ProcessWindowStyle.Hidden
+    });
 
     /// <summary>
     /// Computes the sum of a sequence of time intervals that are obtained by invoking a transform function on each element of

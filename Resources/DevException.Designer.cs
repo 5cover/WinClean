@@ -22,7 +22,7 @@ namespace Scover.WinClean.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public sealed class DevException {
+    public class DevException {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -61,15 +61,6 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Callback {0} not set..
-        /// </summary>
-        public static string CallbackNotSet {
-            get {
-                return ResourceManager.GetString("CallbackNotSet", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à The collection is empty..
         /// </summary>
         public static string CollectionEmpty {
@@ -93,15 +84,6 @@ namespace Scover.WinClean.Resources {
         public static string NoStringFoundForThisCulture {
             get {
                 return ResourceManager.GetString("NoStringFoundForThisCulture", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à &quot;{0}&quot; is not a valid {1} {2}..
-        /// </summary>
-        public static string NotAValid {
-            get {
-                return ResourceManager.GetString("NotAValid", resourceCulture);
             }
         }
         
