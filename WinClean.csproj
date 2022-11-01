@@ -1,10 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
-  <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
-  <TargetFrameworkIdentifier>.NETCoreApp</TargetFrameworkIdentifier>
+    <TargetFrameworkIdentifier>.NETCoreApp</TargetFrameworkIdentifier>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <StartupObject>Scover.WinClean.Presentation.App</StartupObject>
@@ -14,7 +12,7 @@
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <SignAssembly>False</SignAssembly>
     <Authors>Scover</Authors>
-    <PackageIcon>WinClean.png</PackageIcon>
+    <PackageIcon>Resources\WinClean.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
@@ -27,16 +25,10 @@
     <UseWindowsForms>False</UseWindowsForms>
     <Platforms>AnyCPU</Platforms>
     <Version>1.2.0</Version>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <Configurations>Debug;Release;Portable</Configurations>
   </PropertyGroup>
 
-  <!-- Common publish properties -->
-  <PropertyGroup>
-    <PublishSingleFile>true</PublishSingleFile>
-    <PublishReadyToRun>false</PublishReadyToRun>
-  </PropertyGroup>
-
+  <!-- Common build properties -->
   <PropertyGroup>
     <WarningLevel>9999</WarningLevel>
     <NoWarn>NU1701;1702</NoWarn>
@@ -54,6 +46,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Portable|AnyCPU'">
     <DebugType>embedded</DebugType>
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
@@ -184,7 +177,7 @@
     <PackageReference Include="CsvHelper" Version="30.0.0" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.4.0" />
     <PackageReference Include="Humanizer" Version="2.14.1" />
-    <PackageReference Include="Microsoft.PowerShell.Commands.Management" Version="7.2.7" />
+    <PackageReference Include="Microsoft.Management.Infrastructure" Version="2.0.0" />
     <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.2.7" />
     <PackageReference Include="Octokit" Version="4.0.1" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />

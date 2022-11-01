@@ -55,7 +55,6 @@ Name: startmenuicon; Description: {cm:CreateStartMenuIcon}; GroupDescription: {c
 
 [Files]
 Source: ".\bin\publish\x86\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: ".\Scripts\*"; DestDir: "{autoappdata}\{#Name}\Scripts"; Flags: ignoreversion
 
 // 1.2.0 specific
 [InstallDelete]
