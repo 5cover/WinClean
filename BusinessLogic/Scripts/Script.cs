@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-using Scover.WinClean.BusinessLogic.Scripts.Hosts;
-
 using static System.Globalization.CultureInfo;
 
 namespace Scover.WinClean.BusinessLogic.Scripts;
@@ -13,7 +11,7 @@ public class Script : INotifyPropertyChanged, IScriptData
     private Category _category;
     private string _code;
     private TimeSpan _executionTime;
-    private IHost _host;
+    private Host _host;
     private Impact _impact;
     private RecommendationLevel _recommended;
     private bool _selected;
@@ -21,7 +19,7 @@ public class Script : INotifyPropertyChanged, IScriptData
     public Script(Category category,
                   string code,
                   TimeSpan executionTime,
-                  IHost host,
+                  Host host,
                   Impact impact,
                   RecommendationLevel recommended,
                   bool isDefault,
@@ -85,7 +83,7 @@ public class Script : INotifyPropertyChanged, IScriptData
         }
     }
 
-    public IHost Host
+    public Host Host
     {
         get => _host;
         set

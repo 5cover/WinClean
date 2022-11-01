@@ -4,7 +4,6 @@ using System.Resources;
 using System.Windows;
 
 using Scover.WinClean.BusinessLogic.Scripts;
-using Scover.WinClean.BusinessLogic.Scripts.Hosts;
 using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Properties;
@@ -18,11 +17,11 @@ public static class AppInfo
     private static readonly Assembly assembly = Assembly.GetExecutingAssembly();
 
     /// <summary>Gets a dictionary that contains all available script hosts, keyed by <see cref="IScriptData.InvariantName"/>.</summary>
-    public static IDictionary<string, IHost> Hosts { get; } = MakeDictionary(new IHost[]
+    public static IDictionary<string, Host> Hosts { get; } = MakeDictionary(new Host[]
     {
-        ProcessHost.Cmd,
-        PowerShell.Instance,
-        ProcessHost.Regedit
+        Host.Cmd,
+        Host.PowerShell,
+        Host.Regedit
     });
 
     #region Lazy script metadata
@@ -41,15 +40,6 @@ public static class AppInfo
 
     #endregion Lazy script metadata
 
-    /// <summary>Gets or sets the error callback for opening application files.</summary>
-    /// <remarks>This property must be set externally in the Presentation layer.</remarks>
-    /// <returns>
-    /// <see langword="true"/> if the filesystem operation should be retried; <see langword="false"/> if it should fail and
-    /// throw <paramref name="exception"/>.
-    /// </returns>
-    public static FSOperationCallback OpenAppFileRetryElseFail { get; set; } = (_, _, _a)
-        => throw new NotSupportedException(Resources.DevException.CallbackNotSet.FormatWith(nameof(OpenAppFileRetryElseFail)));
-
     public static Settings Settings => Settings.Default;
 
     private static IDictionary<string, T> MakeDictionary<T>(IEnumerable<T> source) where T : IScriptData
@@ -57,24 +47,11 @@ public static class AppInfo
 
     private static Stream OpenContentFile(string filename)
     {
-        while (true)
-        {
-            try
-            {
 #if PORTABLE
-                return Assembly.GetExecutingAssembly().GetManifestResourceStream(string.Join('.', nameof(Scover), nameof(WinClean), filename)).AssertNotNull();
+        return Assembly.GetExecutingAssembly().GetManifestResourceStream(string.Join('.', nameof(Scover), nameof(WinClean), filename)).AssertNotNull();
 #else
-                return File.OpenRead(filename);
+        return File.OpenRead(filename);
 #endif
-            }
-            catch (Exception e) when (e.IsFileSystem())
-            {
-                if (!OpenAppFileRetryElseFail(e, FSVerb.Access, new FileInfo(filename)))
-                {
-                    throw;
-                }
-            }
-        }
     }
 
     #region Assembly attributes

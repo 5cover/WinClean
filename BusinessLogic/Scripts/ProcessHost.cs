@@ -3,13 +3,15 @@ using System.Globalization;
 
 using Humanizer;
 
+using Microsoft.WindowsAPICodePack.Win32Native;
+
 using Scover.WinClean.DataAccess;
 
 using static System.IO.Path;
 
-namespace Scover.WinClean.BusinessLogic.Scripts.Hosts;
+namespace Scover.WinClean.BusinessLogic.Scripts;
 
-public sealed class ProcessHost : IHost
+public sealed class Host : IScriptData
 {
     /// <summary>Arguments to pass to <see cref="Executable"/> when executing.</summary>
     private readonly IncompleteArguments _arguments;
@@ -17,7 +19,7 @@ public sealed class ProcessHost : IHost
     /// <summary>The path to the executable of the script host program.</summary>
     private readonly string _executable;
 
-    private ProcessHost(string invariantName, string description, string executable, string arguments, params string[] supportedExtensions)
+    private Host(string invariantName, string description, string executable, string arguments, params string[] supportedExtensions)
     {
         using ShellFile shellFile = new(executable);
         Name = shellFile.FileDescription;
@@ -29,17 +31,23 @@ public sealed class ProcessHost : IHost
         SupportedExtensions = new(supportedExtensions);
     }
 
-    public static ProcessHost Cmd { get; } = new(nameof(Cmd),
+    public static Host Cmd { get; } = new(nameof(Cmd),
                                                  Resources.Hosts.CmdDescription,
                                                  Join(Environment.SystemDirectory, "cmd.exe"),
                                                  "/d /c \"{0}\"",
                                                  ".cmd", ".bat");
 
-    public static ProcessHost Regedit { get; } = new(nameof(Regedit),
-                                                     Resources.Hosts.RegeditDescription,
-                                                     Join(Environment.SystemDirectory, "..", "regedit.exe"),
-                                                     "/s {0}",
-                                                     ".reg");
+    public static Host PowerShell { get; } = new(nameof(PowerShell),
+                                                        Resources.Hosts.PowerShellDescription,
+                                                        Join(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe"),
+                                                        "-ExecutionPolicy Unrestricted -File \"{0}\"",
+                                                        ".ps1");
+
+    public static Host Regedit { get; } = new(nameof(Regedit),
+                                                         Resources.Hosts.RegeditDescription,
+                                                         Join(Environment.SystemDirectory, "..", "regedit.exe"),
+                                                         "/s {0}",
+                                                         ".reg");
 
     public string Description { get; }
     public string InvariantName { get; }

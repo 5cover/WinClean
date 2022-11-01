@@ -1,4 +1,6 @@
-﻿using Scover.WinClean.DataAccess;
+﻿using System.Globalization;
+
+using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.Presentation.Logging;
 
@@ -14,5 +16,5 @@ public enum LogLevel
 public static class LogLevelExtensions
 {
     public static string GetName(this LogLevel logLevel)
-        => Resources.LogLevels.ResourceManager.GetString(Enum.GetName(logLevel).AssertNotNull()).AssertNotNull();
+        => Resources.LogLevels.ResourceManager.GetString(Enum.GetName(logLevel).AssertNotNull(), CultureInfo.CurrentUICulture).AssertNotNull();
 }

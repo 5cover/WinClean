@@ -32,7 +32,7 @@ public abstract class Logger
         }
     }
 
-    protected abstract void Log(LogEntry log);
+    protected abstract void Log(LogEntry entry);
 
     ///<remarks>Topmost = leftmost.</remarks>
     protected record LogEntry(string Level,

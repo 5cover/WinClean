@@ -11,9 +11,6 @@ public sealed class AppDirectory
         Info.Create();
     }
 
-    /// <summary>The application's install directory.</summary>
-    public static AppDirectory InstallDir { get; } = new(AppContext.BaseDirectory);
-
     /// <summary>The application's logging directory.</summary>
     public static AppDirectory LogDir { get; } = new(Path.GetTempPath(), AppInfo.Name, "Logs");
 

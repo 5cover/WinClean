@@ -18,6 +18,5 @@ public partial class App
             Logger.Log($"{Logs.InvalidScriptData.FormatWith(Path.GetFileName(path))}\n{e}", LogLevel.Error);
             return false;
         },
-        e => Logger.Log(Logs.UnhandledException.FormatWith(e), LogLevel.Critical),
-        (ex, verb, info) => false); // Fail immediately. Let it turn into an unhandled exception.
+        e => Logger.Log(Logs.UnhandledException.FormatWith(e), LogLevel.Critical));
 }

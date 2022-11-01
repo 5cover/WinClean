@@ -47,13 +47,10 @@ public sealed class CommandLinkDialog : Dialog
         set => Dlg.ButtonStyle = value ? TaskDialogButtonStyle.CommandLinks : TaskDialogButtonStyle.CommandLinksNoIcon;
     }
 
-    protected override DialogResult GetResult(TaskDialogButton? clickedButton)
+    protected override DialogResult GetResult(TaskDialogButton? clickedButton) => base.GetResult(clickedButton) with
     {
-        return base.GetResult(clickedButton) with
-        {
-            ClickedCommandLink = IsClosed ? null : _commandLinks.Keys.SingleOrDefault(cl => ReferenceEquals(_commandLinks[cl], clickedButton))
-        };
-    }
+        ClickedCommandLink = IsClosed ? null : _commandLinks.Keys.SingleOrDefault(cl => ReferenceEquals(_commandLinks[cl], clickedButton))
+    };
 
     private void CommandLink_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
@@ -82,8 +79,8 @@ public sealed class CommandLinkDialog : Dialog
         foreach (CommandLink oldCommandLink in e.OldItems ?? Array.Empty<CommandLink>())
         {
             oldCommandLink.PropertyChanged -= CommandLink_PropertyChanged;
-            Dlg.Buttons.Remove(_commandLinks[oldCommandLink]);
-            _commandLinks.Remove(oldCommandLink);
+            _ = Dlg.Buttons.Remove(_commandLinks[oldCommandLink]);
+            _ = _commandLinks.Remove(oldCommandLink);
         }
     }
 }

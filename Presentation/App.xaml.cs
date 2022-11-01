@@ -24,8 +24,7 @@ public sealed partial class App
 {
     private record Callbacks(Action WarnOnUpdate,
                              InvalidScriptDataCallback ReloadElseIgnore,
-                             Action<Exception> WarnOnUnhandledException,
-                             FSOperationCallback RetryElseFail);
+                             Action<Exception> WarnOnUnhandledException);
 
     private static readonly List<Script> _defaultScripts = new();
     private static CustomScriptCollection? _customScripts;
@@ -47,33 +46,27 @@ public sealed partial class App
 
     private static void Initialize(Logger logger, Callbacks callbacks)
     {
-        // The startup steps are in a precise order. The app file callback has to be set first to load the scripts, because it
-        // is needed to load the script metadata objects.
-
         // 1. Add the unhandled exception handler
         Current.DispatcherUnhandledException += (_, args) => callbacks.WarnOnUnhandledException(args.Exception);
 
         // 2. Set the logger
         _logger = logger;
 
-        // 3. Set the app file callback
-        AppInfo.OpenAppFileRetryElseFail = callbacks.RetryElseFail;
-
-        // 4. Check for updates
+        // 3. Check for updates
         if (SourceControlClient.Instance.Value.LatestVersionName != AppInfo.Version)
         {
             callbacks.WarnOnUpdate();
         }
 
-        // 5. Load default scripts
+        // 4. Load default scripts
         Assembly assembly = Assembly.GetExecutingAssembly();
         IScriptSerializer s = new ScriptXmlSerializer();
-        foreach (string scriptResName in assembly.GetManifestResourceNames().Where(name => name.StartsWith("Scover.WinClean.Scripts")))
+        foreach (string scriptResName in assembly.GetManifestResourceNames().Where(name => name.StartsWith("Scover.WinClean.Scripts", false, CultureInfo.InvariantCulture)))
         {
             _defaultScripts.Add(s.DeserializeDefault(assembly.GetManifestResourceStream(scriptResName).AssertNotNull()));
         }
 
-        // 6. Load custom scripts.
+        // 5. Load custom scripts.
         _customScripts = CustomScriptCollection.LoadScripts(AppDirectory.ScriptsDir, callbacks.ReloadElseIgnore);
     }
 
@@ -85,7 +78,7 @@ public sealed partial class App
         [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         [DllImport("kernel32.dll")]
         static extern bool AttachConsole(uint dwProcessId);
-        AttachConsole(unchecked((uint)-1));
+        _ = AttachConsole(unchecked((uint)-1));
 
         Initialize(new ConsoleLogger(), consoleCallbacks);
 

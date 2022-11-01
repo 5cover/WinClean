@@ -153,10 +153,6 @@
     <value>Script(s) executed sucessfully.</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="Started" xml:space="preserve">
-    <value>The application started.</value>
-    <comment>@Invariant</comment>
-  </data>
   <data name="StartingExecutionOfScripts" xml:space="preserve">
     <value>Starting the execution of {0} script(s)...</value>
     <comment>0 : number of scripts to execute@Invariant</comment>

@@ -121,12 +121,6 @@
     <value>The collection is empty.</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="NotAValid" xml:space="preserve">
-    <value>"{0}" is not a valid {1} {2}.</value>
-    <comment>0 : the invalid value
-1 : the type name
-2 : invalid property name@Invariant</comment>
-  </data>
   <data name="SystemProtectionDisabled" xml:space="preserve">
     <value>Cannot create system restore point because system protection is disabled.</value>
     <comment>@Invariant</comment>
@@ -146,9 +140,5 @@
   <data name="ScriptAlreadyExists" xml:space="preserve">
     <value>The script "{0}" already exists.</value>
     <comment>0 : script name@Invariant</comment>
-  </data>
-  <data name="CallbackNotSet" xml:space="preserve">
-    <value>Callback {0} not set.</value>
-    <comment>0 : callback name@Invariant</comment>
   </data>
 </root>
