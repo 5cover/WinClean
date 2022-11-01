@@ -1,7 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
+using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
+using Scover.WinClean.Properties;
 
 namespace Scover.WinClean.Presentation.Controls;
 
@@ -14,6 +16,8 @@ public partial class ScriptEditor
 
     /// <summary><see cref="Selected"/>'s property, <see cref="Script.Category"/>, has changed.</summary>
     public event EventHandler? ScriptChangedCategory;
+
+    public bool ForbidEdit => Selected?.IsDefault ?? true || !AppInfo.Settings.AllowCustomScriptEdit;
 
     public Script? Selected
     {

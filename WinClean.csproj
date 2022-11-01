@@ -3,8 +3,8 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
-	<TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
-	<TargetFrameworkIdentifier>.NETCoreApp</TargetFrameworkIdentifier>
+  <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
+  <TargetFrameworkIdentifier>.NETCoreApp</TargetFrameworkIdentifier>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <StartupObject>Scover.WinClean.Presentation.App</StartupObject>
@@ -33,6 +33,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>9999</WarningLevel>
     <NoWarn>NU1701;1702</NoWarn>
+    <DefineConstants>$(DefineConstants)TRACE;PORTABLE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -43,12 +44,123 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <WarningLevel>9999</WarningLevel>
     <NoWarn>NU1701;1702</NoWarn>
+    <DefineConstants>$(DefineConstants)TRACE;PORTABLE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <WarningLevel>9999</WarningLevel>
     <NoWarn>NU1701;1702</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Categories.xml" />
+    <None Remove="Impacts.xml" />
+    <None Remove="Scripts\Aggressive disk cleaning.xml" />
+    <None Remove="Scripts\Always show file extensions.xml" />
+    <None Remove="Scripts\Always show folder merge conflicts.xml" />
+    <None Remove="Scripts\Clear event logs.xml" />
+    <None Remove="Scripts\Clear File Explorer history.xml" />
+    <None Remove="Scripts\Delete all system restore points.xml" />
+    <None Remove="Scripts\Delete junk files.xml" />
+    <None Remove="Scripts\Disable ads.xml" />
+    <None Remove="Scripts\Disable Biometry services.xml" />
+    <None Remove="Scripts\Disable Bluetooth services.xml" />
+    <None Remove="Scripts\Disable delivery optimization.xml" />
+    <None Remove="Scripts\Disable downloaded files blocking.xml" />
+    <None Remove="Scripts\Disable Explorer online help.xml" />
+    <None Remove="Scripts\Disable hibernation.xml" />
+    <None Remove="Scripts\Disable Hyper-V services.xml" />
+    <None Remove="Scripts\Disable network and business services.xml" />
+    <None Remove="Scripts\Disable shortcut sufffix.xml" />
+    <None Remove="Scripts\Disable smart card services.xml" />
+    <None Remove="Scripts\Disable start menu web search.xml" />
+    <None Remove="Scripts\Disable systematic short filename creation.xml" />
+    <None Remove="Scripts\Disable telemetry and data collection.xml" />
+    <None Remove="Scripts\Disable the BitLocker Drive Encryption service.xml" />
+    <None Remove="Scripts\Disable the Downloaded Maps Manager service.xml" />
+    <None Remove="Scripts\Disable the Internet Connection Sharing %28ICS%29 service.xml" />
+    <None Remove="Scripts\Disable the Parental Controls service.xml" />
+    <None Remove="Scripts\Disable the Touch Keyboard and Handwriting Panel service.xml" />
+    <None Remove="Scripts\Disable the Windows Camera Frame Server service.xml" />
+    <None Remove="Scripts\Disable the Windows Mobile Hotspot service.xml" />
+    <None Remove="Scripts\Disable Timeline.xml" />
+    <None Remove="Scripts\Disable useless servies.xml" />
+    <None Remove="Scripts\Disable Xbox services.xml" />
+    <None Remove="Scripts\Enable legacy Windows Photo Viewer.xml" />
+    <None Remove="Scripts\Keep thumbnail cache after reboot.xml" />
+    <None Remove="Scripts\Remove Cortana.xml" />
+    <None Remove="Scripts\Remove Internet Explorer 11.xml" />
+    <None Remove="Scripts\Remove Microsoft Print to PDF.xml" />
+    <None Remove="Scripts\Remove Microsoft Windows Malware Removal Tool.xml" />
+    <None Remove="Scripts\Remove PowerShell ISE.xml" />
+    <None Remove="Scripts\Remove useless apps.xml" />
+    <None Remove="Scripts\Remove useless scheduled tasks.xml" />
+    <None Remove="Scripts\Remove WordPad.xml" />
+    <None Remove="Scripts\Repair system using Dism%27s cleanup image.xml" />
+    <None Remove="Scripts\Run Check Disk utility.xml" />
+    <None Remove="Scripts\Run Component Store cleanup.xml" />
+    <None Remove="Scripts\Run Disk Cleanup tool.xml" />
+    <None Remove="Scripts\Run the System File Checker tool.xml" />
+    <None Remove="Scripts\Show checkboxes near files and folders.xml" />
+    <None Remove="Scripts\Show full path in Explorer title bar.xml" />
+    <None Remove="Scripts\Show seconds in taskbar clock.xml" />
+    <None Remove="Scripts\Stop apps from running in the background.xml" />
+    <None Remove="Scripts\Uninstall Microsoft Edge.xml" />
+    <None Remove="Scripts\Uninstall One Drive.xml" />
+    <EmbeddedResource Include="Scripts\Aggressive disk cleaning.xml" />
+    <EmbeddedResource Include="Scripts\Always show file extensions.xml" />
+    <EmbeddedResource Include="Scripts\Always show folder merge conflicts.xml" />
+    <EmbeddedResource Include="Scripts\Clear event logs.xml" />
+    <EmbeddedResource Include="Scripts\Clear File Explorer history.xml" />
+    <EmbeddedResource Include="Scripts\Delete all system restore points.xml" />
+    <EmbeddedResource Include="Scripts\Delete junk files.xml" />
+    <EmbeddedResource Include="Scripts\Disable ads.xml" />
+    <EmbeddedResource Include="Scripts\Disable Biometry services.xml" />
+    <EmbeddedResource Include="Scripts\Disable Bluetooth services.xml" />
+    <EmbeddedResource Include="Scripts\Disable delivery optimization.xml" />
+    <EmbeddedResource Include="Scripts\Disable downloaded files blocking.xml" />
+    <EmbeddedResource Include="Scripts\Disable Explorer online help.xml" />
+    <EmbeddedResource Include="Scripts\Disable hibernation.xml" />
+    <EmbeddedResource Include="Scripts\Disable Hyper-V services.xml" />
+    <EmbeddedResource Include="Scripts\Disable network and business services.xml" />
+    <EmbeddedResource Include="Scripts\Disable shortcut sufffix.xml" />
+    <EmbeddedResource Include="Scripts\Disable smart card services.xml" />
+    <EmbeddedResource Include="Scripts\Disable start menu web search.xml" />
+    <EmbeddedResource Include="Scripts\Disable systematic short filename creation.xml" />
+    <EmbeddedResource Include="Scripts\Disable telemetry and data collection.xml" />
+    <EmbeddedResource Include="Scripts\Disable the BitLocker Drive Encryption service.xml" />
+    <EmbeddedResource Include="Scripts\Disable the Downloaded Maps Manager service.xml" />
+    <EmbeddedResource Include="Scripts\Disable the Internet Connection Sharing (ICS) service.xml" />
+    <EmbeddedResource Include="Scripts\Disable the Parental Controls service.xml" />
+    <EmbeddedResource Include="Scripts\Disable the Touch Keyboard and Handwriting Panel service.xml" />
+    <EmbeddedResource Include="Scripts\Disable the Windows Camera Frame Server service.xml" />
+    <EmbeddedResource Include="Scripts\Disable the Windows Mobile Hotspot service.xml" />
+    <EmbeddedResource Include="Scripts\Disable Timeline.xml" />
+    <EmbeddedResource Include="Scripts\Disable useless servies.xml" />
+    <EmbeddedResource Include="Scripts\Disable Xbox services.xml" />
+    <EmbeddedResource Include="Scripts\Enable legacy Windows Photo Viewer.xml" />
+    <EmbeddedResource Include="Scripts\Keep thumbnail cache after reboot.xml" />
+    <EmbeddedResource Include="Scripts\Remove Cortana.xml" />
+    <EmbeddedResource Include="Scripts\Remove Internet Explorer 11.xml" />
+    <EmbeddedResource Include="Scripts\Remove Microsoft Print to PDF.xml" />
+    <EmbeddedResource Include="Scripts\Remove Microsoft Windows Malware Removal Tool.xml" />
+    <EmbeddedResource Include="Scripts\Remove PowerShell ISE.xml" />
+    <EmbeddedResource Include="Scripts\Remove useless apps.xml" />
+    <EmbeddedResource Include="Scripts\Remove useless scheduled tasks.xml" />
+    <EmbeddedResource Include="Scripts\Remove WordPad.xml" />
+    <EmbeddedResource Include="Scripts\Repair system using Dism's cleanup image.xml" />
+    <EmbeddedResource Include="Scripts\Run Check Disk utility.xml" />
+    <EmbeddedResource Include="Scripts\Run Component Store cleanup.xml" />
+    <EmbeddedResource Include="Scripts\Run Disk Cleanup tool.xml" />
+    <EmbeddedResource Include="Scripts\Run the System File Checker tool.xml" />
+    <EmbeddedResource Include="Scripts\Show checkboxes near files and folders.xml" />
+    <EmbeddedResource Include="Scripts\Show full path in Explorer title bar.xml" />
+    <EmbeddedResource Include="Scripts\Show seconds in taskbar clock.xml" />
+    <EmbeddedResource Include="Scripts\Stop apps from running in the background.xml" />
+    <EmbeddedResource Include="Scripts\Uninstall Microsoft Edge.xml" />
+    <EmbeddedResource Include="Scripts\Uninstall One Drive.xml" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <Page Remove="Presentation\App.xaml" />
@@ -59,22 +171,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Categories.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-	  <Content Include="Impacts.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-	  <Content Include="RecommendationLevels.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Resources\WinClean.png" />
     <Resource Include="Resources\WinClean.ico" />
   </ItemGroup>
-	
+  
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="CsvHelper" Version="28.0.1" />
@@ -127,6 +227,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Hosts.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\ScriptMetadata.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ScriptMetadata.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\UI\AboutWindow.Designer.cs">
       <DependentUpon>AboutWindow.resx</DependentUpon>
@@ -229,6 +334,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Hosts.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ScriptMetadata.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ScriptMetadata.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\AboutWindow.resx">
       <LastGenOutput>AboutWindow.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -273,6 +382,36 @@
       <LastGenOutput>Dialogs.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+
+  <Choose>
+    <When Condition="$(DefineConstants.Contains('PORTABLE'))">
+      <ItemGroup>
+        <Content Include="Categories.xml">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Impacts.xml">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </Content>
+        <Content Include="RecommendationLevels.xml">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </Content>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Content Include="Categories.xml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Impacts.xml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="RecommendationLevels.xml">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+
 
   <ItemGroup>
     <None Update="Properties\Settings.settings">

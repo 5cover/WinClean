@@ -32,7 +32,7 @@ public partial class MainWindow
 
     private static void CheckScripts(Predicate<Script> check)
     {
-        foreach (Script script in App.Scripts)
+        foreach (Script script in App.AllScripts)
         {
             script.IsSelected = check(script);
         }
@@ -49,12 +49,12 @@ public partial class MainWindow
     {
         OpenFileDialog ofd = new()
         {
-            DefaultExt = ".xml",
+            DefaultExt = AppInfo.Settings.ScriptFileExtension,
             Multiselect = true,
             ReadOnlyChecked = true,
             ValidateNames = false
         };
-        MakeFilter(ofd, new ExtensionGroup(".xml"));
+        MakeFilter(ofd, new ExtensionGroup(AppInfo.Settings.ScriptFileExtension));
 
         if (!(ofd.ShowDialog(this) ?? false))
         {
@@ -75,7 +75,7 @@ public partial class MainWindow
             {
                 try
                 {
-                    App.Scripts.AddNew(filePath, allowOverwrite);
+                    App.CustomScripts.AddNew(filePath, allowOverwrite);
                     break;
                 }
                 catch (InvalidDataException ex)
@@ -116,7 +116,7 @@ public partial class MainWindow
 
     private void ButtonExecuteScriptsClick(object sender, RoutedEventArgs e)
     {
-        List<Script> selectedScripts = App.Scripts.Where(s => s.IsSelected).ToList();
+        List<Script> selectedScripts = App.AllScripts.Where(s => s.IsSelected).ToList();
         if (!selectedScripts.Any())
         {
             using Dialog noScriptsSelected = new(Button.OK)
@@ -173,7 +173,7 @@ public partial class MainWindow
         {
             ListBox listBox = new()
             {
-                ItemsSource = App.Scripts.Where(s => s.Category == category)
+                ItemsSource = App.AllScripts.Where(s => s.Category == category)
             };
             TabItem tabItem = new()
             {

@@ -100,8 +100,8 @@
   <data name="Title" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="AllowScriptEdit" xml:space="preserve">
-    <value>_Allow script edit</value>
+  <data name="AllowCustomScriptEdit" xml:space="preserve">
+    <value>_Allow custom script edit</value>
   </data>
   <data name="ScriptTimeout" xml:space="preserve">
     <value>Script _timeout</value>

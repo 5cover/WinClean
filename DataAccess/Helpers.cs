@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
 using System.Security;
+using System.Text;
 using System.Xml;
 
 using Scover.WinClean.BusinessLogic;
@@ -78,4 +79,6 @@ public static class Helpers
     /// <returns>The sum of the values in the sequence.</returns>
     public static TimeSpan Sum(this IEnumerable<TimeSpan> source)
         => source.Aggregate(TimeSpan.Zero, (sumSoFar, nextSource) => sumSoFar + nextSource);
+
+    public static Stream ToStream(this string value) => new MemoryStream(Encoding.UTF8.GetBytes(value ?? string.Empty));
 }

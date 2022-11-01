@@ -23,11 +23,11 @@ public sealed class CommandLineOptions
 
         if (RunAllScripts)
         {
-            scripts = App.Scripts.ToList();
+            scripts = App.AllScripts.ToList();
         }
         else if (Scripts is not null)
         {
-            scripts = App.Scripts.Where(s => Scripts.Contains(s.InvariantName)).ToList();
+            scripts = App.AllScripts.Where(s => Scripts.Contains(s.InvariantName)).ToList();
         }
 
         if (scripts is not null)

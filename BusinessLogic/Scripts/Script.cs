@@ -2,13 +2,14 @@
 using System.Runtime.CompilerServices;
 
 using Scover.WinClean.BusinessLogic.Scripts.Hosts;
+using Scover.WinClean.DataAccess;
 
 using static System.Globalization.CultureInfo;
 
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
-/// <summary>A script that can be executed from a script host program.</summary>
-public sealed class Script : INotifyPropertyChanged, IScriptData
+/// <summary>An immutable script deployed with the application.</summary>
+public class Script : INotifyPropertyChanged, IScriptData
 {
     private Category _category;
     private string _code;
@@ -18,15 +19,15 @@ public sealed class Script : INotifyPropertyChanged, IScriptData
     private RecommendationLevel _recommended;
     private bool _selected;
 
-    /// <summary>Initializes a new instance of the <see cref="Script"/> class with the specified data.</summary>
     public Script(Category category,
                   string code,
                   TimeSpan executionTime,
                   IHost host,
                   Impact impact,
                   RecommendationLevel recommended,
-                  LocalizedString descriptions,
-                  LocalizedString names)
+                  bool isDefault,
+                  LocalizedString localizedDescriptions,
+                  LocalizedString localizedNames)
     {
         _category = category;
         _code = code;
@@ -34,23 +35,23 @@ public sealed class Script : INotifyPropertyChanged, IScriptData
         _host = host;
         _impact = impact;
         _recommended = recommended;
-        LocalizedDescriptions = descriptions;
-        LocalizedNames = names;
+        IsDefault = isDefault;
+        LocalizedDescriptions = localizedDescriptions;
+        LocalizedNames = localizedNames;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    /// <summary>Get or sets the category of this script.</summary>
     public Category Category
     {
-        get => _category; set
+        get => _category;
+        set
         {
             _category = value;
             OnPropertyChanged();
         }
     }
 
-    /// <summary>Get or sets the code of this script.</summary>
     public string Code
     {
         get => _code;
@@ -61,12 +62,14 @@ public sealed class Script : INotifyPropertyChanged, IScriptData
         }
     }
 
-    /// <summary>Gets or sets the description of this script</summary>
-    /// <inheritdoc/>
     public string Description
     {
         get => LocalizedDescriptions.Get(CurrentUICulture);
-        set => LocalizedDescriptions.Set(CurrentUICulture, value);
+        set
+        {
+            LocalizedDescriptions.Set(CurrentUICulture, value);
+            OnPropertyChanged();
+        }
     }
 
     /// <summary>Gets or sets an approximate of the time it would take to execute this script.</summary>
@@ -83,7 +86,6 @@ public sealed class Script : INotifyPropertyChanged, IScriptData
         }
     }
 
-    /// <summary>Gets or sets the host to use to run this script.</summary>
     public IHost Host
     {
         get => _host;
@@ -94,7 +96,6 @@ public sealed class Script : INotifyPropertyChanged, IScriptData
         }
     }
 
-    /// <summary>Gets or sets the impact of running this script on the system.</summary>
     public Impact Impact
     {
         get => _impact;
@@ -105,13 +106,17 @@ public sealed class Script : INotifyPropertyChanged, IScriptData
         }
     }
 
-    /// <summary>Gets or sets the invariant name of this instance</summary>
-    /// <inheritdoc/>
     public string InvariantName
     {
         get => LocalizedNames.Get(InvariantCulture);
-        set => LocalizedNames.Set(InvariantCulture, value);
+        set
+        {
+            LocalizedNames.Set(InvariantCulture, value);
+            OnPropertyChanged();
+        }
     }
+
+    public bool IsDefault { get; }
 
     /// <summary>Gets or sets whether this script has been selected for execution by the user.</summary>
     public bool IsSelected
@@ -126,14 +131,12 @@ public sealed class Script : INotifyPropertyChanged, IScriptData
 
     /// <summary>Gets the localized descriptions of this script.</summary>
     /// <value>The descriptions of this script in all available languages.</value>
-    public LocalizedString LocalizedDescriptions { get; }
+    public LocalizedString LocalizedDescriptions { get; init; }
 
     /// <summary>Gets the localized names of this script.</summary>
     /// <value>The names of this script in all available languages.</value>
-    public LocalizedString LocalizedNames { get; }
+    public LocalizedString LocalizedNames { get; init; }
 
-    /// <summary>Gets or sets the name of this instance</summary>
-    /// <inheritdoc/>
     public string Name
     {
         get => LocalizedNames.Get(CurrentUICulture);
@@ -144,7 +147,6 @@ public sealed class Script : INotifyPropertyChanged, IScriptData
         }
     }
 
-    /// <summary>Gets or sets the level of recommendation of this script.</summary>
     public RecommendationLevel Recommended
     {
         get => _recommended;
@@ -161,5 +163,5 @@ public sealed class Script : INotifyPropertyChanged, IScriptData
     public void Execute(HungScriptCallback keepRunningElseKill, CancellationToken cancellationToken)
         => Host.ExecuteCode(Code, Name, AppInfo.Settings.ScriptTimeout, keepRunningElseKill, cancellationToken);
 
-    private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new(propertyName));
+    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new(propertyName));
 }

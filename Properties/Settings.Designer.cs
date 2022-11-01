@@ -72,12 +72,12 @@ namespace Scover.WinClean.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool AllowScriptEdit {
+        public bool AllowCustomScriptEdit {
             get {
-                return ((bool)(this["AllowScriptEdit"]));
+                return ((bool)(this["AllowCustomScriptEdit"]));
             }
             set {
-                this["AllowScriptEdit"] = value;
+                this["AllowCustomScriptEdit"] = value;
             }
         }
         
@@ -150,6 +150,15 @@ namespace Scover.WinClean.Properties {
             }
             set {
                 this["ShowUpdateDialog"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".xml")]
+        public string ScriptFileExtension {
+            get {
+                return ((string)(this["ScriptFileExtension"]));
             }
         }
     }

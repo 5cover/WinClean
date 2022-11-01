@@ -10,51 +10,10 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
     /// <summary>Deserializes a script from XML code.</summary>
     /// <param name="data">A <see cref="string"/> containing the XML code.</param>
     /// <inheritdoc/>
-    public Script Deserialize(Stream data)
-    {
-        XmlDocument doc = new();
+    public Script Deserialize(Stream data) => Deserialize(data, false);
 
-        try
-        {
-            doc.Load(data);
-
-            string? executionTime = GetOptionalNode("ExecutionTime");
-
-            return new Script(AppInfo.Categories.Value[GetNode("Category")],
-                              GetNode("Code"),
-                              executionTime is null ? AppInfo.Settings.ScriptTimeout : TimeSpan.Parse(executionTime, System.Globalization.CultureInfo.InvariantCulture),
-                              AppInfo.Hosts[GetNode("Host")],
-                              AppInfo.Impacts.Value[GetNode("Impact")],
-                              AppInfo.RecommendationLevels.Value[GetNode("Recommended")],
-                              GetLocalizedText("Description"),
-                              GetLocalizedText("Name"));
-        }
-        catch (Exception e) when (e is XmlException or ArgumentException)
-        {
-            throw new InvalidDataException("The script could not be deserialized because it has invalid or missing data", e);
-        }
-        LocalizedString GetLocalizedText(string name)
-        {
-            LocalizedString localizedNodeTexts = new();
-            foreach (XmlElement element in doc.GetElementsByTagName(name))
-            {
-                localizedNodeTexts.SetFromXml(element);
-            }
-            return localizedNodeTexts;
-        }
-
-        string GetNode(string name) => GetNodeInternal(name, node => node?.InnerText ?? throw new ArgumentException($"\"{name}\" element missing from XML document."));
-
-        T GetNodeInternal<T>(string name, Func<XmlNode?, T> getNodeText)
-        {
-            XmlNodeList correspondingElements = doc.GetElementsByTagName(name);
-            return correspondingElements.Count > 1
-                ? throw new ArgumentException($"Multiple \"{name}\" elements in XML document.")
-                : getNodeText(correspondingElements[0]);
-        }
-
-        string? GetOptionalNode(string name) => GetNodeInternal(name, node => node?.InnerText);
-    }
+    /// <inheritdoc cref="Deserialize(Stream)"/>
+    public Script DeserializeDefault(Stream data) => Deserialize(data, true);
 
     /// <inheritdoc/>
     public void Serialize(Script script, Stream stream)
@@ -99,5 +58,52 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             _ = root.AppendChild(e);
         }
         doc.Save(stream);
+    }
+
+    private static Script Deserialize(Stream data, bool isDefault)
+    {
+        XmlDocument doc = new();
+
+        try
+        {
+            doc.Load(data);
+
+            string? executionTime = GetOptionalNode("ExecutionTime");
+
+            return new Script(AppInfo.Categories.Value[GetNode("Category")],
+                              GetNode("Code"),
+                              executionTime is null ? AppInfo.Settings.ScriptTimeout : TimeSpan.Parse(executionTime, System.Globalization.CultureInfo.InvariantCulture),
+                              AppInfo.Hosts[GetNode("Host")],
+                              AppInfo.Impacts.Value[GetNode("Impact")],
+                              AppInfo.RecommendationLevels.Value[GetNode("Recommended")],
+                              isDefault,
+                              GetLocalizedString("Description"),
+                              GetLocalizedString("Name"));
+        }
+        catch (Exception e) when (e is XmlException or ArgumentException)
+        {
+            throw new InvalidDataException("The script could not be deserialized because it has invalid or missing data", e);
+        }
+        LocalizedString GetLocalizedString(string name)
+        {
+            LocalizedString localizedNodeTexts = new();
+            foreach (XmlElement element in doc.GetElementsByTagName(name))
+            {
+                localizedNodeTexts.SetFromXml(element);
+            }
+            return localizedNodeTexts;
+        }
+
+        string GetNode(string name) => GetNodeInternal(name, node => node?.InnerText ?? throw new ArgumentException($"\"{name}\" element missing from XML document."));
+
+        TContent GetNodeInternal<TContent>(string name, Func<XmlNode?, TContent> getNodeContent)
+        {
+            XmlNodeList correspondingElements = doc.GetElementsByTagName(name);
+            return correspondingElements.Count > 1
+                ? throw new ArgumentException($"Multiple \"{name}\" elements in XML document.")
+                : getNodeContent(correspondingElements[0]);
+        }
+
+        string? GetOptionalNode(string name) => GetNodeInternal(name, node => node?.InnerText);
     }
 }

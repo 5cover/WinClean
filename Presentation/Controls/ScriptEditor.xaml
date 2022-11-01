@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:scripts="clr-namespace:Scover.WinClean.BusinessLogic.Scripts"
+    x:Name="scriptEditor"
     MinWidth="205"
     MinHeight="237.92"
     d:DataContext="{d:DesignInstance Type=scripts:Script}"
@@ -16,7 +17,6 @@
         <DataTemplate DataType="scripts:Script">
             <DataTemplate.Resources>
                 <!--  Cannot use the converters resources defined in App.xaml because they are not accessible from UserControls.  -->
-                <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
                 <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
 
                 <Style TargetType="ComboBoxItem">
@@ -24,13 +24,13 @@
                 </Style>
                 <Style TargetType="ComboBox">
                     <Setter Property="DisplayMemberPath" Value="Name" />
-                    <Setter Property="IsReadOnly" Value="{Binding Path=(businessLogic:AppInfo.Settings).AllowScriptEdit, Converter={StaticResource InvertBoolConverter}}" />
+                    <Setter Property="IsReadOnly" Value="{Binding ForbidEdit, ElementName=scriptEditor}" />
                     <Setter Property="MinHeight" Value="20" />
                     <Setter Property="MinWidth" Value="100" />
                 </Style>
                 <Style TargetType="TextBox">
                     <Setter Property="MinWidth" Value="205" />
-                    <Setter Property="IsReadOnly" Value="{Binding Path=(businessLogic:AppInfo.Settings).AllowScriptEdit, Converter={StaticResource InvertBoolConverter}}" />
+                    <Setter Property="IsReadOnly" Value="{Binding ForbidEdit, ElementName=scriptEditor}" />
                 </Style>
                 <Style TargetType="Button">
                     <Setter Property="MaxWidth" Value="82.5" />

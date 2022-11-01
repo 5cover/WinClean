@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using System.Resources;
+using System.Text;
 using System.Windows;
 using System.Windows.Resources;
 
@@ -48,7 +49,7 @@ public static class AppInfo
     /// <see langword="true"/> if the filesystem operation should be retried; <see langword="false"/> if it should fail and
     /// throw <paramref name="exception"/>.
     /// </returns>
-    public static FSOperationCallback OpenAppFileRetryElseFail { get; set; } = (_, _, _)
+    public static FSOperationCallback OpenAppFileRetryElseFail { get; set; } = (_, _, _a)
         => throw new NotSupportedException(Resources.DevException.CallbackNotSet.FormatWith(nameof(OpenAppFileRetryElseFail)));
 
     public static Settings Settings => Settings.Default;
@@ -63,7 +64,11 @@ public static class AppInfo
         {
             try
             {
+#if PORTABLE
+                return Resources.ScriptMetadata.ResourceManager.GetString(Path.GetFileNameWithoutExtension(filename)).AssertNotNull().ToStream();
+#else
                 return Application.GetContentStream(uri).AssertNotNull().Stream;
+#endif
             }
             catch (Exception e) when (e.IsFileSystem())
             {

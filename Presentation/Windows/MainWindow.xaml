@@ -19,7 +19,7 @@
             <Setter Property="ItemTemplate">
                 <Setter.Value>
                     <DataTemplate DataType="scripts:Script">
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Margin="0,-1,0,-1">
                             <StackPanel.Style>
                                 <Style TargetType="{x:Type StackPanel}">
                                     <Setter Property="Background" Value="{Binding Recommended.Color, Converter={StaticResource ToSolidColorBrushConverter}, ConverterParameter=0.15}" />

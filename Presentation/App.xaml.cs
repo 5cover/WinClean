@@ -3,6 +3,8 @@
 global using static Humanizer.StringExtensions;
 
 using System.Globalization;
+using System.Management.Automation;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -10,6 +12,7 @@ using CommandLine;
 
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
+using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Presentation.Windows;
@@ -25,22 +28,34 @@ public sealed partial class App
                              Action<Exception> WarnOnUnhandledException,
                              FSOperationCallback RetryElseFail);
 
+    private static readonly List<Script> _defaultScripts = new();
+    private static CustomScriptCollection? _customScripts;
     private static Logger? _logger;
-    private static ScriptCollection? _scripts;
 
-    /// <summary>The application's logger, available after startup.</summary>
+    /// <summary>Gets the concatenation of the default and custom scripts.</summary>
+    public static IEnumerable<Script> AllScripts => App.DefaultScripts.Concat(App.CustomScripts);
+
+    /// <summary>Gets the collection of custom scripts created by the user.</summary>
+    public static CustomScriptCollection CustomScripts => _customScripts.AssertNotNull();
+
+    /// <summary>
+    /// Gets the application's default scripts, available after startup. They are immutable and deplyed at installation time.
+    /// </summary>
+    public static IReadOnlyCollection<Script> DefaultScripts => _defaultScripts;
+
+    /// <summary>Gets the application's logger, available after startup.</summary>
     public static Logger Logger => _logger.AssertNotNull();
-
-    /// <summary>The application's scripts, available after startup.</summary>
-    public static ScriptCollection Scripts => _scripts.AssertNotNull();
 
     private static void Initialize(Logger logger, Callbacks callbacks)
     {
-        // 1. Set the logger
-        _logger = logger;
+        // The startup steps are in a precise order. The app file callback has to be set first to load the scripts, because it
+        // is needed to load the script metadata objects.
 
-        // 2. Add the unhandled exception handler
+        // 1. Add the unhandled exception handler
         Current.DispatcherUnhandledException += (_, args) => callbacks.WarnOnUnhandledException(args.Exception);
+
+        // 2. Set the logger
+        _logger = logger;
 
         // 3. Set the app file callback
         AppInfo.OpenAppFileRetryElseFail = callbacks.RetryElseFail;
@@ -51,8 +66,16 @@ public sealed partial class App
             callbacks.WarnOnUpdate();
         }
 
-        // 5. Load scripts.
-        _scripts = ScriptCollection.LoadScripts(AppDirectory.ScriptsDir, callbacks.ReloadElseIgnore);
+        // 5. Load default scripts
+        Assembly assembly = Assembly.GetExecutingAssembly();
+        IScriptSerializer s = new ScriptXmlSerializer();
+        foreach (string scriptResName in assembly.GetManifestResourceNames().Where(name => name.StartsWith("Scover.WinClean.Scripts")))
+        {
+            _defaultScripts.Add(s.DeserializeDefault(assembly.GetManifestResourceStream(scriptResName).AssertNotNull()));
+        }
+
+        // 6. Load custom scripts.
+        _customScripts = CustomScriptCollection.LoadScripts(AppDirectory.ScriptsDir, callbacks.ReloadElseIgnore);
     }
 
     private static void StartConsole(string[] args)
@@ -75,13 +98,12 @@ public sealed partial class App
     private static void StartGui()
     {
         Initialize(new CsvLogger(), uiCallbacks);
-
         new MainWindow().Show();
     }
 
     private void ApplicationExit(object? sender, ExitEventArgs? e)
     {
-        Scripts.Save();
+        CustomScripts.Save();
         AppInfo.Settings.Save();
         Logger.Log(Logs.Exiting);
     }

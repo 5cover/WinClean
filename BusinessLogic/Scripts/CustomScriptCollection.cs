@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Reflection;
 
 using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;
@@ -6,28 +7,27 @@ using Scover.WinClean.DataAccess;
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
 /// <summary>A collection of scripts deserialized from files.</summary>
-public sealed class ScriptCollection : IEnumerable<Script>
+public sealed class CustomScriptCollection : IEnumerable<Script>
 {
     private static readonly IScriptSerializer serializer = new ScriptXmlSerializer();
-    private readonly Dictionary<Script, string> _scriptFiles = new();
+    private readonly Dictionary<Script, string> _scriptLocations = new();
 
     /// <summary>Loads all the scripts present in the specified application directory.</summary>
-    /// <param name="directory">The application directory to load the scripts (represented as *.xml files) from.</param>
+    /// <param name="directory">The application directory to load the scripts from.</param>
     /// <param name="reloadElseIgnore">
     /// <inheritdoc cref="InvalidScriptDataCallback" path="/summary"/> Returns <see langword="true"/> if the script should be
     /// reloaded, <see langword="false"/> if it should be ignored.
     /// </param>
     /// <remarks>Will not load scripts located in subdirectories.</remarks>
-    public static ScriptCollection LoadScripts(AppDirectory directory, InvalidScriptDataCallback reloadElseIgnore)
+    public static CustomScriptCollection LoadScripts(AppDirectory directory, InvalidScriptDataCallback reloadElseIgnore)
     {
-        ScriptCollection scripts = new();
-
-        foreach (string scriptFile in Directory.EnumerateFiles(directory.Info.FullName, "*.xml", SearchOption.TopDirectoryOnly))
+        CustomScriptCollection scripts = new();
+        foreach (string scriptFile in Directory.EnumerateFiles(directory.Info.FullName, AppInfo.Settings.ScriptFileExtension, SearchOption.TopDirectoryOnly))
         {
             Script? deserializedScript = DeserializeTolerantly(scriptFile, reloadElseIgnore);
             if (deserializedScript is not null)
             {
-                scripts._scriptFiles.Add(deserializedScript, scriptFile);
+                scripts._scriptLocations.Add(deserializedScript, scriptFile);
             }
         }
 
@@ -48,7 +48,7 @@ public sealed class ScriptCollection : IEnumerable<Script>
     {
         // 1. Try to deserialize the script. This line will throw an exception if sourceFile contains invalid data or can't be read.
         using Stream stream = File.OpenRead(sourceFile);
-        Script script = serializer.Deserialize(stream);
+        var script = serializer.Deserialize(stream);
 
         string savingPath = AppDirectory.ScriptsDir.Join(Path.GetFileName(sourceFile));
 
@@ -57,37 +57,37 @@ public sealed class ScriptCollection : IEnumerable<Script>
         {
             File.Copy(sourceFile, savingPath, allowOverwrite);
         }
-        catch (IOException e) when (e.HResult == -2147024816)
+        catch (IOException e) when (e.HResult == -2147024816) // 0x80070050 : The file already exists
         {
             throw new ScriptAlreadyExistsException(serializer.Deserialize(File.OpenRead(savingPath)), e);
         }
 
         // 3. Reaching this line means that there was no error, so the new script may be added to the dictionary.
-        _scriptFiles.Add(script, savingPath);
+        _scriptLocations.Add(script, savingPath);
     }
 
-    public IEnumerator<Script> GetEnumerator() => _scriptFiles.Keys.GetEnumerator();
+    public IEnumerator<Script> GetEnumerator() => _scriptLocations.Keys.GetEnumerator();
 
     /// <summary>Removes a script from the collection. Also deletes its corresponding file in the scripts directory.</summary>
     /// <param name="item">The script to remove.</param>
     public void Remove(Script item)
     {
-        File.Delete(_scriptFiles[item]);
-        _ = _scriptFiles.Remove(item);
+        File.Delete(_scriptLocations[item]);
+        _ = _scriptLocations.Remove(item);
     }
 
     /// <summary>Saves the scripts by serializing them to the scripts directory.</summary>
     public void Save()
     {
-        foreach (Script script in this)
+        foreach (Script s in this)
         {
-            // truncate the file, so that if the xml is shorter than last time there won't be remains of the old version.
-            using Stream stream = File.Open(_scriptFiles[script], FileMode.Truncate, FileAccess.Write);
-            serializer.Serialize(script, stream);
+            // Truncate the file, so that if the xml is shorter than last time there won't be remains of the old version.
+            using Stream stream = File.Open(_scriptLocations[s], FileMode.Truncate, FileAccess.Write);
+            serializer.Serialize(s, stream);
         }
     }
 
-    IEnumerator IEnumerable.GetEnumerator() => _scriptFiles.Keys.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => _scriptLocations.Keys.GetEnumerator();
 
     private static Script? DeserializeTolerantly(string scriptFile, InvalidScriptDataCallback reloadElseReturnNull)
     {
