@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 
 using Scover.WinClean.BusinessLogic.Scripts.Hosts;
-using Scover.WinClean.DataAccess;
 
 using static System.Globalization.CultureInfo;
 

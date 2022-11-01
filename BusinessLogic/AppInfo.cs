@@ -1,9 +1,7 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using System.Resources;
-using System.Text;
 using System.Windows;
-using System.Windows.Resources;
 
 using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.BusinessLogic.Scripts.Hosts;
@@ -59,15 +57,14 @@ public static class AppInfo
 
     private static Stream OpenContentFile(string filename)
     {
-        Uri uri = new('/' + filename, UriKind.Relative);
         while (true)
         {
             try
             {
 #if PORTABLE
-                return Resources.ScriptMetadata.ResourceManager.GetString(Path.GetFileNameWithoutExtension(filename)).AssertNotNull().ToStream();
+                return Assembly.GetExecutingAssembly().GetManifestResourceStream(string.Join('.', nameof(Scover), nameof(WinClean), filename)).AssertNotNull();
 #else
-                return Application.GetContentStream(uri).AssertNotNull().Stream;
+                return File.OpenRead(filename);
 #endif
             }
             catch (Exception e) when (e.IsFileSystem())

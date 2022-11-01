@@ -1,10 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
-  <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
-  <TargetFrameworkIdentifier>.NETCoreApp</TargetFrameworkIdentifier>
+    <TargetFrameworkIdentifier>.NETCoreApp</TargetFrameworkIdentifier>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <StartupObject>Scover.WinClean.Presentation.App</StartupObject>
@@ -14,7 +12,7 @@
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <SignAssembly>False</SignAssembly>
     <Authors>Scover</Authors>
-    <PackageIcon>WinClean.png</PackageIcon>
+    <PackageIcon>Resources\WinClean.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
@@ -26,30 +24,29 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <UseWindowsForms>False</UseWindowsForms>
     <Platforms>AnyCPU</Platforms>
-    <Version>1.2.1</Version>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <Version>1.2.0</Version>
+    <Configurations>Debug;Release;Portable</Configurations>
+  </PropertyGroup>
+
+  <!-- Common build properties -->
+  <PropertyGroup>
+    <WarningLevel>9999</WarningLevel>
+    <NoWarn>NU1701;1702</NoWarn>
+    <DefineConstants>$(DefineConstants)</DefineConstants>
+    <DebugType>none</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <WarningLevel>9999</WarningLevel>
-    <NoWarn>NU1701;1702</NoWarn>
-    <DefineConstants>$(DefineConstants)TRACE;PORTABLE</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <WarningLevel>9999</WarningLevel>
-    <NoWarn>NU1701;1702</NoWarn>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <WarningLevel>9999</WarningLevel>
-    <NoWarn>NU1701;1702</NoWarn>
-    <DefineConstants>$(DefineConstants)TRACE;PORTABLE</DefineConstants>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <WarningLevel>9999</WarningLevel>
-    <NoWarn>NU1701;1702</NoWarn>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Portable|AnyCPU'">
+    <DebugType>embedded</DebugType>
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
@@ -177,12 +174,12 @@
   
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
-    <PackageReference Include="CsvHelper" Version="28.0.1" />
+    <PackageReference Include="CsvHelper" Version="30.0.0" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.4.0" />
     <PackageReference Include="Humanizer" Version="2.14.1" />
-    <PackageReference Include="Microsoft.PowerShell.Commands.Management" Version="7.2.6" />
-    <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.2.6" />
-    <PackageReference Include="Octokit" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Management.Infrastructure" Version="2.0.0" />
+    <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.2.7" />
+    <PackageReference Include="Octokit" Version="4.0.1" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageReference Include="WinCopies.WindowsAPICodePack.Shell" Version="3.10.0-preview" />
   </ItemGroup>
@@ -227,11 +224,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Hosts.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\ScriptMetadata.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ScriptMetadata.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\UI\AboutWindow.Designer.cs">
       <DependentUpon>AboutWindow.resx</DependentUpon>
@@ -334,10 +326,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Hosts.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ScriptMetadata.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ScriptMetadata.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\AboutWindow.resx">
       <LastGenOutput>AboutWindow.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -384,17 +372,17 @@
   </ItemGroup>
 
   <Choose>
-    <When Condition="$(DefineConstants.Contains('PORTABLE'))">
+    <When Condition="'$(Configuration)'=='Portable'">
       <ItemGroup>
-        <Content Include="Categories.xml">
+        <EmbeddedResource Include="Categories.xml">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Impacts.xml">
+        </EmbeddedResource>
+        <EmbeddedResource Include="Impacts.xml">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </Content>
-        <Content Include="RecommendationLevels.xml">
+        </EmbeddedResource>
+        <EmbeddedResource Include="RecommendationLevels.xml">
           <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </Content>
+        </EmbeddedResource>
       </ItemGroup>
     </When>
     <Otherwise>

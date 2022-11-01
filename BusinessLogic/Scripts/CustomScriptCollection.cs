@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Reflection;
 
 using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;
