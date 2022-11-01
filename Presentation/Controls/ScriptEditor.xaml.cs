@@ -3,7 +3,6 @@ using System.Windows.Controls;
 
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
-using Scover.WinClean.Properties;
 
 namespace Scover.WinClean.Presentation.Controls;
 

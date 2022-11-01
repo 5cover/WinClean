@@ -5,8 +5,6 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinClean", "WinClean.csproj", "{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B07E332C-91F1-488F-842F-DE0369DBC684}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,6 +12,11 @@ Global
 		Debug|ARM64 = Debug|ARM64
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Portable|Any CPU = Portable|Any CPU
+		Portable|ARM = Portable|ARM
+		Portable|ARM64 = Portable|ARM64
+		Portable|x64 = Portable|x64
+		Portable|x86 = Portable|x86
 		Release|Any CPU = Release|Any CPU
 		Release|ARM = Release|ARM
 		Release|ARM64 = Release|ARM64
@@ -31,6 +34,16 @@ Global
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|x64.Build.0 = Debug|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Debug|x86.Build.0 = Debug|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Portable|Any CPU.ActiveCfg = Portable|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Portable|Any CPU.Build.0 = Portable|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Portable|ARM.ActiveCfg = Release-Portable|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Portable|ARM.Build.0 = Release-Portable|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Portable|ARM64.ActiveCfg = Release-Portable|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Portable|ARM64.Build.0 = Release-Portable|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Portable|x64.ActiveCfg = Release-Portable|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Portable|x64.Build.0 = Release-Portable|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Portable|x86.ActiveCfg = Release-Portable|Any CPU
+		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Portable|x86.Build.0 = Release-Portable|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{764BB776-2D26-4FA0-8CF2-3D9A3F8EB14F}.Release|ARM.ActiveCfg = Release|Any CPU
@@ -46,8 +59,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_PrefixTranslations = False
-		SolutionGuid = {937A4B5E-93B9-4C78-B678-7D96F758D99D}
 		RESX_TranslatorConfiguration = {"Azure":"{\"AutoDetectHtml\":true,\"MaxCharactersPerMinute\":33300,\"AuthenticationKey\":null,\"Region\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","Baidu":"{\"AppId\":null,\"SecretKey\":null,\"ApiUrl\":null,\"Domain\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","DeepL":"{\"ApiKey\":null,\"ApiUrl\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","Google":"{\"ApiKey\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MSTerm":"{\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}","MyMemory":"{\"Key\":null,\"Mail\":null,\"IsEnabled\":true,\"SaveCredentials\":false,\"Ranking\":1.0}"}
+		SolutionGuid = {937A4B5E-93B9-4C78-B678-7D96F758D99D}
+		RESX_PrefixTranslations = False
 	EndGlobalSection
 EndGlobal

@@ -3,7 +3,6 @@
 global using static Humanizer.StringExtensions;
 
 using System.Globalization;
-using System.Management.Automation;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
