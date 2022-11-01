@@ -4,7 +4,7 @@
 #include <idplang\french.iss>
 
 #define Name "WinClean"
-#define Version "1.2.1"
+#define Version "1.2.0"
 #define RepoUrl "https://github.com/5cover/WinClean"
 #define ExeName "WinClean.exe"
 #define SetupName "WinClean-Installer-x86"
@@ -57,6 +57,10 @@ Name: startmenuicon; Description: {cm:CreateStartMenuIcon}; GroupDescription: {c
 Source: ".\bin\publish\x86\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ".\Scripts\*"; DestDir: "{autoappdata}\{#Name}\Scripts"; Flags: ignoreversion
 
+// 1.2.0 specific
+[InstallDelete]
+Type: files; Name: "{autoappdata}\{#Name}\Scripts\*"
+
 [Icons]
 Name: "{autoprograms}\{#Name}"; Filename: "{app}\{#ExeName}"; WorkingDir: "{app}"; Tasks: startmenuicon
 Name: "{autodesktop}\{#Name}"; Filename: "{app}\{#ExeName}"; WorkingDir: "{app}"; Tasks: desktopicon
@@ -92,7 +96,6 @@ fr.DotNetRuntimeFailed5100=Vote ordinateur ne correspond pas à la configuration 
 
 DotNetRuntimeFailedOther=The .NET Desktop Runtime installer exited with an unexpected status code "%1". Please review any other messages shown by the installer to determine whether the installation completed successfully, and abort this installation and fix the problem if it did not.
 fr.DotNetRuntimeFailedOther=L'installeur de .NET Desktop Runtime a renvoyé un code d'erreur innatendu "%1". Veuillez consulter tous les autres messages affichés par le programme d'installation pour déterminer si l'installation s'est terminée avec succès, et abandonner cette installation et résoudre le problème si ce n'est pas le cas.
-
 
 // Adpated from https://engy.us/blog/2021/02/28/installing-net-5-runtime-automatically-with-inno-setup/
 [Code]

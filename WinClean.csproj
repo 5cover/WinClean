@@ -26,14 +26,14 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <UseWindowsForms>False</UseWindowsForms>
     <Platforms>AnyCPU</Platforms>
-    <Version>1.2.1</Version>
+    <Version>1.2.0</Version>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>9999</WarningLevel>
     <NoWarn>NU1701;1702</NoWarn>
-    <DefineConstants>$(DefineConstants)TRACE;PORTABLE</DefineConstants>
+    <DefineConstants>$(DefineConstants)TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
