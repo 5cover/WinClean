@@ -49,12 +49,12 @@ public partial class MainWindow
     {
         OpenFileDialog ofd = new()
         {
-            DefaultExt = AppInfo.Settings.ScriptFileExtension,
+            DefaultExt = AppInfo.Settings.ScriptFilePattern,
             Multiselect = true,
             ReadOnlyChecked = true,
             ValidateNames = false
         };
-        MakeFilter(ofd, new ExtensionGroup(AppInfo.Settings.ScriptFileExtension));
+        MakeFilter(ofd, new ExtensionGroup(AppInfo.Settings.ScriptFilePattern));
 
         if (!(ofd.ShowDialog(this) ?? false))
         {
@@ -116,7 +116,7 @@ public partial class MainWindow
 
     private void ButtonExecuteScriptsClick(object sender, RoutedEventArgs e)
     {
-        List<Script> selectedScripts = App.AllScripts.Where(s => s.IsSelected).ToList();
+        var selectedScripts = App.AllScripts.Where(s => s.IsSelected);
         if (!selectedScripts.Any())
         {
             using Dialog noScriptsSelected = new(Button.OK)
@@ -128,12 +128,10 @@ public partial class MainWindow
             _ = noScriptsSelected.ShowDialog();
             return;
         }
-        new ScriptExecutionWizard(selectedScripts).Execute();
-    }
-
-    private void ListViewItem_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-    {
-        ((ListViewItem)sender).Content.AssertNotNull();
+        using ScriptExecutionWizard wizard = new(selectedScripts);
+        IsEnabled = false;
+        wizard.Execute();
+        IsEnabled = true;
     }
 
     private void MenuAboutClick(object sender, RoutedEventArgs e) => new AboutWindow { Owner = this }.ShowDialog();
@@ -206,6 +204,8 @@ public partial class MainWindow
     }
 
     private void ScriptEditorScriptChangedCategory(object sender, EventArgs e) => ResetTabs();
+
+    private void ScriptEditorScriptRemoved(object sender, EventArgs e) => ResetTabs();
 
     private void TabControlCategoriesSelectionChanged(object sender, SelectionChangedEventArgs e)
     {

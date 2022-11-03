@@ -1,20 +1,23 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 
 using Scover.WinClean.BusinessLogic.Scripts;
 
 namespace Scover.WinClean.BusinessLogic;
 
-public sealed class ScriptExecutor
+public sealed class ScriptExecutor : IDisposable
 {
     private readonly Progress<ScriptExecutionProgressChangedEventArgs> _progress = new();
-    private CancellationTokenSource? _cts;
+    private CancellationTokenSource _cts = new();
 
     /// <summary>Occurs when a script has been executed.</summary>
     public event EventHandler<ScriptExecutionProgressChangedEventArgs> ProgressChanged { add => _progress.ProgressChanged += value; remove => _progress.ProgressChanged -= value; }
 
     /// <summary>Cancels script execution.</summary>
     /// <remarks>Will do nothing if script execution is not running.</remarks>
-    public void CancelScriptExecution() => _cts?.Cancel(true);
+    public void CancelScriptExecution() => _cts.Cancel();
+
+    public void Dispose() => _cts.Dispose();
 
     /// <summary>Executes a list of scripts asynchronously. Raises the <see cref="ProgressChanged"/> event.</summary>
     /// <param name="scripts">The scripts to execute.</param>
@@ -30,16 +33,13 @@ public sealed class ScriptExecutor
             for (int scriptIndex = 0; scriptIndex < scripts.Count && !_cts.IsCancellationRequested; ++scriptIndex)
             {
                 stopwatch.Restart();
-
+                Script script = scripts[scriptIndex];
+                script.Execute(keepRunningElseKill, _cts.Token);
+                AppInfo.PersistentSettings.ScriptExecutionTimes[script.InvariantName] = stopwatch.Elapsed.ToString("c");
                 ReportProgress();
-                scripts[scriptIndex].Execute(keepRunningElseKill, _cts.Token);
-
-                scripts[scriptIndex].ExecutionTime = stopwatch.Elapsed;
 
                 void ReportProgress() => ((IProgress<ScriptExecutionProgressChangedEventArgs>)_progress).Report(new(scriptIndex));
             }
         }, _cts.Token).ConfigureAwait(false);
-
-        _cts.Dispose();
     }
 }

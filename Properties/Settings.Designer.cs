@@ -33,6 +33,15 @@ namespace Scover.WinClean.Properties {
             }
         }
         
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("*.xml")]
+        public string ScriptFilePattern {
+            get {
+                return ((string)(this["ScriptFilePattern"]));
+            }
+        }
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("05:00:00")]
@@ -66,18 +75,6 @@ namespace Scover.WinClean.Properties {
             }
             set {
                 this["DetailsAfterExecution"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool AllowCustomScriptEdit {
-            get {
-                return ((bool)(this["AllowCustomScriptEdit"]));
-            }
-            set {
-                this["AllowCustomScriptEdit"] = value;
             }
         }
         
@@ -150,15 +147,6 @@ namespace Scover.WinClean.Properties {
             }
             set {
                 this["ShowUpdateDialog"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(".xml")]
-        public string ScriptFileExtension {
-            get {
-                return ((string)(this["ScriptFileExtension"]));
             }
         }
     }

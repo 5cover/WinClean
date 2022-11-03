@@ -2,9 +2,11 @@
 
 global using static Humanizer.StringExtensions;
 
+using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows;
 
 using CommandLine;
@@ -61,7 +63,7 @@ public sealed partial class App
         // 4. Load default scripts
         Assembly assembly = Assembly.GetExecutingAssembly();
         IScriptSerializer s = new ScriptXmlSerializer();
-        foreach (string scriptResName in assembly.GetManifestResourceNames().Where(name => name.StartsWith("Scover.WinClean.Scripts", false, CultureInfo.InvariantCulture)))
+        foreach (string scriptResName in assembly.GetManifestResourceNames().Where(name => name.StartsWith("Scover.WinClean.Scripts", StringComparison.InvariantCulture)))
         {
             _defaultScripts.Add(s.DeserializeDefault(assembly.GetManifestResourceStream(scriptResName).AssertNotNull()));
         }

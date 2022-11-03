@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Globalization;
 
 using Humanizer;
 using Humanizer.Localisation;
@@ -14,15 +15,17 @@ using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Resources;
 using Scover.WinClean.Resources.UI;
 
+using WinCopies.Linq;
+
 namespace Scover.WinClean.Presentation.ScriptExecution;
 
 /// <summary>
 /// Walks the user through the multi-step high-level operation of executing multiple scripts asynchronously by displaying a task
 /// dialog tracking the progress.
 /// </summary>
-public sealed class ScriptExecutionWizard
+public sealed class ScriptExecutionWizard : IDisposable
 {
-    private static readonly ScriptExecutor executor = new();
+    private readonly ScriptExecutor _executor = new();
     private readonly IReadOnlyList<Script> _scripts;
 
     /// <param name="scripts">The scripts to execute.</param>
@@ -34,8 +37,10 @@ public sealed class ScriptExecutionWizard
         {
             throw new ArgumentException(DevException.CollectionEmpty, nameof(scripts));
         }
-        executor.ProgressChanged += (_, e) => Logs.ScriptExecuting.FormatWith(_scripts[e.ScriptIndex]);
+        _executor.ProgressChanged += (_, e) => Logs.ScriptExecuting.FormatWith(_scripts[e.ScriptIndex]);
     }
+
+    public void Dispose() => _executor.Dispose();
 
     /// <summary>Executes the script(s) and displays a dialog tracking the progress.</summary>
     public void Execute()
@@ -138,7 +143,7 @@ public sealed class ScriptExecutionWizard
 
         try
         {
-            creatingRestorePointProgressDialog.ShowDialog();
+            _ = creatingRestorePointProgressDialog.ShowDialog();
         }
         catch (SEHException) when (systemProtectionDisabledException is not null)
         {
@@ -205,7 +210,7 @@ public sealed class ScriptExecutionWizard
     {
         Logs.StartingExecutionOfScripts.FormatWith(_scripts.Count).Log(LogLevel.Info);
 
-        await executor.ExecuteScriptsAsync(_scripts, ShowHungScriptDialog).ConfigureAwait(false);
+        await _executor.ExecuteScriptsAsync(_scripts, ShowHungScriptDialog).ConfigureAwait(false);
 
         Logs.ScriptsExecuted.Log(LogLevel.Info);
     }
@@ -233,7 +238,7 @@ public sealed class ScriptExecutionWizard
     {
         bool restartQueried = false;
         int scriptIndex = 0;
-        TimeSpan timeRemaining = _scripts.Sum(s => s.ExecutionTime);
+        TimeSpan timeRemaining = _scripts.Sum(s => GetExecutionTime(s.InvariantName));
 
         using Dialogs.ProgressDialog scriptExecutionProgressDialog = new(Button.Stop)
         {
@@ -256,19 +261,20 @@ public sealed class ScriptExecutionWizard
             UpdateExpandedInfo();
         };
 
-        executor.ProgressChanged += (_, e) =>
+        _executor.ProgressChanged += (_, e) =>
         {
-            scriptIndex = e.ScriptIndex;
-
-            scriptExecutionProgressDialog.Value = scriptIndex;
-            timeRemaining = _scripts.TakeLast(_scripts.Count - scriptIndex).Sum(s => s.ExecutionTime);
+            scriptExecutionProgressDialog.Value = e.ScriptIndex;
+            timeRemaining -= GetExecutionTime(_scripts[e.ScriptIndex].InvariantName);
+            if (timeRemaining < TimeSpan.Zero)
+            {
+                timeRemaining = TimeSpan.Zero;
+            }
             UpdateExpandedInfo();
         };
 
         void UpdateExpandedInfo()
             => scriptExecutionProgressDialog.ExpandedInformation = ScriptExecutionProgressDialog.ExpandedInformation
-                             .FormatWith(_scripts[scriptIndex].Name,
-                                         timeRemaining.Humanize(precision: 3, minUnit: TimeUnit.Second));
+            .FormatWith(_scripts[scriptIndex].Name, timeRemaining.Humanize(precision: 3, minUnit: TimeUnit.Second));
 
         scriptExecutionProgressDialog.Created += async (_, _) =>
         {
@@ -278,9 +284,15 @@ public sealed class ScriptExecutionWizard
         bool completed = scriptExecutionProgressDialog.Show().ClickedButton != Button.Stop;
         if (!completed)
         {
-            executor.CancelScriptExecution();
+            _executor.CancelScriptExecution();
             Logs.ScriptExecutionCanceled.Log(LogLevel.Info);
         }
         return (completed, restartQueried);
+
+        static TimeSpan GetExecutionTime(string key)
+        {
+            string? executionTimeString = AppInfo.PersistentSettings.ScriptExecutionTimes[key];
+            return executionTimeString is null ? AppInfo.Settings.ScriptTimeout : TimeSpan.ParseExact(executionTimeString, "c", CultureInfo.InvariantCulture);
+        }
     }
 }
