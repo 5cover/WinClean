@@ -98,6 +98,7 @@
             Grid.Column="1"
             Margin="6,0,0,12"
             ScriptChangedCategory="ScriptEditorScriptChangedCategory"
+            ScriptRemoved="ScriptEditorScriptRemoved"
             Selected="{Binding SelectedContent.(ListBox.SelectedItem), ElementName=TabControlCategories}" />
 
         <Button

@@ -79,11 +79,5 @@ public static class Helpers
     public static TimeSpan Sum<TSource>(this IEnumerable<TSource> source, Func<TSource, TimeSpan> selector)
         => source.Aggregate(TimeSpan.Zero, (sumSoFar, nextSource) => sumSoFar + selector(nextSource));
 
-    /// <summary>Computes the sum of a sequence of <see cref="TimeSpan"/> values.</summary>
-    /// <param name="source">A sequence of <see cref="TimeSpan"/> values to calculate the sum of.</param>
-    /// <returns>The sum of the values in the sequence.</returns>
-    public static TimeSpan Sum(this IEnumerable<TimeSpan> source)
-        => source.Aggregate(TimeSpan.Zero, (sumSoFar, nextSource) => sumSoFar + nextSource);
-
     public static Stream ToStream(this string value) => new MemoryStream(Encoding.UTF8.GetBytes(value ?? string.Empty));
 }

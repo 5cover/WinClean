@@ -27,23 +27,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-
-        <Label
-            Grid.Row="0"
-            Grid.Column="0"
-            Content="{x:Static ui:SettingsWindow.AllowCustomScriptEdit}"
-            Target="{Binding ElementName=AllowCustomScriptEditSetting}" />
-        <CheckBox
-            x:Name="AllowCustomScriptEditSetting"
-            Grid.Row="0"
-            Grid.Column="1"
-            Margin="0,0,0,12"
-            HorizontalAlignment="Center"
-            DataContext="{StaticResource Settings}"
-            IsChecked="{Binding Default.AllowCustomScriptEdit, Mode=TwoWay}" />
 
         <Label
             Grid.Row="1"

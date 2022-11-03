@@ -17,7 +17,7 @@ public sealed class CommandLineOptions
 
     public int Execute()
     {
-        ScriptExecutor executor = new();
+        using ScriptExecutor executor = new();
 
         List<Script>? scripts = null;
 

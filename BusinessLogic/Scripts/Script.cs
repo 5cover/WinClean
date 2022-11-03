@@ -10,7 +10,6 @@ public class Script : INotifyPropertyChanged, IScriptData
 {
     private Category _category;
     private string _code;
-    private TimeSpan _executionTime;
     private Host _host;
     private Impact _impact;
     private RecommendationLevel _recommended;
@@ -18,7 +17,6 @@ public class Script : INotifyPropertyChanged, IScriptData
 
     public Script(Category category,
                   string code,
-                  TimeSpan executionTime,
                   Host host,
                   Impact impact,
                   RecommendationLevel recommended,
@@ -28,7 +26,6 @@ public class Script : INotifyPropertyChanged, IScriptData
     {
         _category = category;
         _code = code;
-        _executionTime = executionTime;
         _host = host;
         _impact = impact;
         _recommended = recommended;
@@ -65,20 +62,6 @@ public class Script : INotifyPropertyChanged, IScriptData
         set
         {
             LocalizedDescriptions.Set(CurrentUICulture, value);
-            OnPropertyChanged();
-        }
-    }
-
-    /// <summary>Gets or sets an approximate of the time it would take to execute this script.</summary>
-    /// <value>
-    /// The estimated execution time of this script, or <see cref="AppInfo.Settings.ScriptTimeout"/> if the estimate is not available.
-    /// </value>
-    public TimeSpan ExecutionTime
-    {
-        get => _executionTime;
-        set
-        {
-            _executionTime = value;
             OnPropertyChanged();
         }
     }

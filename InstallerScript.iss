@@ -6,7 +6,7 @@
 // _Arch _AllowedArchs are emulated #defines with the /D command line compiler option. See https://jrsoftware.org/ispphelp/index.php?topic=isppcc
 
 #define Name "WinClean"
-#define Version "1.2.0"
+#define Version "1.2.1"
 #define RepoUrl "https://github.com/5cover/WinClean"
 #define ExeName "WinClean.exe"
 #define SetupName "WinClean-Installer-" + _Arch
@@ -58,7 +58,7 @@ Name: startmenuicon; Description: {cm:CreateStartMenuIcon}; GroupDescription: {c
 [Files]
 Source: ".\bin\publish\{#_Arch}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
-// 1.2.0 specific. Remove old default scripts
+// Remove old default scripts prior to 1.2.0
 [InstallDelete]
 Type: files; Name: "{userappdata}\{#Name}\Scripts\*"
 

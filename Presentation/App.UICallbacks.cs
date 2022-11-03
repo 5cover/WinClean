@@ -38,7 +38,7 @@ public partial class App
             if (updateDialog.Show().WasClosed)
             {
                 Current.Shutdown();
-            };
+            }
         },
         (e, path) =>
         {
@@ -88,6 +88,6 @@ public partial class App
                     Helpers.Open(args.Href);
                 }
             };
-            dlg.ShowDialog();
+            _ = dlg.ShowDialog();
         });
 }

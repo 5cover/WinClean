@@ -71,7 +71,7 @@ public sealed class Host : IScriptData
             }
         }
 
-        registration.Unregister();
+        _ = registration.Unregister();
         tmpScriptFile.Delete();
     }
 

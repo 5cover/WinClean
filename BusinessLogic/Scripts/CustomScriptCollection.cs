@@ -21,7 +21,7 @@ public sealed class CustomScriptCollection : IEnumerable<Script>
     public static CustomScriptCollection LoadScripts(AppDirectory directory, InvalidScriptDataCallback reloadElseIgnore)
     {
         CustomScriptCollection scripts = new();
-        foreach (string scriptFile in Directory.EnumerateFiles(directory.Info.FullName, AppInfo.Settings.ScriptFileExtension, SearchOption.TopDirectoryOnly))
+        foreach (string scriptFile in Directory.EnumerateFiles(directory.Info.FullName, AppInfo.Settings.ScriptFilePattern, SearchOption.TopDirectoryOnly))
         {
             Script? deserializedScript = DeserializeTolerantly(scriptFile, reloadElseIgnore);
             if (deserializedScript is not null)

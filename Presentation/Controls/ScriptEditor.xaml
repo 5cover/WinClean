@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:scripts="clr-namespace:Scover.WinClean.BusinessLogic.Scripts"
+    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
     x:Name="scriptEditor"
     MinWidth="205"
     MinHeight="237.92"
@@ -32,12 +33,6 @@
                     <Setter Property="MinWidth" Value="205" />
                     <Setter Property="IsReadOnly" Value="{Binding ForbidEdit, ElementName=scriptEditor}" />
                 </Style>
-                <Style TargetType="Button">
-                    <Setter Property="MaxWidth" Value="82.5" />
-                    <Setter Property="Grid.Row" Value="5" />
-                    <Setter Property="MinHeight" Value="23" />
-                    <Setter Property="MinWidth" Value="72" />
-                </Style>
             </DataTemplate.Resources>
             <Grid IsEnabled="{Binding Converter={StaticResource IsNotNullConverter}}">
                 <Grid.RowDefinitions>
@@ -46,6 +41,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="85*" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -53,6 +49,8 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBox
+                    Grid.Row="0"
+                    Grid.Column="0"
                     Grid.ColumnSpan="2"
                     MinHeight="20"
                     Margin="0,0,0,6"
@@ -110,6 +108,28 @@
                     HorizontalScrollBarVisibility="Auto"
                     Text="{Binding Code, Mode=TwoWay}"
                     VerticalScrollBarVisibility="Auto" />
+
+                <Button
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Padding="15,3,15,3"
+                    HorizontalAlignment="Left"
+                    Click="ButtonDelete_Click"
+                    Content="{x:Static ui:Buttons.Delete}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ForbidEdit, ElementName=scriptEditor}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ForbidEdit, ElementName=scriptEditor}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </Grid>
         </DataTemplate>
     </UserControl.ContentTemplate>

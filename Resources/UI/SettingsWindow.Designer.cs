@@ -61,15 +61,6 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à _Allow custom script edit.
-        /// </summary>
-        public static string AllowCustomScriptEdit {
-            get {
-                return ResourceManager.GetString("AllowCustomScriptEdit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Script _timeout.
         /// </summary>
         public static string ScriptTimeout {

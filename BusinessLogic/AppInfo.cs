@@ -13,6 +13,9 @@ namespace Scover.WinClean.BusinessLogic;
 /// <summary>Holds data related to the Business Logic layer.</summary>
 public static class AppInfo
 {
+    // Setting initialized here because an XML default value doesn't work.
+    static AppInfo() => PersistentSettings["ScriptExecutionTimes"] = new SerializableStringDictionary();
+
     private static readonly IScriptMetadataDeserializer _deserializer = new ScriptMetadataXmlDeserializer();
     private static readonly Assembly assembly = Assembly.GetExecutingAssembly();
 
@@ -42,17 +45,19 @@ public static class AppInfo
 
     public static Settings Settings => Settings.Default;
 
+    /// <summary>Gets the settings that should not be reset.</summary>
+    public static PersistentSettings PersistentSettings => PersistentSettings.Default;
+
     private static IDictionary<string, T> MakeDictionary<T>(IEnumerable<T> source) where T : IScriptData
                     => new Dictionary<string, T>(source.Select(c => new KeyValuePair<string, T>(c.InvariantName, c)));
 
     private static Stream OpenContentFile(string filename)
-    {
 #if PORTABLE
-        return Assembly.GetExecutingAssembly().GetManifestResourceStream(string.Join('.', nameof(Scover), nameof(WinClean), filename)).AssertNotNull();
+        => Assembly.GetExecutingAssembly().GetManifestResourceStream(string.Join('.', nameof(Scover), nameof(WinClean), filename)).AssertNotNull();
 #else
-        return File.OpenRead(filename);
+        => File.OpenRead(filename);
+
 #endif
-    }
 
     #region Assembly attributes
 
