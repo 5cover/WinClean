@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
+using CommunityToolkit.Mvvm.Input;
+
 using Humanizer;
 
 using Microsoft.Win32;
@@ -28,7 +30,22 @@ public partial class MainWindow
         ResetTabs();
     }
 
-    private static void CheckScripts(bool check) => CheckScripts(_ => check);
+    public static RelayCommand<ScriptMetadata> SelectScriptsByMetadata { get; } = new(metadata => CheckScripts(s =>
+    {
+        ScriptMetadata scriptMetadata = metadata switch
+        {
+            Category _ => s.Category,
+            RecommendationLevel _ => s.RecommendationLevel,
+            Host _ => s.Host,
+            Impact _ => s.Impact,
+            _ => throw new ArgumentException("Has an invalid type or is null", nameof(metadata))
+        };
+        return scriptMetadata == metadata;
+    }));
+
+    public static RelayCommand<char> SelectScriptSelectionOperator { get; } = new(@operator =>
+    {
+    });
 
     private static void CheckScripts(Predicate<Script> check)
     {
@@ -49,12 +66,12 @@ public partial class MainWindow
     {
         OpenFileDialog ofd = new()
         {
-            DefaultExt = AppInfo.Settings.ScriptFilePattern,
+            DefaultExt = AppInfo.Settings.ScriptFileExtension,
             Multiselect = true,
             ReadOnlyChecked = true,
             ValidateNames = false
         };
-        MakeFilter(ofd, new ExtensionGroup(AppInfo.Settings.ScriptFilePattern));
+        MakeFilter(ofd, new ExtensionGroup(AppInfo.Settings.ScriptFileExtension));
 
         if (!(ofd.ShowDialog(this) ?? false))
         {
@@ -136,21 +153,13 @@ public partial class MainWindow
 
     private void MenuAboutClick(object sender, RoutedEventArgs e) => new AboutWindow { Owner = this }.ShowDialog();
 
-    private void MenuAllClick(object sender, RoutedEventArgs e) => CheckScripts(true);
+    private void MenuAllClick(object sender, RoutedEventArgs e) => CheckScripts(_ => true);
 
     private void MenuClearLogsClick(object sender, RoutedEventArgs e) => (App.Logger as CsvLogger)?.ClearLogsFolderAsync();
 
     private void MenuExitClick(object sender, RoutedEventArgs e) => Close();
 
-    private void MenuItemRecommendedClick(object sender, RoutedEventArgs e)
-    {
-        RecommendationLevel targetLevel = AppInfo.RecommendationLevels.Value[((RecommendationLevel)((MenuItem)e.Source)
-                                                                       .ItemContainerGenerator
-                                                                       .ItemFromContainer((DependencyObject)e.OriginalSource)).InvariantName];
-        CheckScripts(script => script.Recommended == targetLevel);
-    }
-
-    private void MenuNoneClick(object sender, RoutedEventArgs e) => CheckScripts(false);
+    private void MenuNoneClick(object sender, RoutedEventArgs e) => CheckScripts(_ => false);
 
     private void MenuOnlineWikiClick(object sender, RoutedEventArgs e) => Helpers.Open(AppInfo.Settings.WikiUrl);
 
@@ -171,7 +180,7 @@ public partial class MainWindow
         {
             ListBox listBox = new()
             {
-                ItemsSource = App.AllScripts.Where(s => s.Category == category)
+                ItemsSource = App.AllScripts.Where(s => s.Category == category),
             };
             TabItem tabItem = new()
             {

@@ -57,7 +57,7 @@ public sealed class RestorePoint
         // HRESULT -2147023838 = 0x80070422 : system restore is disabled
         catch (COMException e) when (e.HResult == -2147023838)
         {
-            throw new InvalidOperationException(Resources.DevException.SystemProtectionDisabled, e);
+            throw new InvalidOperationException("Cannot create system restore point because system protection is disabled.", e);
         }
     }
 }

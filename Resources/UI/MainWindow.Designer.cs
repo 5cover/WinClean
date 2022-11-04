@@ -22,7 +22,7 @@ namespace Scover.WinClean.Resources.UI {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public sealed class MainWindow {
+    public class MainWindow {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -61,7 +61,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à A_bout {0}.
+        ///   Recherche une chaîne localisée semblable à _About {0}.
         /// </summary>
         public static string MenuAbout {
             get {
@@ -79,7 +79,16 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Clear l_ogs.
+        ///   Recherche une chaîne localisée semblable à Cate_gory.
+        /// </summary>
+        public static string MenuCategory {
+            get {
+                return ResourceManager.GetString("MenuCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à _Clear logs.
         /// </summary>
         public static string MenuClearLogs {
             get {
@@ -106,6 +115,33 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à _Host.
+        /// </summary>
+        public static string MenuHost {
+            get {
+                return ResourceManager.GetString("MenuHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à I_mpact.
+        /// </summary>
+        public static string MenuImpact {
+            get {
+                return ResourceManager.GetString("MenuImpact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à _Metadata.
+        /// </summary>
+        public static string MenuMetadata {
+            get {
+                return ResourceManager.GetString("MenuMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à _None.
         /// </summary>
         public static string MenuNone {
@@ -115,7 +151,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Online _wiki.
+        ///   Recherche une chaîne localisée semblable à _Online wiki.
         /// </summary>
         public static string MenuOnlineWiki {
             get {
@@ -124,7 +160,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Open _logs directory.
+        ///   Recherche une chaîne localisée semblable à O_pen logs directory.
         /// </summary>
         public static string MenuOpenLogsDir {
             get {
@@ -142,16 +178,16 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à _Recommended.
+        ///   Recherche une chaîne localisée semblable à _Recommendation level.
         /// </summary>
-        public static string MenuRecommended {
+        public static string MenuRecommendationLevel {
             get {
-                return ResourceManager.GetString("MenuRecommended", resourceCulture);
+                return ResourceManager.GetString("MenuRecommendationLevel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Sele_ct scripts.
+        ///   Recherche une chaîne localisée semblable à Select s_cripts.
         /// </summary>
         public static string MenuSelectScripts {
             get {
@@ -160,7 +196,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Se_ttings.
+        ///   Recherche une chaîne localisée semblable à _Settings.
         /// </summary>
         public static string MenuSettings {
             get {

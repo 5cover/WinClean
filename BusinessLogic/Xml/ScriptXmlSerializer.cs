@@ -25,18 +25,18 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
 
         XmlElement? root = doc.CreateElement("Script");
 
-        foreach ((string lang, string text) in script.LocalizedNames)
+        foreach ((string lang, string text) in script.LocalizedName)
         {
             Append("Name", text, lang);
         }
 
-        foreach ((string lang, string text) in script.LocalizedDescriptions)
+        foreach ((string lang, string text) in script.LocalizedDescription)
         {
             Append("Description", text, lang);
         }
 
         Append("Category", script.Category.InvariantName);
-        Append("Recommended", script.Recommended.InvariantName);
+        Append("Recommended", script.RecommendationLevel.InvariantName);
         Append("Host", script.Host.InvariantName);
         Append("Impact", script.Impact.InvariantName);
         Append("Code", script.Code);
@@ -59,19 +59,18 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
     private static Script Deserialize(Stream data, bool isDefault)
     {
         XmlDocument doc = new();
-
         try
         {
             doc.Load(data);
 
-            return new Script(AppInfo.Categories.Value[GetNode("Category")],
-                              GetNode("Code"),
-                              AppInfo.Hosts[GetNode("Host")],
-                              AppInfo.Impacts.Value[GetNode("Impact")],
-                              AppInfo.RecommendationLevels.Value[GetNode("Recommended")],
+            return new Script(AppInfo.Categories.Value[doc.GetSingleNode("Category")],
+                              doc.GetSingleNode("Code"),
+                              AppInfo.Hosts.Value[doc.GetSingleNode("Host")],
+                              AppInfo.Impacts.Value[doc.GetSingleNode("Impact")],
+                              AppInfo.RecommendationLevels.Value[doc.GetSingleNode("Recommended")],
                               isDefault,
-                              GetLocalizedString("Description"),
-                              GetLocalizedString("Name"));
+                              GetLocalizedString("Name"),
+                              GetLocalizedString("Description"));
         }
         catch (Exception e) when (e is XmlException or ArgumentException or KeyNotFoundException)
         {
@@ -86,13 +85,6 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
                 localizedNodeTexts.SetFromXml(element);
             }
             return localizedNodeTexts;
-        }
-        string GetNode(string name)
-        {
-            XmlNodeList correspondingElements = doc.GetElementsByTagName(name);
-            return correspondingElements.Count > 1
-                ? throw new ArgumentException($"Multiple \"{name}\" elements in XML document.")
-                : correspondingElements[0]?.InnerText ?? throw new ArgumentException($"\"{name}\" element missing from XML document.");
         }
     }
 }

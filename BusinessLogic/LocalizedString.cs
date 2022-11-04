@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Globalization;
 
-using Scover.WinClean.Resources;
-
 namespace Scover.WinClean.BusinessLogic;
 
+/// <summary>A string available in multiple languages.</summary>
 public sealed class LocalizedString : IReadOnlyCollection<KeyValuePair<string, string>>
 {
     private readonly Dictionary<string, string> _values = new();
@@ -12,14 +11,14 @@ public sealed class LocalizedString : IReadOnlyCollection<KeyValuePair<string, s
     public int Count => _values.Count;
 
     /// <summary>Gets the localized string corresponding to the given culture.</summary>
-    /// <exception cref="ArgumentException">No string was found for this culture or any of its parents.</exception>
+    /// <exception cref="KeyNotFoundException">No string was found for this culture or any of its parents.</exception>
     public string Get(CultureInfo culture)
     {
         string? localized;
         for (; !_values.TryGetValue(culture.Name, out localized) && !Equals(culture, culture.Parent); culture = culture.Parent)
         {
         }
-        return localized ?? throw new ArgumentException(DevException.NoStringFoundForThisCulture, nameof(culture));
+        return localized ?? throw new KeyNotFoundException($"No string was found for this culture ('{culture}') or any of its parents.");
     }
 
     public IEnumerator<KeyValuePair<string, string>> GetEnumerator() => ((IEnumerable<KeyValuePair<string, string>>)_values).GetEnumerator();

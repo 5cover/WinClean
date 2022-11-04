@@ -1,7 +1,5 @@
 ﻿using Ookii.Dialogs.Wpf;
 
-using Scover.WinClean.Resources;
-
 namespace Scover.WinClean.Presentation.Dialogs;
 
 /// <summary>A dialog with a timeout.</summary>
@@ -34,7 +32,7 @@ public sealed class TimeoutDialog : Dialog
             _timeout = value;
             if (value <= TimeSpan.Zero)
             {
-                throw new ArgumentOutOfRangeException(nameof(value), DevException.ValueCannotBeNegative);
+                throw new ArgumentOutOfRangeException(nameof(value), $"The value ('{value}') cannnot be negative.");
             }
             Dlg.ProgressBarStyle = ProgressBarStyle.ProgressBar;
             // Multiply by 0.9 so that the progress bar has the time to completely fill up before the dialog closes.

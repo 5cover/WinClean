@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Globalization;
+using System.Runtime.InteropServices;
 
 using Humanizer;
 using Humanizer.Localisation;
@@ -35,7 +35,7 @@ public sealed class ScriptExecutionWizard : IDisposable
         _scripts = scripts.ToList();
         if (!_scripts.Any())
         {
-            throw new ArgumentException(DevException.CollectionEmpty, nameof(scripts));
+            throw new ArgumentException("The collection is empty.", nameof(scripts));
         }
         _executor.ProgressChanged += (_, e) => Logs.ScriptExecuting.FormatWith(_scripts[e.ScriptIndex]);
     }

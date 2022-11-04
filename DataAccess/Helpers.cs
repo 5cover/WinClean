@@ -22,6 +22,16 @@ public static class Helpers
     /// <summary>Fetches the restore point icon as defined in rstrui.exe.</summary>
     public static Icon GetRestorePointIcon() => Icon.ExtractAssociatedIcon(Path.Join(Environment.SystemDirectory, "rstrui.exe")).AssertNotNull();
 
+    /// <summary>Gets the <see cref="XmlElement.InnerText"/> of the single descendant element with the specified name.</summary>
+    /// <param name="parent">The parent node.</param>
+    /// <param name="name">The tag name of the element to search for.</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException">There are multiple elements</exception>
+    public static string GetSingleNode(this XmlElement parent, string name) => GetSingleNodeImpl(parent.GetElementsByTagName(name), parent, name);
+
+    /// <inheritdoc cref="GetSingleNode(XmlElement, string)"/>
+    public static string GetSingleNode(this XmlDocument parent, string name) => GetSingleNodeImpl(parent.GetElementsByTagName(name), parent, name);
+
     /// <summary>Checks if an exception is related to the filesystem.</summary>
     /// <returns>
     /// <para><see langword="true"/> if <paramref name="e"/> is of any of the following types :</para>
@@ -80,4 +90,8 @@ public static class Helpers
         => source.Aggregate(TimeSpan.Zero, (sumSoFar, nextSource) => sumSoFar + selector(nextSource));
 
     public static Stream ToStream(this string value) => new MemoryStream(Encoding.UTF8.GetBytes(value ?? string.Empty));
+
+    private static string GetSingleNodeImpl(XmlNodeList nodes, XmlNode parent, string name) => nodes.Count > 1
+                                        ? throw new ArgumentException($"'{parent.Name}' has '{nodes.Count}' childs named '{name}' but only one was expected.")
+            : nodes[0]?.InnerText ?? throw new ArgumentException($"'{parent.Name}' has no child named '{name}'.");
 }

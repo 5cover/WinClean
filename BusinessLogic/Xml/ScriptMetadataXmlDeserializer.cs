@@ -15,8 +15,18 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
         _doc.Load(stream);
         foreach (XmlElement category in _doc.GetElementsByTagName("Category"))
         {
-            (LocalizedString name, LocalizedString description) = GetNameAndDescription(category);
+            var (name, description) = GetNameAndDescription(category);
             yield return new Category(name, description);
+        }
+    }
+
+    public IEnumerable<Host> MakeHosts(Stream stream)
+    {
+        _doc.Load(stream);
+        foreach (XmlElement host in _doc.GetElementsByTagName("Host"))
+        {
+            var (name, description) = GetNameAndDescription(host);
+            yield return new Host(name, description, host.GetSingleNode("Executable"), host.GetSingleNode("Arguments"), host.GetSingleNode("Extension"));
         }
     }
 
@@ -25,7 +35,7 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
         _doc.Load(stream);
         foreach (XmlElement impact in _doc.GetElementsByTagName("Impact"))
         {
-            (LocalizedString name, LocalizedString description) = GetNameAndDescription(impact);
+            var (name, description) = GetNameAndDescription(impact);
             yield return new Impact(name, description);
         }
     }
@@ -35,7 +45,7 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
         _doc.Load(stream);
         foreach (XmlElement recommendationLevel in _doc.GetElementsByTagName("RecommendationLevel"))
         {
-            (LocalizedString name, LocalizedString description) = GetNameAndDescription(recommendationLevel);
+            var (name, description) = GetNameAndDescription(recommendationLevel);
             yield return new RecommendationLevel(name, description, (Color)ColorConverter.ConvertFromString(recommendationLevel.GetAttribute("Color")));
         }
     }

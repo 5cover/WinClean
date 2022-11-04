@@ -1,15 +1,11 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 using Ookii.Dialogs.Wpf;
 
-using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
-
-using static Microsoft.WindowsAPICodePack.COMNative.Shell.PropertySystem.SystemProperties.System;
 
 using Button = Scover.WinClean.Presentation.Dialogs.Button;
 

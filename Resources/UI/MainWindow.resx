@@ -122,15 +122,15 @@
     <comment />
   </data>
   <data name="MenuClearLogs" xml:space="preserve">
-    <value>Clear l_ogs</value>
+    <value>_Clear logs</value>
     <comment />
   </data>
   <data name="MenuSelectScripts" xml:space="preserve">
-    <value>Sele_ct scripts</value>
+    <value>Select s_cripts</value>
     <comment />
   </data>
-  <data name="MenuRecommended" xml:space="preserve">
-    <value>_Recommended</value>
+  <data name="MenuRecommendationLevel" xml:space="preserve">
+    <value>_Recommendation level</value>
     <comment />
   </data>
   <data name="MenuAll" xml:space="preserve">
@@ -142,7 +142,7 @@
     <comment />
   </data>
   <data name="MenuOnlineWiki" xml:space="preserve">
-    <value>Online _wiki</value>
+    <value>_Online wiki</value>
     <comment />
   </data>
   <data name="MenuHelp" xml:space="preserve">
@@ -150,11 +150,11 @@
     <comment />
   </data>
   <data name="MenuSettings" xml:space="preserve">
-    <value>Se_ttings</value>
+    <value>_Settings</value>
     <comment />
   </data>
   <data name="MenuAbout" xml:space="preserve">
-    <value>A_bout {0}</value>
+    <value>_About {0}</value>
     <comment>0 : program name</comment>
   </data>
   <data name="MenuOpenScriptsDir" xml:space="preserve">
@@ -162,7 +162,19 @@
     <comment />
   </data>
   <data name="MenuOpenLogsDir" xml:space="preserve">
-    <value>Open _logs directory</value>
+    <value>O_pen logs directory</value>
     <comment />
+  </data>
+  <data name="MenuCategory" xml:space="preserve">
+    <value>Cate_gory</value>
+  </data>
+  <data name="MenuImpact" xml:space="preserve">
+    <value>I_mpact</value>
+  </data>
+  <data name="MenuHost" xml:space="preserve">
+    <value>_Host</value>
+  </data>
+  <data name="MenuMetadata" xml:space="preserve">
+    <value>_Metadata</value>
   </data>
 </root>

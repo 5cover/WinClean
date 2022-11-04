@@ -6,32 +6,32 @@ using static System.Globalization.CultureInfo;
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
 /// <summary>An immutable script deployed with the application.</summary>
-public class Script : INotifyPropertyChanged, IScriptData
+public class Script : INotifyPropertyChanged
 {
     private Category _category;
     private string _code;
     private Host _host;
     private Impact _impact;
-    private RecommendationLevel _recommended;
+    private RecommendationLevel _recommendationLevel;
     private bool _selected;
 
     public Script(Category category,
                   string code,
                   Host host,
                   Impact impact,
-                  RecommendationLevel recommended,
+                  RecommendationLevel recommendationLevel,
                   bool isDefault,
-                  LocalizedString localizedDescriptions,
-                  LocalizedString localizedNames)
+                  LocalizedString name,
+                  LocalizedString description)
     {
         _category = category;
         _code = code;
         _host = host;
         _impact = impact;
-        _recommended = recommended;
+        _recommendationLevel = recommendationLevel;
         IsDefault = isDefault;
-        LocalizedDescriptions = localizedDescriptions;
-        LocalizedNames = localizedNames;
+        LocalizedDescription = description;
+        LocalizedName = name;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -58,10 +58,10 @@ public class Script : INotifyPropertyChanged, IScriptData
 
     public string Description
     {
-        get => LocalizedDescriptions.Get(CurrentUICulture);
+        get => LocalizedDescription.Get(CurrentUICulture);
         set
         {
-            LocalizedDescriptions.Set(CurrentUICulture, value);
+            LocalizedDescription.Set(CurrentUICulture, value);
             OnPropertyChanged();
         }
     }
@@ -88,10 +88,10 @@ public class Script : INotifyPropertyChanged, IScriptData
 
     public string InvariantName
     {
-        get => LocalizedNames.Get(InvariantCulture);
+        get => LocalizedName.Get(InvariantCulture);
         set
         {
-            LocalizedNames.Set(InvariantCulture, value);
+            LocalizedName.Set(InvariantCulture, value);
             OnPropertyChanged();
         }
     }
@@ -109,30 +109,28 @@ public class Script : INotifyPropertyChanged, IScriptData
         }
     }
 
-    /// <summary>Gets the localized descriptions of this script.</summary>
-    /// <value>The descriptions of this script in all available languages.</value>
-    public LocalizedString LocalizedDescriptions { get; init; }
+    /// <summary>Gets the localized description of this script.</summary>
+    public LocalizedString LocalizedDescription { get; init; }
 
-    /// <summary>Gets the localized names of this script.</summary>
-    /// <value>The names of this script in all available languages.</value>
-    public LocalizedString LocalizedNames { get; init; }
+    /// <summary>Gets the localized name of this script.</summary>
+    public LocalizedString LocalizedName { get; init; }
 
     public string Name
     {
-        get => LocalizedNames.Get(CurrentUICulture);
+        get => LocalizedName.Get(CurrentUICulture);
         set
         {
-            LocalizedNames.Set(CurrentUICulture, value);
+            LocalizedName.Set(CurrentUICulture, value);
             OnPropertyChanged();
         }
     }
 
-    public RecommendationLevel Recommended
+    public RecommendationLevel RecommendationLevel
     {
-        get => _recommended;
+        get => _recommendationLevel;
         set
         {
-            _recommended = value;
+            _recommendationLevel = value;
             OnPropertyChanged();
         }
     }

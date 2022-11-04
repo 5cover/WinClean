@@ -1,10 +1,7 @@
 ﻿<Application
-    x:Class="Scover.WinClean.Presentation.App"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:Scover.WinClean.Presentation.Converters"
-    Exit="ApplicationExit"
-    Startup="ApplicationStartup">
+    x:Class="Scover.WinClean.Presentation.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:converters="clr-namespace:Scover.WinClean.Presentation.Converters"
+    Exit="ApplicationExit" Startup="ApplicationStartup">
     <Application.Resources>
         <Style TargetType="Button">
             <Setter Property="MinHeight" Value="24" />
