@@ -20,11 +20,12 @@ public sealed class Host : ScriptMetadata
     /// <inheritdoc cref="ScriptMetadata(LocalizedString, LocalizedString)" path="/param"/>
     /// <param name="executable">The absolute path to the script host executable. May contain environment variables.</param>
     /// <param name="arguments">
-    /// A formattable argument string passed to the executable. Must have exactly one formattable argument ( <c>{0}</c>).
+    /// A formattable argument string passed to the executable. Must have exactly one formattable argument ( <c>{0}</c>). May
+    /// contain environment variables.
     /// </param>
     /// <param name="extension">The preferred script file extension.</param>
     public Host(LocalizedString name, LocalizedString description, string executable, string arguments, string extension) : base(name, description)
-        => (_executable, _arguments, Extension) = (executable, Environment.ExpandEnvironmentVariables(arguments), extension);
+        => (_executable, _arguments, Extension) = (Environment.ExpandEnvironmentVariables(executable), Environment.ExpandEnvironmentVariables(arguments), extension);
 
     public string Extension { get; }
 
