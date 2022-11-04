@@ -182,4 +182,8 @@
     <value>Hung script "{0}" aborted.</value>
     <comment>0 : script name@Invariant</comment>
   </data>
+  <data name="SavingScriptsAndSettings" xml:space="preserve">
+    <value>Saving scripts and settings...</value>
+    <comment>@Invariant</comment>
+  </data>
 </root>

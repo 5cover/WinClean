@@ -4,9 +4,9 @@
   <Name xml:lang="fr">Désactiver les services inutiles</Name>
   <Description>These services are present for backward compatibility and telemetry. They can be safely disabled. The following services will be disabled:
 - WebClient;
+- Phone Service;
 - Telephony;
 - Fax;
-- Téléphonie;
 - Geolocation Service;
 - Retail Demo Service;
 - Connected User Experiences and Telemetry;
@@ -15,8 +15,8 @@
   <Description xml:lang="fr">Ces services sont présents pour des raisons de rétrocompatibilité ou de télémétrie. Ils peuvent êtres désactivés sans risque. Les services suivants seront désactivés :
 - WebClient ;
 - Service téléphonique ;
-- Télécopie ;
-- Téléphonie ;
+- Telephony ;
+- Fax ;
 - Service de géolocalisation ;
 - Service de démo du magasin ;
 - Expériences des utilisateurs connectés et télémétrie ;

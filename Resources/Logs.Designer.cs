@@ -142,6 +142,15 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Saving scripts and settings....
+        /// </summary>
+        public static string SavingScriptsAndSettings {
+            get {
+                return ResourceManager.GetString("SavingScriptsAndSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Script &quot;{0}&quot; deleted..
         /// </summary>
         public static string ScriptDeleted {

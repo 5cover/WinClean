@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using System.Resources;
-using System.Windows;
 
 using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.BusinessLogic.Xml;
@@ -16,40 +15,32 @@ public static class AppInfo
     // Setting initialized here because an XML default value doesn't work.
     static AppInfo() => PersistentSettings["ScriptExecutionTimes"] = new SerializableStringDictionary();
 
-    private static readonly IScriptMetadataDeserializer _deserializer = new ScriptMetadataXmlDeserializer();
+    private static readonly IScriptMetadataDeserializer _d = new ScriptMetadataXmlDeserializer();
     private static readonly Assembly assembly = Assembly.GetExecutingAssembly();
 
-    /// <summary>Gets a dictionary that contains all available script hosts, keyed by <see cref="IScriptData.InvariantName"/>.</summary>
-    public static IDictionary<string, Host> Hosts { get; } = MakeDictionary(new Host[]
-    {
-        Host.Cmd,
-        Host.PowerShell,
-        Host.Regedit
-    });
+    #region Script metadata
 
-    #region Lazy script metadata
+    /// <summary>Gets a lazy dictionary that contains all available script categories, keyed by <see cref="ScriptMetadata.InvariantName"/>.</summary>
+    public static Lazy<IDictionary<string, Category>> Categories { get; } = Deserialize(_d.MakeCategories, "Categories.xml");
 
-    /// <summary>Gets a dictionary that contains all available script categories, keyed by <see cref="IScriptData.InvariantName"/>.</summary>
-    public static Lazy<IDictionary<string, Category>> Categories { get; }
-        = new(() => MakeDictionary(_deserializer.MakeCategories(OpenContentFile("Categories.xml"))));
+    /// <summary>Gets a lazy dictionary that contains all available script hosts, keyed by <see cref="ScriptMetadata.InvariantName"/>.</summary>
+    public static Lazy<IDictionary<string, Host>> Hosts { get; } = Deserialize(_d.MakeHosts, "Hosts.xml");
 
-    /// <summary>Gets a dictionary that contains all available script impacts, keyed by <see cref="IScriptData.InvariantName"/>.</summary>
-    public static Lazy<IDictionary<string, Impact>> Impacts { get; }
-        = new(() => MakeDictionary(_deserializer.MakeImpacts(OpenContentFile("Impacts.xml"))));
+    /// <summary>Gets a lazy dictionary that contains all available script impacts, keyed by <see cref="ScriptMetadata.InvariantName"/>.</summary>
+    public static Lazy<IDictionary<string, Impact>> Impacts { get; } = Deserialize(_d.MakeImpacts, "Impacts.xml");
 
-    /// <summary>Gets a dictionary that contains all available script recommendation levels, keyed by <see cref="IScriptData.InvariantName"/>.</summary>
-    public static Lazy<IDictionary<string, RecommendationLevel>> RecommendationLevels { get; }
-        = new(() => MakeDictionary(_deserializer.MakeRecommendationLevels(OpenContentFile("RecommendationLevels.xml"))));
+    /// <summary>Gets a lazy dictionary that contains all available script recommendation levels, keyed by <see cref="ScriptMetadata.InvariantName"/>.</summary>
+    public static Lazy<IDictionary<string, RecommendationLevel>> RecommendationLevels { get; } = Deserialize(_d.MakeRecommendationLevels, "RecommendationLevels.xml");
 
-    #endregion Lazy script metadata
+    #endregion Script metadata
+
+    private static Lazy<IDictionary<string, T>> Deserialize<T>(Func<Stream, IEnumerable<T>> deserialize, string filename) where T : ScriptMetadata
+        => new(() => new Dictionary<string, T>(deserialize(OpenContentFile(filename)).Select(c => new KeyValuePair<string, T>(c.InvariantName, c))));
 
     public static Settings Settings => Settings.Default;
 
     /// <summary>Gets the settings that should not be reset.</summary>
     public static PersistentSettings PersistentSettings => PersistentSettings.Default;
-
-    private static IDictionary<string, T> MakeDictionary<T>(IEnumerable<T> source) where T : IScriptData
-                    => new Dictionary<string, T>(source.Select(c => new KeyValuePair<string, T>(c.InvariantName, c)));
 
     private static Stream OpenContentFile(string filename)
 #if PORTABLE

@@ -3,6 +3,8 @@
 using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;
 
+using WinCopies.Collections;
+
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
 /// <summary>A collection of scripts deserialized from files.</summary>
@@ -10,28 +12,6 @@ public sealed class CustomScriptCollection : IEnumerable<Script>
 {
     private static readonly IScriptSerializer serializer = new ScriptXmlSerializer();
     private readonly Dictionary<Script, string> _scriptLocations = new();
-
-    /// <summary>Loads all the scripts present in the specified application directory.</summary>
-    /// <param name="directory">The application directory to load the scripts from.</param>
-    /// <param name="reloadElseIgnore">
-    /// <inheritdoc cref="InvalidScriptDataCallback" path="/summary"/> Returns <see langword="true"/> if the script should be
-    /// reloaded, <see langword="false"/> if it should be ignored.
-    /// </param>
-    /// <remarks>Will not load scripts located in subdirectories.</remarks>
-    public static CustomScriptCollection LoadScripts(AppDirectory directory, InvalidScriptDataCallback reloadElseIgnore)
-    {
-        CustomScriptCollection scripts = new();
-        foreach (string scriptFile in Directory.EnumerateFiles(directory.Info.FullName, AppInfo.Settings.ScriptFilePattern, SearchOption.TopDirectoryOnly))
-        {
-            Script? deserializedScript = DeserializeTolerantly(scriptFile, reloadElseIgnore);
-            if (deserializedScript is not null)
-            {
-                scripts._scriptLocations.Add(deserializedScript, scriptFile);
-            }
-        }
-
-        return scripts;
-    }
 
     /// <summary>Loads a script and adds it to the collection. Also copies <paramref name="sourceFile"/> to the scripts directory.</summary>
     /// <param name="sourceFile">The path to the script file.</param>
@@ -66,6 +46,19 @@ public sealed class CustomScriptCollection : IEnumerable<Script>
     }
 
     public IEnumerator<Script> GetEnumerator() => _scriptLocations.Keys.GetEnumerator();
+
+    /// <summary>Loads all the scripts present in the scripts directory.</summary>
+    /// <param name="reloadElseIgnore">
+    /// <inheritdoc cref="InvalidScriptDataCallback" path="/summary"/> Returns <see langword="true"/> if the script should be
+    /// reloaded, <see langword="false"/> if it should be ignored.
+    /// </param>
+    /// <remarks>Will not load scripts located in subdirectories.</remarks>
+    public void LoadScripts(InvalidScriptDataCallback reloadElseIgnore)
+        => _scriptLocations.AddRange(
+            from string scriptFile in Directory.EnumerateFiles(AppDirectory.ScriptsDir.Info.FullName, '*' + AppInfo.Settings.ScriptFileExtension, SearchOption.TopDirectoryOnly)
+            let deserializedScript = DeserializeTolerantly(scriptFile, reloadElseIgnore)
+            where deserializedScript is not null
+            select new KeyValuePair<Script, string>(deserializedScript, scriptFile));
 
     /// <summary>Removes a script from the collection. Also deletes its corresponding file in the scripts directory.</summary>
     /// <param name="item">The script to remove.</param>

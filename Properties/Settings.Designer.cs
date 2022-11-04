@@ -35,10 +35,10 @@ namespace Scover.WinClean.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("*.xml")]
-        public string ScriptFilePattern {
+        [global::System.Configuration.DefaultSettingValueAttribute(".xml")]
+        public string ScriptFileExtension {
             get {
-                return ((string)(this["ScriptFilePattern"]));
+                return ((string)(this["ScriptFileExtension"]));
             }
         }
         

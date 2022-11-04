@@ -1,21 +1,15 @@
 ﻿<Window
-    x:Class="Scover.WinClean.Presentation.Windows.AboutWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    x:Class="Scover.WinClean.Presentation.Windows.AboutWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:businessLogic="clr-namespace:Scover.WinClean.BusinessLogic"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:businessLogic="clr-namespace:Scover.WinClean.BusinessLogic"
-    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
     Title="{Binding Source={x:Static businessLogic:AppInfo.Name}, StringFormat={x:Static ui:AboutWindow.Title}}"
-    Height="220"
-    ResizeMode="NoResize"
-    SizeToContent="Width"
-    WindowStartupLocation="CenterOwner"
-    mc:Ignorable="d">
+    Height="220" ResizeMode="NoResize" SizeToContent="Width"
+    WindowStartupLocation="CenterOwner" mc:Ignorable="d">
     <Window.Resources>
         <Style TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="14" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
     </Window.Resources>
     <Grid Margin="12">
@@ -32,18 +26,14 @@
         </Grid.RowDefinitions>
 
         <Image
-            Grid.RowSpan="3"
-            Margin="0,0,12,0"
-            Source="/Resources/WinClean.png"
+            Grid.RowSpan="3" Margin="0,0,12,0" Source="/Resources/WinClean.png"
             Stretch="Uniform" />
 
         <TextBlock
-            Grid.Row="0"
-            Grid.Column="1"
+            Grid.Row="0" Grid.Column="1"
             Text="{Binding Source={x:Static businessLogic:AppInfo.Name}}" />
         <TextBlock
-            Grid.Row="1"
-            Grid.Column="1"
+            Grid.Row="1" Grid.Column="1"
             Text="{Binding Source={x:Static businessLogic:AppInfo.Version}, StringFormat={x:Static ui:AboutWindow.Version}}" />
         <TextBlock Grid.Row="2" Grid.Column="1">
             <Hyperlink NavigateUri="{Binding Source={x:Static businessLogic:AppInfo.RepositoryUrl}}" RequestNavigate="RepoUrlRequestNavigate">
@@ -52,9 +42,7 @@
         </TextBlock>
 
         <Button
-            Grid.Row="3"
-            Grid.Column="1"
-            Margin="0"
+            Grid.Row="3" Grid.Column="1" Margin="0"
             Click="ButtonOKClick"
             Content="{x:Static ui:Buttons.Close}"
             IsDefault="True" />

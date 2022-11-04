@@ -2,11 +2,9 @@
 
 global using static Humanizer.StringExtensions;
 
-using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows;
 
 using CommandLine;
@@ -29,19 +27,16 @@ public sealed partial class App
                              Action<Exception> WarnOnUnhandledException);
 
     private static readonly List<Script> _defaultScripts = new();
-    private static CustomScriptCollection? _customScripts;
     private static Logger? _logger;
 
     /// <summary>Gets the concatenation of the default and custom scripts.</summary>
-    public static IEnumerable<Script> AllScripts => App.DefaultScripts.Concat(App.CustomScripts);
+    public static IEnumerable<Script> AllScripts => DefaultScripts.Concat(CustomScripts);
 
     /// <summary>Gets the collection of custom scripts created by the user.</summary>
-    public static CustomScriptCollection CustomScripts => _customScripts.AssertNotNull();
+    public static CustomScriptCollection CustomScripts { get; } = new();
 
-    /// <summary>
-    /// Gets the application's default scripts, available after startup. They are immutable and deplyed at installation time.
-    /// </summary>
-    public static IReadOnlyCollection<Script> DefaultScripts => _defaultScripts;
+    /// <summary>Gets the application's default scripts, available after startup.</summary>
+    public static IEnumerable<Script> DefaultScripts => _defaultScripts;
 
     /// <summary>Gets the application's logger, available after startup.</summary>
     public static Logger Logger => _logger.AssertNotNull();
@@ -63,13 +58,13 @@ public sealed partial class App
         // 4. Load default scripts
         Assembly assembly = Assembly.GetExecutingAssembly();
         IScriptSerializer s = new ScriptXmlSerializer();
-        foreach (string scriptResName in assembly.GetManifestResourceNames().Where(name => name.StartsWith("Scover.WinClean.Scripts", StringComparison.InvariantCulture)))
-        {
-            _defaultScripts.Add(s.DeserializeDefault(assembly.GetManifestResourceStream(scriptResName).AssertNotNull()));
-        }
+        _defaultScripts.AddRange(
+            assembly.GetManifestResourceNames()
+            .Where(name => name.StartsWith("Scover.WinClean.Scripts.", StringComparison.Ordinal))
+            .Select(scriptResName => s.DeserializeDefault(assembly.GetManifestResourceStream(scriptResName).AssertNotNull())));
 
         // 5. Load custom scripts.
-        _customScripts = CustomScriptCollection.LoadScripts(AppDirectory.ScriptsDir, callbacks.ReloadElseIgnore);
+        CustomScripts.LoadScripts(callbacks.ReloadElseIgnore);
     }
 
     private static void StartConsole(string[] args)
@@ -97,8 +92,10 @@ public sealed partial class App
 
     private void ApplicationExit(object? sender, ExitEventArgs? e)
     {
+        Logger.Log(Logs.SavingScriptsAndSettings);
         CustomScripts.Save();
         AppInfo.Settings.Save();
+        AppInfo.PersistentSettings.Save();
         Logger.Log(Logs.Exiting);
     }
 

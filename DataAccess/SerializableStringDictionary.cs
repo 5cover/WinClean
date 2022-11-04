@@ -1,7 +1,6 @@
 ﻿using System.Collections.Specialized;
-using System.Collections;
-using System.Xml.Serialization;
 using System.Diagnostics.CodeAnalysis;
+using System.Xml.Serialization;
 
 namespace Scover.WinClean.DataAccess;
 

@@ -80,6 +80,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
     <PackageReference Include="CsvHelper" Version="30.0.0" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.4.0" />
     <PackageReference Include="Humanizer" Version="2.14.1" />
@@ -128,7 +129,6 @@
     <EmbeddedResource Include="Scripts\Disable the Downloaded Maps Manager service.xml" />
     <EmbeddedResource Include="Scripts\Disable the Internet Connection Sharing (ICS) service.xml" />
     <EmbeddedResource Include="Scripts\Disable the Parental Controls service.xml" />
-    <EmbeddedResource Include="Scripts\Disable the Touch Keyboard and Handwriting Panel service.xml" />
     <EmbeddedResource Include="Scripts\Disable the Windows Camera Frame Server service.xml" />
     <EmbeddedResource Include="Scripts\Disable the Windows Mobile Hotspot service.xml" />
     <EmbeddedResource Include="Scripts\Disable Timeline.xml" />
@@ -173,11 +173,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Update="Resources\DevException.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DevException.resx</DependentUpon>
-    </Compile>
     <Compile Update="Resources\FileSystemElements.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -197,11 +192,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Logs.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\Hosts.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Hosts.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\UI\AboutWindow.Designer.cs">
       <DependentUpon>AboutWindow.resx</DependentUpon>
@@ -260,10 +250,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>CommandLine.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\DevException.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>DevException.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Dialog.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
@@ -299,10 +285,6 @@
     <EmbeddedResource Update="Resources\Logs.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Logs.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Hosts.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Hosts.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\AboutWindow.resx">
       <LastGenOutput>AboutWindow.Designer.cs</LastGenOutput>
@@ -370,6 +352,16 @@
   
   <ItemGroup>
     <EditorConfigFiles Remove="C:\Users\Scover\source\repos\WinClean\.editorconfig" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Remove="Hosts.xml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="Hosts.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   
   <ItemGroup>
