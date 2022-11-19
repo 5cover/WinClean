@@ -20,6 +20,10 @@ public sealed class ScriptExecutor : IDisposable
 
     /// <summary>Executes a list of scripts asynchronously. Raises the <see cref="ProgressChanged"/> event.</summary>
     /// <param name="scripts">The scripts to execute.</param>
+    /// <param name="keepRunningElseKill">
+    /// <inheritdoc cref="InvalidScriptDataCallback" path="/summary"/> Returns <see langword="true"/> if the script should keep
+    /// running, or <see langword="false"/> if it should be killed.
+    /// </param>
     public async Task ExecuteScriptsAsync(IReadOnlyList<Script> scripts, HungScriptCallback keepRunningElseKill)
     {
         _cts.Dispose();

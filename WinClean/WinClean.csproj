@@ -25,8 +25,9 @@
     <Platforms>AnyCPU</Platforms>
     <Version>1.2.2</Version>
     <Configurations>Debug;Release;Portable</Configurations>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
   </PropertyGroup>
-
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>9999</WarningLevel>
@@ -373,5 +374,12 @@
     <Content Include="Hosts.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Using Include="Humanizer.StringExtensions">
+      <Static>True</Static>
+    </Using>
+    <Using Include="System.IO" />
   </ItemGroup>
 </Project>

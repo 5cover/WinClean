@@ -115,7 +115,7 @@ public class Dialog : IDisposable
     public DialogResult Show() => GetResult(Dlg.Show());
 
     /// <inheritdoc cref="Show" path="/returns"/>
-    /// <inheritdoc cref="TaskDialog.ShowDialog"/>
+    /// <inheritdoc cref="TaskDialog.ShowDialog()"/>
     public DialogResult ShowDialog() => GetResult(Dlg.ShowDialog());
 
     /// <summary>Gets the dialog result information from the button that was clicked.</summary>
@@ -205,6 +205,20 @@ public class Dialog : IDisposable
     /// <value>Additional information to be displayed on the dialog. The default value is an empty string ("").</value>
     public string ExpandedInformation { get => Dlg.ExpandedInformation; set => Dlg.ExpandedInformation = value; }
 
+    /// <summary>Gets or sets the text to be used in the footer area of the dialog.</summary>
+    /// <value>
+    /// The text to be used in the footer area of the dialog, or an empty string ("") if the footer area is not displayed. The
+    /// default value is an empty string ("").
+    /// </value>
+    public string Footer { get => Dlg.Footer; set => Dlg.Footer = value; }
+
+    /// <summary>Gets or sets a value that indicates whether the verification checkbox is checked ot not.</summary>
+    /// <remarks>
+    /// Set this property before displaying the dialog to determine the initial state of the check box. Use this property after
+    /// displaying the dialog to determine whether the check box was checked when the user closed the dialog. This property is
+    /// only used if <see cref="VerificationText"/> is not an empty string ("").
+    /// </remarks>
+    /// <value><see langword="true"/> if the verficiation checkbox is checked; otherwise, <see langword="false"/>.</value>
     public bool IsVerificationChecked { get => Dlg.IsVerificationChecked; set => Dlg.IsVerificationChecked = value; }
 
     /// <summary>Gets or sets the icon to display in the dialog.</summary>
