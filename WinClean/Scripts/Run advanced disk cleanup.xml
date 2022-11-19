@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Run advanced disk cleanup</Name>
+  <Name xml:lang="fr">Exécuter le nettoyage de disque avancé</Name>
+  <Description>Advanced disk cleanup removes all files from directories that contain temporary or unnecessary files. After an aggressive cleaning:
+- Windows updates will no longer be able to be uninstalled
+- Component Store backups will no longer be available
+- Log files will be deleted
+  </Description>
+  <Description xml:lang="fr">Le nettoyage de disque avancé supprime tous les fichiers de répertoires contenant des fichiers temporaires ou inutiles. Après un nettoyage aggressif :
+- Les mises à jour Windows Update ne pourront plus être désinstallées
+- Les sauvegardes du magasin de composants ne seront plus disponibles
+- Les fichiers journaux seront supprimés
+  </Description>
+  <Category>Maintenance</Category>
+  <Recommended>Limited</Recommended>
+  <Host>Cmd</Host>
+  <Impact>Free storage space</Impact>
+  <Code>cd /d "%temp%"
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd /d "%systemdrive%\temp"
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd /d "%windir%\temp"
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd /d "%windir%\prefetch"
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd /d "%windir%\system32\dllcache"
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd /d "%windir%\Logs"
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd /d "%windir%\SoftwareDistribution\Download"
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd /d "%windir%\WinSXS\Backup"
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd /d "%windir%\servicing\LCU"
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd /d "%userprofile%\Recent"
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd /d "%userprofile%\Local Settings\History"
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd /d "%userprofile%\Local Settings\Temporary Internet Files"
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd /d "%userprofile%\Local Settings\Temp"
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd /d "%userprofile%\Recent"
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *
+
+cd /d "%userprofile%\Cookies"
+takeown  /r /d o /f *
+icacls * /t /c /grant:r "%username%":F
+del /f /s /q *</Code>
+</Script>

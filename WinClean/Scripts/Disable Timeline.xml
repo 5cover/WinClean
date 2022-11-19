@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Disable Timeline</Name>
+  <Name xml:lang="fr">Désactiver la chronologie</Name>
+  <Description>Timeline allows users to review their activity history and quickly return to their previous tasks.</Description>
+  <Description xml:lang="fr">La chronologie permet aux utilisateurs de revoir l'historique de leur activité et de retourner rapidement à leurs taches précédentes.</Description>
+  <Category>Customization</Category>
+  <Recommended>Yes</Recommended>
+  <Host>Regedit</Host>
+  <Impact>Ergonomics</Impact>
+  <Code>Windows Registry Editor Version 5.00
+
+[HKEYLOCALMACHINE\SOFTWARE\Policies\Microsoft\Windows\System]
+"EnableActivityFeed"=dword:00000000</Code>
+</Script>

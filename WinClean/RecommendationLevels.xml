@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<RecommendationLevels>
+  <RecommendationLevel Color="Green">
+    <Name>Yes</Name>
+    <Name xml:lang="fr">Oui</Name>
+    <Description>Scripts for any user that don't hinder any common features.</Description>
+    <Description xml:lang="fr">Scripts destinés n'importe quel utilisateur qui n'entraverent aucune fonctionnalité commune.</Description>
+  </RecommendationLevel>
+  <RecommendationLevel Color="Gray">
+    <Name>Limited</Name>
+    <Name xml:lang="fr">Limité</Name>
+    <Description>Scripts that hinder features useful to a minority of users.</Description>
+    <Description xml:lang="fr">Scripts qui entravent des fonctionnalités utiles à une minorité d'utilisateurs.</Description>
+  </RecommendationLevel>
+  <RecommendationLevel Color="Red">
+    <Name>No</Name>
+    <Name xml:lang="fr">Non</Name>
+    <Description>Scripts only for a minority of users who want advanced optimization. They hinder useful system features.</Description>
+    <Description xml:lang="fr">Scripts destinés à une minorité d'utilisateurs souhaitant une optimisation avancée. Ils entravent des fonctionnalités utiles du système.</Description>
+  </RecommendationLevel>
+</RecommendationLevels>
