@@ -139,7 +139,6 @@ public class Dialog : IDisposable
 
     ///<summary>Event raised when the dialog has been created.</summary>
     ///<remarks>This event is raised once after calling <see cref="Show"/> or <see cref="ShowDialog"/>, after the dialog is created and before it is displayed.</remarks>
-
     public event EventHandler Created { add => Dlg.Created += value; remove => Dlg.Created -= value; }
 
     /// <summary>Event raised when the user clicks the expand button on the dialog.</summary>
@@ -147,15 +146,12 @@ public class Dialog : IDisposable
     /// The <see cref="ExpandButtonClickedEventArgs.Expanded"/> property indicates if the expanded information is visible or not
     /// after the click.
     /// </remarks>
-
     public event EventHandler<ExpandButtonClickedEventArgs> ExpandButtonClicked { add => Dlg.ExpandButtonClicked += value; remove => Dlg.ExpandButtonClicked -= value; }
 
     /// <summary>Event raised when the user clicks a hyperlink.</summary>
-
     public event EventHandler<HyperlinkClickedEventArgs> HyperlinkClicked { add => Dlg.HyperlinkClicked += value; remove => Dlg.HyperlinkClicked -= value; }
 
     /// <summary>Event raised when the user clicks the verification check box.</summary>
-
     public event EventHandler VerificationClicked { add => Dlg.VerificationClicked += value; remove => Dlg.VerificationClicked -= value; }
 
     /// <summary>
