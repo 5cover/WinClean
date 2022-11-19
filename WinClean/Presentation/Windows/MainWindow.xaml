@@ -1,0 +1,228 @@
+﻿<Window x:Class="Scover.WinClean.Presentation.Windows.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:businessLogic="clr-namespace:Scover.WinClean.BusinessLogic"
+        xmlns:componentmodel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:controls="clr-namespace:Scover.WinClean.Presentation.Controls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:presentation="clr-namespace:Scover.WinClean.Presentation"
+        xmlns:scripts="clr-namespace:Scover.WinClean.BusinessLogic.Scripts" xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+        xmlns:windows="clr-namespace:Scover.WinClean.Presentation.Windows" x:Name="Window"
+        Title="{x:Static businessLogic:AppInfo.Name}"
+        MinWidth="{Binding MinHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource GoldenRatioConverter}}"
+        MinHeight="436"
+        Background="{x:Static SystemColors.ControlBrush}"
+        Closed="WindowClosed" mc:Ignorable="d">
+  <Window.Resources>
+    <CollectionViewSource x:Key="Scripts" Source="{x:Static windows:MainWindow.Scripts}">
+      <CollectionViewSource.SortDescriptions>
+        <componentmodel:SortDescription PropertyName="Name" />
+      </CollectionViewSource.SortDescriptions>
+      <CollectionViewSource.GroupDescriptions>
+        <PropertyGroupDescription PropertyName="Type.Name" />
+      </CollectionViewSource.GroupDescriptions>
+    </CollectionViewSource>
+  </Window.Resources>
+  <Grid Margin="12">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition Width="6" />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+    <Menu Margin="0,0,0,12" VerticalAlignment="Center">
+      <MenuItem Header="{x:Static ui:MainWindow.MenuFile}">
+        <MenuItem Click="MenuOpenScriptsDirClick" Header="{x:Static ui:MainWindow.MenuOpenCustomScriptsDir}" />
+        <MenuItem Click="MenuOpenLogsDirClick" Header="{x:Static ui:MainWindow.MenuOpenLogsDir}" />
+        <MenuItem Click="MenuClearLogsClick" Header="{x:Static ui:MainWindow.MenuClearLogs}" />
+        <MenuItem Click="MenuExitClick" Header="{x:Static ui:Buttons.Exit}" />
+      </MenuItem>
+      <MenuItem Header="{x:Static ui:MainWindow.MenuSelectScripts}">
+        <MenuItem.Resources>
+          <Style x:Key="ScriptMetadataMenuItemStyle" TargetType="MenuItem">
+            <Setter Property="Command" Value="{x:Static windows:MainWindow.SelectScriptsByMetadata}" />
+            <Setter Property="CommandParameter" Value="{Binding}" />
+            <Setter Property="ToolTip" Value="{Binding Description}" />
+          </Style>
+        </MenuItem.Resources>
+        <MenuItem Click="MenuAllClick" Header="{x:Static ui:MainWindow.MenuAll}" />
+        <MenuItem Click="MenuNoneClick" Header="{x:Static ui:MainWindow.MenuNone}" />
+        <MenuItem DisplayMemberPath="Name"
+                  Header="{x:Static ui:MainWindow.Category}"
+                  ItemContainerStyle="{StaticResource ScriptMetadataMenuItemStyle}"
+                  ItemsSource="{Binding Path=Value.Values, Source={x:Static businessLogic:AppInfo.Categories}}" />
+        <MenuItem DisplayMemberPath="Name"
+                  Header="{x:Static ui:MainWindow.RecommendationLevel}"
+                  ItemsSource="{Binding Path=Value.Values, Source={x:Static businessLogic:AppInfo.RecommendationLevels}}">
+          <MenuItem.ItemContainerStyle>
+            <Style BasedOn="{StaticResource ScriptMetadataMenuItemStyle}" TargetType="MenuItem">
+              <Setter Property="Background" Value="{Binding Color, Converter={StaticResource ColorToBrushConverter}, ConverterParameter=0.15}" />
+            </Style>
+          </MenuItem.ItemContainerStyle>
+        </MenuItem>
+        <MenuItem DisplayMemberPath="Name"
+                  Header="{x:Static ui:MainWindow.Impact}"
+                  ItemContainerStyle="{StaticResource ScriptMetadataMenuItemStyle}"
+                  ItemsSource="{Binding Path=Value.Values, Source={x:Static businessLogic:AppInfo.Impacts}}" />
+        <MenuItem DisplayMemberPath="Name"
+                  Header="{x:Static ui:MainWindow.Host}"
+                  ItemContainerStyle="{StaticResource ScriptMetadataMenuItemStyle}"
+                  ItemsSource="{Binding Path=Value.Values, Source={x:Static businessLogic:AppInfo.Hosts}}" />
+      </MenuItem>
+      <MenuItem Click="MenuSettingsClick" Header="{x:Static ui:MainWindow.MenuSettings}" />
+      <MenuItem Header="{x:Static ui:MainWindow.MenuHelp}">
+        <MenuItem Click="MenuOnlineWikiClick" Header="{x:Static ui:MainWindow.MenuOnlineWiki}" />
+        <MenuItem Click="MenuAboutClick">
+          <MenuItem.Header>
+            <!--  HeaderStringFormat does not work with access keys  -->
+            <AccessText Text="{Binding Source={x:Static businessLogic:AppInfo.Name}, StringFormat={x:Static ui:MainWindow.MenuAbout}}" />
+          </MenuItem.Header>
+        </MenuItem>
+      </MenuItem>
+    </Menu>
+
+    <GridSplitter Grid.RowSpan="3" Grid.Column="1" Margin="0,-12,0,-12"
+                  HorizontalAlignment="Stretch"
+                  Background="{x:Static SystemColors.ControlLightBrush}" />
+
+    <TabControl x:Name="TabControlCategories" Grid.Row="1" Margin="0,0,3,12"
+                ItemsSource="{Binding Path=Value.Values, Source={x:Static businessLogic:AppInfo.Categories}}"
+                SelectionChanged="TabControlCategoriesSelectionChanged">
+      <TabControl.ItemContainerStyle>
+        <Style TargetType="TabItem">
+          <Setter Property="Header" Value="{Binding Name}" />
+          <Setter Property="ToolTip" Value="{Binding Description}" />
+        </Style>
+      </TabControl.ItemContainerStyle>
+      <TabControl.ContentTemplate>
+        <DataTemplate DataType="scripts:Category">
+          <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
+                    CanUserReorderColumns="False" CanUserResizeRows="False" GridLinesVisibility="None"
+                    HeadersVisibility="Column" IsSynchronizedWithCurrentItem="False"
+                    ItemsSource="{Binding Source={StaticResource Scripts}}"
+                    SelectedItem="{Binding Selected, ElementName=ScriptEditor, Mode=OneWayToSource}"
+                    SelectionMode="Single" SelectionUnit="FullRow">
+            <DataGrid.GroupStyle>
+              <!--  Style for groups at top level.  -->
+              <GroupStyle>
+                <GroupStyle.ContainerStyle>
+                  <Style TargetType="{x:Type GroupItem}">
+                    <Setter Property="Template">
+                      <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type GroupItem}">
+                          <Expander IsExpanded="True">
+                            <Expander.Header>
+                              <DockPanel>
+                                <TextBlock FontWeight="SemiBold">
+                                  <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} ({1})">
+                                      <Binding Path="Name" />
+                                      <Binding Path="ItemCount" />
+                                    </MultiBinding>
+                                  </TextBlock.Text>
+                                </TextBlock>
+                              </DockPanel>
+                            </Expander.Header>
+                            <Expander.Content>
+                              <ItemsPresenter />
+                            </Expander.Content>
+                          </Expander>
+                        </ControlTemplate>
+                      </Setter.Value>
+                    </Setter>
+                  </Style>
+                </GroupStyle.ContainerStyle>
+              </GroupStyle>
+            </DataGrid.GroupStyle>
+            <DataGrid.RowStyle>
+              <Style TargetType="DataGridRow">
+                <Setter Property="Background" Value="{Binding RecommendationLevel.Color, Converter={StaticResource ColorToBrushConverter}, ConverterParameter=0.15}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Margin" Value="3,0" />
+                <Style.Triggers>
+                  <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1F26A0DA" />
+                    <Setter Property="BorderBrush" Value="#A826A0DA" />
+                  </Trigger>
+                  <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                      <Condition Property="Selector.IsSelectionActive" Value="False" />
+                      <Condition Property="IsSelected" Value="True" />
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="#3DDADADA" />
+                    <Setter Property="BorderBrush" Value="#DADADA" />
+                  </MultiTrigger>
+                  <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                      <Condition Property="Selector.IsSelectionActive" Value="True" />
+                      <Condition Property="IsSelected" Value="True" />
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="#3D26A0DA" />
+                    <Setter Property="BorderBrush" Value="#26A0DA" />
+                  </MultiTrigger>
+                </Style.Triggers>
+              </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.CellStyle>
+              <Style TargetType="DataGridCell">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="Foreground" Value="Black" />
+                <!--  Padding instead of Margin for a larger selection are  -->
+                <Setter Property="Padding" Value="3,2" />
+                <!--  Necessary for padding  -->
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                      <Border Padding="{TemplateBinding Padding}"
+                              Background="{TemplateBinding Background}"
+                              BorderBrush="{TemplateBinding BorderBrush}"
+                              BorderThickness="{TemplateBinding BorderThickness}"
+                              SnapsToDevicePixels="True">
+                        <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                      </Border>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+              </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.Columns>
+              <!--  Using a TemplateColumn instead of a CheckBoxColumns for single-click editing.  -->
+              <DataGridTemplateColumn CanUserResize="False">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate>
+                    <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTextColumn Binding="{Binding Name}"
+                                  Header="{x:Static ui:MainWindow.Name}"
+                                  IsReadOnly="True" />
+              <DataGridTextColumn Binding="{Binding RecommendationLevel.Name}"
+                                  Header="{x:Static ui:MainWindow.RecommendationLevel}"
+                                  IsReadOnly="True" />
+              <DataGridTextColumn Binding="{Binding Host.Name}"
+                                  Header="{x:Static ui:MainWindow.Host}"
+                                  IsReadOnly="True" />
+              <DataGridTextColumn Binding="{Binding Impact.Name}"
+                                  Header="{x:Static ui:MainWindow.Impact}"
+                                  IsReadOnly="True" />
+            </DataGrid.Columns>
+          </DataGrid>
+        </DataTemplate>
+      </TabControl.ContentTemplate>
+    </TabControl>
+    <controls:ScriptEditor x:Name="ScriptEditor" Grid.Row="1" Grid.Column="2"
+                           Margin="3,0,0,12" ScriptChangedCategory="ScriptEditorScriptChangedCategory" ScriptRemoved="ScriptEditorScriptRemoved" />
+
+    <Button Grid.Row="2" HorizontalAlignment="Center" Click="ButtonAddScriptsClick"
+            Content="{x:Static ui:Buttons.AddScripts}" />
+
+    <Button Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center"
+            Click="ButtonExecuteScriptsClick"
+            Content="{x:Static ui:Buttons.ExecuteScripts}" />
+  </Grid>
+</Window>

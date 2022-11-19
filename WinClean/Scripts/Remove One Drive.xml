@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Remove One Drive</Name>
+  <Name xml:lang="fr">Supprimmer One Drive</Name>
+  <Description>One Drive comes preinstalled with Windows. This script removes One Drive and frees up disk space.</Description>
+  <Description xml:lang="fr">One Drive est préinstallé avec Windows. Ce script supprime One Drive et libère de l'espace disque.</Description>
+  <Category>Debloat</Category>
+  <Recommended>Limited</Recommended>
+  <Host>PowerShell</Host>
+  <Impact>Free storage space</Impact>
+  <Code>Import-Module Microsoft.PowerShell.Management
+Import-Module Microsoft.PowerShell.Utility
+Import-Module Microsoft.PowerShell.Security
+
+function force-mkdir($path) {
+if (!(Test-Path $path)) {
+    New-Item -ItemType Directory -Force -Path $path
+}}
+    function Takeown-Registry($key) {
+    # TODO does not work for all root keys yet
+    switch ($key.split('\')[0]) {
+        "HKEYCLASSESROOT" {
+            $reg = [Microsoft.Win32.Registry]::ClassesRoot
+            $key = $key.substring(18)
+        }
+        "HKEYCURRENTUSER" {
+            $reg = [Microsoft.Win32.Registry]::CurrentUser
+            $key = $key.substring(18)
+        }
+        "HKEYLOCALMACHINE" {
+            $reg = [Microsoft.Win32.Registry]::LocalMachine
+            $key = $key.substring(19)
+        }
+    }
+
+    # get administraor group
+    $admins = New-Object System.Security.Principal.SecurityIdentifier("S-1-5-32-544")
+    $admins = $admins.Translate([System.Security.Principal.NTAccount])
+
+    # set owner
+    $key = $reg.OpenSubKey($key, "ReadWriteSubTree", "TakeOwnership")
+    $acl = $key.GetAccessControl()
+    $acl.SetOwner($admins)
+    $key.SetAccessControl($acl)
+
+    # set FullControl
+    $acl = $key.GetAccessControl()
+    $rule = New-Object System.Security.AccessControl.RegistryAccessRule($admins, "FullControl", "Allow")
+    $acl.SetAccessRule($rule)
+    $key.SetAccessControl($acl)
+}
+
+function Takeown-File($path) {
+    takeown.exe /A /F $path
+    $acl = Get-Acl $path
+
+    # get administraor group
+    $admins = New-Object System.Security.Principal.SecurityIdentifier("S-1-5-32-544")
+    $admins = $admins.Translate([System.Security.Principal.NTAccount])
+
+    # add NT Authority\SYSTEM
+    $rule = New-Object System.Security.AccessControl.FileSystemAccessRule($admins, "FullControl", "None", "None", "Allow")
+    $acl.AddAccessRule($rule)
+
+    Set-Acl -Path $path -AclObject $acl
+}
+
+function Takeown-Folder($path) {
+    Takeown-File $path
+    foreach ($item in Get-ChildItem $path) {
+        if (Test-Path $item -PathType Container) {
+            Takeown-Folder $item.FullName
+        } else {
+            Takeown-File $item.FullName
+        }
+    }
+}
+
+function Elevate-Privileges {
+    param($Privilege)
+    $Definition = @"
+    using System;
+    using System.Runtime.InteropServices;
+    public sealed class AdjPriv {
+        [DllImport("advapi32.dll", ExactSpelling = true, SetLastError = true)]
+            internal static extern bool AdjustTokenPrivileges(IntPtr htok, bool disall, ref TokPriv1Luid newst, int len, IntPtr prev, IntPtr rele);
+        [DllImport("advapi32.dll", ExactSpelling = true, SetLastError = true)]
+            internal static extern bool OpenProcessToken(IntPtr h, int acc, ref IntPtr phtok);
+        [DllImport("advapi32.dll", SetLastError = true)]
+            internal static extern bool LookupPrivilegeValue(string host, string name, ref long pluid);
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+            internal struct TokPriv1Luid {
+                public int Count;
+                public long Luid;
+                public int Attr;
+            }
+        internal const int SEPRIVILEGEENABLED = 0x00000002;
+        internal const int TOKENQUERY = 0x00000008;
+        internal const int TOKENADJUSTPRIVILEGES = 0x00000020;
+        public static bool EnablePrivilege(long processHandle, string privilege) {
+            bool retVal;
+            TokPriv1Luid tp;
+            IntPtr hproc = new IntPtr(processHandle);
+            IntPtr htok = IntPtr.Zero;
+            retVal = OpenProcessToken(hproc, TOKENADJUSTPRIVILEGES | TOKENQUERY, ref htok);
+            tp.Count = 1;
+            tp.Luid = 0;
+            tp.Attr = SEPRIVILEGEENABLED;
+            retVal = LookupPrivilegeValue(null, privilege, ref tp.Luid);
+            retVal = AdjustTokenPrivileges(htok, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
+            return retVal;
+        }
+    }
+"@
+    $ProcessHandle = (Get-Process -id $pid).Handle
+    $type = Add-Type $definition -PassThru
+    $type[0]::EnablePrivilege($processHandle, $Privilege)
+}
+
+taskkill.exe /F /IM "OneDrive.exe"
+taskkill.exe /F /IM "explorer.exe"
+
+if (Test-Path "$env:systemroot\System32\OneDriveSetup.exe") {
+    &amp; "$env:systemroot\System32\OneDriveSetup.exe" /uninstall
+}
+if (Test-Path "$env:systemroot\SysWOW64\OneDriveSetup.exe") {
+    &amp; "$env:systemroot\SysWOW64\OneDriveSetup.exe" /uninstall
+}
+
+force-mkdir "HKLM:\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\OneDrive"
+sp "HKLM:\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\OneDrive" "DisableFileSyncNGSC" 1
+
+rm -Recurse -Force -ErrorAction SilentlyContinue "$env:localappdata\Microsoft\OneDrive"
+rm -Recurse -Force -ErrorAction SilentlyContinue "$env:programdata\Microsoft OneDrive"
+rm -Recurse -Force -ErrorAction SilentlyContinue "C:\OneDriveTemp"
+
+New-PSDrive -PSProvider "Registry" -Root "HKEYCLASSESROOT" -Name "HKCR"
+mkdir -Force "HKCR:\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
+sp "HKCR:\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" "System.IsPinnedToNameSpaceTree" 0
+mkdir -Force "HKCR:\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
+sp "HKCR:\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" "System.IsPinnedToNameSpaceTree" 0
+Remove-PSDrive "HKCR"
+
+reg load "hku\Default" "C:\Users\Default\NTUSER.DAT"
+reg delete "HKEYUSERS\Default\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "OneDriveSetup" /f
+reg unload "hku\Default"
+
+rm -Force -ErrorAction SilentlyContinue "$env:userprofile\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\OneDrive.lnk"
+
+start "explorer.exe"
+
+sleep 15
+
+foreach ($item in (ls "$env:WinDir\WinSxS\*onedrive*")) {
+    Takeown-Folder $item.FullName
+    rm -Recurse -Force $item.FullName
+}</Code>
+</Script>
