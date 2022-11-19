@@ -4,7 +4,6 @@
         xmlns:controls="clr-namespace:Scover.WinClean.Presentation.Controls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:presentation="clr-namespace:Scover.WinClean.Presentation"
         xmlns:scripts="clr-namespace:Scover.WinClean.BusinessLogic.Scripts" xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
         xmlns:windows="clr-namespace:Scover.WinClean.Presentation.Windows" x:Name="Window"
         Title="{x:Static businessLogic:AppInfo.Name}"

@@ -10,10 +10,7 @@ namespace Scover.WinClean.BusinessLogic;
 
 public sealed record Host : ScriptMetadata
 {
-    /// <summary>Arguments to pass to <see cref="Executable"/> when executing.</summary>
     private readonly string _arguments;
-
-    /// <summary>The path to the executable of the script host program.</summary>
     private readonly string _executable;
 
     /// <param name="executable">The absolute path to the script host executable. May contain environment variables.</param>

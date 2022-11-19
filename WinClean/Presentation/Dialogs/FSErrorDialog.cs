@@ -8,7 +8,6 @@ namespace Scover.WinClean.Presentation.Dialogs;
 public sealed class FSErrorDialog : Dialog
 {
     /// <param name="e">The exception responsible of the filesystem error.</param>
-
     /// <param name="verb">The filesystem verb that could apply to what was trying to be done.</param>
     /// <param name="info">The file or directory on which the operation was applying.</param>
     /// <remarks>

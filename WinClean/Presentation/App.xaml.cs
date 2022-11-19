@@ -1,8 +1,4 @@
-﻿global using System.IO;
-
-global using static Humanizer.StringExtensions;
-
-using System.Globalization;
+﻿using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;

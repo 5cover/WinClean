@@ -41,7 +41,7 @@ public static class AppInfo
 
     private static Stream OpenContentFile(string filename)
 #if PORTABLE
-        => Assembly.GetExecutingAssembly().GetManifestResourceStream($"{nameof(Scover)}.{nameof(WinClean)}.{filename}).AssertNotNull();
+        => Assembly.GetExecutingAssembly().GetManifestResourceStream($"{nameof(Scover)}.{nameof(WinClean)}.{filename}").AssertNotNull();
 #else
         => File.OpenRead(filename);
 
