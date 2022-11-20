@@ -13,6 +13,7 @@ public sealed class ManifestResourceScriptCollection : ScriptCollection
     /// <inheritdoc cref="ScriptCollection(IScriptSerializer, ScriptType)"/>
     public ManifestResourceScriptCollection(string @namespace, IScriptSerializer serializer, ScriptType scriptType) : base(serializer, scriptType)
     {
+        // Add a dot to only load resources inside the namespace.
         @namespace += '.';
         foreach (var resName in assembly.GetManifestResourceNames().Where(name => name.StartsWith(@namespace, StringComparison.Ordinal)))
         {
@@ -20,7 +21,7 @@ public sealed class ManifestResourceScriptCollection : ScriptCollection
         }
     }
 
-    protected override void Load(string source)
+    private void Load(string source)
     {
         Stream stream;
         try

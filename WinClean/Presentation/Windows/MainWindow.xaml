@@ -47,7 +47,7 @@
       <MenuItem Header="{x:Static ui:MainWindow.MenuSelectScripts}">
         <MenuItem.Resources>
           <Style x:Key="ScriptMetadataMenuItemStyle" TargetType="MenuItem">
-            <Setter Property="Command" Value="{x:Static windows:MainWindow.SelectScriptsByMetadata}" />
+            <Setter Property="Command" Value="{x:Static windows:MainWindow.CheckScriptsByMetadata}" />
             <Setter Property="CommandParameter" Value="{Binding}" />
             <Setter Property="ToolTip" Value="{Binding Description}" />
           </Style>

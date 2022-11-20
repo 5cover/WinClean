@@ -34,20 +34,24 @@ public sealed partial class App
     /// <param name="scripts">The modified script collection.</param>
     public static void SaveScripts(IReadOnlyCollection<Script> scripts)
     {
-        var collections = scripts.Where(s => scriptCollections[s.Type] is IMutableScriptCollection)
-            .ToDictionary(s => s, s => (IMutableScriptCollection)scriptCollections[s.Type]);
-
-        foreach (var addedScript in collections.Keys.Except(Scripts))
+        // Remove scripts first to avoid duplicates.
+        foreach (var removedScript in Scripts.Except(scripts))
         {
-            collections[addedScript].Add(addedScript);
+            if (scriptCollections[removedScript.Type] is IMutableScriptCollection collection)
+            {
+                collection.Remove(removedScript);
+            }
         }
 
-        foreach (var removedScript in Scripts.Except(collections.Keys))
+        foreach (var addedScript in scripts.Except(Scripts))
         {
-            collections[removedScript].Remove(removedScript);
+            if (scriptCollections[addedScript.Type] is IMutableScriptCollection collection)
+            {
+                collection.Add(addedScript);
+            }
         }
 
-        foreach (var collection in collections.Values.Distinct())
+        foreach (var collection in scriptCollections.Values.OfType<IMutableScriptCollection>())
         {
             collection.Save();
         }
@@ -73,7 +77,7 @@ public sealed partial class App
         scriptCollections[ScriptType.Custom] = new FileScriptCollection(AppDirectory.Scripts, AppInfo.Settings.ScriptFileExtension,
             callbacks.ReloadElseIgnoreInvalidCustomScript, callbacks.ReloadElseIgnoreFSErrorAcessingCustomScript, xmlSerializer, ScriptType.Custom);
         scriptCollections[ScriptType.Default] = new ManifestResourceScriptCollection(
-            $"{nameof(Scover)}.{nameof(WinClean)}.{nameof(BusinessLogic.Scripts)}.", xmlSerializer, ScriptType.Default);
+            $"{nameof(Scover)}.{nameof(WinClean)}.{nameof(BusinessLogic.Scripts)}", xmlSerializer, ScriptType.Default);
     }
 
     private sealed record Callbacks(Action WarnOnUpdate,

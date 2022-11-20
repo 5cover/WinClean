@@ -8,8 +8,6 @@ using CommunityToolkit.Mvvm.Input;
 
 using Humanizer;
 
-using Microsoft.Win32;
-
 using Ookii.Dialogs.Wpf;
 
 using Scover.WinClean.BusinessLogic;
@@ -29,7 +27,7 @@ namespace Scover.WinClean.Presentation.Windows;
 public sealed partial class MainWindow
 {
     private static readonly IScriptSerializer serializer = new ScriptXmlSerializer();
-    private readonly Dictionary<object, object> _selectedScripts = new();
+    private readonly Dictionary<Category, Script?> _selectedScripts = new();
 
     public MainWindow()
     {
@@ -41,9 +39,7 @@ public sealed partial class MainWindow
         WindowState = AppInfo.Settings.IsMaximized ? WindowState.Maximized : WindowState.Normal;
     }
 
-    public static ObservableCollection<Script> Scripts { get; } = new(App.Scripts);
-
-    public static RelayCommand<ScriptMetadata> SelectScriptsByMetadata { get; } = new(metadata =>
+    public static RelayCommand<ScriptMetadata> CheckScriptsByMetadata { get; } = new(metadata =>
         {
             _ = metadata ?? throw new ArgumentNullException(nameof(metadata));
             CheckScripts(s =>
@@ -60,7 +56,71 @@ public sealed partial class MainWindow
             });
         });
 
+    public static ObservableCollection<Script> Scripts { get; } = new(App.Scripts);
+
     private ICollectionView ScriptCollectionView => ((CollectionViewSource)Resources["Scripts"]).View;
+    private DataGrid? ScriptDataGrid => TabControlCategories.FindVisualChildren<DataGrid>().SingleOrDefault();
+
+    /// <summary>Gets or sets the currently selected script.</summary>
+    /// <remarks>Asserts that <see cref="ScriptDataGrid"/> is not null before setting the selected script.</remarks>
+    private Script? SelectedScript
+    {
+        get => ScriptEditor.Selected;
+        // Don't set ScriptEditor.Selected because it wouldn't update ScriptDataGrid.SelectedItem. Setting
+        // ScriptDataGrid.SelectedItem updates ScriptEditor.Selected due to a OneWayToSource binding in ScriptDataGrid.
+        set => ScriptDataGrid.AssertNotNull().SelectedItem = value;
+    }
+
+    private static void AddScript(string path)
+    {
+    retry:
+        try
+        {
+            using Stream file = File.OpenRead(path);
+            Script script = serializer.Deserialize(ScriptType.Custom, file);
+
+            Script? existingScript = Scripts.FirstOrDefault(s => s.InvariantName == script.InvariantName);
+            if (existingScript is null)
+            {
+                Scripts.Add(script);
+            }
+            else
+            {
+                using Dialog overwrite = new(Button.Yes, Button.No)
+                {
+                    MainIcon = TaskDialogIcon.Warning,
+                    Content = WinClean.Resources.UI.Dialogs.ConfirmScriptOverwriteContent.FormatWith(existingScript.Name)
+                };
+                if (overwrite.ShowDialog().ClickedButton == Button.Yes)
+                {
+                    _ = Scripts.Remove(existingScript);
+                    goto retry;
+                }
+            }
+        }
+        catch (InvalidDataException ex)
+        {
+            Logs.InvalidScriptData.FormatWith(Path.GetFileName(path), ex).Log(LogLevel.Error);
+
+            using Dialog invalidScriptData =
+                DialogFactory.MakeInvalidScriptDataDialog(ex, path, Button.Retry, Button.Ignore);
+            if (invalidScriptData.ShowDialog().ClickedButton == Button.Retry)
+            {
+                goto retry;
+            }
+        }
+        catch (Exception ex) when (ex.IsFileSystem())
+        {
+            using FSErrorDialog fsErrorDialog = new(ex, FSVerb.Access, new FileInfo(path), Button.Retry, Button.Ignore)
+            {
+                MainInstruction = WinClean.Resources.UI.Dialogs.FSErrorAddingCustomScriptMainInstruction
+            };
+            if (fsErrorDialog.ShowDialog().ClickedButton == Button.Retry)
+            {
+                goto retry;
+            }
+        }
+    }
 
     private static void CheckScripts(Predicate<Script> check)
     {
@@ -70,131 +130,10 @@ public sealed partial class MainWindow
         }
     }
 
-    private void ButtonAddScriptsClick(object sender, RoutedEventArgs e)
+    private void RefreshScriptFilter(Category category)
     {
-        OpenFileDialog ofd = new()
-        {
-            DefaultExt = AppInfo.Settings.ScriptFileExtension,
-            Multiselect = true,
-            ReadOnlyChecked = true,
-        };
-        MakeFilter(new(AppInfo.Settings.ScriptFileExtension));
-
-        if (!ofd.ShowDialog(this) ?? true)
-        {
-            return;
-        }
-
-        foreach (string path in ofd.FileNames)
-        {
-        retry:
-            try
-            {
-                using Stream file = File.OpenRead(path);
-                Scripts.Add(serializer.Deserialize(ScriptType.Custom, file));
-            }
-            catch (InvalidDataException ex)
-            {
-                Logs.InvalidScriptData.FormatWith(Path.GetFileName(path), ex).Log(LogLevel.Error);
-
-                using Dialog invalidScriptData = DialogFactory.MakeInvalidScriptDataDialog(ex, path, Button.Retry, Button.Ignore);
-                if (invalidScriptData.ShowDialog().ClickedButton == Button.Retry)
-                {
-                    goto retry;
-                }
-            }
-            catch (ScriptAlreadyExistsException ex)
-            {
-                using Dialog overwrite = new(Button.Yes, Button.No)
-                {
-                    MainIcon = TaskDialogIcon.Warning,
-                    Content = WinClean.Resources.UI.Dialogs.ConfirmScriptOverwriteContent.FormatWith(ex.ExistingScript.Name)
-                };
-                overwrite.DefaultButton = Button.Yes;
-                if (overwrite.ShowDialog().ClickedButton == Button.Yes)
-                {
-                    _ = Scripts.Remove(ex.ExistingScript);
-                    goto retry;
-                }
-            }
-            catch (Exception ex) when (ex.IsFileSystem())
-            {
-                using FSErrorDialog fsErrorDialog = new(ex, FSVerb.Access, new FileInfo(path), Button.Retry, Button.Ignore)
-                {
-                    MainInstruction = WinClean.Resources.UI.Dialogs.FSErrorAddingCustomScriptMainInstruction
-                };
-                if (fsErrorDialog.ShowDialog().ClickedButton == Button.Retry)
-                {
-                    goto retry;
-                }
-            }
-        }
-
-        void MakeFilter(ExtensionGroup group)
-        {
-            string extensions = string.Join(";", group.Select(ext => $"*{ext}"));
-            ofd.Filter = $"{group.Name} ({extensions})|{extensions}";
-        }
-    }
-
-    private void ButtonExecuteScriptsClick(object sender, RoutedEventArgs e)
-    {
-        var selectedScripts = Scripts.Where(s => s.IsSelected).ToList();
-        if (!selectedScripts.Any())
-        {
-            using Dialog noScriptsSelected = new(Button.Ok)
-            {
-                MainIcon = TaskDialogIcon.Error,
-                MainInstruction = WinClean.Resources.UI.Dialogs.NoScriptsSelectedMainInstruction,
-                Content = WinClean.Resources.UI.Dialogs.NoScriptsSelectedContent
-            };
-            _ = noScriptsSelected.ShowDialog();
-            return;
-        }
-        using ScriptExecutionWizard wizard = new(selectedScripts);
-        wizard.Execute();
-    }
-
-    private void MenuAboutClick(object sender, RoutedEventArgs e) => new AboutWindow { Owner = this }.ShowDialog();
-
-    private void MenuAllClick(object sender, RoutedEventArgs e) => CheckScripts(_ => true);
-
-    private void MenuClearLogsClick(object sender, RoutedEventArgs e) => Task.Run(() => App.Logger.ClearLogs());
-
-    private void MenuExitClick(object sender, RoutedEventArgs e) => Close();
-
-    private void MenuNoneClick(object sender, RoutedEventArgs e) => CheckScripts(_ => false);
-
-    private void MenuOnlineWikiClick(object sender, RoutedEventArgs e) => Helpers.Open(AppInfo.Settings.WikiUrl);
-
-    private void MenuOpenLogsDirClick(object sender, RoutedEventArgs e) => Helpers.Open(AppDirectory.Logs);
-
-    private void MenuOpenScriptsDirClick(object sender, RoutedEventArgs e) => Helpers.Open(AppDirectory.Scripts);
-
-    private void MenuSettingsClick(object sender, RoutedEventArgs e) => new SettingsWindow { Owner = this }.ShowDialog();
-
-    private void ScriptEditorScriptChangedCategory(object sender, EventArgs e) => ScriptCollectionView.Refresh();
-
-    private void ScriptEditorScriptRemoved(object sender, EventArgs e)
-    {
-        _ = Scripts.Remove(ScriptEditor.Selected.AssertNotNull());
-        ScriptCollectionView.Refresh();
-    }
-
-    private void TabControlCategoriesSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        var category = TabControlCategories.SelectedItem;
-
-        if (e.OriginalSource is DataGrid { SelectedItem: { } } dgScripts)
-        {
-            _selectedScripts[category] = dgScripts.SelectedItem;
-            return;
-        }
-
-        DataGrid? currentDgScripts = TabControlCategories.FindVisualChildren<DataGrid>().SingleOrDefault();
-
         // 1. Commit any pending edits and exit edit mode before setting the filter.
-        _ = currentDgScripts?.CommitEdit(DataGridEditingUnit.Row, true);
+        _ = ScriptDataGrid?.CommitEdit(DataGridEditingUnit.Row, true);
 
         // 2. Set the filter to keep only the scripts with the current category.
         ScriptCollectionView.Filter = s => ((Script)s).Category.Equals(category);
@@ -202,22 +141,14 @@ public sealed partial class MainWindow
         ScriptCollectionView.Refresh();
 
         // 4. Refreshing unfocuses the DataGrid, so focus it.
-        _ = currentDgScripts?.Focus();
+        _ = ScriptDataGrid?.Focus();
 
-        if (currentDgScripts is not null && _selectedScripts.TryGetValue(category, out var selected))
+        // ScriptDataGrid could be null here because this method may be called right when the window is shown, before all
+        // elements have initialized.
+        if (ScriptDataGrid is not null && _selectedScripts.TryGetValue(category, out var selected))
         {
-            // 5. Restore the selected item, if available.
-            currentDgScripts.SelectedItem = selected;
+            // 5. Restore the selected item.
+            SelectedScript = selected;
         }
-    }
-
-    private void WindowClosed(object sender, EventArgs e)
-    {
-        AppInfo.Settings.Top = Top;
-        AppInfo.Settings.Left = Left;
-        AppInfo.Settings.Width = Width;
-        AppInfo.Settings.Height = Height;
-        AppInfo.Settings.IsMaximized = WindowState == WindowState.Maximized;
-        App.SaveScripts(Scripts);
     }
 }

@@ -25,7 +25,6 @@
     <Platforms>AnyCPU</Platforms>
     <Version>1.2.2</Version>
     <Configurations>Debug;Release;Portable</Configurations>
-    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
   </PropertyGroup>
 
