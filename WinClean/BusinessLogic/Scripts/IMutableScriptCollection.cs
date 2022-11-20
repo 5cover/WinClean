@@ -5,7 +5,6 @@ public interface IMutableScriptCollection : IEnumerable<Script>
 {
     /// <summary>Adds a new script to the storage system.</summary>
     /// <param name="script">The script to add.</param>
-    /// <exception cref="ScriptAlreadyExistsException">An identical script already exists in the storage system.</exception>
     public void Add(Script script);
 
     /// <summary>Removes a script from the storage system..</summary>

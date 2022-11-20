@@ -6,12 +6,13 @@ namespace Scover.WinClean.BusinessLogic.Scripts;
 public sealed class FileScriptCollection : ScriptCollection, IMutableScriptCollection
 {
     private readonly string _directory;
+    private readonly string _scriptFileExtension;
 
     public FileScriptCollection(string directory, string scriptFileExtension,
         InvalidScriptDataCallback invalidScriptDataReloadElseIgnore, FSErrorCallback fsErrorReloadElseIgnore,
         IScriptSerializer serializer, ScriptType scriptType) : base(serializer, scriptType)
     {
-        _directory = directory;
+        (_directory, _scriptFileExtension) = (directory, scriptFileExtension);
         foreach (var filePath in Directory.EnumerateFiles(directory, $"*{scriptFileExtension}",
                      SearchOption.AllDirectories))
         {
@@ -39,17 +40,7 @@ public sealed class FileScriptCollection : ScriptCollection, IMutableScriptColle
 
     public void Add(Script script)
     {
-        string savingPath = Path.Join(_directory, script.InvariantName.ToFilename());
-        try
-        {
-            using Stream file = File.Open(savingPath, FileMode.CreateNew);
-            Serialize(script, file);
-        }
-        catch (IOException e) when (e.HResult == -2147024816) // 0x80070050: The file already exists
-        {
-            using Stream file = File.OpenRead(savingPath);
-            throw new ScriptAlreadyExistsException(Deserialize(file), e);
-        }
+        string savingPath = Path.Join(_directory, script.InvariantName.ToFilename() + _scriptFileExtension);
         Sources.Add(script, savingPath);
     }
 
@@ -63,15 +54,15 @@ public sealed class FileScriptCollection : ScriptCollection, IMutableScriptColle
     {
         foreach (Script s in this)
         {
-            using Stream FILE = File.Open(Sources[s], FileMode.Create, FileAccess.Write);
-            Serialize(s, FILE);
+            using Stream file = File.Create(Sources[s]);
+            Serialize(s, file);
         }
     }
 
-    protected override void Load(string source)
+    private void Load(string filePath)
     {
-        using Stream file = File.OpenRead(source);
+        using Stream file = File.OpenRead(filePath);
         var script = Deserialize(file);
-        Sources.Add(script, source);
+        Sources.Add(script, filePath);
     }
 }
