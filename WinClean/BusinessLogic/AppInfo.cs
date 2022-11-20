@@ -9,9 +9,6 @@ namespace Scover.WinClean.BusinessLogic;
 /// <summary>Holds data related to the Business Logic layer.</summary>
 public static class AppInfo
 {
-    // Setting initialized here because an XML default value doesn't work.
-    static AppInfo() => PersistentSettings["ScriptExecutionTimes"] = new SerializableStringDictionary();
-
     private static readonly IScriptMetadataDeserializer deserializer = new ScriptMetadataXmlDeserializer();
     private static readonly Assembly assembly = Assembly.GetExecutingAssembly();
 
@@ -37,7 +34,15 @@ public static class AppInfo
     public static Settings Settings => Settings.Default;
 
     /// <summary>Gets the settings that should not be reset.</summary>
-    public static PersistentSettings PersistentSettings => PersistentSettings.Default;
+    public static PersistentSettings PersistentSettings
+    {
+        get
+        {
+            // chaud : valeur par défault xml deserializer interface stocker une string
+            PersistentSettings.Default["ScriptExecutionTimes"] ??= new SerializableStringDictionary();
+            return PersistentSettings.Default;
+        }
+    }
 
     private static Stream OpenContentFile(string filename)
 #if PORTABLE

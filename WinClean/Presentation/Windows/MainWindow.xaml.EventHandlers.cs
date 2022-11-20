@@ -28,12 +28,18 @@ public partial class MainWindow
             return;
         }
 
+        var oldScriptCount = Scripts.Count;
+
         foreach (string path in ofd.FileNames)
         {
             AddScript(path);
         }
 
-        SelectedScript = Scripts.LastOrDefault();
+        // If new scripts were added, select the last added script.
+        if (Scripts.Count > oldScriptCount)
+        {
+            SelectedScript = Scripts.LastOrDefault();
+        }
 
         void MakeFilter(ExtensionGroup group)
         {

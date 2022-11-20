@@ -8,9 +8,22 @@ public sealed class FileScriptCollection : ScriptCollection, IMutableScriptColle
     private readonly string _directory;
     private readonly string _scriptFileExtension;
 
-    public FileScriptCollection(string directory, string scriptFileExtension,
-        InvalidScriptDataCallback invalidScriptDataReloadElseIgnore, FSErrorCallback fsErrorReloadElseIgnore,
-        IScriptSerializer serializer, ScriptType scriptType) : base(serializer, scriptType)
+    /// <summary></summary>
+    /// <param name="directory">The directory containing the script files.</param>
+    /// <param name="scriptFileExtension">The extension of the script files.</param>
+    /// <param name="invalidScriptDataReloadElseIgnore">
+    /// <inheritdoc cref="InvalidScriptDataCallback" path="/summary"/> Returns <inheritdoc cref="InvalidScriptDataCallback" path="/returns"/>
+    /// </param>
+    /// <param name="fsErrorReloadElseIgnore">
+    /// <inheritdoc cref="FSErrorCallback" path="/summary"/> Returns <inheritdoc cref="FSErrorCallback" path="/returns"/>
+    /// </param>
+    /// <inheritdoc cref="ScriptCollection(IScriptSerializer, ScriptType)" path="/param"/>
+    public FileScriptCollection(string directory,
+                                string scriptFileExtension,
+                                InvalidScriptDataCallback invalidScriptDataReloadElseIgnore,
+                                FSErrorCallback fsErrorReloadElseIgnore,
+                                IScriptSerializer serializer,
+                                ScriptType scriptType) : base(serializer, scriptType)
     {
         (_directory, _scriptFileExtension) = (directory, scriptFileExtension);
         foreach (var filePath in Directory.EnumerateFiles(directory, $"*{scriptFileExtension}",

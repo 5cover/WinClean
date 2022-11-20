@@ -15,6 +15,7 @@ namespace Scover.WinClean.Presentation.Logging;
 public sealed class CsvLogger : Logger, IDisposable
 {
     private const string DateTimeFilenameFormat = "yyyy-MM-dd--HH-mm-ss";
+    private const string LogFileExtension = ".csv";
 
     private readonly CsvWriter _csvWriter;
 
@@ -22,14 +23,14 @@ public sealed class CsvLogger : Logger, IDisposable
 
     public CsvLogger()
     {
-        _currentLogFile = Path.Join(AppDirectory.Logs, $"{Process.GetCurrentProcess().StartTime.ToString(DateTimeFilenameFormat, DateTimeFormatInfo.InvariantInfo)}.csv");
+        _currentLogFile = Path.Join(AppDirectory.Logs, Process.GetCurrentProcess().StartTime.ToString(DateTimeFilenameFormat, DateTimeFormatInfo.InvariantInfo) + LogFileExtension);
         _csvWriter = new(new StreamWriter(_currentLogFile, true, Encoding.Unicode), new CsvConfiguration(CultureInfo.InvariantCulture));
         _csvWriter.WriteHeader<LogEntry>();
     }
 
     public override void ClearLogs()
     {
-        foreach (string logFile in Directory.EnumerateFiles(AppDirectory.Logs, "*.csv").Where(CanLogFileBeDeleted))
+        foreach (string logFile in Directory.EnumerateFiles(AppDirectory.Logs, $"*{LogFileExtension}").Where(CanLogFileBeDeleted))
         {
             try
             {
@@ -37,7 +38,7 @@ public sealed class CsvLogger : Logger, IDisposable
             }
             catch (Exception e) when (e.IsFileSystem())
             {
-                Logs.FailedToDeleteLogFile.FormatWith(e).Log(LogLevel.Error);
+                Logs.FailedToDeleteLogFile.FormatWith(Path.GetFileName(logFile), e).Log(LogLevel.Error);
                 // Swallow the exception. Failing to delete a log file is not serious enough to justify terminating the
                 // application with an unhandled exception.
             }
@@ -51,7 +52,7 @@ public sealed class CsvLogger : Logger, IDisposable
     {
         _csvWriter.NextRecord();
         _csvWriter.WriteRecord(entry);
-        _csvWriter.Flush(); // This is to force the writer to be done when leaving the method.
+        _csvWriter.Flush(); // This is to force the writer to be done.
     }
 
     private bool CanLogFileBeDeleted(string logFile)

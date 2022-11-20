@@ -190,17 +190,18 @@ public sealed partial class ScriptExecutionWizard : IDisposable
         progressDialog.Timer += (_, e) =>
         {
             timeRemaining -= e.Elapsed;
+            if (timeRemaining < TimeSpan.Zero)
+            {
+                timeRemaining = TimeSpan.Zero;
+            }
             UpdateExpandedInfo();
         };
 
         _executor.ProgressChanged += (_, e) =>
         {
+            scriptIndex = e.ScriptIndex;
             progressDialog.Value = e.ScriptIndex;
-            timeRemaining -= GetExecutionTime(_scripts[e.ScriptIndex]);
-            if (timeRemaining < TimeSpan.Zero)
-            {
-                timeRemaining = TimeSpan.Zero;
-            }
+            timeRemaining = _scripts.Skip(e.ScriptIndex).Sum(GetExecutionTime);
             UpdateExpandedInfo();
         };
 

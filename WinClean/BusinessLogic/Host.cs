@@ -27,23 +27,28 @@ public sealed record Host : ScriptMetadata
     /// <summary>Executes code.</summary>
     /// <param name="code">The code to execute.</param>
     /// <param name="timeout">The time to wait for the execution to finish until calling <paramref name="onHung"/>.</param>
-    /// <param name="onHung">
-    /// <param name="onHung">Callback called when <paramref name="timeout"/> has been reached and the execution is unlikely to finish.</param>
+    /// <param name="keepRunningElseTerminate">
+    /// <inheritdoc cref="HungScriptCallback" path="/summary"/> Returns <inheritdoc cref="HungScriptCallback" path="/returns"/>
     /// </param>
     /// <param name="cancellationToken">A cancellation token that allows cancellation of the execution.</param>
-    public void ExecuteCode(string code, TimeSpan timeout, Action onHung, CancellationToken cancellationToken)
+    public void ExecuteCode(string code, TimeSpan timeout, Func<bool> keepRunningElseTerminate, CancellationToken cancellationToken)
     {
         string tmpScriptFile = CreateTempFile(code);
         using Process host = StartHost(tmpScriptFile);
-        using var registration = cancellationToken.Register(() => host.Kill(true));
+        using var registration = cancellationToken.Register(Terminate);
 
         while (!host.WaitForExit(Convert.ToInt32(timeout.TotalMilliseconds)))
         {
-            onHung();
+            if (!keepRunningElseTerminate())
+            {
+                Terminate();
+            }
         }
 
         _ = registration.Unregister();
         File.Delete(tmpScriptFile);
+
+        void Terminate() => host.Kill(true);
     }
 
     private string CreateTempFile(string text)

@@ -4,6 +4,8 @@ using System.Windows;
 
 using CommandLine;
 
+using Humanizer;
+
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.BusinessLogic.Xml;
