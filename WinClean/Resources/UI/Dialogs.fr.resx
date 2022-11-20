@@ -159,4 +159,7 @@
   <data name="UpdateVerificationText" xml:space="preserve">
     <value>Ne plus afficher</value>
   </data>
+  <data name="FSErrorLoadingCustomScriptMainInstruction" xml:space="preserve">
+    <value>Impossible de charger le script personnalisé</value>
+  </data>
 </root>

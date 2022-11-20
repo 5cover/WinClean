@@ -162,8 +162,8 @@
   <data name="Cancel" xml:space="preserve">
     <value>Annuler</value>
   </data>
-  <data name="OK" xml:space="preserve">
-    <value>OK</value>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>_Fermer</value>

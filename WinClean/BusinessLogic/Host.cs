@@ -24,40 +24,38 @@ public sealed record Host : ScriptMetadata
 
     public string Extension { get; }
 
-    public void ExecuteCode(string code, TimeSpan timeout, Func<bool> keepRunningElseKill, CancellationToken cancellationToken)
+    /// <summary>Executes code.</summary>
+    /// <param name="code">The code to execute.</param>
+    /// <param name="timeout">The time to wait for the execution to finish until calling <paramref name="onHung"/>.</param>
+    /// <param name="onHung">
+    /// <param name="onHung">Callback called when <paramref name="timeout"/> has been reached and the execution is unlikely to finish.</param>
+    /// </param>
+    /// <param name="cancellationToken">A cancellation token that allows cancellation of the execution.</param>
+    public void ExecuteCode(string code, TimeSpan timeout, Action onHung, CancellationToken cancellationToken)
     {
-        FileInfo tmpScriptFile = CreateTempFile(code);
+        string tmpScriptFile = CreateTempFile(code);
         using Process host = StartHost(tmpScriptFile);
         using var registration = cancellationToken.Register(() => host.Kill(true));
 
         while (!host.WaitForExit(Convert.ToInt32(timeout.TotalMilliseconds)))
         {
-            if (!keepRunningElseKill())
-            {
-                host.Kill(true);
-                break;
-            }
+            onHung();
         }
 
         _ = registration.Unregister();
-        tmpScriptFile.Delete();
+        File.Delete(tmpScriptFile);
     }
 
-    private FileInfo CreateTempFile(string text)
+    private string CreateTempFile(string text)
     {
-        FileInfo tmpFile = new(Join(GetTempPath(), ChangeExtension(GetRandomFileName(), Extension)));
-
-        using StreamWriter s = tmpFile.CreateText();
-        {
-            s.Write(text);
-        }
+        string tmpFile = Join(GetTempPath(), ChangeExtension(GetRandomFileName(), Extension));
+        File.WriteAllText(tmpFile, text);
         return tmpFile;
     }
 
-    private Process StartHost(FileInfo script)
-        => Process.Start(new ProcessStartInfo(_executable, _arguments.FormatWith(script.FullName))
-        {
-            WindowStyle = ProcessWindowStyle.Hidden,
-            UseShellExecute = true // necessary for ProcessWindowStyle.Hidden
-        }).AssertNotNull();
+    private Process StartHost(string script) => Process.Start(new ProcessStartInfo(_executable, _arguments.FormatWith(script))
+    {
+        WindowStyle = ProcessWindowStyle.Hidden,
+        UseShellExecute = true // necessary for ProcessWindowStyle.Hidden
+    }).AssertNotNull();
 }

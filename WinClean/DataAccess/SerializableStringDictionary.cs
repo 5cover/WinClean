@@ -12,14 +12,7 @@ public sealed class SerializableStringDictionary : StringDictionary, IXmlSeriali
     private static readonly XmlSerializer serializer = new(typeof(List<Node>), new[] { typeof(Node) });
 
     [Serializable]
-    public record Node
-    {
-        public Node() => Key = "";
-
-        public Node(string key, string? val) => (Key, Val) = (key, val);
-        public string Key { get; }
-        public string? Val { get; }
-    }
+    public sealed record Node(string Key, string? Val);
 
     public System.Xml.Schema.XmlSchema? GetSchema() => null;
 

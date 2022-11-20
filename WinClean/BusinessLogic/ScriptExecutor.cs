@@ -20,11 +20,12 @@ public sealed class ScriptExecutor : IDisposable
 
     /// <summary>Executes a list of scripts asynchronously. Raises the <see cref="ProgressChanged"/> event.</summary>
     /// <param name="scripts">The scripts to execute.</param>
-    /// <param name="keepRunningElseKill">
-    /// <inheritdoc cref="InvalidScriptDataCallback" path="/summary"/> Returns <see langword="true"/> if the script should keep
-    /// running, or <see langword="false"/> if it should be killed.
+    /// <inheritdoc cref="Script.Execute" path="/param"/>
+    /// <param name="keepRunningElseTerminate">
+    /// <inheritdoc cref="HungScriptCallback" path="/summary"/> Returns <see langword="true"/> if the script should keep
+    /// running, or <see langword="false"/> if its associated process tree should be terminated.
     /// </param>
-    public async Task ExecuteScriptsAsync(IReadOnlyList<Script> scripts, HungScriptCallback keepRunningElseKill)
+    public async Task ExecuteScriptsAsync(IReadOnlyList<Script> scripts, HungScriptCallback keepRunningElseTerminate)
     {
         _cts.Dispose();
         _cts = new();
@@ -39,7 +40,13 @@ public sealed class ScriptExecutor : IDisposable
                 // 1. Restart the elapsed time stopwatch.
                 stopwatch.Restart();
                 // 2. Execute the script.
-                script.Execute(keepRunningElseKill, _cts.Token);
+                script.Execute(() =>
+                {
+                    if (!keepRunningElseTerminate(script))
+                    {
+                        CancelScriptExecution();
+                    }
+                }, _cts.Token);
                 // 3. Update the container for script execution times.
                 AppInfo.PersistentSettings.ScriptExecutionTimes[script.InvariantName] = stopwatch.Elapsed.ToString("c");
                 // 4. Report the progress made to the caller.

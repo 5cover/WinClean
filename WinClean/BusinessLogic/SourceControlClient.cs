@@ -30,7 +30,6 @@ public class SourceControlClient
         // WinClean repository ID (https://github.com/5cover/WinClean)
         private const long RepoId = 511304031;
 
-        private readonly IGitHubClient _github;
         private readonly Release _latestRelease;
 
         /// <summary>Creates a new <see cref="SourceControlClient"/> instance.</summary>
@@ -39,8 +38,8 @@ public class SourceControlClient
         /// </exception>
         public ActualSourceControlClient()
         {
-            _github = new GitHubClient(new ProductHeaderValue(AppInfo.Name + AppInfo.Version));
-            _latestRelease = _github.Repository.Release.GetLatest(RepoId).Result;
+            GitHubClient github = new(new ProductHeaderValue(AppInfo.Name + AppInfo.Version));
+            _latestRelease = github.Repository.Release.GetLatest(RepoId).Result;
         }
 
         public override string LatestVersionName => _latestRelease.Name;

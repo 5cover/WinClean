@@ -14,12 +14,11 @@ using Ookii.Dialogs.Wpf;
 
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
+using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
 using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Resources;
-
-using WinCopies.Linq;
 
 using Xceed.Wpf.AvalonDock.Controls;
 
@@ -29,6 +28,7 @@ namespace Scover.WinClean.Presentation.Windows;
 
 public sealed partial class MainWindow
 {
+    private static readonly IScriptSerializer serializer = new ScriptXmlSerializer();
     private readonly Dictionary<object, object> _selectedScripts = new();
 
     public MainWindow()
@@ -41,14 +41,14 @@ public sealed partial class MainWindow
         WindowState = AppInfo.Settings.IsMaximized ? WindowState.Maximized : WindowState.Normal;
     }
 
-    public static ObservableCollection<Script> Scripts { get; private set; } = new(App.ScriptCollections.Values.SelectMany(x => x));
+    public static ObservableCollection<Script> Scripts { get; } = new(App.Scripts);
 
     public static RelayCommand<ScriptMetadata> SelectScriptsByMetadata { get; } = new(metadata =>
         {
             _ = metadata ?? throw new ArgumentNullException(nameof(metadata));
             CheckScripts(s =>
             {
-                ScriptMetadata? scriptMetadata = metadata switch
+                ScriptMetadata scriptMetadata = metadata switch
                 {
                     Category => s.Category,
                     RecommendationLevel => s.RecommendationLevel,
@@ -85,17 +85,17 @@ public sealed partial class MainWindow
             return;
         }
 
-        var customScripts = (IMutableScriptCollection)App.ScriptCollections[ScriptType.Custom];
         foreach (string path in ofd.FileNames)
         {
         retry:
             try
             {
-                Scripts.Add(customScripts.Add(path));
+                using Stream file = File.OpenRead(path);
+                Scripts.Add(serializer.Deserialize(ScriptType.Custom, file));
             }
             catch (InvalidDataException ex)
             {
-                Logs.InvalidScriptData.FormatWith(Path.GetFileName(path)).Log(LogLevel.Error);
+                Logs.InvalidScriptData.FormatWith(Path.GetFileName(path), ex).Log(LogLevel.Error);
 
                 using Dialog invalidScriptData = DialogFactory.MakeInvalidScriptDataDialog(ex, path, Button.Retry, Button.Ignore);
                 if (invalidScriptData.ShowDialog().ClickedButton == Button.Retry)
@@ -113,7 +113,6 @@ public sealed partial class MainWindow
                 overwrite.DefaultButton = Button.Yes;
                 if (overwrite.ShowDialog().ClickedButton == Button.Yes)
                 {
-                    customScripts.Remove(ex.ExistingScript);
                     _ = Scripts.Remove(ex.ExistingScript);
                     goto retry;
                 }
@@ -140,10 +139,10 @@ public sealed partial class MainWindow
 
     private void ButtonExecuteScriptsClick(object sender, RoutedEventArgs e)
     {
-        var selectedScripts = Scripts.Where(s => s.IsSelected);
+        var selectedScripts = Scripts.Where(s => s.IsSelected).ToList();
         if (!selectedScripts.Any())
         {
-            using Dialog noScriptsSelected = new(Button.OK)
+            using Dialog noScriptsSelected = new(Button.Ok)
             {
                 MainIcon = TaskDialogIcon.Error,
                 MainInstruction = WinClean.Resources.UI.Dialogs.NoScriptsSelectedMainInstruction,
@@ -168,7 +167,7 @@ public sealed partial class MainWindow
 
     private void MenuOnlineWikiClick(object sender, RoutedEventArgs e) => Helpers.Open(AppInfo.Settings.WikiUrl);
 
-    private void MenuOpenLogsDirClick(object sender, RoutedEventArgs e) => Helpers.OpenExplorerToDirectory(AppDirectory.Logs);
+    private void MenuOpenLogsDirClick(object sender, RoutedEventArgs e) => Helpers.Open(AppDirectory.Logs);
 
     private void MenuOpenScriptsDirClick(object sender, RoutedEventArgs e) => Helpers.Open(AppDirectory.Scripts);
 
@@ -176,13 +175,17 @@ public sealed partial class MainWindow
 
     private void ScriptEditorScriptChangedCategory(object sender, EventArgs e) => ScriptCollectionView.Refresh();
 
-    private void ScriptEditorScriptRemoved(object sender, EventArgs e) => ScriptCollectionView.Refresh();
+    private void ScriptEditorScriptRemoved(object sender, EventArgs e)
+    {
+        _ = Scripts.Remove(ScriptEditor.Selected.AssertNotNull());
+        ScriptCollectionView.Refresh();
+    }
 
     private void TabControlCategoriesSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var category = TabControlCategories.SelectedItem;
 
-        if (e.OriginalSource is DataGrid dgScripts && dgScripts.SelectedItem is not null)
+        if (e.OriginalSource is DataGrid { SelectedItem: { } } dgScripts)
         {
             _selectedScripts[category] = dgScripts.SelectedItem;
             return;
@@ -215,5 +218,6 @@ public sealed partial class MainWindow
         AppInfo.Settings.Width = Width;
         AppInfo.Settings.Height = Height;
         AppInfo.Settings.IsMaximized = WindowState == WindowState.Maximized;
+        App.SaveScripts(Scripts);
     }
 }

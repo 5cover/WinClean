@@ -22,7 +22,7 @@ public sealed class CommandLineOptions
 
         using ScriptExecutor executor = new();
 
-        var scriptsQuery = App.ScriptCollections.Values.SelectMany(x => x);
+        var scriptsQuery = App.Scripts;
         if (Scripts is not null)
         {
             scriptsQuery = scriptsQuery.Where(s => Scripts.Contains(s.InvariantName));
@@ -35,7 +35,7 @@ public sealed class CommandLineOptions
         executor.ExecuteScriptsAsync(scripts, scriptName =>
         {
             Logs.HungScript.FormatWith(scriptName, AppInfo.Settings.ScriptTimeout).Log(LogLevel.Warning);
-            Logs.HungScriptAborted.FormatWith(scriptName).Log(LogLevel.Info);
+            Logs.HungScriptTerminated.FormatWith(scriptName).Log(LogLevel.Info);
             return false;
         }).Wait();
 

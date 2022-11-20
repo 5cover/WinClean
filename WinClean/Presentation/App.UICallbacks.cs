@@ -22,7 +22,7 @@ public partial class App
                 return;
             }
 
-            using Dialog updateDialog = new(Button.OK)
+            using Dialog updateDialog = new(Button.Ok)
             {
                 MainInstruction = UpdateMainInstruction,
                 Content = UpdateContent.FormatWith(SourceControlClient.Instance.Value.LatestVersionName),
@@ -43,8 +43,7 @@ public partial class App
         },
         (e, path) =>
         {
-            string filename = Path.GetFileName(path);
-            Logger.Log(Logs.InvalidScriptData.FormatWith(filename), LogLevel.Error);
+            Logger.Log(Logs.InvalidScriptData.FormatWith(path, e), LogLevel.Error);
 
             using Dialog deleteScript = DialogFactory.MakeDeleteScriptDialog();
 
@@ -56,10 +55,18 @@ public partial class App
             if (result == Button.DeleteScript)
             {
                 File.Delete(path);
-                Logger.Log(Logs.ScriptDeleted.FormatWith(filename));
+                Logger.Log(Logs.ScriptDeleted.FormatWith(path));
             }
 
             return result == Button.Retry;
+        },
+        (e, verb, info) =>
+        {
+            using FSErrorDialog fsErrorDialog = new(e, verb, info, Button.Retry, Button.Ignore)
+            {
+                MainInstruction = FSErrorLoadingCustomScriptMainInstruction
+            };
+            return fsErrorDialog.ShowDialog().ClickedButton == Button.Retry;
         },
         e =>
         {

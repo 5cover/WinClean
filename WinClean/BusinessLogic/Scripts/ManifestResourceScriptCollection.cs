@@ -1,25 +1,31 @@
 ﻿using System.Reflection;
 
+using Scover.WinClean.DataAccess;
+
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
 /// <summary>A collection of scripts created from embedded resources.</summary>
 public sealed class ManifestResourceScriptCollection : ScriptCollection
 {
-    public ManifestResourceScriptCollection(IScriptSerializer serializer, ScriptType scriptType) : base(serializer, scriptType)
+    private static readonly Assembly assembly = Assembly.GetExecutingAssembly();
+
+    /// <param name="namespace">The namespace of each manifest resource.</param>
+    /// <inheritdoc cref="ScriptCollection(IScriptSerializer, ScriptType)"/>
+    public ManifestResourceScriptCollection(string @namespace, IScriptSerializer serializer, ScriptType scriptType) : base(serializer, scriptType)
     {
+        @namespace += '.';
+        foreach (var resName in assembly.GetManifestResourceNames().Where(name => name.StartsWith(@namespace, StringComparison.Ordinal)))
+        {
+            Load(resName);
+        }
     }
 
-    /// <param name="source">The name of the embedded resource.</param>
-    /// <inheritdoc/>
-    /// <exception cref="ArgumentNullException"><paramref name="source"/> is <see langword="null"/>.</exception>
-    /// <exception cref="ArgumentException"><paramref name="source"/> is an unknown or invalid embedded resource name.</exception>
-    public override void Load(string source)
+    protected override void Load(string source)
     {
         Stream stream;
         try
         {
-            stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(source)
-                ?? throw new ArgumentException($"Unknown embedded resource name: '{source}'", nameof(source));
+            stream = assembly.GetManifestResourceStream(source).AssertNotNull();
         }
         catch (Exception e) when (e is ArgumentException or FileNotFoundException or BadImageFormatException or NotImplementedException)
         {

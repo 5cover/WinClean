@@ -5,7 +5,7 @@ namespace Scover.WinClean.Presentation.Dialogs;
 /// <summary>A dialog with a timeout.</summary>
 public sealed class TimeoutDialog : Dialog
 {
-    private TimeSpan _timeout;
+    private readonly TimeSpan _timeout;
 
     /// <inheritdoc/>
     public TimeoutDialog(IEnumerable<Button> buttons) : base(buttons)

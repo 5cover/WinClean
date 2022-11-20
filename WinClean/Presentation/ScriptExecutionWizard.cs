@@ -14,8 +14,6 @@ using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Resources;
 using Scover.WinClean.Resources.UI;
 
-using WinCopies.Linq;
-
 namespace Scover.WinClean.Presentation;
 
 /// <summary>
@@ -146,14 +144,14 @@ public sealed partial class ScriptExecutionWizard : IDisposable
     {
         Logs.StartingExecutionOfScripts.FormatWith(_scripts.Count).Log(LogLevel.Info);
 
-        await _executor.ExecuteScriptsAsync(_scripts, AskToIgnoreOrKillHungScript).ConfigureAwait(false);
+        await _executor.ExecuteScriptsAsync(_scripts, AskToIgnoreOrTerminateHungScript).ConfigureAwait(false);
 
         Logs.ScriptsExecuted.Log(LogLevel.Info);
     }
 
     private void ShowCompletedDialog(bool restartQueried)
     {
-        using Dialog completedDialog = new(Button.Restart, Button.OK)
+        using Dialog completedDialog = new(Button.Restart, Button.Ok)
         {
             ExpandedInformation = CompletedDialog.ExpandedInformation.FormatWith(_scripts.Count),
             StartExpanded = AppInfo.Settings.DetailsAfterExecution,
@@ -220,9 +218,8 @@ public sealed partial class ScriptExecutionWizard : IDisposable
         }
         return (completed, restartQueried);
 
-        void UpdateExpandedInfo()
-            => progressDialog.ExpandedInformation = ScriptExecutionProgressDialog.ExpandedInformation
-               .FormatWith(_scripts[scriptIndex].Name, timeRemaining.Humanize(precision: 3, minUnit: TimeUnit.Second));
+        void UpdateExpandedInfo() => progressDialog.ExpandedInformation = ScriptExecutionProgressDialog.ExpandedInformation
+            .FormatWith(_scripts[scriptIndex].Name, timeRemaining.Humanize(precision: 3, minUnit: TimeUnit.Second));
 
         static TimeSpan GetExecutionTime(Script script)
         {

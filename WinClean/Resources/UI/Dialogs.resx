@@ -162,10 +162,13 @@
     <value>Creating restore point...</value>
   </data>
   <data name="FSErrorAddingCustomScriptMainInstruction" xml:space="preserve">
-    <value>Cannot not add custom script</value>
+    <value>Cannot add custom script</value>
     
   </data>
   <data name="UpdateVerificationText" xml:space="preserve">
     <value>Don't show again</value>
+  </data>
+  <data name="FSErrorLoadingCustomScriptMainInstruction" xml:space="preserve">
+    <value>Cannot load custom script</value>
   </data>
 </root>

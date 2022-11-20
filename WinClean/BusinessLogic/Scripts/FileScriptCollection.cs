@@ -7,50 +7,50 @@ public sealed class FileScriptCollection : ScriptCollection, IMutableScriptColle
 {
     private readonly string _directory;
 
-    public FileScriptCollection(string directory, IScriptSerializer serializer, ScriptType scriptType) : base(serializer, scriptType)
-            => _directory = directory;
-
-    public Script Add(string source)
+    public FileScriptCollection(string directory, string scriptFileExtension,
+        InvalidScriptDataCallback invalidScriptDataReloadElseIgnore, FSErrorCallback fsErrorReloadElseIgnore,
+        IScriptSerializer serializer, ScriptType scriptType) : base(serializer, scriptType)
     {
-        if (source.IsPathInDirectory(source))
+        _directory = directory;
+        foreach (var filePath in Directory.EnumerateFiles(directory, $"*{scriptFileExtension}",
+                     SearchOption.AllDirectories))
         {
-            throw new ArgumentException($"The path '{source}' is already in the storage directory '{_directory}'", nameof(source));
+        retry:
+            try
+            {
+                Load(filePath);
+            }
+            catch (Exception e) when (e.IsFileSystem())
+            {
+                if (fsErrorReloadElseIgnore(e, FSVerb.Access, new FileInfo(filePath)))
+                {
+                    goto retry;
+                }
+            }
+            catch (InvalidDataException e)
+            {
+                if (invalidScriptDataReloadElseIgnore(e, filePath))
+                {
+                    goto retry;
+                }
+            }
         }
-
-        using Stream sourceFile = File.OpenRead(source);
-        var script = Deserialize(sourceFile);
-        AddAndCopy(script, Path.Join(_directory, Path.GetFileName(source)));
-        return script;
     }
 
     public void Add(Script script)
-        => AddAndCopy(script, Path.Join(_directory, script.InvariantName.ToFilename()));
-
-    /// <param name="source">The path to the script file.</param>
-    /// <inheritdoc/>
-    /// <exception cref="PathTooLongException">
-    /// <paramref name="source"/>'s path, file name, or both exceed the system-defined maximum length.
-    /// </exception>
-    /// <exception cref="DirectoryNotFoundException">
-    /// <paramref name="source"/> is invalid, (for example, it is on an unmapped drive).
-    /// </exception>
-    /// <exception cref="UnauthorizedAccessException">
-    /// <paramref name="source"/> specified a directory. -or- The caller does not have the required permission.
-    /// </exception>
-    /// <exception cref="NotSupportedException"><paramref name="source"/> is in an invalid format.</exception>
-    /// <exception cref="IOException">An I/O error occurred while opening the file.</exception>
-    public override void Load(string source)
     {
+        string savingPath = Path.Join(_directory, script.InvariantName.ToFilename());
         try
         {
-            using Stream file = File.OpenRead(source);
-            var script = Deserialize(file);
-            Sources.Add(script, source);
+            using Stream file = File.Open(savingPath, FileMode.CreateNew);
+            Serialize(script, file);
         }
-        catch (FileNotFoundException e)
+        catch (IOException e) when (e.HResult == -2147024816) // 0x80070050: The file already exists
         {
-            throw new ScriptNotFoundException(source, e);
+            using Stream file = File.OpenRead(savingPath);
+            throw new ScriptAlreadyExistsException(Deserialize(file), e);
         }
+        Sources.Add(script, savingPath);
     }
 
     public void Remove(Script script)
@@ -68,18 +68,10 @@ public sealed class FileScriptCollection : ScriptCollection, IMutableScriptColle
         }
     }
 
-    private void AddAndCopy(Script script, string savingPath)
+    protected override void Load(string source)
     {
-        try
-        {
-            using Stream file = File.Open(savingPath, FileMode.CreateNew);
-            Serialize(script, file);
-        }
-        catch (IOException e) when (e.HResult == -2147024816) // 0x80070050: The file already exists
-        {
-            using Stream file = File.OpenRead(savingPath);
-            throw new ScriptAlreadyExistsException(Deserialize(file), e);
-        }
-        Sources.Add(script, savingPath);
+        using Stream file = File.OpenRead(source);
+        var script = Deserialize(file);
+        Sources.Add(script, source);
     }
 }

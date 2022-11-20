@@ -50,6 +50,13 @@
     <Optimize>True</Optimize>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Using Include="Humanizer.StringExtensions">
+      <Static>True</Static>
+    </Using>
+    <Using Include="System.IO" />
+  </ItemGroup>
+
   <Choose>
     <When Condition="'$(Configuration)'=='Portable'">
       <ItemGroup>
@@ -364,22 +371,5 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <None Remove="Hosts.xml" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Content Include="Hosts.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Using Include="Humanizer.StringExtensions">
-      <Static>True</Static>
-    </Using>
-    <Using Include="System.IO" />
   </ItemGroup>
 </Project>

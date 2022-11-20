@@ -127,9 +127,10 @@ public sealed class Script : INotifyPropertyChanged
     public ScriptType Type { get; }
 
     /// <summary>Executes this script.</summary>
-    /// <remarks>Returns when this script has finished executing or has been killed.</remarks>
-    public void Execute(HungScriptCallback keepRunningElseKill, CancellationToken cancellationToken)
-        => Host.ExecuteCode(Code, AppInfo.Settings.ScriptTimeout, () => keepRunningElseKill(Name), cancellationToken);
+    /// <remarks>Returns when this script has finished executing or was hung and has been terminated.</remarks>
+    /// <inheritdoc cref="Host.ExecuteCode" path="/param"/>
+    public void Execute(Action onHung, CancellationToken cancellationToken)
+        => Host.ExecuteCode(Code, AppInfo.Settings.ScriptTimeout, onHung, cancellationToken);
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new(propertyName));
 }
