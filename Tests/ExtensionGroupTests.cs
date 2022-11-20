@@ -3,8 +3,8 @@ using Scover.WinClean.DataAccess;
 namespace Tests;
 
 [TestOf(typeof(ExtensionGroup))]
-[TestFixture("Text Document", new string[] { ".txt" })]
-[TestFixture("Text Document", new string[] { ".txt", ".exe" })]
+[TestFixture("Text Document", new[] { ".txt" })]
+[TestFixture("Text Document", new[] { ".txt", ".exe" })]
 public sealed class ExtensionGroupTests
 {
     private readonly ExtensionGroup _extensionGroup;

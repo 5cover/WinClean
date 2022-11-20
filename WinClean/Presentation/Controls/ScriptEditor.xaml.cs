@@ -3,9 +3,7 @@ using System.Windows.Controls;
 
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
-using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
-using Scover.WinClean.Presentation.Windows;
 
 using Button = Scover.WinClean.Presentation.Dialogs.Button;
 
@@ -47,8 +45,6 @@ public sealed partial class ScriptEditor
         using Dialog deleteScript = DialogFactory.MakeDeleteScriptDialog();
         if (deleteScript.ShowDialog().ClickedButton == Button.Yes)
         {
-            _ = MainWindow.Scripts.Remove(Selected.AssertNotNull());
-            ((IMutableScriptCollection)App.ScriptCollections[Selected.Type]).Remove(Selected);
             ScriptRemoved?.Invoke(this, EventArgs.Empty);
         }
     }

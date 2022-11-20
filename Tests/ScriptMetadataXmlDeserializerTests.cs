@@ -21,8 +21,8 @@ public sealed class ScriptMetadataXmlDeserializerTests
         Extension = ".txt",
         Color = "Red";
 
-    private static readonly CultureInfo en = new("en");
-    private static readonly CultureInfo fr = new("fr");
+    private static readonly CultureInfo cultureEn = new("en");
+    private static readonly CultureInfo cultureFr = new("fr");
     private readonly ScriptMetadataXmlDeserializer _deserializer = new();
 
     [TestCase($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
@@ -81,14 +81,14 @@ public sealed class ScriptMetadataXmlDeserializerTests
     {
         LocalizedString ls = new();
         ls.Set(CultureInfo.InvariantCulture, invariant);
-        ls.Set(ScriptMetadataXmlDeserializerTests.fr, fr);
+        ls.Set(ScriptMetadataXmlDeserializerTests.cultureFr, fr);
         return ls;
     }
 
     private static LocalizedString Loc(string invariant, string fr, string en)
     {
         LocalizedString ls = Loc(invariant, fr);
-        ls.Set(ScriptMetadataXmlDeserializerTests.en, en);
+        ls.Set(ScriptMetadataXmlDeserializerTests.cultureEn, en);
         return ls;
     }
 }

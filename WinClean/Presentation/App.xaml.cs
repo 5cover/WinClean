@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -16,31 +15,53 @@ using Scover.WinClean.Resources;
 namespace Scover.WinClean.Presentation;
 
 /// <summary>Handles the startup / shutdown strategy and holds data related to the Presentation layer.</summary>
-public sealed partial class App : Application
+public sealed partial class App
 {
     private static readonly ScriptXmlSerializer xmlSerializer = new();
     private static Logger? logger;
 
-    static App()
-        => ScriptCollections[ScriptType.Default].LoadAll(Assembly.GetExecutingAssembly().GetManifestResourceNames()
-           .Where(name => name.StartsWith($"{nameof(Scover)}.{nameof(WinClean)}.{nameof(BusinessLogic.Scripts)}.", StringComparison.Ordinal)));
-
-    /// <summary>Gets the logger, available after startup.</summary>
+    /// <summary>Gets the logger of the application.</summary>
+    /// <remarks>Available after startup.</remarks>
     public static Logger Logger => logger.AssertNotNull();
 
-    public static IReadOnlyDictionary<ScriptType, ScriptCollection> ScriptCollections { get; } = new Dictionary<ScriptType, ScriptCollection>
-    {
-        [ScriptType.Custom] = new FileScriptCollection(AppDirectory.Scripts, xmlSerializer, ScriptType.Custom),
-        [ScriptType.Default] = new ManifestResourceScriptCollection(xmlSerializer, ScriptType.Default)
-    };
+    /// <summary>Gets the collection of scripts that was initially loaded when the application started.</summary>
+    /// <remarks>Available after startup.</remarks>
+    public static IEnumerable<Script> Scripts => scriptCollections.Values.SelectMany(c => c);
 
-    private static void Initialize(Logger logger, Callbacks callbacks)
+    private static Dictionary<ScriptType, ScriptCollection> scriptCollections { get; } = new();
+
+    /// <summary>Commits all changes to the scripts.</summary>
+    /// <param name="scripts">The modified script collection.</param>
+    public static void SaveScripts(IReadOnlyCollection<Script> scripts)
+    {
+        var collections = scripts.Where(s => scriptCollections[s.Type] is IMutableScriptCollection)
+            .ToDictionary(s => s, s => (IMutableScriptCollection)scriptCollections[s.Type]);
+
+        foreach (var addedScript in collections.Keys.Except(Scripts))
+        {
+            collections[addedScript].Add(addedScript);
+        }
+
+        foreach (var removedScript in Scripts.Except(collections.Keys))
+        {
+            collections[removedScript].Remove(removedScript);
+        }
+
+        foreach (var collection in collections.Values.Distinct())
+        {
+            collection.Save();
+        }
+
+        Logs.ScriptsSaved.Log();
+    }
+
+    private static void Initialize(Logger loggerToUse, Callbacks callbacks)
     {
         // 1. Add the unhandled exception handler
         Current.DispatcherUnhandledException += (_, args) => callbacks.WarnOnUnhandledException(args.Exception);
 
         // 2. Set the logger
-        App.logger = logger;
+        logger = loggerToUse;
 
         // 3. Check for updates
         if (SourceControlClient.Instance.Value.LatestVersionName != AppInfo.Version)
@@ -48,16 +69,19 @@ public sealed partial class App : Application
             callbacks.WarnOnUpdate();
         }
 
-        // 4. Load custom scripts.
-        ScriptCollections[ScriptType.Custom].LoadAll(Directory.EnumerateFiles(AppDirectory.Scripts, '*' + AppInfo.Settings.ScriptFileExtension, SearchOption.AllDirectories),
-                                                     callbacks.ReloadElseIgnoreInvalidCustomScript);
+        // 4. Load scripts.
+        scriptCollections[ScriptType.Custom] = new FileScriptCollection(AppDirectory.Scripts, AppInfo.Settings.ScriptFileExtension,
+            callbacks.ReloadElseIgnoreInvalidCustomScript, callbacks.ReloadElseIgnoreFSErrorAcessingCustomScript, xmlSerializer, ScriptType.Custom);
+        scriptCollections[ScriptType.Default] = new ManifestResourceScriptCollection(
+            $"{nameof(Scover)}.{nameof(WinClean)}.{nameof(BusinessLogic.Scripts)}.", xmlSerializer, ScriptType.Default);
     }
 
-    private record Callbacks(Action WarnOnUpdate,
+    private sealed record Callbacks(Action WarnOnUpdate,
                              InvalidScriptDataCallback ReloadElseIgnoreInvalidCustomScript,
+                             FSErrorCallback ReloadElseIgnoreFSErrorAcessingCustomScript,
                              Action<Exception> WarnOnUnhandledException);
 
-    private static void StartConsole(string[] args)
+    private static void StartConsole(IEnumerable<string> args)
     {
         // Get invariant (en-US) output.
         CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
@@ -83,17 +107,10 @@ public sealed partial class App : Application
 
     private void ApplicationExit(object? sender, ExitEventArgs? e)
     {
-        Logger.Log(Logs.SavingScriptsAndSettings);
-
-        foreach (var collection in ScriptCollections.Values.OfType<IMutableScriptCollection>())
-        {
-            collection.Save();
-        }
-
         AppInfo.Settings.Save();
         AppInfo.PersistentSettings.Save();
-
-        Logger.Log(Logs.Exiting);
+        Logs.SettingsSaved.Log();
+        Logs.Exiting.Log();
     }
 
     private void ApplicationStartup(object? sender, StartupEventArgs? e)

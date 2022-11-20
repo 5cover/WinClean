@@ -10,12 +10,17 @@ public partial class App
         () =>
         {
             var sdd = SourceControlClient.Instance.Value;
-            Logger.Log(WinClean.Resources.CommandLine.Update.FormatWith(sdd.LatestVersionName, sdd.LatestVersionUrl), LogLevel.Info);
+            WinClean.Resources.CommandLine.Update.FormatWith(sdd.LatestVersionName, sdd.LatestVersionUrl).Log(LogLevel.Info);
         },
         (e, path) =>
         {
             // Log the error, but ignore invalid scripts.
-            Logger.Log($"{Logs.InvalidScriptData.FormatWith(Path.GetFileName(path))}\n{e}", LogLevel.Error);
+            Logs.InvalidScriptData.FormatWith(path, e).Log(LogLevel.Error);
+            return false;
+        },
+        (e, _, info) =>
+        {
+            Logs.FSErrorLoadingCustomScript.FormatWith(info.FullName, e).Log(LogLevel.Error);
             return false;
         },
         e => Logger.Log(Logs.UnhandledException.FormatWith(e), LogLevel.Critical));

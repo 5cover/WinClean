@@ -67,18 +67,6 @@ public static class Helpers
     public static bool IsFileSystem(this Exception e)
         => e is IOException or UnauthorizedAccessException or SecurityException;
 
-    /// <summary>Checks if a path is inside a directory.</summary>
-    /// <param name="path">The path being checked.</param>
-    /// <param name="directory">The directory that could contain <paramref name="path"/>.</param>
-    /// <param name="ignoreCase">Whether to ignore case for path comparison.</param>
-    /// <returns><see langword="true"/> if <paramref name="path"/> is in <paramref name="directory"/>, otherwise <see langword="false"/>.</returns>
-    public static bool IsPathInDirectory(this string path, string directory, bool ignoreCase = true)
-    // - GetFullPath: Get the absolute paths and remove the parent directory notation (..)
-    // - GetDirectoryName: If path and directory are equals, path isn't in directory. Therefore compare with path's directory instead.
-    // - GetDirectoryName returns null : Then path points to a root directory, which can't be inside anything, so return false
-    // - ignoreCase: On some systems paths can be case-sensitive.
-        => Path.GetDirectoryName(Path.GetFullPath(path))?.StartsWith(Path.GetFullPath(directory), ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) ?? false;
-
     /// <summary>Opens a file or an URI with the shell.</summary>
     /// <remarks>
     /// If <paramref name="path"/> is <see langword="null"/>, empty, only whitespace, or not valid for shell execution, no
@@ -93,16 +81,6 @@ public static class Helpers
                 UseShellExecute = true
             });
         }
-    }
-
-    /// <summary>Opens an Explorer window in the specified directory.</summary>
-    /// <param name="dirPath">
-    /// The directory the new Explorer window will be opened in. Can be <see langword="null"/> or empty to open Explorer to the
-    /// default directory (usually "My computer").
-    /// </param>
-    public static void OpenExplorerToDirectory(string? dirPath)
-    {
-        using Process? process = Process.Start("explorer", $"/root,{dirPath}");
     }
 
     public static void SetFromXml(this LocalizedString str, XmlNode node)
@@ -136,22 +114,22 @@ public static class Helpers
     /// <remarks>The length of the filename is not checked, and the casing is not modified.</remarks>
     public static string ToFilename(this string filename, string replaceInvalidCharsWith = "_")
         => string.IsNullOrWhiteSpace(filename)
-             ? throw new ArgumentException($"Is null, empty, or whitespace.", nameof(filename))
+             ? throw new ArgumentException("Is null, empty, or whitespace.", nameof(filename))
 
          : string.IsNullOrEmpty(replaceInvalidCharsWith)
-             ? throw new ArgumentException($"Is null or empty.", nameof(replaceInvalidCharsWith))
+             ? throw new ArgumentException("Is null or empty.", nameof(replaceInvalidCharsWith))
 
          : filename.All(c => c == '.')
-             ? throw new ArgumentException($"Consists only of dots", nameof(filename))
+             ? throw new ArgumentException("Consists only of dots", nameof(filename))
 
          : replaceInvalidCharsWith.All(c => c == '.')
-             ? throw new ArgumentException($"Consists only of dots.", nameof(replaceInvalidCharsWith))
+             ? throw new ArgumentException("Consists only of dots.", nameof(replaceInvalidCharsWith))
 
          : replaceInvalidCharsWith.IndexOfAny(_invalidFileNameChars) != -1
-             ? throw new ArgumentException($"Contains invalid filename chars.", nameof(replaceInvalidCharsWith))
+             ? throw new ArgumentException("Contains invalid filename chars.", nameof(replaceInvalidCharsWith))
 
          : Regex.Replace(filename.Trim(), $"[{Regex.Escape(new(_invalidFileNameChars))}]", replaceInvalidCharsWith,
                          RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-    public static Stream ToStream(this string value) => new MemoryStream(Encoding.UTF8.GetBytes(value ?? ""));
+    public static Stream ToStream(this string value) => new MemoryStream(Encoding.UTF8.GetBytes(value));
 }

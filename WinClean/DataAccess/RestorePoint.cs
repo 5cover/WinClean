@@ -45,7 +45,7 @@ public sealed class RestorePoint
         ObjectGetOptions options = new();
 
         using ManagementClass mClass = new(mScope, mPath, options);
-        using ManagementBaseObject? parameters = mClass.GetMethodParameters("CreateRestorePoint");
+        using ManagementBaseObject parameters = mClass.GetMethodParameters("CreateRestorePoint");
         parameters["Description"] = _description;
         parameters["EventType"] = (int)_eventType;
         parameters["RestorePointType"] = (int)_type;

@@ -10,29 +10,6 @@ namespace Tests;
 [TestFixture(TestOf = typeof(Helpers))]
 public sealed class HelpersTests
 {
-    private const string absolute = "C:/aBSOLutE";
-    private const string relativeDir = "rElaTIve/CURreNTdir";
-    private const string relativeDrive = "/reLaTivE/CURRENTdrivERooT";
-
-    private static readonly TestCaseData[] isPathInDirectoryCases = new TestCaseData[]
-    {
-        new(absolute, absolute, false),
-        new($"{absolute}/..", absolute, false),
-        new($"{absolute}/Inside", absolute, true),
-        new($"{absolute}/Inside/..", absolute, false),
-        new($"{absolute}/Inside/../Inside", absolute, true),
-        new(relativeDir, relativeDir, false),
-        new($"{relativeDir}/..", relativeDir, false),
-        new($"{relativeDir}/Inside", relativeDir, true),
-        new($"{relativeDir}/Inside/..", relativeDir, false),
-        new($"{relativeDir}/Inside/../Inside", relativeDir, true),
-        new(relativeDrive, relativeDrive, false),
-        new($"{relativeDrive}/..", relativeDrive, false),
-        new($"{relativeDrive}/Inside", relativeDrive, true),
-        new($"{relativeDrive}/Inside/..", relativeDrive, false),
-        new($"{relativeDrive}/Inside/../Inside", relativeDrive, true),
-    };
-
     private static readonly TestCaseData[] sumCases = new TestCaseData[]
     {
         new(10.Hours(), new[]{ 10.Hours() }),
@@ -87,14 +64,8 @@ public sealed class HelpersTests
         doc.LoadXml(xml);
 
         var e = Assert.Throws<XmlException>(() => doc.GetSingleChild("Test"));
-        Assert.That(e.Message, Is.EqualTo(exceptionMessage));
+        Assert.That(e!.Message, Is.EqualTo(exceptionMessage));
     }
-
-    [TestCaseSource(nameof(isPathInDirectoryCases))]
-    public void TestIsPathInDirectory(string path, string directory, bool result) => Assert.That(path.IsPathInDirectory(directory), Is.EqualTo(result));
-
-    [TestCaseSource(nameof(isPathInDirectoryCases))]
-    public void TestIsPathInDirectoryCaseSensitive(string path, string directory, bool result) => Assert.That(path.IsPathInDirectory(directory, false), Is.EqualTo(result));
 
     [TestCase("<Test>value</Test>", "", "value")]
     [TestCase("<Test xml:lang=\"fr\">valueFr</Test>", "fr", "valueFr")]
@@ -120,7 +91,7 @@ public sealed class HelpersTests
     public void TestToFilenameInvalid(string filename, string replaceInvalidCharsWith, string exceptionMessage)
     {
         var e = Assert.Throws<ArgumentException>(() => filename.ToFilename(replaceInvalidCharsWith));
-        Assert.That(e.Message, Is.EqualTo(exceptionMessage));
+        Assert.That(e!.Message, Is.EqualTo(exceptionMessage));
     }
 
     private sealed class EqualContentCases : IEnumerable<TestCaseData>

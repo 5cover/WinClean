@@ -3,8 +3,6 @@ using System.Xml;
 
 using Scover.WinClean.DataAccess;
 
-using WinCopies.Linq;
-
 namespace Scover.WinClean.BusinessLogic.Xml;
 
 public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
@@ -38,13 +36,13 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
         {
             switch (child.Name)
             {
-            case "Name":
-                name.SetFromXml(child);
-                break;
+                case "Name":
+                    name.SetFromXml(child);
+                    break;
 
-            case "Description":
-                description.SetFromXml(child);
-                break;
+                case "Description":
+                    description.SetFromXml(child);
+                    break;
             }
         }
         return (name, description);

@@ -20,9 +20,5 @@ public sealed class ShellFile : IDisposable
         }
     }
 
-    public void Dispose()
-    {
-        _shFile.Dispose();
-        GC.SuppressFinalize(this);
-    }
+    public void Dispose() => _shFile.Dispose();
 }

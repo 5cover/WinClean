@@ -4,6 +4,7 @@ using Humanizer.Localisation;
 using Ookii.Dialogs.Wpf;
 
 using Scover.WinClean.BusinessLogic;
+using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Dialogs;
 using Scover.WinClean.Presentation.Logging;
@@ -75,23 +76,23 @@ public partial class ScriptExecutionWizard
     }
 
     /// <returns>
-    /// <see langword="true"/> if the user chose to ignore the hung script, <see langword="false"/> if he chose to kill it.
+    /// <see langword="true"/> if the user chose to ignore the hung script, <see langword="false"/> if he chose to terminate it.
     /// </returns>
-    private static bool AskToIgnoreOrKillHungScript(string scriptName)
+    private static bool AskToIgnoreOrTerminateHungScript(Script script)
     {
-        Logs.HungScript.FormatWith(scriptName, AppInfo.Settings.ScriptTimeout).Log(LogLevel.Warning);
+        Logs.HungScript.FormatWith(script.Name, AppInfo.Settings.ScriptTimeout).Log(LogLevel.Warning);
         using TimeoutDialog hungScriptDialog = new(Button.EndTask, Button.Ignore)
         {
             AllowDialogCancellation = true,
             MainIcon = TaskDialogIcon.Warning,
-            Content = Resources.UI.Dialogs.HungScriptDialogContent.FormatWith(scriptName, AppInfo.Settings.ScriptTimeout.Humanize(3, minUnit: TimeUnit.Second)),
+            Content = Resources.UI.Dialogs.HungScriptDialogContent.FormatWith(script.Name, AppInfo.Settings.ScriptTimeout.Humanize(3, minUnit: TimeUnit.Second)),
             Timeout = 15.Seconds(),
             TimeoutButton = Button.Ignore
         };
         Button? clickedButton = hungScriptDialog.ShowDialog().ClickedButton;
         if (clickedButton == Button.EndTask)
         {
-            Logs.HungScriptAborted.FormatWith(scriptName).Log(LogLevel.Info);
+            Logs.HungScriptTerminated.FormatWith(script.Name).Log(LogLevel.Info);
         }
         return clickedButton != Button.EndTask;
     }

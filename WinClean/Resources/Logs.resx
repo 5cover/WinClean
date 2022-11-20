@@ -138,11 +138,11 @@
     <comment>0 : message of the exception@Invariant</comment>
   </data>
   <data name="ScriptDeleted" xml:space="preserve">
-    <value>Script "{0}" deleted.</value>
+    <value>Script '{0}' deleted.</value>
     <comment>0 : script filename@Invariant</comment>
   </data>
   <data name="ScriptExecuting" xml:space="preserve">
-    <value>Script "{0}" executing...</value>
+    <value>Script '{0}' executing...</value>
     <comment>0 : script filename@Invariant</comment>
   </data>
   <data name="ScriptExecutionCanceled" xml:space="preserve">
@@ -158,12 +158,12 @@
     <comment>0 : number of scripts to execute@Invariant</comment>
   </data>
   <data name="InvalidScriptData" xml:space="preserve">
-    <value>Script file "{0}" has invalid or missing data.</value>
+    <value>Script file '{0}' has invalid or missing data.</value>
     <comment>0 : script filename@Invariant</comment>
   </data>
   <data name="UnhandledException" xml:space="preserve">
     <value>An unhandled exception occured: {0}</value>
-    <comment>0 : the unhandled exception@Invariant</comment>
+    <comment>0 : exception@Invariant</comment>
   </data>
   <data name="SystemRestoreEnabled" xml:space="preserve">
     <value>System restore was enabled for all eligible drives to create a restore point.</value>
@@ -174,20 +174,29 @@
     <comment>@Invariant</comment>
   </data>
   <data name="HungScript" xml:space="preserve">
-    <value>Script "{0}" has been executing for {1} and is probably hung.</value>
+    <value>Script '{0}' has been executing for {1} and is probably hung.</value>
     <comment>0 : script name
 1 : script timeout@Invariant</comment>
   </data>
-  <data name="HungScriptAborted" xml:space="preserve">
-    <value>Hung script "{0}" aborted.</value>
+  <data name="HungScriptTerminated" xml:space="preserve">
+    <value>Hung script '{0}' terminated.</value>
     <comment>0 : script name@Invariant</comment>
   </data>
-  <data name="SavingScriptsAndSettings" xml:space="preserve">
-    <value>Saving scripts and settings...</value>
+  <data name="ScriptsSaved" xml:space="preserve">
+    <value>Scripts saved.</value>
     <comment>@Invariant</comment>
   </data>
   <data name="FailedToDeleteLogFile" xml:space="preserve">
     <value>Failed to delete log file: {0}</value>
     <comment>0 : exception@Invariant</comment>
+  </data>
+  <data name="SettingsSaved" xml:space="preserve">
+    <value>Settings saved.</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="FSErrorLoadingCustomScript" xml:space="preserve">
+    <value>Could not load custom script '{0}' due to a filesystem error: {1}</value>
+    <comment>0 : custom script file path
+1 : exception@Invariant</comment>
   </data>
 </root>

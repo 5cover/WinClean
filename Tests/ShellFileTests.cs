@@ -17,11 +17,7 @@ public sealed class ShellFileTests : IDisposable
         _fileDescription = fileDescription;
     }
 
-    public void Dispose()
-    {
-        _shellFile.Dispose();
-        GC.SuppressFinalize(this);
-    }
+    public void Dispose() => _shellFile.Dispose();
 
     [Test]
     public void TestFileDescription() => Assert.That(_shellFile.FileDescription, Is.EqualTo(_fileDescription));

@@ -24,7 +24,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
         }
         catch (Exception e) when (e is XmlException or KeyNotFoundException)
         {
-            throw new InvalidDataException($"The script could not be deserialized because it is in a invalid or incomplete format.", e);
+            throw new InvalidDataException("The script could not be deserialized because it is in a invalid or incomplete format.", e);
         }
     }
 
