@@ -20,5 +20,4 @@ public delegate bool InvalidScriptDataCallback(Exception exception, string sourc
 /// <param name="e">The filesystem exception that occured.</param>
 /// <param name="verb">The filesystem action that failed.</param>
 /// <param name="fsInfo">The filesystem element that was being operated on.</param>
-/// <returns><see langword="true"/> to retry the filesystem operation, or <see langword="false"/> to abort the operation.</returns>
 public delegate bool FSErrorCallback(Exception e, FSVerb verb, FileSystemInfo fsInfo);

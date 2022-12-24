@@ -1,12 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
 using System.Text;
-
 using CsvHelper;
 using CsvHelper.Configuration;
-
 using Scover.WinClean.BusinessLogic;
-using Scover.WinClean.DataAccess;
 using Scover.WinClean.Resources;
 
 namespace Scover.WinClean.Presentation.Logging;
@@ -24,7 +21,7 @@ public sealed class CsvLogger : Logger, IDisposable
     public CsvLogger()
     {
         _currentLogFile = Path.Join(AppDirectory.Logs, Process.GetCurrentProcess().StartTime.ToString(DateTimeFilenameFormat, DateTimeFormatInfo.InvariantInfo) + LogFileExtension);
-        _csvWriter = new(new StreamWriter(_currentLogFile, true, Encoding.Unicode), new CsvConfiguration(CultureInfo.InvariantCulture));
+        _csvWriter = new(new StreamWriter(_currentLogFile, false, Encoding.Unicode), new CsvConfiguration(CultureInfo.InvariantCulture));
         _csvWriter.WriteHeader<LogEntry>();
     }
 
@@ -38,7 +35,7 @@ public sealed class CsvLogger : Logger, IDisposable
             }
             catch (Exception e) when (e.IsFileSystem())
             {
-                Logs.FailedToDeleteLogFile.FormatWith(Path.GetFileName(logFile), e).Log(LogLevel.Error);
+                Logs.FailedToDeleteLogFile.FormatWith(logFile, e).Log(LogLevel.Error);
                 // Swallow the exception. Failing to delete a log file is not serious enough to justify terminating the
                 // application with an unhandled exception.
             }

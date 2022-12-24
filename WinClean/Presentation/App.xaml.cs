@@ -1,10 +1,7 @@
-﻿using System.Globalization;
-using System.Runtime.InteropServices;
+﻿using System.Collections.Specialized;
+using System.Globalization;
 using System.Windows;
-
 using CommandLine;
-
-using Humanizer;
 
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
@@ -12,19 +9,47 @@ using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Presentation.Windows;
+using Scover.WinClean.Properties;
 using Scover.WinClean.Resources;
+using Vanara.PInvoke;
 
 namespace Scover.WinClean.Presentation;
 
 /// <summary>Handles the startup / shutdown strategy and holds data related to the Presentation layer.</summary>
 public sealed partial class App
 {
-    private static readonly ScriptXmlSerializer xmlSerializer = new();
+    private const string ScriptsResourceNamespace = $"{nameof(Scover)}.{nameof(WinClean)}.{nameof(BusinessLogic.Scripts)}";
+    private const string MetadataContentFilesNamespace = $"{nameof(Scover)}.{nameof(WinClean)}";
+    private const string ScriptExecutionTimesFormatString = "c";
+
     private static Logger? logger;
+
+    public static Settings Settings => Settings.Default;
+
+    static App()
+    {
+        Scover.Dialogs.Dialog.UseActivationContext = false;
+        Settings.Default[nameof(Settings.ScriptExecutionTimes)] ??= new StringCollection();
+        ScriptExecutionTimes = Settings.ScriptExecutionTimes.ParseKeysAndValues().ToDictionary(kv => kv.key.AssertNotNull(),
+            kv => TimeSpan.ParseExact(kv.value.AssertNotNull(), ScriptExecutionTimesFormatString, CultureInfo.InvariantCulture));
+
+        IScriptMetadataDeserializer d = new ScriptMetadataXmlDeserializer();
+        // Explicitely enumerate the metadata lists.
+        ScriptMetadata = new()
+        {
+            d.GetCategories(ReadContentFile("Categories.xml")).ToList(),
+            d.GetHosts(ReadContentFile("Hosts.xml")).ToList(),
+            d.GetImpacts(ReadContentFile("Impacts.xml")).ToList(),
+            d.GetRecommendationLevels(ReadContentFile("RecommendationLevels.xml")).ToList()
+        };
+    }
 
     /// <summary>Gets the logger of the application.</summary>
     /// <remarks>Available after startup.</remarks>
     public static Logger Logger => logger.AssertNotNull();
+
+    /// <summary>Gets the script execution times dictionary, keyed by <see cref="Script.InvariantName"/>.</summary>
+    public static IDictionary<string, TimeSpan> ScriptExecutionTimes { get; }
 
     /// <summary>Gets the collection of scripts that was initially loaded when the application started.</summary>
     /// <remarks>Available after startup.</remarks>
@@ -63,6 +88,8 @@ public sealed partial class App
 
     private static void Initialize(Logger loggerToUse, Callbacks callbacks)
     {
+        IScriptSerializer serializer = new ScriptXmlSerializer(ScriptMetadata);
+
         // 1. Add the unhandled exception handler
         Current.DispatcherUnhandledException += (_, args) => callbacks.WarnOnUnhandledException(args.Exception);
 
@@ -70,32 +97,31 @@ public sealed partial class App
         logger = loggerToUse;
 
         // 3. Check for updates
-        if (SourceControlClient.Instance.Value.LatestVersionName != AppInfo.Version)
+        if (SourceControlClient.Instance.LatestVersionName != AppMetadata.Version)
         {
             callbacks.WarnOnUpdate();
         }
 
         // 4. Load scripts.
-        scriptCollections[ScriptType.Custom] = new FileScriptCollection(AppDirectory.Scripts, AppInfo.Settings.ScriptFileExtension,
-            callbacks.ReloadElseIgnoreInvalidCustomScript, callbacks.ReloadElseIgnoreFSErrorAcessingCustomScript, xmlSerializer, ScriptType.Custom);
+        scriptCollections[ScriptType.Custom] = new FileScriptCollection(AppDirectory.Scripts, Settings.ScriptFileExtension,
+            callbacks.ReloadElseIgnoreInvalidCustomScript, callbacks.ReloadElseIgnoreFSErrorAcessingCustomScript, serializer, ScriptType.Custom);
         scriptCollections[ScriptType.Default] = new ManifestResourceScriptCollection(
-            $"{nameof(Scover)}.{nameof(WinClean)}.{nameof(BusinessLogic.Scripts)}", xmlSerializer, ScriptType.Default);
+            $"{nameof(Scover)}.{nameof(WinClean)}.{nameof(BusinessLogic.Scripts)}", serializer, ScriptType.Default);
     }
 
-    private sealed record Callbacks(Action WarnOnUpdate,
-                             InvalidScriptDataCallback ReloadElseIgnoreInvalidCustomScript,
-                             FSErrorCallback ReloadElseIgnoreFSErrorAcessingCustomScript,
-                             Action<Exception> WarnOnUnhandledException);
+    private sealed record Callbacks(
+        Action WarnOnUpdate,
+        InvalidScriptDataCallback ReloadElseIgnoreInvalidCustomScript,
+        FSErrorCallback ReloadElseIgnoreFSErrorAcessingCustomScript,
+        Action<Exception> WarnOnUnhandledException);
 
     private static void StartConsole(IEnumerable<string> args)
     {
         // Get invariant (en-US) output.
         CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
-        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
-        [DllImport("kernel32.dll")]
-        static extern bool AttachConsole(uint dwProcessId);
-        _ = AttachConsole(unchecked((uint)-1));
+        // Attach console to current process
+        _ = Kernel32.AttachConsole(Kernel32.ATTACH_PARENT_PROCESS);
 
         Initialize(new ConsoleLogger(), consoleCallbacks);
 
@@ -113,8 +139,8 @@ public sealed partial class App
 
     private void ApplicationExit(object? sender, ExitEventArgs? e)
     {
-        AppInfo.Settings.Save();
-        AppInfo.PersistentSettings.Save();
+        Settings.ScriptExecutionTimes.SetContent(ScriptExecutionTimes.Select(kv => (kv.Key, kv.Value.ToString(ScriptExecutionTimesFormatString))));
+        Settings.Save();
         Logs.SettingsSaved.Log();
         Logs.Exiting.Log();
     }
@@ -130,4 +156,14 @@ public sealed partial class App
             StartGui();
         }
     }
+
+    public static TypedEnumerablesDictionary ScriptMetadata { get; }
+
+    private static Stream ReadContentFile(string filename)
+#if PORTABLE
+        => Assembly.GetExecutingAssembly().GetManifestResourceStream($"{MetadataContentFilesNamespace}.{filename}").AssertNotNull();
+#else
+        => File.OpenRead(Path.Join(AppDomain.CurrentDomain.BaseDirectory, filename));
+
+#endif
 }

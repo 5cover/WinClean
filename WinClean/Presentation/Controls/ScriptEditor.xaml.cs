@@ -1,11 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
-using Scover.WinClean.Presentation.Dialogs;
-
-using Button = Scover.WinClean.Presentation.Dialogs.Button;
 
 namespace Scover.WinClean.Presentation.Controls;
 
@@ -40,14 +36,7 @@ public sealed partial class ScriptEditor
     public static void SelectedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         => ((ScriptEditor)d).ForbidEdit = (e.NewValue as Script)?.Type == ScriptType.Default;
 
-    private void ButtonDelete_Click(object sender, RoutedEventArgs e)
-    {
-        using Dialog deleteScript = DialogFactory.MakeDeleteScriptDialog();
-        if (deleteScript.ShowDialog().ClickedButton == Button.Yes)
-        {
-            ScriptRemoved?.Invoke(this, EventArgs.Empty);
-        }
-    }
+    private void ButtonDelete_Click(object sender, RoutedEventArgs e) => ScriptRemoved?.Invoke(this, EventArgs.Empty);
 
     private void ComboBoxCategorySelectionChanged(object sender, SelectionChangedEventArgs e)
     {

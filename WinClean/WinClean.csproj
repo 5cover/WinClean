@@ -29,24 +29,24 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <WarningLevel>9999</WarningLevel>
     <DefineConstants>$(DefineConstants)</DefineConstants>
     <DebugType>embedded</DebugType>
     <Optimize>False</Optimize>
+    <NoWarn>IDE0072</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <WarningLevel>9999</WarningLevel>
     <DefineConstants>$(DefineConstants)</DefineConstants>
     <DebugType>embedded</DebugType>
     <Optimize>True</Optimize>
+    <NoWarn>IDE0072</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Portable|AnyCPU'">
-    <WarningLevel>9999</WarningLevel>
     <DefineConstants>$(DefineConstants)</DefineConstants>
     <DebugType>embedded</DebugType>
     <Optimize>True</Optimize>
+    <NoWarn>IDE0072</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -95,12 +95,12 @@
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
     <PackageReference Include="CsvHelper" Version="30.0.1" />
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.4.0" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
     <PackageReference Include="Humanizer" Version="2.14.1" />
-    <PackageReference Include="Octokit" Version="4.0.1" />
-    <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
+    <PackageReference Include="Octokit" Version="4.0.3" />
+    <PackageReference Include="Scover.Dialogs" Version="1.0.3" />
     <PackageReference Include="System.Management" Version="7.0.0" />
-    <PackageReference Include="WinCopies.WindowsAPICodePack.Shell" Version="3.11.0.1-preview" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.11" />
   </ItemGroup>
   
   <ItemGroup>
@@ -171,11 +171,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Properties\PersistentSettings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PersistentSettings.settings</DependentUpon>
-    </Compile>
     <Compile Update="Resources\CommandLine.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -186,15 +181,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Update="Resources\FileSystemElements.Designer.cs">
+    <Compile Update="Resources\FileSystem.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>FileSystemElements.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\FileSystemVerbs.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>FileSystemVerbs.resx</DependentUpon>
+      <DependentUpon>FileSystem.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\LogLevels.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -216,35 +206,15 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Resources\UI\CompletedDialog.Designer.cs">
-      <DependentUpon>CompletedDialog.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
     <Compile Update="Resources\UI\Buttons.Designer.cs">
       <DependentUpon>Buttons.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Resources\UI\InvalidCustomScriptData.Designer.cs">
+    <Compile Update="Resources\UI\AskRestorePoint.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>InvalidCustomScriptData.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\UI\ScriptExecutionProgressDialog.Designer.cs">
-      <DependentUpon>ScriptExecutionProgressDialog.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Resources\UI\SystemProtectionDisabled.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SystemProtectionDisabled.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Resources\UI\SystemRestorePoint.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SystemRestorePoint.resx</DependentUpon>
+      <DependentUpon>AskRestorePoint.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\UI\SettingsWindow.Designer.cs">
       <DependentUpon>SettingsWindow.resx</DependentUpon>
@@ -265,7 +235,7 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\CommandLine.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CommandLine.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Dialog.fr.resx">
@@ -275,19 +245,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Dialog.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\FileSystemElements.fr.resx">
+    <EmbeddedResource Update="Resources\FileSystem.fr.resx">
       <Generator></Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\FileSystemElements.resx">
+    <EmbeddedResource Update="Resources\FileSystem.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>FileSystemElements.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\FileSystemVerbs.fr.resx">
-      <Generator></Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\FileSystemVerbs.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>FileSystemVerbs.Designer.cs</LastGenOutput>
+      <LastGenOutput>FileSystem.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\FormattableStrings.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -297,7 +260,7 @@
       <LastGenOutput>FormattableStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\LogLevels.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>LogLevels.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Logs.resx">
@@ -312,29 +275,13 @@
       <LastGenOutput>AboutWindow.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\UI\CompletedDialog.resx">
-      <LastGenOutput>CompletedDialog.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\Buttons.resx">
       <LastGenOutput>Buttons.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\UI\InvalidCustomScriptData.resx">
+    <EmbeddedResource Update="Resources\UI\AskRestorePoint.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>InvalidCustomScriptData.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\UI\ScriptExecutionProgressDialog.resx">
-      <LastGenOutput>ScriptExecutionProgressDialog.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\UI\SystemProtectionDisabled.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SystemProtectionDisabled.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\UI\SystemRestorePoint.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SystemRestorePoint.Designer.cs</LastGenOutput>
+      <LastGenOutput>AskRestorePoint.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\SettingsWindow.resx">
       <LastGenOutput>SettingsWindow.Designer.cs</LastGenOutput>
@@ -354,10 +301,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Update="Properties\PersistentSettings.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>PersistentSettings.Designer.cs</LastGenOutput>
-    </None>
     <None Update="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

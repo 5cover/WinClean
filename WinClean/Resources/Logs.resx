@@ -117,10 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CreatingRestorePoint" xml:space="preserve">
-    <value>Creating restore point...</value>
-    <comment>@Invariant</comment>
-  </data>
   <data name="Exiting" xml:space="preserve">
     <value>Exiting the application.</value>
     <comment>@Invariant</comment>
@@ -130,20 +126,16 @@
     <comment>@Invariant</comment>
   </data>
   <data name="RestorePointCreated" xml:space="preserve">
-    <value>Restore point created successfully.</value>
+    <value>Restore point created.</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="RestorePointCreationError" xml:space="preserve">
-    <value>Error during restore point creation: {0}</value>
-    <comment>0 : message of the exception@Invariant</comment>
+  <data name="ScriptRemoved" xml:space="preserve">
+    <value>Script '{0}' removed.</value>
+    <comment>0 : script filename or InvariantName@Invariant</comment>
   </data>
-  <data name="ScriptDeleted" xml:space="preserve">
-    <value>Script '{0}' deleted.</value>
-    <comment>0 : script filename@Invariant</comment>
-  </data>
-  <data name="ScriptExecuting" xml:space="preserve">
-    <value>Script '{0}' executing...</value>
-    <comment>0 : script filename@Invariant</comment>
+  <data name="ScriptExecuted" xml:space="preserve">
+    <value>Script '{0}' executed...</value>
+    <comment>0 : script InvariantName@Invariant</comment>
   </data>
   <data name="ScriptExecutionCanceled" xml:space="preserve">
     <value>Script execution canceled.</value>
@@ -153,21 +145,18 @@
     <value>Script(s) executed sucessfully.</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="StartingExecutionOfScripts" xml:space="preserve">
+  <data name="StartingExecution" xml:space="preserve">
     <value>Starting the execution of {0} script(s)...</value>
-    <comment>0 : number of scripts to execute@Invariant</comment>
+    <comment>0 : script count@Invariant</comment>
   </data>
-  <data name="InvalidScriptData" xml:space="preserve">
-    <value>Script file '{0}' has invalid or missing data.</value>
-    <comment>0 : script filename@Invariant</comment>
+  <data name="ScriptLoadError" xml:space="preserve">
+    <value>Script '{0}' cannot be loaded: {1}</value>
+    <comment>0 : script filename
+1 : exception@Invariant</comment>
   </data>
   <data name="UnhandledException" xml:space="preserve">
     <value>An unhandled exception occured: {0}</value>
     <comment>0 : exception@Invariant</comment>
-  </data>
-  <data name="SystemRestoreEnabled" xml:space="preserve">
-    <value>System restore was enabled for all eligible drives to create a restore point.</value>
-    <comment>@Invariant</comment>
   </data>
   <data name="ClearedLogsFolder" xml:space="preserve">
     <value>Cleared logs folder.</value>
@@ -187,7 +176,7 @@
     <comment>@Invariant</comment>
   </data>
   <data name="FailedToDeleteLogFile" xml:space="preserve">
-    <value>Failed to delete log file '{0]': {0}</value>
+    <value>Failed to delete log file '{0]': {1}</value>
     <comment>0 : filename
 1 : exception@Invariant</comment>
   </data>
@@ -195,9 +184,19 @@
     <value>Settings saved.</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="FSErrorLoadingCustomScript" xml:space="preserve">
-    <value>Could not load custom script '{0}' due to a filesystem error: {1}</value>
-    <comment>0 : custom script file path
+  <data name="ScriptNotLoaded" xml:space="preserve">
+    <value>Script '{0}' was not loaded: {1}</value>
+    <comment>0 : script filename
 1 : exception@Invariant</comment>
+  </data>
+  <data name="ScriptAdded" xml:space="preserve">
+    <value>Script '{0}' added as '{1}'.</value>
+    <comment>0 : script filename
+1 : script InvariantName@Invariant</comment>
+  </data>
+  <data name="ScriptAlreadyExistsCannotBeAdded" xml:space="preserve">
+    <value>Can't add script '{0}' as script '{0}' already exists.</value>
+    <comment>0 : script filename
+1 : script InvariantName@Invariant</comment>
   </data>
 </root>

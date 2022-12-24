@@ -23,16 +23,6 @@ public sealed class RestorePoint
         _type = type;
     }
 
-    /// <summary>Enables system restore for all eligible drives.</summary>
-    public static void EnableSystemRestore()
-    {
-        // Some drives are non-eligible for system restore, but Enable-ComputerRestore will still enable the eligible ones. We
-        // have to use Process for this because using the PowerShell API throws CommandNotFoundException for the
-        // Enable-ComputerRestore cmdlet for some reason
-        using Process powerShell = Helpers.StartPowerShell($"-Command Enable-ComputerRestore -Drive {string.Join(',', DriveInfo.GetDrives().Select(di => @$"""{di.Name}\"""))}").AssertNotNull();
-        powerShell.WaitForExit();
-    }
-
     /// <summary>Creates a restore point on the local system.</summary>
     /// <exception cref="ManagementException">Access denied.</exception>
     /// <exception cref="InvalidOperationException">System restore is disabled.</exception>
@@ -54,7 +44,7 @@ public sealed class RestorePoint
         {
             _ = mClass.InvokeMethod("CreateRestorePoint", parameters, null!); // ! : InvokeMethodOptions is not needed.
         }
-        // HRESULT -2147023838 = 0x80070422 : system restore is disabled
+        // HRESULT 0x80070422: system restore is disabled
         catch (COMException e) when (e.HResult == -2147023838)
         {
             throw new InvalidOperationException("Cannot create system restore point because system protection is disabled.", e);

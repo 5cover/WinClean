@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-
 using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.BusinessLogic;

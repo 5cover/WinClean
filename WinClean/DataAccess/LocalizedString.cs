@@ -25,10 +25,10 @@ public sealed class LocalizedString : IEnumerable<KeyValuePair<string, string>>,
 
     public IEnumerator<KeyValuePair<string, string>> GetEnumerator() => ((IEnumerable<KeyValuePair<string, string>>)_values).GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator() => _values.GetEnumerator();
-
     public override int GetHashCode() => HashCode.Combine(_values);
 
     /// <summary>Sets the localized string for the specified culture.</summary>
     public void Set(CultureInfo culture, string value) => _values[culture.Name] = value;
+
+    IEnumerator IEnumerable.GetEnumerator() => _values.GetEnumerator();
 }

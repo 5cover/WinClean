@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
 using Scover.WinClean.DataAccess;
 
 using static System.Globalization.CultureInfo;
@@ -128,9 +127,8 @@ public sealed class Script : INotifyPropertyChanged
 
     /// <summary>Executes this script.</summary>
     /// <remarks>Returns when this script has finished executing or was hung and has been terminated.</remarks>
-    /// <inheritdoc cref="Host.ExecuteCode" path="/param"/>
-    public void Execute(HungScriptCallback keepRunningElseTerminate, CancellationToken cancellationToken)
-        => Host.ExecuteCode(Code, AppInfo.Settings.ScriptTimeout, () => keepRunningElseTerminate(this), cancellationToken);
+    /// <inheritdoc cref="Host.ExecuteAsync" path="/param"/>
+    public async Task ExecuteAsync(CancellationToken cancellationToken) => await Host.ExecuteAsync(Code, cancellationToken);
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new(propertyName));
 }

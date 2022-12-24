@@ -9,3 +9,4 @@
 
 [ ] **DO NOT** Translate RESX resources marked as *@Invariant* in the comment.
 [ ] **DO NOT** Translate string literals.
+[ ] **DO NOT** Translate HREFs in links.

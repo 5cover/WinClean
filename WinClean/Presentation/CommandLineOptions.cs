@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics;
-
 using CommandLine;
 
-using Scover.WinClean.BusinessLogic;
+using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Resources;
 
@@ -18,9 +17,8 @@ public sealed class CommandLineOptions
 
     public int Execute()
     {
+        // Assert that the mutually exclusive groups were respected.
         Debug.Assert(RunAllScripts ^ Scripts is not null);
-
-        using ScriptExecutor executor = new();
 
         var scriptsQuery = App.Scripts;
         if (Scripts is not null)
@@ -30,14 +28,13 @@ public sealed class CommandLineOptions
 
         var scripts = scriptsQuery.ToList();
 
-        Logs.StartingExecutionOfScripts.FormatWith(scripts.Count).Log(LogLevel.Info);
+        Logs.StartingExecution.FormatWith(scripts.Count).Log(LogLevel.Info);
 
-        executor.ExecuteScriptsAsync(scripts, scriptName =>
+        foreach (Script script in scripts)
         {
-            Logs.HungScript.FormatWith(scriptName, AppInfo.Settings.ScriptTimeout).Log(LogLevel.Warning);
-            Logs.HungScriptTerminated.FormatWith(scriptName).Log(LogLevel.Info);
-            return false;
-        }).Wait();
+            Logs.ScriptExecuted.FormatWith(script.InvariantName).Log();
+            script.ExecuteAsync(CancellationToken.None).RunSynchronously();
+        }
 
         Logs.ScriptsExecuted.Log(LogLevel.Info);
         return 0;

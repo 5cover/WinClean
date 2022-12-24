@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -112,15 +112,21 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Directory" xml:space="preserve">
-    <value>directory</value>
+  <data name="MainInstruction" xml:space="preserve">
+    <value>Créer un point de restauration ?</value>
   </data>
-  <data name="File" xml:space="preserve">
-    <value>file</value>
+  <data name="CommandLinkYes" xml:space="preserve">
+    <value>Créer un point de restauration système (recommandé)</value>
+  </data>
+  <data name="CommandLinkYesNote" xml:space="preserve">
+    <value>Cela vous permettra d'annuler les changements sur le point d'être apportés au système. La protection du système sera activée s'il elle ne l'est pas déjà.</value>
+  </data>
+  <data name="CommandLinkNo" xml:space="preserve">
+    <value>Ne pas créer de point de restauration</value>
   </data>
 </root>

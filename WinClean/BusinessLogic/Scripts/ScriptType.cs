@@ -3,7 +3,7 @@
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
 /// <summary>Represents the type of a script.</summary>
-public class ScriptType
+public sealed class ScriptType
 {
     private ScriptType(string name) => Name = name;
 

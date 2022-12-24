@@ -1,106 +1,91 @@
 ﻿<Window
-  x:Class="Scover.WinClean.Presentation.Windows.SettingsWindow"
-  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:properties="clr-namespace:Scover.WinClean.Properties"
-  xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
-  xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-  Title="{x:Static ui:SettingsWindow.Title}"
-  Background="{x:Static SystemColors.ControlBrush}"
-  ResizeMode="NoResize"
-  SizeToContent="WidthAndHeight"
-  WindowStartupLocation="CenterOwner"
-  mc:Ignorable="d">
-  <Window.Resources>
-    <properties:Settings x:Key="Settings" />
-  </Window.Resources>
-  <Grid Margin="12">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto" />
-      <ColumnDefinition />
-    </Grid.ColumnDefinitions>
+    x:Class="Scover.WinClean.Presentation.Windows.SettingsWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:properties="clr-namespace:Scover.WinClean.Properties"
+    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Title="{x:Static ui:SettingsWindow.Title}"
+    Background="{x:Static SystemColors.ControlBrush}"
+    ResizeMode="NoResize"
+    SizeToContent="WidthAndHeight"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <properties:Settings x:Key="Settings" />
+    </Window.Resources>
+    <Grid Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
 
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition />
-    </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-    <Label
-      Grid.Row="1"
-      Grid.Column="0"
-      Content="{x:Static ui:SettingsWindow.ScriptTimeout}"
-      Target="{Binding ElementName=ScriptTimeoutSetting}" />
-    <xctk:TimeSpanUpDown
-      x:Name="ScriptTimeoutSetting"
-      Grid.Row="1"
-      Grid.Column="1"
-      Margin="0,0,0,12"
-      DataContext="{StaticResource Settings}"
-      Maximum="48:00:00"
-      Minimum="01:00:00"
-      ShowDays="False"
-      Value="{Binding Default.ScriptTimeout, Mode=TwoWay}" />
+        <Label
+            Grid.Row="1"
+            Grid.Column="0"
+            Content="{x:Static ui:SettingsWindow.ScriptTimeout}"
+            Target="{Binding ElementName=ScriptTimeoutSetting}" />
+        <xctk:TimeSpanUpDown
+            x:Name="ScriptTimeoutSetting"
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="0,0,0,12"
+            DataContext="{StaticResource Settings}"
+            Maximum="48:00:00"
+            Minimum="01:00:00"
+            ShowDays="False"
+            Value="{Binding Default.ScriptTimeout, Mode=TwoWay}" />
 
-    <Label
-      Grid.Row="2"
-      Grid.Column="0"
-      Content="{x:Static ui:SettingsWindow.ShowDetailsCompleted}"
-      Target="{Binding ElementName=DetailsAfterExecutionSetting}" />
-    <CheckBox
-      x:Name="DetailsAfterExecutionSetting"
-      Grid.Row="2"
-      Grid.Column="1"
-      Margin="0,0,0,12"
-      HorizontalAlignment="Center"
-      DataContext="{StaticResource Settings}"
-      IsChecked="{Binding Default.DetailsAfterExecution, Mode=TwoWay}" />
+        <Label
+            Grid.Row="2"
+            Grid.Column="0"
+            Content="{x:Static ui:SettingsWindow.ShowDetailsDuring}"
+            Target="{Binding ElementName=DetailsDuringExecutionSetting}" />
+        <CheckBox
+            x:Name="DetailsDuringExecutionSetting"
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="0,0,0,12"
+            HorizontalAlignment="Center"
+            DataContext="{StaticResource Settings}"
+            IsChecked="{Binding Default.ExecutionShowDetails, Mode=TwoWay}" />
 
-    <Label
-      Grid.Row="3"
-      Grid.Column="0"
-      Content="{x:Static ui:SettingsWindow.ShowDetailsDuring}"
-      Target="{Binding ElementName=DetailsDuringExecutionSetting}" />
-    <CheckBox
-      x:Name="DetailsDuringExecutionSetting"
-      Grid.Row="3"
-      Grid.Column="1"
-      Margin="0,0,0,12"
-      HorizontalAlignment="Center"
-      DataContext="{StaticResource Settings}"
-      IsChecked="{Binding Default.DetailsDuringExecution, Mode=TwoWay}" />
+        <Label
+            Grid.Row="3"
+            Grid.Column="0"
+            Content="{x:Static ui:SettingsWindow.ShowUpdateDialog}"
+            Target="{Binding ElementName=ShowUpdateDialogSetting}" />
+        <CheckBox
+            x:Name="ShowUpdateDialogSetting"
+            Grid.Row="3"
+            Grid.Column="1"
+            Margin="0,0,0,12"
+            HorizontalAlignment="Center"
+            DataContext="{StaticResource Settings}"
+            IsChecked="{Binding Default.ShowUpdateDialog, Mode=TwoWay}" />
 
-    <Label
-      Grid.Row="4"
-      Grid.Column="0"
-      Content="{x:Static ui:SettingsWindow.ShowUpdateDialog}"
-      Target="{Binding ElementName=ShowUpdateDialogSetting}" />
-    <CheckBox
-      x:Name="ShowUpdateDialogSetting"
-      Grid.Row="4"
-      Grid.Column="1"
-      Margin="0,0,0,12"
-      HorizontalAlignment="Center"
-      DataContext="{StaticResource Settings}"
-      IsChecked="{Binding Default.ShowUpdateDialog, Mode=TwoWay}" />
-
-    <StackPanel
-      Grid.Row="5"
-      Grid.Column="1"
-      Orientation="Horizontal">
-      <Button
-        Margin="0,0,12,0"
-        Click="ButtonResetClick"
-        Content="{x:Static ui:Buttons.Reset}" />
-      <Button
-        Click="ButtonOKClick"
-        Content="{x:Static ui:Buttons.Close}"
-        IsDefault="True" />
-    </StackPanel>
-  </Grid>
+        <StackPanel
+            Grid.Row="4"
+            Grid.Column="1"
+            Orientation="Horizontal">
+            <Button
+                Margin="0,0,12,0"
+                Click="ButtonResetClick"
+                Content="{x:Static ui:Buttons.Reset}" />
+            <Button
+                Click="ButtonOKClick"
+                Content="{x:Static ui:Buttons.Close}"
+                IsDefault="True" />
+        </StackPanel>
+    </Grid>
 </Window>
