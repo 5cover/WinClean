@@ -1,12 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
 using System.Text;
-
 using CsvHelper;
 using CsvHelper.Configuration;
-
 using Scover.WinClean.BusinessLogic;
-using Scover.WinClean.DataAccess;
 using Scover.WinClean.Resources;
 
 namespace Scover.WinClean.Presentation.Logging;

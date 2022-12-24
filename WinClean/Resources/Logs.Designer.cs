@@ -70,15 +70,6 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creating restore point....
-        /// </summary>
-        public static string CreatingRestorePoint {
-            get {
-                return ResourceManager.GetString("CreatingRestorePoint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Exiting the application..
         /// </summary>
         public static string Exiting {
@@ -88,20 +79,11 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to delete log file: {0}.
+        ///   Looks up a localized string similar to Failed to delete log file &apos;{0]&apos;: {1}.
         /// </summary>
         public static string FailedToDeleteLogFile {
             get {
                 return ResourceManager.GetString("FailedToDeleteLogFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Could not load custom script &apos;{0}&apos; due to a filesystem error: {1}.
-        /// </summary>
-        public static string FSErrorLoadingCustomScript {
-            get {
-                return ResourceManager.GetString("FSErrorLoadingCustomScript", resourceCulture);
             }
         }
         
@@ -124,15 +106,6 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Script file &apos;{0}&apos; has invalid or missing data..
-        /// </summary>
-        public static string InvalidScriptData {
-            get {
-                return ResourceManager.GetString("InvalidScriptData", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Rebooting for application maintenance....
         /// </summary>
         public static string RebootingForAppMaintenance {
@@ -142,7 +115,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Restore point created successfully..
+        ///   Looks up a localized string similar to Restore point created..
         /// </summary>
         public static string RestorePointCreated {
             get {
@@ -151,29 +124,29 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error during restore point creation: {0}.
+        ///   Looks up a localized string similar to Script &apos;{0}&apos; added as &apos;{1}&apos;..
         /// </summary>
-        public static string RestorePointCreationError {
+        public static string ScriptAdded {
             get {
-                return ResourceManager.GetString("RestorePointCreationError", resourceCulture);
+                return ResourceManager.GetString("ScriptAdded", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Script &apos;{0}&apos; deleted..
+        ///   Looks up a localized string similar to Can&apos;t add script &apos;{0}&apos; as script &apos;{0}&apos; already exists..
         /// </summary>
-        public static string ScriptDeleted {
+        public static string ScriptAlreadyExistsCannotBeAdded {
             get {
-                return ResourceManager.GetString("ScriptDeleted", resourceCulture);
+                return ResourceManager.GetString("ScriptAlreadyExistsCannotBeAdded", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Script &apos;{0}&apos; executing....
+        ///   Looks up a localized string similar to Script &apos;{0}&apos; executed....
         /// </summary>
-        public static string ScriptExecuting {
+        public static string ScriptExecuted {
             get {
-                return ResourceManager.GetString("ScriptExecuting", resourceCulture);
+                return ResourceManager.GetString("ScriptExecuted", resourceCulture);
             }
         }
         
@@ -183,6 +156,33 @@ namespace Scover.WinClean.Resources {
         public static string ScriptExecutionCanceled {
             get {
                 return ResourceManager.GetString("ScriptExecutionCanceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Script &apos;{0}&apos; cannot be loaded: {1}.
+        /// </summary>
+        public static string ScriptLoadError {
+            get {
+                return ResourceManager.GetString("ScriptLoadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Script &apos;{0}&apos; was not loaded: {1}.
+        /// </summary>
+        public static string ScriptNotLoaded {
+            get {
+                return ResourceManager.GetString("ScriptNotLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Script &apos;{0}&apos; removed..
+        /// </summary>
+        public static string ScriptRemoved {
+            get {
+                return ResourceManager.GetString("ScriptRemoved", resourceCulture);
             }
         }
         
@@ -216,18 +216,9 @@ namespace Scover.WinClean.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Starting the execution of {0} script(s)....
         /// </summary>
-        public static string StartingExecutionOfScripts {
+        public static string StartingExecution {
             get {
-                return ResourceManager.GetString("StartingExecutionOfScripts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to System restore was enabled for all eligible drives to create a restore point..
-        /// </summary>
-        public static string SystemRestoreEnabled {
-            get {
-                return ResourceManager.GetString("SystemRestoreEnabled", resourceCulture);
+                return ResourceManager.GetString("StartingExecution", resourceCulture);
             }
         }
         

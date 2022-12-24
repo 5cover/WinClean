@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-
 using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.BusinessLogic.Scripts;
@@ -17,21 +16,16 @@ public sealed class ManifestResourceScriptCollection : ScriptCollection
         @namespace += '.';
         foreach (var resName in assembly.GetManifestResourceNames().Where(name => name.StartsWith(@namespace, StringComparison.Ordinal)))
         {
-            Load(resName);
+            Stream stream;
+            try
+            {
+                stream = assembly.GetManifestResourceStream(resName).AssertNotNull();
+            }
+            catch (Exception e) when (e is ArgumentException or FileNotFoundException or BadImageFormatException or NotImplementedException)
+            {
+                throw new ArgumentException($"Invalid embedded resource name: '{resName}'", nameof(@namespace), e);
+            }
+            Sources.Add(Deserialize(stream), resName);
         }
-    }
-
-    private void Load(string source)
-    {
-        Stream stream;
-        try
-        {
-            stream = assembly.GetManifestResourceStream(source).AssertNotNull();
-        }
-        catch (Exception e) when (e is ArgumentException or FileNotFoundException or BadImageFormatException or NotImplementedException)
-        {
-            throw new ArgumentException($"Invalid embedded resource name: '{source}'", nameof(source), e);
-        }
-        Sources.Add(Deserialize(stream), source);
     }
 }

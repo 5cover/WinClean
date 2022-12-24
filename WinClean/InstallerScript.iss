@@ -90,7 +90,7 @@ fr.InstallingDotNetRuntime=.NET 6 Desktop Runtime est en cours d'installation.
 DotNetRuntimeFailedToLaunch=Failed to launch .NET Desktop Runtime Installer with error "%1". Please fix the error then run this installer again.
 fr.DotNetRuntimeFailedToLaunch=Le lancement de .NET Desktop Runtime Installer a échoué avec l'erreur "%1". Corrigez l'erreur puis redémarrez l'installeur.
 
-DotNetRuntimeFailed1602=.NET Desktop Runtime installation was cancelled. This installation can continue, but be aware that this application may not run unless the .NET Desktop Runtime installation is completed successfully.
+DotNetRuntimeFailed1602=.NET Desktop Runtime installation was canceled. This installation can continue, but be aware that this application may not run unless the .NET Desktop Runtime installation is completed successfully.
 fr.DotNetRuntimeFailed1602=L'installation de .NET Desktop Runtime a été annulée. L'installation peut continuer, mais cette application ne fonctionnera pas correctement tant que .NET Desktop Runtime ne sera pas installé.
 
 DotNetRuntimeFailed1603=A fatal error occurred while installing the .NET Desktop Runtime. Please fix the error, then run the installer again.

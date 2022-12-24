@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-
 using Microsoft.Win32;
 
 namespace Scover.WinClean.DataAccess;

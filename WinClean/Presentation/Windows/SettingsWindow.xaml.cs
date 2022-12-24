@@ -10,5 +10,5 @@ public sealed partial class SettingsWindow
 
     private void ButtonOKClick(object sender, RoutedEventArgs e) => Close();
 
-    private void ButtonResetClick(object sender, RoutedEventArgs e) => AppInfo.Settings.Reset();
+    private void ButtonResetClick(object sender, RoutedEventArgs e) => App.Settings.Reset();
 }

@@ -1,13 +1,11 @@
-﻿using Scover.WinClean.BusinessLogic;
-using Scover.WinClean.BusinessLogic.Scripts;
-using Scover.WinClean.DataAccess;
-using Scover.WinClean.Presentation.Dialogs;
-
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Win32;
-using Ookii.Dialogs.Wpf;
-using Button = Scover.WinClean.Presentation.Dialogs.Button;
+using Scover.WinClean.BusinessLogic;
+using Scover.WinClean.BusinessLogic.Scripts;
+using Scover.Dialogs;
+using static Scover.WinClean.Resources.UI.Dialogs;
+using Page = Scover.Dialogs.Page;
+using Button = Scover.Dialogs.Button;
 
 namespace Scover.WinClean.Presentation.Windows;
 
@@ -45,20 +43,23 @@ public partial class MainWindow
     private void ButtonExecuteScriptsClick(object sender, RoutedEventArgs e)
     {
         var selectedScripts = Scripts.Where(s => s.IsSelected).ToList();
-        if (!selectedScripts.Any())
+
+        if (selectedScripts.Any())
         {
-            using Dialog noScriptsSelected = new(Button.Ok)
-            {
-                MainIcon = TaskDialogIcon.Error,
-                MainInstruction = WinClean.Resources.UI.Dialogs.NoScriptsSelectedMainInstruction,
-                Content = WinClean.Resources.UI.Dialogs.NoScriptsSelectedContent
-            };
-            _ = noScriptsSelected.ShowDialog();
+            new ScriptExecutionWizard(selectedScripts).Execute();
             return;
         }
-        using ScriptExecutionWizard wizard = new(selectedScripts);
-        wizard.Execute();
+
+        Page noScriptsSelected = new()
+        {
+            Icon = DialogIcon.Error,
+            MainInstruction = NoScriptsSelectedMainInstruction,
+            Content = NoScriptsSelectedContent
+        };
+        _ = new Dialog(noScriptsSelected).Show();
     }
+
+    private void DataGridScriptsDeleteExecuted(object sender, System.Windows.Input.ExecutedRoutedEventArgs e) => RemoveSelectedScript();
 
     private void MenuAboutClick(object sender, RoutedEventArgs e) => new AboutWindow { Owner = this }.ShowDialog();
 
@@ -70,21 +71,17 @@ public partial class MainWindow
 
     private void MenuNoneClick(object sender, RoutedEventArgs e) => CheckScripts(_ => false);
 
-    private void MenuOnlineWikiClick(object sender, RoutedEventArgs e) => Helpers.Open(AppInfo.Settings.WikiUrl);
+    private void MenuOnlineWikiClick(object sender, RoutedEventArgs e) => App.Settings.WikiUrl.Open();
 
-    private void MenuOpenLogsDirClick(object sender, RoutedEventArgs e) => Helpers.Open(AppDirectory.Logs);
+    private void MenuOpenLogsDirClick(object sender, RoutedEventArgs e) => AppDirectory.Logs.Open();
 
-    private void MenuOpenScriptsDirClick(object sender, RoutedEventArgs e) => Helpers.Open(AppDirectory.Scripts);
+    private void MenuOpenScriptsDirClick(object sender, RoutedEventArgs e) => AppDirectory.Scripts.Open();
 
     private void MenuSettingsClick(object sender, RoutedEventArgs e) => new SettingsWindow { Owner = this }.ShowDialog();
 
     private void ScriptEditorScriptChangedCategory(object sender, EventArgs e) => ScriptCollectionView.Refresh();
 
-    private void ScriptEditorScriptRemoved(object sender, EventArgs e)
-    {
-        _ = Scripts.Remove(SelectedScript.AssertNotNull());
-        ScriptCollectionView.Refresh();
-    }
+    private void ScriptEditorScriptRemoved(object sender, EventArgs e) => RemoveSelectedScript();
 
     private void TabControlCategoriesSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -103,11 +100,11 @@ public partial class MainWindow
 
     private void WindowClosed(object sender, EventArgs e)
     {
-        AppInfo.Settings.Top = Top;
-        AppInfo.Settings.Left = Left;
-        AppInfo.Settings.Width = Width;
-        AppInfo.Settings.Height = Height;
-        AppInfo.Settings.IsMaximized = WindowState == WindowState.Maximized;
+        App.Settings.Top = Top;
+        App.Settings.Left = Left;
+        App.Settings.Width = Width;
+        App.Settings.Height = Height;
+        App.Settings.IsMaximized = WindowState == WindowState.Maximized;
         App.SaveScripts(Scripts);
     }
 }

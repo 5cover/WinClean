@@ -1,25 +1,25 @@
 using System.Collections;
 using System.Xml;
-
 using Humanizer;
-
+using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.DataAccess;
+using Scover.WinClean.Presentation;
 
 namespace Tests;
 
-[TestFixture(TestOf = typeof(Helpers))]
 public sealed class HelpersTests
 {
-    private static readonly TestCaseData[] sumCases = new TestCaseData[]
-    {
+    private const string ToFilenameArg1 = " (Parameter 'filename')";
+    private const string ToFilenameArg2 = " (Parameter 'replaceInvalidCharsWith')";
+
+    private static readonly TestCaseData[] sumCases = {
         new(10.Hours(), new[]{ 10.Hours() }),
         new(10.Hours(), new[]{ 5.Hours(), 5.Hours() }),
         new(10.Hours(), new[]{ 5, 3, 2 }.Select(s => s.Hours())),
-        new(10.Hours(), new[]{ 0.3, 1.7, 4.6, 3.4 }.Select(s => s.Hours())),
+        new(10.Hours(), new[]{ 0.3, 1.7, 4.6, 3.4 }.Select(s => s.Hours()))
     };
 
-    private static readonly TestCaseData[] toFilenameCases = new TestCaseData[]
-    {
+    private static readonly TestCaseData[] toFilenameCases = {
         new("  validFilename ", "_", "validFilename"),
         new("invalid/filename", "_", "invalid_filename"),
         new("  /\\invalid:?filename\0    ", "_", "__invalid__filename_"),
@@ -27,20 +27,19 @@ public sealed class HelpersTests
         new("  validFilename    ", "!!", "validFilename"),
         new(" invalid/filename  ", "!!", "invalid!!filename"),
         new(" /\\invalid:?filename\0  ", "!!", "!!!!invalid!!!!filename!!"),
-        new(@"  C:\This\Is\A\Path ", "!!", "C!!!!This!!Is!!A!!Path"),
+        new(@"  C:\This\Is\A\Path ", "!!", "C!!!!This!!Is!!A!!Path")
     };
 
-    private static readonly TestCaseData[] toFilenameInvalidCases = new TestCaseData[]
-    {
-        new(null, "", "Is null, empty, or whitespace. (Parameter 'filename')"),
-        new("", "", "Is null, empty, or whitespace. (Parameter 'filename')"),
-        new("  ", "", "Is null, empty, or whitespace. (Parameter 'filename')"),
-        new("f", null, "Is null or empty. (Parameter 'replaceInvalidCharsWith')"),
-        new("f", "", "Is null or empty. (Parameter 'replaceInvalidCharsWith')"),
-        new("f", "*", "Contains invalid filename chars. (Parameter 'replaceInvalidCharsWith')"),
-        new("f", "*/:?", "Contains invalid filename chars. (Parameter 'replaceInvalidCharsWith')"),
-        new("f", ".", "Consists only of dots. (Parameter 'replaceInvalidCharsWith')"),
-        new("f", "....", "Consists only of dots. (Parameter 'replaceInvalidCharsWith')"),
+    private static readonly TestCaseData[] toFilenameInvalidCases = {
+        new(null, "", "Is null, empty, or whitespace."+ToFilenameArg1),
+        new("", "", "Is null, empty, or whitespace."+ToFilenameArg1),
+        new("  ", "", "Is null, empty, or whitespace."+ToFilenameArg1),
+        new("f", null, "Is null or empty."+ToFilenameArg2),
+        new("f", "", "Is null or empty."+ToFilenameArg2),
+        new("f", "*", "Contains invalid filename chars."+ToFilenameArg2),
+        new("f", "*/:?", "Contains invalid filename chars."+ToFilenameArg2),
+        new("f", ".", "Consists only of dots."+ToFilenameArg2),
+        new("f", "....", "Consists only of dots."+ToFilenameArg2)
     };
 
     [TestCaseSource(typeof(EqualContentCases))]
@@ -82,7 +81,7 @@ public sealed class HelpersTests
 
     [TestCaseSource(nameof(sumCases))]
     public void TestSum(TimeSpan total, IEnumerable<TimeSpan> elements)
-        => Assert.That(total, Is.EqualTo(elements.Sum(ts => ts)));
+        => Assert.That(total, Is.EqualTo(elements.Sum<TimeSpan>(ts => ts)));
 
     [TestCaseSource(nameof(toFilenameCases))]
     public void TestToFilename(string filename, string replaceInvalidCharsWith, string expectedResult) => Assert.That(filename.ToFilename(replaceInvalidCharsWith), Is.EqualTo(expectedResult));
@@ -96,35 +95,35 @@ public sealed class HelpersTests
 
     private sealed class EqualContentCases : IEnumerable<TestCaseData>
     {
-        private static readonly Dictionary<int, string> abc = new()
+        private static Dictionary<int, string> Abc => new()
         {
             [1] = "a",
             [2] = "b",
             [3] = "c"
         };
 
-        private static readonly Dictionary<int, string> acb = new()
+        private static Dictionary<int, string> Acb => new()
         {
             [1] = "a",
             [2] = "c",
             [3] = "b"
         };
 
-        private static Dictionary<int, object> obj => new()
+        private static Dictionary<int, object> Obj => new()
         {
-            [1] = new object(),
-            [2] = new object(),
-            [3] = new object()
+            [1] = new(),
+            [2] = new(),
+            [3] = new()
         };
 
         public IEnumerator<TestCaseData> GetEnumerator()
         {
             yield return new(Empty<object, object>(), Empty<object, object>(), true);
-            yield return new(abc, abc, true);
-            yield return new(obj, obj, false);
-            yield return new(abc, Empty<int, string>(), false);
-            yield return new(abc, acb, false);
-            yield return new(obj, Empty<int, object>(), false);
+            yield return new(Abc, Abc, true);
+            yield return new(Obj, Obj, false);
+            yield return new(Abc, Empty<int, string>(), false);
+            yield return new(Abc, Acb, false);
+            yield return new(Obj, Empty<int, object>(), false);
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

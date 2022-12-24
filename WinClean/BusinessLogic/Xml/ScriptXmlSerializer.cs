@@ -1,5 +1,4 @@
 ﻿using System.Xml;
-
 using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.DataAccess;
 
@@ -7,18 +6,22 @@ namespace Scover.WinClean.BusinessLogic.Xml;
 
 public sealed class ScriptXmlSerializer : IScriptSerializer
 {
+    private readonly TypedEnumerablesDictionary _metadatas;
+
+    public ScriptXmlSerializer(TypedEnumerablesDictionary metadatas) => _metadatas = metadatas;
+
     public Script Deserialize(ScriptType type, Stream data)
     {
         XmlDocument d = new();
         try
         {
             d.Load(data);
-            return new(localizedName: d.GetLocalizedString("Name"),
+            return new(category: _metadatas.Get<Category>().Single(c => c.InvariantName == d.GetSingleChild("Category")),
+                       host: _metadatas.Get<Host>().Single(h => h.InvariantName == d.GetSingleChild("Host")),
+                       impact: _metadatas.Get<Impact>().Single(i => i.InvariantName == d.GetSingleChild("Impact")),
+                       recommendationLevel: _metadatas.Get<RecommendationLevel>().Single(r => r.InvariantName == d.GetSingleChild("Recommended")),
                        localizedDescription: d.GetLocalizedString("Description"),
-                       category: AppInfo.Categories.Value[d.GetSingleChild("Category")],
-                       recommendationLevel: AppInfo.RecommendationLevels.Value[d.GetSingleChild("Recommended")],
-                       host: AppInfo.Hosts.Value[d.GetSingleChild("Host")],
-                       impact: AppInfo.Impacts.Value[d.GetSingleChild("Impact")],
+                       localizedName: d.GetLocalizedString("Name"),
                        code: d.GetSingleChild("Code"),
                        type: type);
         }

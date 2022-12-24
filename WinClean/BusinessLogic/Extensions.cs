@@ -1,28 +1,16 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
-using System.Security;
-using System.Text;
+﻿using System.Security;
 using System.Text.RegularExpressions;
 using System.Xml;
+using Scover.WinClean.DataAccess;
 
-namespace Scover.WinClean.DataAccess;
+namespace Scover.WinClean.BusinessLogic;
 
-/// <summary>Provides a set of extension methods that fulfill a relatively generic role.</summary>
-public static class Helpers
+/// <summary>
+/// Provides a set of extension methods that fulfill a relatively generic role in the <see cref="BusinessLogic"/> layer.
+/// </summary>
+public static class Extensions
 {
-    private static char[] _invalidFileNameChars => Path.GetInvalidFileNameChars();
-
-    /// <summary>Asserts that <paramref name="t"/> isn't <see langword="null"/>.</summary>
-    /// <returns><paramref name="t"/>, not null.</returns>
-    public static T AssertNotNull<T>([NotNull] this T? t)
-    {
-        Debug.Assert(t is not null, $"{nameof(t)} is null.");
-        return t;
-    }
-
-    public static bool EqualsContent<TKey, TValue>(this IDictionary<TKey, TValue> d1, IDictionary<TKey, TValue> d2)
-            => d1.Count == d2.Count && !d1.Except(d2).Any();
+    private static readonly char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
 
     public static LocalizedString GetLocalizedString(this XmlDocument doc, string name)
     {
@@ -33,12 +21,6 @@ public static class Helpers
         }
         return localizedNodeTexts;
     }
-
-    /// <summary>Gets the restore point icon stored in rstrui.exe.</summary>
-    /// <returns>
-    /// The restore point icon, or <see langword="null"/> if the icon was not found (rstrui.exe may be missing or damaged).
-    /// </returns>
-    public static Icon? GetRestorePointIcon() => Icon.ExtractAssociatedIcon(Path.Join(Environment.SystemDirectory, "rstrui.exe"));
 
     /// <summary>Gets the single child element with the specified name.</summary>
     /// <param name="parent">The parent node.</param>
@@ -67,41 +49,8 @@ public static class Helpers
     public static bool IsFileSystem(this Exception e)
         => e is IOException or UnauthorizedAccessException or SecurityException;
 
-    /// <summary>Opens a file or an URI with the shell.</summary>
-    /// <remarks>
-    /// If <paramref name="path"/> is <see langword="null"/>, empty, only whitespace, or not valid for shell execution, no
-    /// process will be started.
-    /// </remarks>
-    public static void Open(string? path)
-    {
-        if (!string.IsNullOrWhiteSpace(path))
-        {
-            using Process? process = Process.Start(new ProcessStartInfo(path)
-            {
-                UseShellExecute = true
-            });
-        }
-    }
-
     public static void SetFromXml(this LocalizedString str, XmlNode node)
         => str.Set(new(node.Attributes?["xml:lang"]?.Value ?? ""), node.InnerText);
-
-    public static Process? StartPowerShell(string arguments) => Process.Start(new ProcessStartInfo(Path.Join(Environment.SystemDirectory, "WindowsPowerShell", "v1.0", "powershell.exe"), arguments)
-    {
-        UseShellExecute = true,
-        WindowStyle = ProcessWindowStyle.Hidden
-    });
-
-    /// <summary>
-    /// Computes the sum of a sequence of time intervals that are obtained by invoking a transform function on each element of
-    /// the input sequence.
-    /// </summary>
-    /// <typeparam name="TSource">The type of the elements of source.</typeparam>
-    /// <param name="source">A sequence of values that are used to calculate a sum.</param>
-    /// <param name="selector">A transform function to apply to each element.</param>
-    /// <returns>The sum of the projected values.</returns>
-    public static TimeSpan Sum<TSource>(this IEnumerable<TSource> source, Func<TSource, TimeSpan> selector)
-        => source.Aggregate(TimeSpan.Zero, (sumSoFar, nextSource) => sumSoFar + selector(nextSource));
 
     /// <summary>Creates a valid Windows filename from a string.</summary>
     /// <param name="filename">The filename candidate.</param>
@@ -125,11 +74,9 @@ public static class Helpers
          : replaceInvalidCharsWith.All(c => c == '.')
              ? throw new ArgumentException("Consists only of dots.", nameof(replaceInvalidCharsWith))
 
-         : replaceInvalidCharsWith.IndexOfAny(_invalidFileNameChars) != -1
+         : replaceInvalidCharsWith.IndexOfAny(invalidFileNameChars) != -1
              ? throw new ArgumentException("Contains invalid filename chars.", nameof(replaceInvalidCharsWith))
 
-         : Regex.Replace(filename.Trim(), $"[{Regex.Escape(new(_invalidFileNameChars))}]", replaceInvalidCharsWith,
+         : Regex.Replace(filename.Trim(), $"[{Regex.Escape(new(invalidFileNameChars))}]", replaceInvalidCharsWith,
                          RegexOptions.Compiled | RegexOptions.CultureInvariant);
-
-    public static Stream ToStream(this string value) => new MemoryStream(Encoding.UTF8.GetBytes(value));
 }

@@ -1,10 +1,10 @@
 using System.Globalization;
 using System.Text;
-
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;
+using Scover.WinClean.Presentation;
 
 namespace Tests;
 
@@ -34,7 +34,7 @@ public sealed class ScriptXmlSerializerTests
   <Code>{Code}</Code>
 </Script>";
 
-    private readonly ScriptXmlSerializer _x = new();
+    private readonly IScriptSerializer serializer = new ScriptXmlSerializer(App.ScriptMetadata);
 
     [Test]
     public void TestDeserialize()
@@ -44,13 +44,13 @@ public sealed class ScriptXmlSerializerTests
         {
             file.Write(Xml);
         }
-        var s = _x.Deserialize(ScriptType.Custom, File.OpenRead(Filename));
+        var s = serializer.Deserialize(ScriptType.Custom, File.OpenRead(Filename));
         Assert.Multiple(() =>
         {
             Assert.That(s.LocalizedName, Is.EquivalentTo(new KeyValuePair<string, string>[] { new("", Name), new("fr", NameFr) }));
             Assert.That(s.LocalizedDescription, Is.EquivalentTo(new KeyValuePair<string, string>[] { new("", Description), new("fr", DescriptionFr) }));
             Assert.That(s.Category.InvariantName, Is.EqualTo(Category));
-            Assert.That(s.RecommendationLevel.InvariantName, Is.EquivalentTo(RecommendationLevel));
+            Assert.That(s.RecommendationLevel.InvariantName, Is.EqualTo(RecommendationLevel));
             Assert.That(s.Host.InvariantName, Is.EqualTo(Host));
             Assert.That(s.Impact.InvariantName, Is.EqualTo(Impact));
             Assert.That(s.Code, Is.EqualTo(Code));
@@ -69,15 +69,15 @@ public sealed class ScriptXmlSerializerTests
 
         Script s = new(localizedName: name,
                        localizedDescription: description,
-                       category: AppInfo.Categories.Value[Category],
-                       recommendationLevel: AppInfo.RecommendationLevels.Value[RecommendationLevel],
-                       host: AppInfo.Hosts.Value[Host],
-                       impact: AppInfo.Impacts.Value[Impact],
+                       category: App.ScriptMetadata.Get<Category>().Single(c => c.InvariantName == Category),
+                       recommendationLevel: App.ScriptMetadata.Get<RecommendationLevel>().Single(r => r.InvariantName == RecommendationLevel),
+                       host: App.ScriptMetadata.Get<Host>().Single(h => h.InvariantName == Host),
+                       impact: App.ScriptMetadata.Get<Impact>().Single(i => i.InvariantName == Impact),
                        code: Code,
                        type: ScriptType.Custom);
 
         using MemoryStream ms = new();
-        _x.Serialize(s, ms);
+        serializer.Serialize(s, ms);
         ms.Position = 0;
         Assert.That(new StreamReader(ms, Encoding.UTF8).ReadToEnd(), Is.EqualTo(Xml));
     }

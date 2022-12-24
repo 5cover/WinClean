@@ -1,6 +1,4 @@
-﻿using Scover.WinClean.DataAccess;
-
-namespace Scover.WinClean.BusinessLogic.Scripts;
+﻿namespace Scover.WinClean.BusinessLogic.Scripts;
 
 /// <summary>A collection of scripts created from files.</summary>
 public sealed class FileScriptCollection : ScriptCollection, IMutableScriptCollection
@@ -16,10 +14,12 @@ public sealed class FileScriptCollection : ScriptCollection, IMutableScriptColle
         foreach (var filePath in Directory.EnumerateFiles(directory, $"*{scriptFileExtension}",
                      SearchOption.AllDirectories))
         {
-        retry:
+        retry: 
             try
             {
-                Load(filePath);
+                using Stream file = File.OpenRead(filePath);
+                var script = Deserialize(file);
+                Sources.Add(script, filePath);
             }
             catch (Exception e) when (e.IsFileSystem())
             {
@@ -57,12 +57,5 @@ public sealed class FileScriptCollection : ScriptCollection, IMutableScriptColle
             using Stream file = File.Create(Sources[s]);
             Serialize(s, file);
         }
-    }
-
-    private void Load(string filePath)
-    {
-        using Stream file = File.OpenRead(filePath);
-        var script = Deserialize(file);
-        Sources.Add(script, filePath);
     }
 }

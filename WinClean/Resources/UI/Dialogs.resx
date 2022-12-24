@@ -144,8 +144,8 @@
   </data>
   <data name="UnhandledExceptionDialogContent" xml:space="preserve">
 	  <value>An unhandled exception occured: {0}
-&lt;A&gt;Copy details&lt;/A&gt;
-&lt;A HREF="https://github.com/5cover/WinClean/issues/new"&gt;Report this issue...&lt;/A&gt;</value>
+&lt;A HREF="CopyDetails"&gt;Copy details&lt;/A&gt;
+&lt;A HREF="ReportIssue"&gt;Report this issue...&lt;/A&gt;</value>
     <comment>0 : exception message</comment>
   </data>
   <data name="ConfirmAbortOperationContent" xml:space="preserve">
@@ -170,5 +170,45 @@
   </data>
   <data name="FSErrorLoadingCustomScriptMainInstruction" xml:space="preserve">
     <value>Cannot load custom script</value>
+  </data>
+  <data name="InvalidCustomScriptDataContent" xml:space="preserve">
+    <value>Custom script "{0}" has missing or invalid data. &lt;A&gt;Edit the script...&lt;/A&gt;</value>
+  </data>
+  <data name="InvalidCustomScriptDataMainInstruction" xml:space="preserve">
+    <value>Cannot load custom script</value>
+  </data>
+  <data name="ExecutionCompletedContent" xml:space="preserve">
+    <value>{0} scripts executed.
+To finish the operation, it is recommended to restart the system.</value>
+    <comment>0 : script count</comment>
+  </data>
+  <data name="ExecutionProgressContent" xml:space="preserve">
+    <value>This operation may take some time.</value>
+    
+  </data>
+  <data name="ExecutionProgressVerificationText" xml:space="preserve">
+    <value>Automatically restart when finished</value>
+  </data>
+  <data name="ExecutionProgressMainInstruction" xml:space="preserve">
+    <value>Executing the scripts...</value>
+  </data>
+  <data name="ExecutionProgressExpanderText" xml:space="preserve">
+    <value>{0} out of {1} scripts executed ({2} remaining)
+Currently executing: {3}
+Time remaining: {4}</value>
+    <comment>0 : count of scripts executed
+1 : script count
+2 : count of scripts remaining
+3 : name of the currently executing script
+4 : estimated remaining time</comment>
+  </data>
+  <data name="ExecutionCompletedMainInstruction" xml:space="preserve">
+    <value>Cleaning completed</value>
+  </data>
+  <data name="ExecutionProgressExpanderTextInitializing" xml:space="preserve">
+    <value>Initializing...</value>
+  </data>
+  <data name="ExecutionProgressTimeRemainingUnknown" xml:space="preserve">
+    <value>unknown</value>
   </data>
 </root>

@@ -1,9 +1,5 @@
 ﻿using System.Diagnostics;
-
-using Humanizer;
-
 using Scover.WinClean.DataAccess;
-
 using static System.IO.Path;
 
 namespace Scover.WinClean.BusinessLogic;
@@ -26,7 +22,7 @@ public sealed record Host : ScriptMetadata
 
     /// <summary>Executes code.</summary>
     /// <param name="code">The code to execute.</param>
-    /// <param name="timeout">The time to wait for the execution to finish until calling <paramref name="onHung"/>.</param>
+    /// <param name="tieout">The time to wait for the execution to finish until calling <paramref name="onHung"/>.</param>
     /// <param name="onHung">
     /// <param name="onHung">Callback called when <paramref name="timeout"/> has been reached and the execution is unlikely to finish.</param>
     /// </param>
@@ -37,12 +33,13 @@ public sealed record Host : ScriptMetadata
         using Process host = StartHost(tmpScriptFile);
         using var registration = cancellationToken.Register(() => host.Kill(true));
 
-        while (!host.WaitForExit(Convert.ToInt32(timeout.TotalMilliseconds)))
+        await hostProcess.WaitForExitAsync(cancellationToken);
+
+        if (cancellationToken.IsCancellationRequested)
         {
             onHung();
         }
 
-        _ = registration.Unregister();
         File.Delete(tmpScriptFile);
     }
 

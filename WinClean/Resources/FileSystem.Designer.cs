@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Scover.WinClean.Resources.UI {
+namespace Scover.WinClean.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Scover.WinClean.Resources.UI {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Buttons {
+    public class FileSystem {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Buttons() {
+        internal FileSystem() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Scover.WinClean.Resources.UI {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scover.WinClean.Resources.UI.Buttons", typeof(Buttons).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scover.WinClean.Resources.FileSystem", typeof(FileSystem).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,34 +61,25 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add scripts.
+        ///   Looks up a localized string similar to acess.
         /// </summary>
-        public static string AddScripts {
+        public static string Acess {
             get {
-                return ResourceManager.GetString("AddScripts", resourceCulture);
+                return ResourceManager.GetString("Acess", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel.
+        ///   Looks up a localized string similar to create.
         /// </summary>
-        public static string Cancel {
+        public static string Create {
             get {
-                return ResourceManager.GetString("Cancel", resourceCulture);
+                return ResourceManager.GetString("Create", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Close.
-        /// </summary>
-        public static string Close {
-            get {
-                return ResourceManager.GetString("Close", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Delete.
+        ///   Looks up a localized string similar to delete.
         /// </summary>
         public static string Delete {
             get {
@@ -97,74 +88,29 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete script.
+        ///   Looks up a localized string similar to directory.
         /// </summary>
-        public static string DeleteScript {
+        public static string Directory {
             get {
-                return ResourceManager.GetString("DeleteScript", resourceCulture);
+                return ResourceManager.GetString("Directory", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to End task.
+        ///   Looks up a localized string similar to file.
         /// </summary>
-        public static string EndTask {
+        public static string File {
             get {
-                return ResourceManager.GetString("EndTask", resourceCulture);
+                return ResourceManager.GetString("File", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Execute.
+        ///   Looks up a localized string similar to move.
         /// </summary>
-        public static string Execute {
+        public static string Move {
             get {
-                return ResourceManager.GetString("Execute", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Execute scripts....
-        /// </summary>
-        public static string ExecuteScripts {
-            get {
-                return ResourceManager.GetString("ExecuteScripts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Exit.
-        /// </summary>
-        public static string Exit {
-            get {
-                return ResourceManager.GetString("Exit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reset.
-        /// </summary>
-        public static string Reset {
-            get {
-                return ResourceManager.GetString("Reset", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Restart.
-        /// </summary>
-        public static string Restart {
-            get {
-                return ResourceManager.GetString("Restart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stop.
-        /// </summary>
-        public static string Stop {
-            get {
-                return ResourceManager.GetString("Stop", resourceCulture);
+                return ResourceManager.GetString("Move", resourceCulture);
             }
         }
     }

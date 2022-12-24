@@ -138,8 +138,8 @@
   </data>
   <data name="UnhandledExceptionDialogContent" xml:space="preserve">
 	  <value>Une exception non gérée s'est produite : {0}
-&lt;A&gt;Copier les détails&lt;/A&gt;
-&lt;A HREF="https://github.com/5cover/WinClean/issues/new"&gt;Signaler cette erreur...&lt;/A&gt;</value>
+&lt;A HREF="CopyDetails"&gt;Copier les détails&lt;/A&gt;
+&lt;A HREF="ReportIssue"&gt;Signaler cette erreur...&lt;/A&gt;</value>
   </data>
   <data name="ConfirmAbortOperationContent" xml:space="preserve">
     <value>Abandonner l'opération risque de rendre le système instable. Voulez-vous vraiment continuer ?</value>
@@ -151,7 +151,7 @@
     <value>La version {0} est disponible. Envisagez de mettre à jour pour obtenir de nouveaux scripts et de nouvelles fonctionnalités. &lt;A&gt;Voir sur GitHub&lt;/A&gt;</value>
   </data>
   <data name="CreatingRestorePointContent" xml:space="preserve">
-    <value>Point de restauration en cours de création...</value>
+    <value>Création d'un point de restauration...</value>
   </data>
   <data name="FSErrorAddingCustomScriptMainInstruction" xml:space="preserve">
     <value>Impossible d'ajouter le script personnalisé</value>
@@ -161,5 +161,38 @@
   </data>
   <data name="FSErrorLoadingCustomScriptMainInstruction" xml:space="preserve">
     <value>Impossible de charger le script personnalisé</value>
+  </data>
+  <data name="InvalidCustomScriptDataContent" xml:space="preserve">
+    <value>Le script personnalisé "{0}" a des données manquantes ou invalides. &lt;A&gt;Modifier le script...&lt;/A&gt;</value>
+  </data>
+  <data name="InvalidCustomScriptDataMainInstruction" xml:space="preserve">
+    <value>Impossible de charger le script personnalisé</value>
+  </data>
+  <data name="ExecutionCompletedContent" xml:space="preserve">
+    <value>{0} scripts exécutés.
+Pour terminer l'opération, il est recommandé de redémarrer le système.</value>
+  </data>
+  <data name="ExecutionProgressMainInstruction" xml:space="preserve">
+    <value>Exécution des scripts...</value>
+  </data>
+  <data name="ExecutionProgressContent" xml:space="preserve">
+    <value>Cette opération peut prendre un certain temps.</value>
+  </data>
+  <data name="ExecutionProgressVerificationText" xml:space="preserve">
+    <value>Redémarrer automatiquement une fois l'opération terminée</value>
+  </data>
+  <data name="ExecutionProgressExpanderText" xml:space="preserve">
+    <value>{0} sur {1} scripts exécutés ({2} restants)
+Script actuel : {3}
+Temps restant : {4}</value>
+  </data>
+  <data name="ExecutionCompletedMainInstruction" xml:space="preserve">
+    <value>Nettoyage terminé</value>
+  </data>
+  <data name="ExecutionProgressExpanderTextInitializing" xml:space="preserve">
+    <value>Démarrage...</value>
+  </data>
+  <data name="ExecutionProgressTimeRemainingUnknown" xml:space="preserve">
+    <value>inconnu</value>
   </data>
 </root>

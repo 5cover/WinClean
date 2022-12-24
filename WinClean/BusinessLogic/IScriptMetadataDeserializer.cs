@@ -6,23 +6,23 @@ public interface IScriptMetadataDeserializer
     /// <param name="stream">A stream with read access.</param>
     /// <exception cref="InvalidDataException"><paramref name="stream"/> is in a invalid or incomplete format.</exception>
     /// <returns>A collection of deserialized <see cref="Category"/> objects.</returns>
-    IEnumerable<Category> MakeCategories(Stream stream);
+    IEnumerable<Category> GetCategories(Stream stream);
 
     /// <summary>Deserializes a collection of hosts from the specified stream.</summary>
     /// <param name="stream">A stream with read access.</param>
     /// <exception cref="InvalidDataException"><paramref name="stream"/> is in a invalid or incomplete format.</exception>
     /// <returns>A collection of deserialized <see cref="Host"/> objects.</returns>
-    IEnumerable<Host> MakeHosts(Stream stream);
+    IEnumerable<Host> GetHosts(Stream stream);
 
     /// <summary>Deserializes a collection of impacts from the specified stream.</summary>
     /// <param name="stream">A stream with read access.</param>
     /// <exception cref="InvalidDataException"><paramref name="stream"/> is in a invalid or incomplete format.</exception>
     /// <returns>A collection of deserialized <see cref="Impact"/> objects.</returns>
-    IEnumerable<Impact> MakeImpacts(Stream stream);
+    IEnumerable<Impact> GetImpacts(Stream stream);
 
     /// <summary>Deserializes a collection of recommendation levels from the specified stream.</summary>
     /// <param name="stream">A stream with read access.</param>
     /// <exception cref="InvalidDataException"><paramref name="stream"/> is in a invalid or incomplete format.</exception>
     /// <returns>A collection of deserialized <see cref="RecommendationLevel"/> objects.</returns>
-    IEnumerable<RecommendationLevel> MakeRecommendationLevels(Stream stream);
+    IEnumerable<RecommendationLevel> GetRecommendationLevels(Stream stream);
 }

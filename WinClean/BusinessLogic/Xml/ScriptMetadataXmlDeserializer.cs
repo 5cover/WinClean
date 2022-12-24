@@ -1,6 +1,5 @@
 ﻿using System.Windows.Media;
 using System.Xml;
-
 using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.BusinessLogic.Xml;
@@ -9,27 +8,27 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
 {
     private readonly XmlDocument _doc = new();
 
-    public IEnumerable<Category> MakeCategories(Stream stream)
-        => from c in GetElements(stream, "Category")
-           let _ = GetLocalizables(c)
-           select new Category(_.name, _.description);
+    public IEnumerable<Category> GetCategories(Stream stream)
+        => from category in GetElements(stream, "Category")
+           let localizable = GetLocalizable(category)
+           select new Category(localizable.name, localizable.description);
 
-    public IEnumerable<Host> MakeHosts(Stream stream)
-        => from h in GetElements(stream, "Host")
-           let _ = GetLocalizables(h)
-           select new Host(_.name, _.description, h.GetSingleChild("Executable"), h.GetSingleChild("Arguments"), h.GetSingleChild("Extension"));
+    public IEnumerable<Host> GetHosts(Stream stream)
+        => from host in GetElements(stream, "Host")
+           let localizable = GetLocalizable(host)
+           select new Host(localizable.name, localizable.description, host.GetSingleChild("Executable"), host.GetSingleChild("Arguments"), host.GetSingleChild("Extension"));
 
-    public IEnumerable<Impact> MakeImpacts(Stream stream)
-        => from i in GetElements(stream, "Impact")
-           let _ = GetLocalizables(i)
-           select new Impact(_.name, _.description);
+    public IEnumerable<Impact> GetImpacts(Stream stream)
+        => from impact in GetElements(stream, "Impact")
+           let localizable = GetLocalizable(impact)
+           select new Impact(localizable.name, localizable.description);
 
-    public IEnumerable<RecommendationLevel> MakeRecommendationLevels(Stream stream)
-        => from r in GetElements(stream, "RecommendationLevel")
-           let _ = GetLocalizables(r)
-           select new RecommendationLevel(_.name, _.description, (Color)ColorConverter.ConvertFromString(r.GetAttribute("Color")));
+    public IEnumerable<RecommendationLevel> GetRecommendationLevels(Stream stream)
+        => from recommendationLevel in GetElements(stream, "RecommendationLevel")
+           let _ = GetLocalizable(recommendationLevel)
+           select new RecommendationLevel(_.name, _.description, (Color)ColorConverter.ConvertFromString(recommendationLevel.GetAttribute("Color")));
 
-    private static (LocalizedString name, LocalizedString description) GetLocalizables(XmlNode element)
+    private static (LocalizedString name, LocalizedString description) GetLocalizable(XmlNode element)
     {
         LocalizedString name = new(), description = new();
         foreach (XmlElement child in element.ChildNodes)

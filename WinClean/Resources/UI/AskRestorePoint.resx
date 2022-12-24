@@ -98,9 +98,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MainInstruction" xml:space="preserve">
-    <value>Cannot load custom script</value>
+    <value>Create a restore point?</value>
   </data>
-  <data name="Content" xml:space="preserve">
-    <value>Custom script "{0}" has missing or invalid data. &lt;A&gt;Edit the script...&lt;/A&gt;</value>
+  <data name="CommandLinkYes" xml:space="preserve">
+    <value>Create a system restore point (recommended)</value>
+  </data>
+  <data name="CommandLinkYesNote" xml:space="preserve">
+    <value>This will allow you to undo the changes that are about to be made to the system. System restore will be enabled if it is not already.</value>
+  </data>
+  <data name="CommandLinkNo" xml:space="preserve">
+    <value>Do not create a restore point</value>
   </data>
 </root>

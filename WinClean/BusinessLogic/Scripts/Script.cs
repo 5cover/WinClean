@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
 using Scover.WinClean.DataAccess;
 
 using static System.Globalization.CultureInfo;

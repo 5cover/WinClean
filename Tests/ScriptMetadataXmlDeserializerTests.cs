@@ -1,6 +1,6 @@
 using System.Globalization;
+using System.Text;
 using System.Windows.Media;
-
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;
@@ -35,7 +35,7 @@ public sealed class ScriptMetadataXmlDeserializerTests
   </Category>
 </Categories>")]
     public void TestMakeCategories(string xml)
-        => Assert.That(_deserializer.MakeCategories(xml.ToStream()).Single(), Is.EqualTo(new Category(Loc(Name, NameFr), Loc(Desc, DescFr))));
+        => Assert.That(_deserializer.GetCategories(ToStream(xml)).Single(), Is.EqualTo(new Category(Loc(Name, NameFr), Loc(Desc, DescFr))));
 
     [TestCase($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
 <Hosts>
@@ -51,7 +51,7 @@ public sealed class ScriptMetadataXmlDeserializerTests
   </Host>
 </Hosts>")]
     public void TestMakeHosts(string xml)
-        => Assert.That(_deserializer.MakeHosts(xml.ToStream()).Single(), Is.EqualTo(new Host(Loc(Name, NameFr, NameEn), Loc(Desc, DescFr), Executable, Arguments, Extension)));
+        => Assert.That(_deserializer.GetHosts(ToStream(xml)).Single(), Is.EqualTo(new Host(Loc(Name, NameFr, NameEn), Loc(Desc, DescFr), Executable, Arguments, Extension)));
 
     [TestCase($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
 <Impacts>
@@ -63,7 +63,7 @@ public sealed class ScriptMetadataXmlDeserializerTests
   </Impact>
 </Impacts>")]
     public void TestMakeImpacts(string xml)
-        => Assert.That(_deserializer.MakeImpacts(xml.ToStream()).Single(), Is.EqualTo(new Impact(Loc(Name, NameFr), Loc(Desc, DescFr))));
+        => Assert.That(_deserializer.GetImpacts(ToStream(xml)).Single(), Is.EqualTo(new Impact(Loc(Name, NameFr), Loc(Desc, DescFr))));
 
     [TestCase($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
 <RecommendationLevels>
@@ -75,20 +75,22 @@ public sealed class ScriptMetadataXmlDeserializerTests
   </RecommendationLevel>
 </RecommendationLevels>")]
     public void TestMakeRecommendationLevels(string xml)
-        => Assert.That(_deserializer.MakeRecommendationLevels(xml.ToStream()).Single(), Is.EqualTo(new RecommendationLevel(Loc(Name, NameFr), Loc(Desc, DescFr), (Color)ColorConverter.ConvertFromString(Color))));
+        => Assert.That(_deserializer.GetRecommendationLevels(ToStream(xml)).Single(), Is.EqualTo(new RecommendationLevel(Loc(Name, NameFr), Loc(Desc, DescFr), (Color)ColorConverter.ConvertFromString(Color))));
 
     private static LocalizedString Loc(string invariant, string fr)
     {
         LocalizedString ls = new();
         ls.Set(CultureInfo.InvariantCulture, invariant);
-        ls.Set(ScriptMetadataXmlDeserializerTests.cultureFr, fr);
+        ls.Set(cultureFr, fr);
         return ls;
     }
 
     private static LocalizedString Loc(string invariant, string fr, string en)
     {
         LocalizedString ls = Loc(invariant, fr);
-        ls.Set(ScriptMetadataXmlDeserializerTests.cultureEn, en);
+        ls.Set(cultureEn, en);
         return ls;
     }
+
+    private static Stream ToStream(string value) => new MemoryStream(Encoding.UTF8.GetBytes(value));
 }
