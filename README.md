@@ -1,6 +1,8 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/5cover/winclean/badge)](https://www.codefactor.io/repository/github/5cover/winclean)
 
-### [Français](README.fr.md)
+[**Français**](README.fr.md)
+
+![GitHub release (latest by date)](https://img.shields.io/github/downloads/5cover/WinClean/latest/total?label=Download&logo=windows&logoColor=00BCF2)
 
 # WinClean
 Windows performance optimization and debloating utility, accessible to the average user as well as system administrators.
