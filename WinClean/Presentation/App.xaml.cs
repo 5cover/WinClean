@@ -28,7 +28,7 @@ public sealed partial class App
 
     static App()
     {
-        Scover.Dialogs.Dialog.UseActivationContext = false;
+        Dialogs.Dialog.UseActivationContext = false;
         Settings.Default[nameof(Settings.ScriptExecutionTimes)] ??= new StringCollection();
         ScriptExecutionTimes = Settings.ScriptExecutionTimes.ParseKeysAndValues().ToDictionary(kv => kv.key.AssertNotNull(),
             kv => TimeSpan.ParseExact(kv.value.AssertNotNull(), ScriptExecutionTimesFormatString, CultureInfo.InvariantCulture));
