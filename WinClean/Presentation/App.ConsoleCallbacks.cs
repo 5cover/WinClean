@@ -1,5 +1,4 @@
-﻿using Scover.WinClean.BusinessLogic;
-using Scover.WinClean.Presentation.Logging;
+﻿using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Resources;
 
 namespace Scover.WinClean.Presentation;
@@ -7,11 +6,6 @@ namespace Scover.WinClean.Presentation;
 public partial class App
 {
     private static readonly Callbacks consoleCallbacks = new(
-        () =>
-        {
-            var sdd = SourceControlClient.Instance;
-            WinClean.Resources.CommandLine.Update.FormatWith(sdd.LatestVersionName, sdd.LatestVersionUrl).Log(LogLevel.Info);
-        },
         (e, path) =>
         {
             // Log the error, but ignore invalid scripts.

@@ -66,14 +66,15 @@ public sealed partial class MainWindow
     private static bool Handle(string path, InvalidDataException e)
     {
         Logs.ScriptLoadError.FormatWith(path, e).Log(LogLevel.Error);
-        return Button.Retry.Equals(new Dialog(DialogPageFactory.MakeInvalidScriptData(e, path, new() { Button.Retry, Button.Ignore })).Show());
+        return
+            Button.Retry.Equals(new Dialog(DialogPageFactory.MakeInvalidScriptData(e, path, new() { Button.Retry, Button.Ignore })).Show());
     }
 
     private static bool Handle(string path, Exception e)
     {
         Debug.Assert(e.IsFileSystem());
         Logs.ScriptLoadError.FormatWith(path, e).Log(LogLevel.Error);
-        Page fsErrorPage = DialogPageFactory.MakeFSError(e, FSVerb.Access, new FileInfo(path), new() { Button.Retry, Button.Ignore });
+        using Page fsErrorPage = DialogPageFactory.MakeFSError(e, FSVerb.Access, new FileInfo(path), new() { Button.Retry, Button.Ignore });
         fsErrorPage.MainInstruction = FSErrorAddingCustomScriptMainInstruction;
         return Button.Retry.Equals(new Dialog(fsErrorPage).Show());
     }
@@ -150,9 +151,9 @@ public sealed partial class MainWindow
     private bool Handle(string path, ScriptAlreadyExistsException e)
     {
         Logs.ScriptAlreadyExistsCannotBeAdded.FormatWith(path, e.ExistingScript.InvariantName).Log();
-        Page overwrite = new()
+        using Page overwrite = new()
         {
-            Buttons = new() { Button.Yes, Button.No },
+            Buttons = { Button.Yes, Button.No },
             Content = ConfirmScriptOverwriteContent.FormatWith(e.ExistingScript.Name),
             Icon = DialogIcon.Warning,
         };

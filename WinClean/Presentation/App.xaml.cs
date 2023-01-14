@@ -1,5 +1,8 @@
 ﻿using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
+using System.Security.Principal;
 using System.Windows;
 using CommandLine;
 
@@ -28,7 +31,6 @@ public sealed partial class App
 
     static App()
     {
-        Dialogs.Dialog.UseActivationContext = false;
         Settings.Default[nameof(Settings.ScriptExecutionTimes)] ??= new StringCollection();
         ScriptExecutionTimes = Settings.ScriptExecutionTimes.ParseKeysAndValues().ToDictionary(kv => kv.key.AssertNotNull(),
             kv => TimeSpan.ParseExact(kv.value.AssertNotNull(), ScriptExecutionTimesFormatString, CultureInfo.InvariantCulture));
@@ -96,21 +98,36 @@ public sealed partial class App
         // 2. Set the logger
         logger = loggerToUse;
 
-        // 3. Check for updates
-        if (SourceControlClient.Instance.LatestVersionName != AppMetadata.Version)
-        {
-            callbacks.WarnOnUpdate();
-        }
-
-        // 4. Load scripts.
+        // 3. Load scripts.
         scriptCollections[ScriptType.Custom] = new FileScriptCollection(AppDirectory.Scripts, Settings.ScriptFileExtension,
             callbacks.ReloadElseIgnoreInvalidCustomScript, callbacks.ReloadElseIgnoreFSErrorAcessingCustomScript, serializer, ScriptType.Custom);
         scriptCollections[ScriptType.Default] = new ManifestResourceScriptCollection(
             $"{nameof(Scover)}.{nameof(WinClean)}.{nameof(BusinessLogic.Scripts)}", serializer, ScriptType.Default);
     }
 
+    private static void EnsureRunAsAdmin()
+    {
+        if (new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
+        {
+            return;
+        }
+        ProcessStartInfo processInfo = new(AppDomain.CurrentDomain.FriendlyName)
+        {
+            UseShellExecute = true,
+            Verb = "runas"
+        };
+        try
+        {
+            _ = Process.Start(processInfo);
+        }
+        catch (Win32Exception)
+        {
+            // User clicked "No" on the prompt
+        }
+        Current.Shutdown();
+    }
+
     private sealed record Callbacks(
-        Action WarnOnUpdate,
         InvalidScriptDataCallback ReloadElseIgnoreInvalidCustomScript,
         FSErrorCallback ReloadElseIgnoreFSErrorAcessingCustomScript,
         Action<Exception> WarnOnUnhandledException);
@@ -133,6 +150,7 @@ public sealed partial class App
 
     private static void StartGui()
     {
+        Settings.ScriptTimeout = 10.Seconds();
         Initialize(new CsvLogger(), uiCallbacks);
         new MainWindow().Show();
     }
@@ -147,6 +165,9 @@ public sealed partial class App
 
     private void ApplicationStartup(object? sender, StartupEventArgs? e)
     {
+        // ClickOnce doesn't support requireAdministrator in manifest, this is a workaround.
+        EnsureRunAsAdmin();
+
         if (e is not null && e.Args.Any())
         {
             StartConsole(e.Args);
@@ -160,8 +181,9 @@ public sealed partial class App
     public static TypedEnumerablesDictionary ScriptMetadata { get; }
 
     private static Stream ReadContentFile(string filename)
-#if PORTABLE
-        => Assembly.GetExecutingAssembly().GetManifestResourceStream($"{MetadataContentFilesNamespace}.{filename}").AssertNotNull();
+#if PORTABLERELEASE
+        => System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream($"{MetadataContentFilesNamespace}.{filename}").AssertNotNull();
+
 #else
         => File.OpenRead(Path.Join(AppDomain.CurrentDomain.BaseDirectory, filename));
 

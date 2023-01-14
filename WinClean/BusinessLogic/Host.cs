@@ -20,26 +20,49 @@ public sealed record Host : ScriptMetadata
 
     public string Extension { get; }
 
-    /// <summary>Executes code.</summary>
+    /// <summary>Executes code asynchronously.</summary>
     /// <param name="code">The code to execute.</param>
-    /// <param name="tieout">The time to wait for the execution to finish until calling <paramref name="onHung"/>.</param>
-    /// <param name="onHung">
-    /// <param name="onHung">Callback called when <paramref name="timeout"/> has been reached and the execution is unlikely to finish.</param>
+    /// <param name="timeout">
+    /// Upon reach, <paramref name="keepRunningElseTerminateHungScript"/> will be called and the script will be terminated if it
+    /// returns <see langword="false"/>. Otherwise the timeout will reset.
     /// </param>
-    /// <param name="cancellationToken">A cancellation token that allows cancellation of the execution.</param>
-    public void ExecuteCode(string code, TimeSpan timeout, Action onHung, CancellationToken cancellationToken)
+    /// <param name="keepRunningElseTerminateHungScript">Callback called when the script is hung.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <exception cref="OperationCanceledException"/>
+    public async Task Execute(string code, TimeSpan timeout, Func<bool> keepRunningElseTerminateHungScript, CancellationToken cancellationToken)
+    {
+        CancellationTokenSource cts = new();
+        string tmpScriptFile = CreateTempFile(code);
+        using Process hostProcess = StartHost(tmpScriptFile);
+
+        using var r1 = cancellationToken.Register(() => cts.Cancel());
+        using var r2 = cts.Token.Register(() => hostProcess.Kill(true));
+
+        _ = StartTimeoutTimer();
+        await hostProcess.WaitForExitAsync(cts.Token);
+
+        File.Delete(tmpScriptFile);
+
+        async Task StartTimeoutTimer()
+        {
+            using PeriodicTimer timer = new(timeout);
+            while (await timer.WaitForNextTickAsync(cts.Token))
+            {
+                if (!keepRunningElseTerminateHungScript())
+                {
+                    cts.Cancel();
+                }
+            }
+        }
+    }
+
+    /// <summary>Executes code synchronously.</summary>
+    /// <param name="code">The code to execute.</param>
+    public void Execute(string code)
     {
         string tmpScriptFile = CreateTempFile(code);
-        using Process host = StartHost(tmpScriptFile);
-        using var registration = cancellationToken.Register(() => host.Kill(true));
-
-        await hostProcess.WaitForExitAsync(cancellationToken);
-
-        if (cancellationToken.IsCancellationRequested)
-        {
-            onHung();
-        }
-
+        using Process hostProcess = StartHost(tmpScriptFile);
+        hostProcess.WaitForExit();
         File.Delete(tmpScriptFile);
     }
 
@@ -53,6 +76,6 @@ public sealed record Host : ScriptMetadata
     private Process StartHost(string script) => Process.Start(new ProcessStartInfo(_executable, _arguments.FormatWith(script))
     {
         WindowStyle = ProcessWindowStyle.Hidden,
-        UseShellExecute = true // necessary for ProcessWindowStyle.Hidden
+        UseShellExecute = true // necessary for WindowStyle
     }).AssertNotNull();
 }

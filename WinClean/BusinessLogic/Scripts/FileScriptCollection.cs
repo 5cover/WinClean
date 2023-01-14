@@ -14,7 +14,7 @@ public sealed class FileScriptCollection : ScriptCollection, IMutableScriptColle
         foreach (var filePath in Directory.EnumerateFiles(directory, $"*{scriptFileExtension}",
                      SearchOption.AllDirectories))
         {
-        retry: 
+        retry:
             try
             {
                 using Stream file = File.OpenRead(filePath);

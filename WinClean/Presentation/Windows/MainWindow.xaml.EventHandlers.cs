@@ -1,11 +1,11 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
-using Scover.Dialogs;
 using static Scover.WinClean.Resources.UI.Dialogs;
-using Page = Scover.Dialogs.Page;
 using Button = Scover.Dialogs.Button;
+using Page = Scover.Dialogs.Page;
 
 namespace Scover.WinClean.Presentation.Windows;
 
@@ -71,7 +71,7 @@ public partial class MainWindow
 
     private void MenuNoneClick(object sender, RoutedEventArgs e) => CheckScripts(_ => false);
 
-    private void MenuOnlineWikiClick(object sender, RoutedEventArgs e) => App.Settings.WikiUrl.Open();
+    private async void MenuOnlineWikiClick(object sender, RoutedEventArgs e) => (await SourceControlClient.Instance.GetWikiUrl()).Open();
 
     private void MenuOpenLogsDirClick(object sender, RoutedEventArgs e) => AppDirectory.Logs.Open();
 

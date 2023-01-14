@@ -11,41 +11,15 @@ namespace Scover.WinClean.Presentation;
 public partial class App
 {
     private static readonly Callbacks uiCallbacks = new(
-        () =>
-        {
-            if (!Settings.ShowUpdateDialog)
-            {
-                return;
-            }
-            Page updateDialog = new()
-            {
-                AllowHyperlinks = true,
-                Buttons = new() { Button.OK },
-                IsCancelable = true,
-                IsMinimizable = true,
-                MainInstruction = UpdateMainInstruction,
-                Content = UpdateContent.FormatWith(SourceControlClient.Instance.LatestVersionName),
-                Icon = DialogIcon.Information,
-                Verification = new(UpdateVerificationText)
-            };
-            updateDialog.HyperlinkClicked += (_, _) => SourceControlClient.Instance.LatestVersionUrl.Open();
-            updateDialog.Verification.Checked += (_, _) => Settings.ShowUpdateDialog = !updateDialog.Verification.IsChecked;
-
-            if ((new Dialog(updateDialog).Show(default) as Button)?.Text == Buttons.Cancel)
-            {
-                // The user probably expects the application to close.
-                Current.Shutdown();
-            }
-        },
         (e, path) =>
         {
             Logger.Log(Logs.ScriptLoadError.FormatWith(path, e), LogLevel.Error);
 
-            var deleteScriptPage = DialogPageFactory.MakeDeleteScript();
+            using Page deleteScriptPage = DialogPageFactory.MakeDeleteScript();
             Button deleteScriptButton = new(Buttons.DeleteScript);
             deleteScriptButton.Clicked += (s, e) => e.Cancel = Button.Yes.Equals(new Dialog(deleteScriptPage).Show());
 
-            var invalidScriptDataPage = DialogPageFactory.MakeInvalidScriptData(e, path, new(defaultItem: Button.Retry){ deleteScriptButton, Button.Retry, Button.Ignore });
+            using Page invalidScriptDataPage = DialogPageFactory.MakeInvalidScriptData(e, path, new(defaultItem: Button.Retry){ deleteScriptButton, Button.Retry, Button.Ignore });
 
             Dialog invalidScriptData = new(invalidScriptDataPage);
             var clicked = invalidScriptData.Show();
@@ -60,7 +34,7 @@ public partial class App
         },
         (e, verb, info) =>
         {
-            var fsError = DialogPageFactory.MakeFSError(e, verb, info, new(){ Button.Retry, Button.Ignore });
+            using Page fsError = DialogPageFactory.MakeFSError(e, verb, info, new(){ Button.Retry, Button.Ignore });
             fsError.MainInstruction = FSErrorLoadingCustomScriptMainInstruction;
             return Button.Retry.Equals(new Dialog(fsError).Show());
         },
@@ -68,15 +42,15 @@ public partial class App
         {
             Logger.Log(Logs.UnhandledException.FormatWith(ex), LogLevel.Critical);
 
-            Page unhandledException = new()
+            using Page unhandledException = new()
             {
                 AllowHyperlinks = true,
-                Buttons = new() { Buttons.Exit },
+                Buttons = { Buttons.Exit },
                 Icon = DialogIcon.Error,
                 Content = UnhandledExceptionDialogContent.FormatWith(ex.Message),
                 Expander = new(ex.ToString()),
             };
-            unhandledException.HyperlinkClicked += (s, e) =>
+            unhandledException.HyperlinkClicked += async (s, e) =>
             {
                 switch (e.Href)
                 {
@@ -85,7 +59,7 @@ public partial class App
                         break;
 
                     case "ReportIssue":
-                        SourceControlClient.Instance.NewIssueUrl.Open();
+                        (await SourceControlClient.Instance.GetNewIssueUrl()).Open();
                         break;
                 }
             };

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk" InitialTargets="Messages">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
@@ -24,7 +24,7 @@
     <UseWindowsForms>False</UseWindowsForms>
     <Platforms>AnyCPU</Platforms>
     <Version>1.2.2</Version>
-    <Configurations>Debug;Release;Portable</Configurations>
+    <Configurations>Debug;Release;PortableRelease</Configurations>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
   </PropertyGroup>
 
@@ -42,36 +42,32 @@
     <NoWarn>IDE0072</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Portable|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='PortableRelease|AnyCPU'">
     <DefineConstants>$(DefineConstants)</DefineConstants>
     <DebugType>embedded</DebugType>
     <Optimize>True</Optimize>
     <NoWarn>IDE0072</NoWarn>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Using Include="Humanizer.StringExtensions">
-      <Static>True</Static>
-    </Using>
-    <Using Include="System.IO" />
-  </ItemGroup>
-
+  <Target Name="Messages">
+    <Message Text="Configuration = '$(Configuration)'" Importance="high" />
+  </Target>
   <Choose>
-    <When Condition="'$(Configuration)'=='Portable'">
-      <ItemGroup>
+    <When Condition="'$(Configuration)'=='PortableRelease'">
+        <ItemGroup>
         <EmbeddedResource Include="Categories.xml">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
         <EmbeddedResource Include="Impacts.xml">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
         <EmbeddedResource Include="RecommendationLevels.xml">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
         <EmbeddedResource Include="Hosts.xml">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </EmbeddedResource>
-      </ItemGroup>
+        </ItemGroup>
     </When>
     <Otherwise>
       <ItemGroup>
@@ -97,8 +93,8 @@
     <PackageReference Include="CsvHelper" Version="30.0.1" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
     <PackageReference Include="Humanizer" Version="2.14.1" />
-    <PackageReference Include="Octokit" Version="4.0.3" />
-    <PackageReference Include="Scover.Dialogs" Version="1.0.3" />
+    <PackageReference Include="Octokit" Version="4.0.4" />
+    <PackageReference Include="Scover.Dialogs" Version="1.0.4" />
     <PackageReference Include="System.Management" Version="7.0.0" />
     <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.11" />
   </ItemGroup>
@@ -313,5 +309,10 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Using Include="Humanizer" />
+    <Using Include="System.IO" />
   </ItemGroup>
 </Project>

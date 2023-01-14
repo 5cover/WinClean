@@ -1,7 +1,5 @@
 ﻿using System.Windows;
 
-using Scover.WinClean.BusinessLogic;
-
 namespace Scover.WinClean.Presentation.Windows;
 
 public sealed partial class SettingsWindow

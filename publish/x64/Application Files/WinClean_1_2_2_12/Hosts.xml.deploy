@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Hosts>
+  <Host>
+    <Name>Cmd</Name>
+    <Name xml:lang="en">Command Processor</Name>
+    <Name xml:lang="fr">Interpréteur de commandes</Name>
+    <Description>The Command Processor is a program that allows the entering of commands and then executes those commands to the operating system.</Description>
+    <Description xml:lang="fr">L'Interpréteur de commandes est un programme qui permet de saisir des commandes, puis d'exécuter ces commandes sur le système d'exploitation.</Description>
+    <Executable>%COMSPEC%</Executable>
+    <Arguments>/d /c "{0}"</Arguments>
+    <Extension>.cmd</Extension>
+  </Host>
+  <Host>
+    <Name>PowerShell</Name>
+    <Name xml:lang="en">PowerShell</Name>
+    <Name xml:lang="fr">PowerShell</Name>
+    <Description>Microsoft PowerShell is an open source shell and scripting language built on top of Microsoft .NET technology.</Description>
+    <Description xml:lang="fr">Microsoft PowerShell est un shell open source et un langage de script construit sur la technologie Microsoft .NET.</Description>
+    <Executable>%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\powershell.exe</Executable>
+    <Arguments>-ExecutionPolicy Unrestricted -File "{0}"</Arguments>
+    <Extension>.ps1</Extension>
+  </Host>
+  <Host>
+    <Name>Regedit</Name>
+    <Name xml:lang="en">Registry Editor</Name>
+    <Name xml:lang="fr">Éditeur du Registre</Name>
+    <Description>The Registry Editor is a graphical tool that enables authorized users to view the Windows registry and make changes.</Description>
+    <Description xml:lang="fr">L'Éditeur du Registre est un outil graphique qui permet aux utilisateurs autorisés d'afficher le Registre Windows et d'y apporter des modifications.</Description>
+    <Executable>%SYSTEMROOT%\regedit.exe</Executable>
+    <Arguments>/s {0}</Arguments>
+    <Extension>.reg</Extension>
+  </Host>
+</Hosts>
