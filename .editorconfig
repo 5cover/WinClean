@@ -48,6 +48,9 @@ csharp_space_around_binary_operators = before_and_after
 dotnet_diagnostic.IDE0250.severity = suggestion
 csharp_space_around_declaration_statements = ignore
 
+# IDE1006: Naming Styles
+dotnet_diagnostic.IDE1006.severity = none
+
 [*.{cs,vb}]
 #### Naming styles ####
 
