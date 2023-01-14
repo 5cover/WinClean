@@ -10,7 +10,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:presentation="clr-namespace:Scover.WinClean.Presentation"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
-    xmlns:windows="clr-namespace:Scover.WinClean.Presentation.Windows"
     x:Name="Window"
     Title="{x:Static businessLogic:AppMetadata.Name}"
     MinWidth="{Binding MinHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource GoldenRatioConverter}}"

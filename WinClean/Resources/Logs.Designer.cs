@@ -97,15 +97,6 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hung script &apos;{0}&apos; terminated..
-        /// </summary>
-        public static string HungScriptTerminated {
-            get {
-                return ResourceManager.GetString("HungScriptTerminated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Rebooting for application maintenance....
         /// </summary>
         public static string RebootingForAppMaintenance {

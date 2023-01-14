@@ -1,8 +1,7 @@
-﻿using Scover.Dialogs;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Humanizer;
-
+using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Resources;
@@ -45,7 +44,7 @@ public sealed partial class ScriptExecutionWizard
         foreach (Script script in _scripts)
         {
             stopwatch.Restart();
-            await script.ExecuteAsync(cancellationToken);
+            await script.Execute(cancellationToken);
             yield return stopwatch.Elapsed;
         }
         Logs.ScriptsExecuted.Log(LogLevel.Info);

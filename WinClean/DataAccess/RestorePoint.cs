@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Management;
+﻿using System.Management;
 using System.Runtime.InteropServices;
 
 namespace Scover.WinClean.DataAccess;

@@ -167,10 +167,6 @@
     <comment>0 : script name
 1 : script timeout@Invariant</comment>
   </data>
-  <data name="HungScriptTerminated" xml:space="preserve">
-    <value>Hung script '{0}' terminated.</value>
-    <comment>0 : script name@Invariant</comment>
-  </data>
   <data name="ScriptsSaved" xml:space="preserve">
     <value>Scripts saved.</value>
     <comment>@Invariant</comment>

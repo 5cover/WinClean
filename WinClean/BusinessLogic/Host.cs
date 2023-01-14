@@ -20,10 +20,11 @@ public sealed record Host : ScriptMetadata
 
     public string Extension { get; }
 
-    /// <summary>Executes code.</summary>
+    /// <summary>Executes code asynchronously.</summary>
     /// <param name="code">The code to execute.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <exception cref="OperationCanceledException"/>
-    public async Task ExecuteAsync(string code, CancellationToken cancellationToken)
+    public async Task Execute(string code, CancellationToken cancellationToken)
     {
         string tmpScriptFile = CreateTempFile(code);
         using Process hostProcess = StartHost(tmpScriptFile);
@@ -35,6 +36,16 @@ public sealed record Host : ScriptMetadata
             hostProcess.Kill(true);
         }
 
+        File.Delete(tmpScriptFile);
+    }
+
+    /// <summary>Executes code synchronously.</summary>
+    /// <param name="code">The code to execute.</param>
+    public void Execute(string code)
+    {
+        string tmpScriptFile = CreateTempFile(code);
+        using Process hostProcess = StartHost(tmpScriptFile);
+        hostProcess.WaitForExit();
         File.Delete(tmpScriptFile);
     }
 

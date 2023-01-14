@@ -33,7 +33,6 @@ public partial class ScriptExecutionWizard
         #region Ask to create restore point
 
         {
-
             CommandLink linkYes = new(AskRestorePoint.CommandLinkYes, AskRestorePoint.CommandLinkYesNote);
             _askRestorePoint = new Page()
             {
@@ -78,7 +77,8 @@ public partial class ScriptExecutionWizard
             {
                 await Task.Run(() =>
                 {
-                    // Some drives are non-eligible for system restore, but Enable-ComputerRestore will still enable the eligible ones.
+                    // Some drives are non-eligible for system restore, but Enable-ComputerRestore will still enable the
+                    // eligible ones.
                     using Process powerShell = $"-Command Enable-ComputerRestore -Drive {string.Join(',', DriveInfo.GetDrives().Select(di => @$"""{di.Name}\"""))}".StartPowerShellWithArguments().AssertNotNull();
                     powerShell.WaitForExit();
                     new RestorePoint(AppMetadata.Name, EventType.BeginSystemChange, RestorePointType.ModifySettings).Create();

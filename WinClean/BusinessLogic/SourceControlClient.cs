@@ -18,23 +18,17 @@ public class SourceControlClient
         }
     });
 
-    private SourceControlClient()
-    {
-    }
-
     public static SourceControlClient Instance => _instance.Value;
 
-    public virtual string LatestVersionName => AppMetadata.Version;
-    public virtual string LatestVersionUrl => "";
-    public virtual string NewIssueUrl => "";
+    public virtual ValueTask<string> GetNewIssueUrl() => ValueTask.FromResult("");
 
     private sealed class ActualSourceControlClient : SourceControlClient
     {
         // WinClean repository ID (https://github.com/5cover/WinClean)
         private const long RepoId = 511304031;
 
-        private readonly Release _latestRelease;
-        private readonly Repository _repo;
+        private readonly Task<Release> _latestRelease;
+        private readonly Task<Repository> _repo;
 
         /// <summary>Creates a new <see cref="SourceControlClient"/> instance.</summary>
         /// <exception cref="AggregateException">
@@ -43,12 +37,10 @@ public class SourceControlClient
         public ActualSourceControlClient()
         {
             GitHubClient github = new(new ProductHeaderValue(AppMetadata.Name + AppMetadata.Version));
-            _latestRelease = github.Repository.Release.GetLatest(RepoId).Result;
-            _repo = github.Repository.Get(RepoId).Result;
+            _latestRelease = github.Repository.Release.GetLatest(RepoId);
+            _repo = github.Repository.Get(RepoId);
         }
 
-        public override string LatestVersionName => _latestRelease.Name;
-        public override string LatestVersionUrl => _latestRelease.HtmlUrl;
-        public override string NewIssueUrl => $"{_repo.HtmlUrl}/issues/new";
+        public override async ValueTask<string> GetNewIssueUrl() => $"{(await _repo).HtmlUrl}/issues/new";
     }
 }

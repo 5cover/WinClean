@@ -33,7 +33,7 @@ public sealed class CommandLineOptions
         foreach (Script script in scripts)
         {
             Logs.ScriptExecuted.FormatWith(script.InvariantName).Log();
-            script.ExecuteAsync(CancellationToken.None).RunSynchronously();
+            script.Execute();
         }
 
         Logs.ScriptsExecuted.Log(LogLevel.Info);

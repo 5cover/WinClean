@@ -151,22 +151,12 @@
   <data name="ConfirmAbortOperationContent" xml:space="preserve">
     <value>Aborting the operation may make the system unstable. Are you sure you want to continue?</value>
   </data>
-  <data name="UpdateMainInstruction" xml:space="preserve">
-    <value>New version available</value>
-  </data>
-  <data name="UpdateContent" xml:space="preserve">
-    <value>Version {0} is available. Consider updating to get new scripts and features. &lt;A&gt;See on GitHub&lt;/A&gt;</value>
-    <comment>0 : latest version number</comment>
-  </data>
   <data name="CreatingRestorePointContent" xml:space="preserve">
     <value>Creating restore point...</value>
   </data>
   <data name="FSErrorAddingCustomScriptMainInstruction" xml:space="preserve">
     <value>Cannot add custom script</value>
     
-  </data>
-  <data name="UpdateVerificationText" xml:space="preserve">
-    <value>Don't show again</value>
   </data>
   <data name="FSErrorLoadingCustomScriptMainInstruction" xml:space="preserve">
     <value>Cannot load custom script</value>

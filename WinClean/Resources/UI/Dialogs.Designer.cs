@@ -254,32 +254,5 @@ namespace Scover.WinClean.Resources.UI {
                 return ResourceManager.GetString("UnhandledExceptionDialogContent", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Version {0} is available. Consider updating to get new scripts and features. &lt;A&gt;See on GitHub&lt;/A&gt;.
-        /// </summary>
-        public static string UpdateContent {
-            get {
-                return ResourceManager.GetString("UpdateContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to New version available.
-        /// </summary>
-        public static string UpdateMainInstruction {
-            get {
-                return ResourceManager.GetString("UpdateMainInstruction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Don&apos;t show again.
-        /// </summary>
-        public static string UpdateVerificationText {
-            get {
-                return ResourceManager.GetString("UpdateVerificationText", resourceCulture);
-            }
-        }
     }
 }

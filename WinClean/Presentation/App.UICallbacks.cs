@@ -11,32 +11,6 @@ namespace Scover.WinClean.Presentation;
 public partial class App
 {
     private static readonly Callbacks uiCallbacks = new(
-        () =>
-        {
-            if (!Settings.ShowUpdateDialog)
-            {
-                return;
-            }
-            Page updateDialog = new()
-            {
-                AllowHyperlinks = true,
-                Buttons = new() { Button.OK },
-                IsCancelable = true,
-                IsMinimizable = true,
-                MainInstruction = UpdateMainInstruction,
-                Content = UpdateContent.FormatWith(SourceControlClient.Instance.LatestVersionName),
-                Icon = DialogIcon.Information,
-                Verification = new(UpdateVerificationText)
-            };
-            updateDialog.HyperlinkClicked += (_, _) => SourceControlClient.Instance.LatestVersionUrl.Open();
-            updateDialog.Verification.Checked += (_, _) => Settings.ShowUpdateDialog = !updateDialog.Verification.IsChecked;
-
-            if ((new Dialog(updateDialog).Show(default) as Button)?.Text == Buttons.Cancel)
-            {
-                // The user probably expects the application to close.
-                Current.Shutdown();
-            }
-        },
         (e, path) =>
         {
             Logger.Log(Logs.ScriptLoadError.FormatWith(path, e), LogLevel.Error);
@@ -76,7 +50,7 @@ public partial class App
                 Content = UnhandledExceptionDialogContent.FormatWith(ex.Message),
                 Expander = new(ex.ToString()),
             };
-            unhandledException.HyperlinkClicked += (s, e) =>
+            unhandledException.HyperlinkClicked += async (s, e) =>
             {
                 switch (e.Href)
                 {
@@ -85,7 +59,7 @@ public partial class App
                         break;
 
                     case "ReportIssue":
-                        SourceControlClient.Instance.NewIssueUrl.Open();
+                        (await SourceControlClient.Instance.GetNewIssueUrl()).Open();
                         break;
                 }
             };
