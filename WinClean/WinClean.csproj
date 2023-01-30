@@ -24,7 +24,7 @@
     <UseWindowsForms>False</UseWindowsForms>
     <Platforms>AnyCPU</Platforms>
     <Version>1.2.2</Version>
-    <Configurations>Debug;Release;PortableRelease</Configurations>
+    <Configurations>Debug;Release</Configurations>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
   </PropertyGroup>
 
@@ -41,51 +41,21 @@
     <Optimize>True</Optimize>
     <NoWarn>IDE0072</NoWarn>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='PortableRelease|AnyCPU'">
-    <DefineConstants>$(DefineConstants)</DefineConstants>
-    <DebugType>embedded</DebugType>
-    <Optimize>True</Optimize>
-    <NoWarn>IDE0072</NoWarn>
-  </PropertyGroup>
-
-  <Target Name="Messages">
-    <Message Text="Configuration = '$(Configuration)'" Importance="high" />
-  </Target>
-  <Choose>
-    <When Condition="'$(Configuration)'=='PortableRelease'">
-        <ItemGroup>
-        <EmbeddedResource Include="Categories.xml">
-            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>
-        <EmbeddedResource Include="Impacts.xml">
-            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>
-        <EmbeddedResource Include="RecommendationLevels.xml">
-            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>
-        <EmbeddedResource Include="Hosts.xml">
-            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>
-        </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup>
-        <Content Include="Categories.xml">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Impacts.xml">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="RecommendationLevels.xml">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Hosts.xml">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
+  
+  <ItemGroup>
+    <EmbeddedResource Include="Categories.xml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Impacts.xml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RecommendationLevels.xml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Hosts.xml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
