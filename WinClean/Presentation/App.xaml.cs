@@ -31,7 +31,6 @@ public sealed partial class App
 
     static App()
     {
-        Dialogs.Dialog.UseActivationContext = false;
         Settings.Default[nameof(Settings.ScriptExecutionTimes)] ??= new StringCollection();
         ScriptExecutionTimes = Settings.ScriptExecutionTimes.ParseKeysAndValues().ToDictionary(kv => kv.key.AssertNotNull(),
             kv => TimeSpan.ParseExact(kv.value.AssertNotNull(), ScriptExecutionTimesFormatString, CultureInfo.InvariantCulture));
@@ -151,6 +150,7 @@ public sealed partial class App
 
     private static void StartGui()
     {
+        Settings.ScriptTimeout = 10.Seconds();
         Initialize(new CsvLogger(), uiCallbacks);
         new MainWindow().Show();
     }
@@ -186,5 +186,6 @@ public sealed partial class App
 
 #else
         => File.OpenRead(Path.Join(AppDomain.CurrentDomain.BaseDirectory, filename));
+
 #endif
 }

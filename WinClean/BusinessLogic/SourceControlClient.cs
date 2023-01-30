@@ -22,12 +22,13 @@ public class SourceControlClient
 
     public virtual ValueTask<string> GetNewIssueUrl() => ValueTask.FromResult("");
 
+    public virtual ValueTask<string> GetWikiUrl() => ValueTask.FromResult("");
+
     private sealed class ActualSourceControlClient : SourceControlClient
     {
         // WinClean repository ID (https://github.com/5cover/WinClean)
         private const long RepoId = 511304031;
 
-        private readonly Task<Release> _latestRelease;
         private readonly Task<Repository> _repo;
 
         /// <summary>Creates a new <see cref="SourceControlClient"/> instance.</summary>
@@ -37,10 +38,11 @@ public class SourceControlClient
         public ActualSourceControlClient()
         {
             GitHubClient github = new(new ProductHeaderValue(AppMetadata.Name + AppMetadata.Version));
-            _latestRelease = github.Repository.Release.GetLatest(RepoId);
             _repo = github.Repository.Get(RepoId);
         }
 
         public override async ValueTask<string> GetNewIssueUrl() => $"{(await _repo).HtmlUrl}/issues/new";
+
+        public override async ValueTask<string> GetWikiUrl() => $"{(await _repo).HtmlUrl}/wiki";
     }
 }

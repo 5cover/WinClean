@@ -127,7 +127,8 @@ public sealed class Script : INotifyPropertyChanged
 
     /// <summary>Executes the script asynchronously.</summary>
     /// <inheritdoc cref="Host.Execute" path="/param"/>
-    public async Task Execute(CancellationToken cancellationToken) => await Host.Execute(Code, cancellationToken);
+    public async Task Execute(TimeSpan timeout, HungScriptCallback keepRunningElseTerminateHungScript, CancellationToken cancellationToken)
+        => await Host.Execute(Code, timeout, () => keepRunningElseTerminateHungScript(this), cancellationToken);
 
     /// <summary>Executes the script synchrounously.</summary>
     public void Execute() => Host.Execute(Code);

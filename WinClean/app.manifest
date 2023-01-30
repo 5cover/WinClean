@@ -9,8 +9,7 @@
       </requestedPrivileges>
     </security>
   </trustInfo>
-  <dependency>
-     <!-- dependencyType required for ClickOnce -->
+  <!--<dependency>
     <dependentAssembly asmv2:dependencyType="preRequisite">
       <assemblyIdentity
           type="win32"
@@ -21,5 +20,5 @@
           language="*"
         />
     </dependentAssembly>
-  </dependency>
+  </dependency>-->
 </assembly>

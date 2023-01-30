@@ -31,7 +31,6 @@ public partial class ScriptExecutionWizard
         _scripts = scripts;
 
         #region Ask to create restore point
-
         {
             CommandLink linkYes = new(AskRestorePoint.CommandLinkYes, AskRestorePoint.CommandLinkYesNote);
             _askRestorePoint = new Page()
@@ -56,15 +55,13 @@ public partial class ScriptExecutionWizard
                      : null;
             });
         }
-
         #endregion Ask to create restore point
 
         #region Restore point creation progress
-
         {
             _restorePointProgress = new()
             {
-                Buttons = new() { Buttons.Stop },
+                Buttons = { Buttons.Stop },
                 Icon = restorePointIcon,
                 MainInstruction = CreatingRestorePointContent,
                 ProgressBar = new()
@@ -87,19 +84,13 @@ public partial class ScriptExecutionWizard
                 Logs.RestorePointCreated.Log();
             };
         }
-
         #endregion Restore point creation progress
 
         #region Ask restart on completed
-
         {
             _askRestartCompleted = new()
             {
-                Buttons = new()
-                {
-                    Buttons.Restart,
-                    Button.Close
-                },
+                Buttons = { Buttons.Restart, Button.Close },
                 Content = ExecutionCompletedContent.FormatWith(_scripts.Count),
                 Icon = DialogIcon.SuccessShield,
                 Header = DialogHeader.Green,
@@ -114,17 +105,15 @@ public partial class ScriptExecutionWizard
                 return null;
             });
         }
-
         #endregion Ask restart on completed
 
         #region Execution progress
-
         {
             _executionProgress = new()
             {
                 IsMinimizable = true,
                 IsCancelable = false,
-                Buttons = new() { Buttons.Stop },
+                Buttons = { Buttons.Stop },
                 Content = ExecutionProgressContent,
                 Expander = new()
                 {
@@ -187,7 +176,6 @@ public partial class ScriptExecutionWizard
             TimeSpan? GetCumulatedExecutionTime(IEnumerable<Script> scripts)
                 => scripts.Aggregate<Script, TimeSpan?>(null, (sumSoFar, next) => sumSoFar + GetExecutionTime(next));
         }
-
         #endregion Execution progress
 
         _dialog = new(_askRestorePoint, _nextPageSelectors);

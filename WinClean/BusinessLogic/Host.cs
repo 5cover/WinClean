@@ -22,21 +22,38 @@ public sealed record Host : ScriptMetadata
 
     /// <summary>Executes code asynchronously.</summary>
     /// <param name="code">The code to execute.</param>
+    /// <param name="timeout">
+    /// Upon reach, <paramref name="keepRunningElseTerminateHungScript"/> will be called and the script will be terminated if it
+    /// returns <see langword="false"/>. Otherwise the timeout will reset.
+    /// </param>
+    /// <param name="keepRunningElseTerminateHungScript">Callback called when the script is hung.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <exception cref="OperationCanceledException"/>
-    public async Task Execute(string code, CancellationToken cancellationToken)
+    public async Task Execute(string code, TimeSpan timeout, Func<bool> keepRunningElseTerminateHungScript, CancellationToken cancellationToken)
     {
+        CancellationTokenSource cts = new();
         string tmpScriptFile = CreateTempFile(code);
         using Process hostProcess = StartHost(tmpScriptFile);
 
-        await hostProcess.WaitForExitAsync(cancellationToken);
+        using var r1 = cancellationToken.Register(() => cts.Cancel());
+        using var r2 = cts.Token.Register(() => hostProcess.Kill(true));
 
-        if (cancellationToken.IsCancellationRequested)
-        {
-            hostProcess.Kill(true);
-        }
+        _ = StartTimeoutTimer();
+        await hostProcess.WaitForExitAsync(cts.Token);
 
         File.Delete(tmpScriptFile);
+
+        async Task StartTimeoutTimer()
+        {
+            using PeriodicTimer timer = new(timeout);
+            while (await timer.WaitForNextTickAsync(cts.Token))
+            {
+                if (!keepRunningElseTerminateHungScript())
+                {
+                    cts.Cancel();
+                }
+            }
+        }
     }
 
     /// <summary>Executes code synchronously.</summary>
@@ -59,6 +76,6 @@ public sealed record Host : ScriptMetadata
     private Process StartHost(string script) => Process.Start(new ProcessStartInfo(_executable, _arguments.FormatWith(script))
     {
         WindowStyle = ProcessWindowStyle.Hidden,
-        UseShellExecute = true // necessary for ProcessWindowStyle.Hidden
+        UseShellExecute = true // necessary for WindowStyle
     }).AssertNotNull();
 }

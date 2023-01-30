@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using Humanizer;
 using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Resources;
+using Scover.WinClean.Resources.UI;
 
 namespace Scover.WinClean.Presentation;
 
@@ -44,7 +44,19 @@ public sealed partial class ScriptExecutionWizard
         foreach (Script script in _scripts)
         {
             stopwatch.Restart();
-            await script.Execute(cancellationToken);
+            await script.Execute(App.Settings.ScriptTimeout, script =>
+            {
+                Logs.HungScript.FormatWith(script.InvariantName, App.Settings.ScriptTimeout).Log(LogLevel.Warning);
+                Button endTask = new(Buttons.EndTask);
+                using Page page = new()
+                {
+                    Buttons = { endTask, Button.Ignore },
+                    IsCancelable = true,
+                    Icon = DialogIcon.Warning,
+                    Content = Resources.UI.Dialogs.HungScriptDialogContent
+                };
+                return new Dialog(page).Show() != endTask;
+            }, cancellationToken);
             yield return stopwatch.Elapsed;
         }
         Logs.ScriptsExecuted.Log(LogLevel.Info);

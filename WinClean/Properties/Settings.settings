@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Scover.WinClean.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="WikiUrl" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">https://github.com/5cover/WinClean/wiki</Value>
-    </Setting>
     <Setting Name="ScriptFileExtension" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.xml</Value>
     </Setting>

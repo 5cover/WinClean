@@ -15,11 +15,11 @@ public partial class App
         {
             Logger.Log(Logs.ScriptLoadError.FormatWith(path, e), LogLevel.Error);
 
-            var deleteScriptPage = DialogPageFactory.MakeDeleteScript();
+            using Page deleteScriptPage = DialogPageFactory.MakeDeleteScript();
             Button deleteScriptButton = new(Buttons.DeleteScript);
             deleteScriptButton.Clicked += (s, e) => e.Cancel = Button.Yes.Equals(new Dialog(deleteScriptPage).Show());
 
-            var invalidScriptDataPage = DialogPageFactory.MakeInvalidScriptData(e, path, new(defaultItem: Button.Retry){ deleteScriptButton, Button.Retry, Button.Ignore });
+            using Page invalidScriptDataPage = DialogPageFactory.MakeInvalidScriptData(e, path, new(defaultItem: Button.Retry){ deleteScriptButton, Button.Retry, Button.Ignore });
 
             Dialog invalidScriptData = new(invalidScriptDataPage);
             var clicked = invalidScriptData.Show();
@@ -34,7 +34,7 @@ public partial class App
         },
         (e, verb, info) =>
         {
-            var fsError = DialogPageFactory.MakeFSError(e, verb, info, new(){ Button.Retry, Button.Ignore });
+            using Page fsError = DialogPageFactory.MakeFSError(e, verb, info, new(){ Button.Retry, Button.Ignore });
             fsError.MainInstruction = FSErrorLoadingCustomScriptMainInstruction;
             return Button.Retry.Equals(new Dialog(fsError).Show());
         },
@@ -42,10 +42,10 @@ public partial class App
         {
             Logger.Log(Logs.UnhandledException.FormatWith(ex), LogLevel.Critical);
 
-            Page unhandledException = new()
+            using Page unhandledException = new()
             {
                 AllowHyperlinks = true,
-                Buttons = new() { Buttons.Exit },
+                Buttons = { Buttons.Exit },
                 Icon = DialogIcon.Error,
                 Content = UnhandledExceptionDialogContent.FormatWith(ex.Message),
                 Expander = new(ex.ToString()),
