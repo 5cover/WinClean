@@ -27,8 +27,6 @@ public sealed partial class App
 
     private static Logger? logger;
 
-    public static Settings Settings => Settings.Default;
-
     static App()
     {
         Settings.Default[nameof(Settings.ScriptExecutionTimes)] ??= new StringCollection();
@@ -46,6 +44,8 @@ public sealed partial class App
         };
     }
 
+    public static Settings Settings => Settings.Default;
+
     /// <summary>Gets the logger of the application.</summary>
     /// <remarks>Available after startup.</remarks>
     public static Logger Logger => logger.AssertNotNull();
@@ -57,6 +57,7 @@ public sealed partial class App
     /// <remarks>Available after startup.</remarks>
     public static IEnumerable<Script> Scripts => scriptCollections.Values.SelectMany(c => c);
 
+    public static TypedEnumerablesDictionary ScriptMetadata { get; }
     private static Dictionary<ScriptType, ScriptCollection> scriptCollections { get; } = new();
 
     /// <summary>Commits all changes to the scripts.</summary>
@@ -155,6 +156,9 @@ public sealed partial class App
         new MainWindow().Show();
     }
 
+    private static Stream ReadContentFile(string filename)
+        => System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream($"{MetadataContentFilesNamespace}.{filename}").AssertNotNull();
+
     private void ApplicationExit(object? sender, ExitEventArgs? e)
     {
         Settings.ScriptExecutionTimes.SetContent(ScriptExecutionTimes.Select(kv => (kv.Key, kv.Value.ToString(ScriptExecutionTimesFormatString))));
@@ -177,15 +181,4 @@ public sealed partial class App
             StartGui();
         }
     }
-
-    public static TypedEnumerablesDictionary ScriptMetadata { get; }
-
-    private static Stream ReadContentFile(string filename)
-#if PORTABLERELEASE
-        => System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream($"{MetadataContentFilesNamespace}.{filename}").AssertNotNull();
-
-#else
-        => File.OpenRead(Path.Join(AppDomain.CurrentDomain.BaseDirectory, filename));
-
-#endif
 }
