@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
-using Humanizer;
+
 using Humanizer.Localisation;
+
 using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
@@ -8,7 +9,9 @@ using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Resources;
 using Scover.WinClean.Resources.UI;
+
 using Vanara.PInvoke;
+
 using static Scover.WinClean.Resources.UI.Dialogs;
 
 namespace Scover.WinClean.Presentation;
@@ -31,6 +34,7 @@ public partial class ScriptExecutionWizard
         _scripts = scripts;
 
         #region Ask to create restore point
+
         {
             CommandLink linkYes = new(AskRestorePoint.CommandLinkYes, AskRestorePoint.CommandLinkYesNote);
             _askRestorePoint = new Page()
@@ -55,9 +59,11 @@ public partial class ScriptExecutionWizard
                      : null;
             });
         }
+
         #endregion Ask to create restore point
 
         #region Restore point creation progress
+
         {
             _restorePointProgress = new()
             {
@@ -74,8 +80,8 @@ public partial class ScriptExecutionWizard
             {
                 await Task.Run(() =>
                 {
-                    // Some drives are non-eligible for system restore, but Enable-ComputerRestore will still enable the
-                    // eligible ones.
+                    // Some drives are non-eligible for system restore, but Enable-ComputerRestore will
+                    // still enable the eligible ones.
                     using Process powerShell = $"-Command Enable-ComputerRestore -Drive {string.Join(',', DriveInfo.GetDrives().Select(di => @$"""{di.Name}\"""))}".StartPowerShellWithArguments().AssertNotNull();
                     powerShell.WaitForExit();
                     new RestorePoint(AppMetadata.Name, EventType.BeginSystemChange, RestorePointType.ModifySettings).Create();
@@ -84,9 +90,11 @@ public partial class ScriptExecutionWizard
                 Logs.RestorePointCreated.Log();
             };
         }
+
         #endregion Restore point creation progress
 
         #region Ask restart on completed
+
         {
             _askRestartCompleted = new()
             {
@@ -105,9 +113,11 @@ public partial class ScriptExecutionWizard
                 return null;
             });
         }
+
         #endregion Ask restart on completed
 
         #region Execution progress
+
         {
             _executionProgress = new()
             {
@@ -176,6 +186,7 @@ public partial class ScriptExecutionWizard
             TimeSpan? GetCumulatedExecutionTime(IEnumerable<Script> scripts)
                 => scripts.Aggregate<Script, TimeSpan?>(null, (sumSoFar, next) => sumSoFar + GetExecutionTime(next));
         }
+
         #endregion Execution progress
 
         _dialog = new(_askRestorePoint, _nextPageSelectors);

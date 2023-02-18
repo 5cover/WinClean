@@ -12,7 +12,9 @@ public sealed class RestorePoint
 
     private readonly RestorePointType _type;
 
-    /// <param name="description">The description to be displayed so the user can easily identify a restore point.</param>
+    /// <param name="description">
+    /// The description to be displayed so the user can easily identify a restore point.
+    /// </param>
     /// <param name="eventType">The type of event.</param>
     /// <param name="type">The type of restore point.</param>
     public RestorePoint(string description, EventType eventType, RestorePointType type)
@@ -27,8 +29,8 @@ public sealed class RestorePoint
     /// <exception cref="InvalidOperationException">System restore is disabled.</exception>
     public void Create()
     {
-        // Cannot use the CheckPoint-Computer cmdlet for creating the restore point because it only allows a restore point to be
-        // created every 24 hours.
+        // Cannot use the CheckPoint-Computer cmdlet for creating the restore point because it only allows a
+        // restore point to be created every 24 hours.
         ManagementScope mScope = new(@"\\localhost\root\default");
         ManagementPath mPath = new("SystemRestore");
         ObjectGetOptions options = new();

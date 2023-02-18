@@ -3,7 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Scover.WinClean.DataAccess;
 
-/// <summary>Provides a set of extension methods that fulfill a relatively generic role in the <see cref="DataAccess"/> layer.</summary>
+/// <summary>
+/// Provides a set of extension methods that fulfill a relatively generic role in the <see
+/// cref="DataAccess"/> layer.
+/// </summary>
 public static class Extensions
 {
     /// <summary>Asserts that <paramref name="t"/> isn't <see langword="null"/>.</summary>

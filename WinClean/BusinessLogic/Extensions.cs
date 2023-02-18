@@ -1,12 +1,14 @@
 ﻿using System.Security;
 using System.Text.RegularExpressions;
 using System.Xml;
+
 using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.BusinessLogic;
 
 /// <summary>
-/// Provides a set of extension methods that fulfill a relatively generic role in the <see cref="BusinessLogic"/> layer.
+/// Provides a set of extension methods that fulfill a relatively generic role in the <see
+/// cref="BusinessLogic"/> layer.
 /// </summary>
 public static class Extensions
 {
@@ -41,7 +43,9 @@ public static class Extensions
 
     /// <summary>Checks if an exception could have been thrown by the filesystem API.</summary>
     /// <returns>
-    /// <para><see langword="true"/> if <paramref name="e"/> is of or derived from any of the following types :</para>
+    /// <para>
+    /// <see langword="true"/> if <paramref name="e"/> is of or derived from any of the following types :
+    /// </para>
     /// <br><see cref="IOException"/></br><br><see cref="UnauthorizedAccessException"/></br><br><see cref="SecurityException"/></br>
     /// <para>Otherwise; <see langword="false"/>.</para>
     /// </returns>
@@ -54,10 +58,12 @@ public static class Extensions
 
     /// <summary>Creates a valid Windows filename from a string.</summary>
     /// <param name="filename">The filename candidate.</param>
-    /// <param name="replaceInvalidCharsWith">What to replace invalid filename chars in <paramref name="filename"/> with.</param>
+    /// <param name="replaceInvalidCharsWith">
+    /// What to replace invalid filename chars in <paramref name="filename"/> with.
+    /// </param>
     /// <returns>
-    /// A new <see cref="string"/>, equivalent to <paramref name="filename"/>, but modified to be a valid Windows filename if it
-    /// <paramref name="filename"/> wasn't already.
+    /// A new <see cref="string"/>, equivalent to <paramref name="filename"/>, but modified to be a valid
+    /// Windows filename if it <paramref name="filename"/> wasn't already.
     /// </returns>
     /// <exception cref="ArgumentException"/>
     /// <remarks>The length of the filename is not checked, and the casing is not modified.</remarks>

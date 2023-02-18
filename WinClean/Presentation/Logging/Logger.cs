@@ -30,7 +30,8 @@ public abstract class Logger
                     message,
                     caller,
                     callLine,
-                    // Only keep the filename of the source file to avoid showing personal information in file paths.
+                    // Only keep the filename of the source file to avoid showing personal information in
+                    // file paths.
                     Path.GetFileName(callFile)));
         }
     }

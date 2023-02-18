@@ -9,7 +9,8 @@ using System.Windows.Media;
 namespace Scover.WinClean.Presentation;
 
 /// <summary>
-/// Provides a set of extension methods that fulfill a relatively generic role in the <see cref="Presentation"/> layer.
+/// Provides a set of extension methods that fulfill a relatively generic role in the <see
+/// cref="Presentation"/> layer.
 /// </summary>
 public static class Extensions
 {
@@ -34,7 +35,8 @@ public static class Extensions
 
     /// <summary>Opens a file or an URI with the shell.</summary>
     /// <remarks>
-    /// If <paramref name="path"/> is <see langword="null"/>, empty, or not valid for shell execution, no process will be started.
+    /// If <paramref name="path"/> is <see langword="null"/>, empty, or not valid for shell execution, no
+    /// process will be started.
     /// </remarks>
     public static void Open(this string? path)
     {
@@ -55,7 +57,9 @@ public static class Extensions
         }
     }
 
-    /// <summary>Replaces the content of a string collection with tuples by alternating between keys and values.</summary>
+    /// <summary>
+    /// Replaces the content of a string collection with tuples by alternating between keys and values.
+    /// </summary>
     /// <param name="strCollection">The string collection to update.</param>
     /// <param name="keysAndValues">The tuples to add to <paramref name="strCollection"/>.</param>
     /// <remarks>Keys are on even indexes. Values are on odd indexes.</remarks>
@@ -70,8 +74,8 @@ public static class Extensions
     }
 
     /// <summary>
-    /// Computes the sum of a sequence of time intervals that are obtained by invoking a transform function on each element of
-    /// the input sequence.
+    /// Computes the sum of a sequence of time intervals that are obtained by invoking a transform function
+    /// on each element of the input sequence.
     /// </summary>
     /// <typeparam name="TSource">The type of the elements of source.</typeparam>
     /// <param name="source">A sequence of values that are used to calculate a sum.</param>

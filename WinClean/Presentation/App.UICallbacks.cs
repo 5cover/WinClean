@@ -1,9 +1,11 @@
 ﻿using System.Windows;
+
 using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Resources;
 using Scover.WinClean.Resources.UI;
+
 using static Scover.WinClean.Resources.UI.Dialogs;
 
 namespace Scover.WinClean.Presentation;

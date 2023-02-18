@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+
 using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic.Scripts;
 using Scover.WinClean.Presentation.Logging;
@@ -9,8 +10,8 @@ using Scover.WinClean.Resources.UI;
 namespace Scover.WinClean.Presentation;
 
 /// <summary>
-/// Walks the user through the multi-step high-level operation of executing multiple scripts asynchronously by displaying a
-/// dialog tracking the progress.
+/// Walks the user through the multi-step high-level operation of executing multiple scripts asynchronously
+/// by displaying a dialog tracking the progress.
 /// </summary>
 public sealed partial class ScriptExecutionWizard
 {
