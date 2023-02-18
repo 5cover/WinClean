@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text;
 using System.Windows.Media;
+
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;

@@ -4,8 +4,11 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+
 using CommunityToolkit.Mvvm.Input;
+
 using Microsoft.Win32;
+
 using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
@@ -13,7 +16,9 @@ using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Resources;
+
 using static Scover.WinClean.Resources.UI.Dialogs;
+
 using Button = Scover.Dialogs.Button;
 using Page = Scover.Dialogs.Page;
 
@@ -178,8 +183,8 @@ public sealed partial class MainWindow
         // 4. Refreshing unfocuses the DataGrid, so focus it.
         _ = DataGridScripts?.Focus();
 
-        // DataGridScripts could be null here because this method may be called right when the window is shown, before all
-        // elements have initialized.
+        // DataGridScripts could be null here because this method may be called right when the window is
+        // shown, before all elements have initialized.
         if (DataGridScripts is not null && _selectedScripts.TryGetValue(category, out var selected))
         {
             // 5. Restore the selected item.

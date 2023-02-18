@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+
 using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.BusinessLogic;
@@ -13,7 +14,9 @@ public static class AppMetadata
     public static string Name { get; } = assembly.GetCustomAttribute<AssemblyProductAttribute>().AssertNotNull().Product;
 
     /// <summary>Gets the <c>RepositoryUrl</c> assembly metadata.</summary>
-    /// <value><see cref="AssemblyMetadataAttribute.Value"/> for <see cref="AssemblyMetadataAttribute.Key"/> as <c>RepositoryUrl</c>.</value>
+    /// <value>
+    /// <see cref="AssemblyMetadataAttribute.Value"/> for <see cref="AssemblyMetadataAttribute.Key"/> as <c>RepositoryUrl</c>.
+    /// </value>
     public static string RepositoryUrl { get; } = (assembly.GetCustomAttributes<AssemblyMetadataAttribute>().SingleOrDefault(metadata => metadata.Key == "RepositoryUrl")?.Value).AssertNotNull();
 
     /// <summary>Gets version information.</summary>

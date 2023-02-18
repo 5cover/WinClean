@@ -2,7 +2,9 @@
 
 namespace Scover.WinClean.BusinessLogic;
 
-/// <summary>Used to interact with the remote source control system hosting the application online (such as GitHub).</summary>
+/// <summary>
+/// Used to interact with the remote source control system hosting the application online (such as GitHub).
+/// </summary>
 public class SourceControlClient
 {
     private static readonly Lazy<SourceControlClient> _instance = new(() =>
@@ -13,7 +15,8 @@ public class SourceControlClient
         }
         catch (AggregateException)
         {
-            // Return a mock object if the "real" source control client is unavailable due to, for instance, a network error.
+            // Return a mock object if the "real" source control client is unavailable due to, for instance,
+            // a network error.
             return new();
         }
     });

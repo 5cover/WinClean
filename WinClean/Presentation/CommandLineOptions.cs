@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+
 using CommandLine;
 
 using Scover.WinClean.BusinessLogic.Scripts;

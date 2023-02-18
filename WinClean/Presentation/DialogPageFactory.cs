@@ -1,6 +1,7 @@
 ﻿using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.Resources;
+
 using static Scover.WinClean.Resources.UI.Dialogs;
 
 namespace Scover.WinClean.Presentation;
@@ -10,28 +11,25 @@ public static class DialogPageFactory
 {
     /// <summary>Makes a dialog page for deleting a script.</summary>
     /// <returns>A new <see cref="DialogPage"/> object.</returns>
-    public static Page MakeDeleteScript()
+    public static Page MakeDeleteScript() => new()
     {
-        return new Page()
+        Buttons = new(defaultItem: Button.No)
         {
-            Buttons = new(defaultItem: Button.No)
-            {
-                Button.Yes,
-                Button.No
-            },
-            Content = ConfirmScriptDeletionContent,
-            Icon = DialogIcon.Warning,
-            IsCancelable = true,
-        };
-    }
+            Button.Yes,
+            Button.No
+        },
+        Content = ConfirmScriptDeletionContent,
+        Icon = DialogIcon.Warning,
+        IsCancelable = true,
+    };
 
     /// <summary>Makes a dialog page for a filesystem error.</summary>
     /// <param name="e">The exception responsible for the filesystem error.</param>
     /// <param name="verb">The filesystem verb that could describe what was happening.</param>
     /// <param name="info">The filesystem element that was operated.</param>
     /// <remarks>
-    /// Also sets the following properties: <br><see cref="DialogPage.Icon"/> to <see cref="PageIcon.Error"/>;</br><br><see
-    /// cref="DialogPage.Content"/> to a formatted and localized error message.</br>
+    /// Also sets the following properties: <br><see cref="DialogPage.Icon"/> to <see
+    /// cref="PageIcon.Error"/>;</br><br><see cref="DialogPage.Content"/> to a formatted and localized error message.</br>
     /// </remarks>
     /// <inheritdoc cref="DialogPage(CustomButton[])" path="/param"/>
     /// <returns>A new <see cref="DialogPage"/> object.</returns>
@@ -45,7 +43,9 @@ public static class DialogPageFactory
         Icon = DialogIcon.Error
     };
 
-    /// <summary>Makes a dialog page for a script that could not be loaded because it has invalid or missing data.</summary>
+    /// <summary>
+    /// Makes a dialog page for a script that could not be loaded because it has invalid or missing data.
+    /// </summary>
     /// <param name="e">The exception responsible for the error.</param>
     /// <param name="path">The path to the invalid script file.</param>
     /// <inheritdoc cref="DialogPage(CustomButton[])" path="/param"/>

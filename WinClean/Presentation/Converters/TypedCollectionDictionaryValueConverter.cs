@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
+
 using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.Presentation.Converters;

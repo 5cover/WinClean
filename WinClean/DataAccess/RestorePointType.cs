@@ -9,8 +9,8 @@ public enum RestorePointType
     ApplicationUninstall = 0x1,
 
     /// <summary>
-    /// An application needs to delete the restore point it created. For example, an application would use this flag when a user
-    /// cancels an installation.
+    /// An application needs to delete the restore point it created. For example, an application would use
+    /// this flag when a user cancels an installation.
     /// </summary>
     CancelledOperation = 0xd,
 

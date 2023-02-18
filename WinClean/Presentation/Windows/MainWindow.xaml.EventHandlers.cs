@@ -1,10 +1,12 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+
 using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
+
 using static Scover.WinClean.Resources.UI.Dialogs;
-using Button = Scover.Dialogs.Button;
+
 using Page = Scover.Dialogs.Page;
 
 namespace Scover.WinClean.Presentation.Windows;

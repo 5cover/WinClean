@@ -10,7 +10,8 @@ public sealed class FileScriptCollection : ScriptCollection, IMutableScriptColle
     /// <param name="directory">The directory containing the script files.</param>
     /// <param name="scriptFileExtension">The extension of the script files.</param>
     /// <param name="invalidScriptDataReloadElseIgnore">
-    /// <inheritdoc cref="InvalidScriptDataCallback" path="/summary"/> Returns <inheritdoc cref="InvalidScriptDataCallback" path="/returns"/>
+    /// <inheritdoc cref="InvalidScriptDataCallback" path="/summary"/> Returns <inheritdoc
+    /// cref="InvalidScriptDataCallback" path="/returns"/>
     /// </param>
     /// <param name="fsErrorReloadElseIgnore">
     /// <inheritdoc cref="FSErrorCallback" path="/summary"/> Returns <inheritdoc cref="FSErrorCallback" path="/returns"/>
