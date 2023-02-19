@@ -126,11 +126,13 @@ public sealed class Script : INotifyPropertyChanged
 
     public ScriptType Type { get; }
 
-    /// <summary>Executes this script.</summary>
-    /// <remarks>Returns when this script has finished executing or was hung and has been terminated.</remarks>
-    /// <inheritdoc cref="Host.ExecuteCode" path="/param"/>
-    public void Execute(Action onHung, CancellationToken cancellationToken)
-        => Host.ExecuteCode(Code, AppInfo.Settings.ScriptTimeout, onHung, cancellationToken);
+    /// <summary>Executes the script asynchronously.</summary>
+    /// <inheritdoc cref="Host.Execute" path="/param"/>
+    public async Task Execute(TimeSpan timeout, HungScriptCallback keepRunningElseTerminateHungScript, CancellationToken cancellationToken)
+        => await Host.Execute(Code, timeout, () => keepRunningElseTerminateHungScript(this), cancellationToken);
+
+    /// <summary>Executes the script synchrounously.</summary>
+    public void Execute() => Host.Execute(Code);
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new(propertyName));
 }

@@ -15,30 +15,16 @@ public partial class MainWindow
 {
     private void ButtonAddScriptsClick(object sender, RoutedEventArgs e)
     {
-        OpenFileDialog ofd = new()
-        {
-            DefaultExt = AppInfo.Settings.ScriptFileExtension,
-            Multiselect = true,
-            ReadOnlyChecked = true,
-        };
-        MakeFilter(new(AppInfo.Settings.ScriptFileExtension));
+        var oldScriptCount = Scripts.Count;
 
-        if (!ofd.ShowDialog(this) ?? true)
-        {
-            return;
-        }
-
-        foreach (string path in ofd.FileNames)
+        foreach (string path in AskForCustomScriptsToAdd())
         {
             AddScript(path);
         }
 
-        SelectedScript = Scripts.LastOrDefault();
-
-        void MakeFilter(ExtensionGroup group)
+        if (Scripts.Count > oldScriptCount)
         {
-            string extensions = string.Join(";", group.Select(ext => $"*{ext}"));
-            ofd.Filter = $"{group.Name} ({extensions})|{extensions}";
+            SelectedScript = Scripts.LastOrDefault();
         }
     }
 

@@ -9,7 +9,7 @@ public abstract class ScriptCollection : IEnumerable<Script>
 
     private readonly IScriptSerializer _serializer;
 
-    /// <param name="serializer">The serializer to use to serialize and deserialize scripts.</param>
+    /// <param name="serializer">The serializer to use to serialize and deserialize the scripts.</param>
     /// <param name="scriptType">The type of the scripts being stored.</param>
     protected ScriptCollection(IScriptSerializer serializer, ScriptType scriptType)
                 => (_serializer, _scriptType) = (serializer, scriptType);
