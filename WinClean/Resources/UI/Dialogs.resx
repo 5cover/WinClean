@@ -198,7 +198,4 @@ Time remaining: {4}</value>
   <data name="ExecutionProgressExpanderTextInitializing" xml:space="preserve">
     <value>Initializing...</value>
   </data>
-  <data name="ExecutionProgressTimeRemainingUnknown" xml:space="preserve">
-    <value>unknown</value>
-  </data>
 </root>

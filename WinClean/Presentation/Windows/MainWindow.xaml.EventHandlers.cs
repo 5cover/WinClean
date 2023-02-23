@@ -4,7 +4,6 @@ using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
 using static Scover.WinClean.Resources.UI.Dialogs;
-using Button = Scover.Dialogs.Button;
 using Page = Scover.Dialogs.Page;
 
 namespace Scover.WinClean.Presentation.Windows;
@@ -36,7 +35,7 @@ public partial class MainWindow
             return;
         }
 
-        Page noScriptsSelected = new()
+        using Page noScriptsSelected = new()
         {
             Icon = DialogIcon.Error,
             MainInstruction = NoScriptsSelectedMainInstruction,

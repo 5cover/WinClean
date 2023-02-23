@@ -106,7 +106,7 @@ public sealed partial class App
             $"{nameof(Scover)}.{nameof(WinClean)}.{nameof(BusinessLogic.Scripts)}", serializer, ScriptType.Default);
     }
 
-    private static void EnsureRunAsAdmin()
+    private static void EnsureAdminPrivileges()
     {
         if (new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator))
         {
@@ -170,7 +170,7 @@ public sealed partial class App
     private void ApplicationStartup(object? sender, StartupEventArgs? e)
     {
         // ClickOnce doesn't support requireAdministrator in manifest, this is a workaround.
-        EnsureRunAsAdmin();
+        EnsureAdminPrivileges();
 
         if (e is not null && e.Args.Any())
         {

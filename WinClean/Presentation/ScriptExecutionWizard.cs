@@ -26,9 +26,6 @@ public sealed partial class ScriptExecutionWizard
     /// <summary>Executes the script(s) and displays a dialog tracking the progress.</summary>
     public void Execute() => _dialog.Show();
 
-    private static TimeSpan? GetExecutionTime(Script script)
-        => App.ScriptExecutionTimes.TryGetValue(script.InvariantName, out TimeSpan executionTime) ? executionTime : null;
-
     private static void RestartSystem()
     {
         Logs.RebootingForAppMaintenance.Log();
@@ -38,27 +35,28 @@ public sealed partial class ScriptExecutionWizard
 
     private async IAsyncEnumerable<TimeSpan> ExecuteScripts([EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        Logs.StartingExecution.FormatWith(_scripts.Count).Log(LogLevel.Info);
         Stopwatch stopwatch = new();
-
         foreach (Script script in _scripts)
         {
             stopwatch.Restart();
-            await script.Execute(App.Settings.ScriptTimeout, script =>
-            {
-                Logs.HungScript.FormatWith(script.InvariantName, App.Settings.ScriptTimeout).Log(LogLevel.Warning);
-                Button endTask = new(Buttons.EndTask);
-                using Page page = new()
-                {
-                    Buttons = { endTask, Button.Ignore },
-                    IsCancelable = true,
-                    Icon = DialogIcon.Warning,
-                    Content = Resources.UI.Dialogs.HungScriptDialogContent
-                };
-                return new Dialog(page).Show() != endTask;
-            }, cancellationToken);
+            await script.Execute(App.Settings.ScriptTimeout, HandleHungScript, cancellationToken);
+            Logs.ScriptExecuted.FormatWith(script.InvariantName).Log();
             yield return stopwatch.Elapsed;
         }
         Logs.ScriptsExecuted.Log(LogLevel.Info);
+
+        static bool HandleHungScript(Script script)
+        {
+            Logs.HungScript.FormatWith(script.InvariantName, App.Settings.ScriptTimeout).Log(LogLevel.Warning);
+            Button endTask = new(Buttons.EndTask);
+            using Page page = new()
+            {
+                Buttons = { endTask, Button.Ignore },
+                IsCancelable = true,
+                Icon = DialogIcon.Warning,
+                Content = Resources.UI.Dialogs.HungScriptDialogContent.FormatWith(script.Name, App.Settings.ScriptTimeout)
+            };
+            return new Dialog(page).Show() != endTask;
+        }
     }
 }

@@ -12,6 +12,19 @@ public static class Extensions
 {
     private static readonly char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
 
+    public static async Task WithTimeout(this Task task, TimeSpan timeout, string? message = null)
+    {
+        CancellationTokenSource cts = new();
+        if (task == await Task.WhenAny(task, Task.Delay(timeout, cts.Token)))
+        {
+            cts.Cancel();
+        }
+        else
+        {
+            throw message is null ? new TimeoutException() : new TimeoutException(message);
+        }
+    }
+
     public static LocalizedString GetLocalizedString(this XmlDocument doc, string name)
     {
         LocalizedString localizedNodeTexts = new();

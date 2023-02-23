@@ -132,4 +132,7 @@
   <data name="ShowUpdateDialog" xml:space="preserve">
     <value>Afficher l'a_vertissement de mise à jour</value>
   </data>
+  <data name="EnableLogging" xml:space="preserve">
+    <value>_Activer la journalisation</value>
+  </data>
 </root>

@@ -154,15 +154,6 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to unknown.
-        /// </summary>
-        public static string ExecutionProgressTimeRemainingUnknown {
-            get {
-                return ResourceManager.GetString("ExecutionProgressTimeRemainingUnknown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Automatically restart when finished.
         /// </summary>
         public static string ExecutionProgressVerificationText {

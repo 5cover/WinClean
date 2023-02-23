@@ -31,29 +31,23 @@ public sealed record Host : ScriptMetadata
     /// <exception cref="OperationCanceledException"/>
     public async Task Execute(string code, TimeSpan timeout, Func<bool> keepRunningElseTerminateHungScript, CancellationToken cancellationToken)
     {
-        CancellationTokenSource cts = new();
         string tmpScriptFile = CreateTempFile(code);
         using Process hostProcess = StartHost(tmpScriptFile);
-
-        using var r1 = cancellationToken.Register(() => cts.Cancel());
-        using var r2 = cts.Token.Register(() => hostProcess.Kill(true));
-
-        _ = StartTimeoutTimer();
-        await hostProcess.WaitForExitAsync(cts.Token);
-
-        File.Delete(tmpScriptFile);
-
-        async Task StartTimeoutTimer()
+        while (!hostProcess.HasExited)
         {
-            using PeriodicTimer timer = new(timeout);
-            while (await timer.WaitForNextTickAsync(cts.Token))
+            try
+            {
+                await hostProcess.WaitForExitAsync(cancellationToken).WithTimeout(timeout);
+            }
+            catch (TimeoutException)
             {
                 if (!keepRunningElseTerminateHungScript())
                 {
-                    cts.Cancel();
+                    hostProcess.Kill(true);
                 }
             }
         }
+        File.Delete(tmpScriptFile);
     }
 
     /// <summary>Executes code synchronously.</summary>

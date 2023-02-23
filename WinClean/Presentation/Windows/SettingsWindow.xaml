@@ -27,6 +27,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -74,8 +75,22 @@
             DataContext="{StaticResource Settings}"
             IsChecked="{Binding Default.ShowUpdateDialog, Mode=TwoWay}" />
 
-        <StackPanel
+        <Label
             Grid.Row="4"
+            Grid.Column="0"
+            Content="{x:Static ui:SettingsWindow.EnableLogging}"
+            Target="{Binding ElementName=EnableLoggingSetting}" />
+        <CheckBox
+            x:Name="EnableLoggingSetting"
+            Grid.Row="4"
+            Grid.Column="1"
+            Margin="0,0,0,12"
+            HorizontalAlignment="Center"
+            DataContext="{StaticResource Settings}"
+            IsChecked="{Binding Default.EnableLogging, Mode=TwoWay}" />
+
+        <StackPanel
+            Grid.Row="5"
             Grid.Column="1"
             Orientation="Horizontal">
             <Button

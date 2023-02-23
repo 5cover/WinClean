@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Humanizer;
 using Humanizer.Localisation;
 using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic;
@@ -15,14 +14,20 @@ namespace Scover.WinClean.Presentation;
 
 public partial class ScriptExecutionWizard
 {
+    private static readonly DialogIcon restorePointIcon;
+
+    static ScriptExecutionWizard()
+    {
+        // The icon handle is not freed but its lifetime is the whole application.
+        ushort piIcon = 0;
+        var restorePointIconHandle = Shell32.ExtractAssociatedIcon(IntPtr.Zero, new(Path.Join(Environment.SystemDirectory, "rstrui.exe")), ref piIcon);
+        restorePointIcon = DialogIcon.FromHandle(restorePointIconHandle.DangerousGetHandle());
+    }
+
     /// <param name="scripts">The scripts to execute.</param>
     /// <exception cref="ArgumentException"><paramref name="scripts"/> is empty.</exception>
     public ScriptExecutionWizard(IReadOnlyList<Script> scripts)
     {
-        ushort piIcon = 0;
-        var restorePointIconHandle = Shell32.ExtractAssociatedIcon(IntPtr.Zero, new(Path.Join(Environment.SystemDirectory, "rstrui.exe")), ref piIcon);
-        var restorePointIcon = DialogIcon.FromHandle(restorePointIconHandle.DangerousGetHandle());
-
         if (!scripts.Any())
         {
             throw new ArgumentException("The list is empty.", nameof(scripts));
@@ -31,6 +36,7 @@ public partial class ScriptExecutionWizard
         _scripts = scripts;
 
         #region Ask to create restore point
+
         {
             CommandLink linkYes = new(AskRestorePoint.CommandLinkYes, AskRestorePoint.CommandLinkYesNote);
             _askRestorePoint = new Page()
@@ -55,9 +61,11 @@ public partial class ScriptExecutionWizard
                      : null;
             });
         }
+
         #endregion Ask to create restore point
 
         #region Restore point creation progress
+
         {
             _restorePointProgress = new()
             {
@@ -74,7 +82,7 @@ public partial class ScriptExecutionWizard
             {
                 await Task.Run(() =>
                 {
-                    // Some drives are non-eligible for system restore, but Enable-ComputerRestore will still enable the
+                    // Some drives are not eligible for system restore, but Enable-ComputerRestore will still enable the
                     // eligible ones.
                     using Process powerShell = $"-Command Enable-ComputerRestore -Drive {string.Join(',', DriveInfo.GetDrives().Select(di => @$"""{di.Name}\"""))}".StartPowerShellWithArguments().AssertNotNull();
                     powerShell.WaitForExit();
@@ -84,9 +92,11 @@ public partial class ScriptExecutionWizard
                 Logs.RestorePointCreated.Log();
             };
         }
+
         #endregion Restore point creation progress
 
         #region Ask restart on completed
+
         {
             _askRestartCompleted = new()
             {
@@ -105,9 +115,11 @@ public partial class ScriptExecutionWizard
                 return null;
             });
         }
+
         #endregion Ask restart on completed
 
         #region Execution progress
+
         {
             _executionProgress = new()
             {
@@ -123,14 +135,14 @@ public partial class ScriptExecutionWizard
                 MainInstruction = ExecutionProgressMainInstruction,
                 ProgressBar = new()
                 {
-                    Maximum = _scripts.Count
+                    Maximum = _scripts.Count,
                 },
                 Verification = new(ExecutionProgressVerificationText)
             };
             _nextPageSelectors.Add(_executionProgress, clicked => (clicked as Button)?.Text == Buttons.Stop ? null : _askRestartCompleted);
             _executionProgress.Expander.ExpandedChanged += (_, _) => App.Settings.ExecutionShowDetails ^= true;
             CancellationTokenSource cts = new();
-            TimeSpan? timeRemaining = GetCumulatedExecutionTime(_scripts);
+            TimeSpan timeRemaining = GetCumulatedExecutionTime(_scripts);
             int scriptIndex = 0;
             TimeSpan timerInterval = 1.Seconds();
             using PeriodicTimer timer = new(timerInterval);
@@ -143,9 +155,13 @@ public partial class ScriptExecutionWizard
             {
                 while (await timer.WaitForNextTickAsync(cts.Token))
                 {
-                    if (timeRemaining is TimeSpan tr && tr >= timerInterval)
+                    if (timeRemaining < timerInterval)
                     {
-                        timeRemaining = tr - timerInterval;
+                        timeRemaining = TimeSpan.Zero;
+                    }
+                    else
+                    {
+                        timeRemaining -= timerInterval;
                     }
                     UpdateExpandedInfo();
                 }
@@ -153,13 +169,11 @@ public partial class ScriptExecutionWizard
 
             async void StartExecution(object? s, EventArgs e)
             {
-                await foreach (TimeSpan executionTime in ExecuteScripts(cts.Token))
+                Logs.StartingExecution.FormatWith(_scripts.Count).Log(LogLevel.Info);
+                await foreach (TimeSpan measuredExecutionTime in ExecuteScripts(cts.Token))
                 {
-                    App.ScriptExecutionTimes[_scripts[scriptIndex].InvariantName] = executionTime;
-                    Logs.ScriptExecuted.FormatWith(_scripts[scriptIndex].InvariantName).Log();
                     UpdateExpandedInfo();
-                    ++scriptIndex;
-                    timeRemaining = GetCumulatedExecutionTime(_scripts.Skip(scriptIndex));
+                    timeRemaining = GetCumulatedExecutionTime(_scripts.Skip(++scriptIndex));
                     _executionProgress.ProgressBar.Value = scriptIndex;
                 }
 
@@ -171,11 +185,13 @@ public partial class ScriptExecutionWizard
                             _scripts.Count,
                             _scripts.Count - scriptIndex,
                             _scripts[scriptIndex].Name,
-                            timeRemaining?.Humanize(precision: 3, minUnit: TimeUnit.Second) ?? ExecutionProgressTimeRemainingUnknown);
+                            timeRemaining.Humanize(precision: 3, minUnit: TimeUnit.Second));
 
-            TimeSpan? GetCumulatedExecutionTime(IEnumerable<Script> scripts)
-                => scripts.Aggregate<Script, TimeSpan?>(null, (sumSoFar, next) => sumSoFar + GetExecutionTime(next));
+            TimeSpan GetCumulatedExecutionTime(IEnumerable<Script> scripts)
+                => scripts.Aggregate(TimeSpan.Zero, (sumSoFar, next) => sumSoFar
+                    + (App.ScriptExecutionTimes.TryGetValue(next.InvariantName, out TimeSpan t) ? t : App.Settings.ScriptTimeout));
         }
+
         #endregion Execution progress
 
         _dialog = new(_askRestorePoint, _nextPageSelectors);
