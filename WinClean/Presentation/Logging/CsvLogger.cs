@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
 using System.Text;
+
 using CsvHelper;
 using CsvHelper.Configuration;
+
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.Resources;
 
@@ -36,8 +38,8 @@ public sealed class CsvLogger : Logger, IDisposable
             catch (Exception e) when (e.IsFileSystem())
             {
                 Logs.FailedToDeleteLogFile.FormatWith(logFile, e).Log(LogLevel.Error);
-                // Swallow the exception. Failing to delete a log file is not serious enough to justify terminating the
-                // application with an unhandled exception.
+                // Swallow the exception. Failing to delete a log file is not serious enough to justify
+                // terminating the application with an unhandled exception.
             }
         }
         Logs.ClearedLogsFolder.Log();

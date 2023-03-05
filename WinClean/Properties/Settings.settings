@@ -32,7 +32,7 @@
     <Setting Name="ScriptTimeout" Type="System.TimeSpan" Scope="User">
       <Value Profile="(Default)">02:00:00</Value>
     </Setting>
-    <Setting Name="EnableLogging" Type="System.Boolean" Scope="User">
+    <Setting Name="IsLoggingEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>

@@ -88,81 +88,6 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creating restore point....
-        /// </summary>
-        public static string CreatingRestorePointContent {
-            get {
-                return ResourceManager.GetString("CreatingRestorePointContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} scripts executed.
-        ///To finish the operation, it is recommended to restart the system..
-        /// </summary>
-        public static string ExecutionCompletedContent {
-            get {
-                return ResourceManager.GetString("ExecutionCompletedContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cleaning completed.
-        /// </summary>
-        public static string ExecutionCompletedMainInstruction {
-            get {
-                return ResourceManager.GetString("ExecutionCompletedMainInstruction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This operation may take some time..
-        /// </summary>
-        public static string ExecutionProgressContent {
-            get {
-                return ResourceManager.GetString("ExecutionProgressContent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} out of {1} scripts executed ({2} remaining)
-        ///Currently executing: {3}
-        ///Time remaining: {4}.
-        /// </summary>
-        public static string ExecutionProgressExpanderText {
-            get {
-                return ResourceManager.GetString("ExecutionProgressExpanderText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initializing....
-        /// </summary>
-        public static string ExecutionProgressExpanderTextInitializing {
-            get {
-                return ResourceManager.GetString("ExecutionProgressExpanderTextInitializing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Executing the scripts....
-        /// </summary>
-        public static string ExecutionProgressMainInstruction {
-            get {
-                return ResourceManager.GetString("ExecutionProgressMainInstruction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Automatically restart when finished.
-        /// </summary>
-        public static string ExecutionProgressVerificationText {
-            get {
-                return ResourceManager.GetString("ExecutionProgressVerificationText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot add custom script.
         /// </summary>
         public static string FSErrorAddingCustomScriptMainInstruction {
@@ -187,15 +112,6 @@ namespace Scover.WinClean.Resources.UI {
         public static string FSErrorLoadingCustomScriptMainInstruction {
             get {
                 return ResourceManager.GetString("FSErrorLoadingCustomScriptMainInstruction", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Script &quot;{0}&quot; has been running for {1} and is probably hung..
-        /// </summary>
-        public static string HungScriptDialogContent {
-            get {
-                return ResourceManager.GetString("HungScriptDialogContent", resourceCulture);
             }
         }
         
@@ -243,6 +159,15 @@ namespace Scover.WinClean.Resources.UI {
         public static string UnhandledExceptionDialogContent {
             get {
                 return ResourceManager.GetString("UnhandledExceptionDialogContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - Unhandled exception.
+        /// </summary>
+        public static string UnhandledExceptionWindowTitle {
+            get {
+                return ResourceManager.GetString("UnhandledExceptionWindowTitle", resourceCulture);
             }
         }
     }

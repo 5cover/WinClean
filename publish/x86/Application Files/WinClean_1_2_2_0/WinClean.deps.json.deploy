@@ -10,14 +10,14 @@
       "WinClean/1.2.2": {
         "dependencies": {
           "CommandLineParser": "2.9.1",
-          "CommunityToolkit.Mvvm": "8.0.0",
+          "CommunityToolkit.Mvvm": "8.1.0",
           "CsvHelper": "30.0.1",
           "Extended.Wpf.Toolkit": "4.5.0",
           "Humanizer": "2.14.1",
-          "Octokit": "4.0.4",
-          "Scover.Dialogs": "1.0.4",
+          "Octokit": "5.0.0",
+          "Scover.Dialogs": "1.3.2",
           "System.Management": "7.0.0",
-          "Vanara.PInvoke.Shell32": "3.4.11"
+          "Vanara.PInvoke.Shell32": "3.4.13"
         },
         "runtime": {
           "WinClean.dll": {}
@@ -36,11 +36,11 @@
           }
         }
       },
-      "CommunityToolkit.Mvvm/8.0.0": {
+      "CommunityToolkit.Mvvm/8.1.0": {
         "runtime": {
           "lib/net6.0/CommunityToolkit.Mvvm.dll": {
-            "assemblyVersion": "8.0.0.0",
-            "fileVersion": "8.0.0.1"
+            "assemblyVersion": "8.1.0.0",
+            "fileVersion": "8.1.0.1"
           }
         }
       },
@@ -661,25 +661,25 @@
           "System.Security.Principal.Windows": "5.0.0"
         }
       },
-      "Octokit/4.0.4": {
+      "Octokit/5.0.0": {
         "runtime": {
           "lib/netstandard2.0/Octokit.dll": {
-            "assemblyVersion": "4.0.4.0",
-            "fileVersion": "4.0.4.0"
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.0.0"
           }
         }
       },
-      "Scover.Dialogs/1.0.4": {
+      "Scover.Dialogs/1.3.2": {
         "dependencies": {
-          "Vanara.Core": "3.4.11",
-          "Vanara.PInvoke.ComCtl32": "3.4.11",
-          "Vanara.PInvoke.Shared": "3.4.11",
-          "Vanara.PInvoke.User32": "3.4.11"
+          "Vanara.Core": "3.4.13",
+          "Vanara.PInvoke.ComCtl32": "3.4.13",
+          "Vanara.PInvoke.Shared": "3.4.13",
+          "Vanara.PInvoke.User32": "3.4.13"
         },
         "runtime": {
           "lib/net6.0-windows7.0/Scover.Dialogs.dll": {
-            "assemblyVersion": "1.0.4.0",
-            "fileVersion": "1.0.4.0"
+            "assemblyVersion": "1.3.2.0",
+            "fileVersion": "1.3.2.0"
           }
         }
       },
@@ -709,11 +709,11 @@
         }
       },
       "System.Security.Principal.Windows/5.0.0": {},
-      "Vanara.Core/3.4.11": {
+      "Vanara.Core/3.4.13": {
         "runtime": {
           "lib/net6.0/Vanara.Core.dll": {
-            "assemblyVersion": "3.4.11.0",
-            "fileVersion": "3.4.11.0"
+            "assemblyVersion": "3.4.13.0",
+            "fileVersion": "3.4.13.0"
           }
         },
         "resources": {
@@ -722,151 +722,151 @@
           }
         }
       },
-      "Vanara.PInvoke.ComCtl32/3.4.11": {
+      "Vanara.PInvoke.ComCtl32/3.4.13": {
         "dependencies": {
-          "Vanara.Core": "3.4.11",
-          "Vanara.PInvoke.Gdi32": "3.4.11",
-          "Vanara.PInvoke.Kernel32": "3.4.11",
-          "Vanara.PInvoke.Shared": "3.4.11",
-          "Vanara.PInvoke.User32": "3.4.11"
+          "Vanara.Core": "3.4.13",
+          "Vanara.PInvoke.Gdi32": "3.4.13",
+          "Vanara.PInvoke.Kernel32": "3.4.13",
+          "Vanara.PInvoke.Shared": "3.4.13",
+          "Vanara.PInvoke.User32": "3.4.13"
         },
         "runtime": {
           "lib/net6.0/Vanara.PInvoke.ComCtl32.dll": {
-            "assemblyVersion": "3.4.11.0",
-            "fileVersion": "3.4.11.0"
+            "assemblyVersion": "3.4.13.0",
+            "fileVersion": "3.4.13.0"
           }
         }
       },
-      "Vanara.PInvoke.Cryptography/3.4.11": {
+      "Vanara.PInvoke.Cryptography/3.4.13": {
         "dependencies": {
-          "Vanara.Core": "3.4.11",
-          "Vanara.PInvoke.Shared": "3.4.11"
+          "Vanara.Core": "3.4.13",
+          "Vanara.PInvoke.Shared": "3.4.13"
         },
         "runtime": {
           "lib/net6.0/Vanara.PInvoke.Cryptography.dll": {
-            "assemblyVersion": "3.4.11.0",
-            "fileVersion": "3.4.11.0"
+            "assemblyVersion": "3.4.13.0",
+            "fileVersion": "3.4.13.0"
           }
         }
       },
-      "Vanara.PInvoke.Gdi32/3.4.11": {
+      "Vanara.PInvoke.Gdi32/3.4.13": {
         "dependencies": {
-          "Vanara.Core": "3.4.11",
-          "Vanara.PInvoke.Shared": "3.4.11"
+          "Vanara.Core": "3.4.13",
+          "Vanara.PInvoke.Shared": "3.4.13"
         },
         "runtime": {
           "lib/net6.0/Vanara.PInvoke.Gdi32.dll": {
-            "assemblyVersion": "3.4.11.0",
-            "fileVersion": "3.4.11.0"
+            "assemblyVersion": "3.4.13.0",
+            "fileVersion": "3.4.13.0"
           }
         }
       },
-      "Vanara.PInvoke.Kernel32/3.4.11": {
+      "Vanara.PInvoke.Kernel32/3.4.13": {
         "dependencies": {
-          "Vanara.Core": "3.4.11",
-          "Vanara.PInvoke.Shared": "3.4.11"
+          "Vanara.Core": "3.4.13",
+          "Vanara.PInvoke.Shared": "3.4.13"
         },
         "runtime": {
           "lib/net6.0/Vanara.PInvoke.Kernel32.dll": {
-            "assemblyVersion": "3.4.11.0",
-            "fileVersion": "3.4.11.0"
+            "assemblyVersion": "3.4.13.0",
+            "fileVersion": "3.4.13.0"
           }
         }
       },
-      "Vanara.PInvoke.Ole/3.4.11": {
+      "Vanara.PInvoke.Ole/3.4.13": {
         "dependencies": {
-          "Vanara.Core": "3.4.11",
-          "Vanara.PInvoke.Rpc": "3.4.11",
-          "Vanara.PInvoke.Security": "3.4.11",
-          "Vanara.PInvoke.Shared": "3.4.11"
+          "Vanara.Core": "3.4.13",
+          "Vanara.PInvoke.Rpc": "3.4.13",
+          "Vanara.PInvoke.Security": "3.4.13",
+          "Vanara.PInvoke.Shared": "3.4.13"
         },
         "runtime": {
           "lib/net6.0/Vanara.PInvoke.Ole.dll": {
-            "assemblyVersion": "3.4.11.0",
-            "fileVersion": "3.4.11.0"
+            "assemblyVersion": "3.4.13.0",
+            "fileVersion": "3.4.13.0"
           }
         }
       },
-      "Vanara.PInvoke.Rpc/3.4.11": {
+      "Vanara.PInvoke.Rpc/3.4.13": {
         "dependencies": {
-          "Vanara.Core": "3.4.11",
-          "Vanara.PInvoke.Security": "3.4.11",
-          "Vanara.PInvoke.Shared": "3.4.11"
+          "Vanara.Core": "3.4.13",
+          "Vanara.PInvoke.Security": "3.4.13",
+          "Vanara.PInvoke.Shared": "3.4.13"
         },
         "runtime": {
           "lib/net6.0/Vanara.PInvoke.Rpc.dll": {
-            "assemblyVersion": "3.4.11.0",
-            "fileVersion": "3.4.11.0"
+            "assemblyVersion": "3.4.13.0",
+            "fileVersion": "3.4.13.0"
           }
         }
       },
-      "Vanara.PInvoke.Security/3.4.11": {
+      "Vanara.PInvoke.Security/3.4.13": {
         "dependencies": {
-          "Vanara.Core": "3.4.11",
-          "Vanara.PInvoke.Cryptography": "3.4.11",
-          "Vanara.PInvoke.Kernel32": "3.4.11",
-          "Vanara.PInvoke.Shared": "3.4.11"
+          "Vanara.Core": "3.4.13",
+          "Vanara.PInvoke.Cryptography": "3.4.13",
+          "Vanara.PInvoke.Kernel32": "3.4.13",
+          "Vanara.PInvoke.Shared": "3.4.13"
         },
         "runtime": {
           "lib/net6.0/Vanara.PInvoke.Security.dll": {
-            "assemblyVersion": "3.4.11.0",
-            "fileVersion": "3.4.11.0"
+            "assemblyVersion": "3.4.13.0",
+            "fileVersion": "3.4.13.0"
           }
         }
       },
-      "Vanara.PInvoke.Shared/3.4.11": {
+      "Vanara.PInvoke.Shared/3.4.13": {
         "dependencies": {
           "Microsoft.Win32.Registry": "5.0.0",
-          "Vanara.Core": "3.4.11"
+          "Vanara.Core": "3.4.13"
         },
         "runtime": {
           "lib/net6.0/Vanara.PInvoke.Shared.dll": {
-            "assemblyVersion": "3.4.11.0",
-            "fileVersion": "3.4.11.0"
+            "assemblyVersion": "3.4.13.0",
+            "fileVersion": "3.4.13.0"
           }
         }
       },
-      "Vanara.PInvoke.Shell32/3.4.11": {
+      "Vanara.PInvoke.Shell32/3.4.13": {
         "dependencies": {
-          "Vanara.Core": "3.4.11",
-          "Vanara.PInvoke.ComCtl32": "3.4.11",
-          "Vanara.PInvoke.Kernel32": "3.4.11",
-          "Vanara.PInvoke.Ole": "3.4.11",
-          "Vanara.PInvoke.Security": "3.4.11",
-          "Vanara.PInvoke.Shared": "3.4.11",
-          "Vanara.PInvoke.ShlwApi": "3.4.11"
+          "Vanara.Core": "3.4.13",
+          "Vanara.PInvoke.ComCtl32": "3.4.13",
+          "Vanara.PInvoke.Kernel32": "3.4.13",
+          "Vanara.PInvoke.Ole": "3.4.13",
+          "Vanara.PInvoke.Security": "3.4.13",
+          "Vanara.PInvoke.Shared": "3.4.13",
+          "Vanara.PInvoke.ShlwApi": "3.4.13"
         },
         "runtime": {
           "lib/net6.0/Vanara.PInvoke.Shell32.dll": {
-            "assemblyVersion": "3.4.11.0",
-            "fileVersion": "3.4.11.0"
+            "assemblyVersion": "3.4.13.0",
+            "fileVersion": "3.4.13.0"
           }
         }
       },
-      "Vanara.PInvoke.ShlwApi/3.4.11": {
+      "Vanara.PInvoke.ShlwApi/3.4.13": {
         "dependencies": {
-          "Vanara.Core": "3.4.11",
-          "Vanara.PInvoke.Kernel32": "3.4.11",
-          "Vanara.PInvoke.Shared": "3.4.11"
+          "Vanara.Core": "3.4.13",
+          "Vanara.PInvoke.Kernel32": "3.4.13",
+          "Vanara.PInvoke.Shared": "3.4.13"
         },
         "runtime": {
           "lib/net6.0/Vanara.PInvoke.ShlwApi.dll": {
-            "assemblyVersion": "3.4.11.0",
-            "fileVersion": "3.4.11.0"
+            "assemblyVersion": "3.4.13.0",
+            "fileVersion": "3.4.13.0"
           }
         }
       },
-      "Vanara.PInvoke.User32/3.4.11": {
+      "Vanara.PInvoke.User32/3.4.13": {
         "dependencies": {
-          "Vanara.Core": "3.4.11",
-          "Vanara.PInvoke.Gdi32": "3.4.11",
-          "Vanara.PInvoke.Kernel32": "3.4.11",
-          "Vanara.PInvoke.Shared": "3.4.11"
+          "Vanara.Core": "3.4.13",
+          "Vanara.PInvoke.Gdi32": "3.4.13",
+          "Vanara.PInvoke.Kernel32": "3.4.13",
+          "Vanara.PInvoke.Shared": "3.4.13"
         },
         "runtime": {
           "lib/net6.0/Vanara.PInvoke.User32.dll": {
-            "assemblyVersion": "3.4.11.0",
-            "fileVersion": "3.4.11.0"
+            "assemblyVersion": "3.4.13.0",
+            "fileVersion": "3.4.13.0"
           }
         }
       }
@@ -885,12 +885,12 @@
       "path": "commandlineparser/2.9.1",
       "hashPath": "commandlineparser.2.9.1.nupkg.sha512"
     },
-    "CommunityToolkit.Mvvm/8.0.0": {
+    "CommunityToolkit.Mvvm/8.1.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Jiu2g5WUdXRwzhJkHB+B4JBKP5A5+fp8xKiW/ZQo5PI+DruI7MbPEcK9K/Aw0YzTiWRuG6CBluzYIWN5Eo7BkQ==",
-      "path": "communitytoolkit.mvvm/8.0.0",
-      "hashPath": "communitytoolkit.mvvm.8.0.0.nupkg.sha512"
+      "sha512": "sha512-xxOt7lu9a5kB5Fs9RfcxzVlKnhuuPe+w7AXHtmCFtS3oldrsUhEMxHfNulluXSscUUoGxZ0jh55Om12ZP6abHA==",
+      "path": "communitytoolkit.mvvm/8.1.0",
+      "hashPath": "communitytoolkit.mvvm.8.1.0.nupkg.sha512"
     },
     "CsvHelper/30.0.1": {
       "type": "package",
@@ -1270,19 +1270,19 @@
       "path": "microsoft.win32.registry/5.0.0",
       "hashPath": "microsoft.win32.registry.5.0.0.nupkg.sha512"
     },
-    "Octokit/4.0.4": {
+    "Octokit/5.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-zrQKRYot7yPWb5Y0sSJdBpt/vVYkpkOFFWNo97BMvdXjm8FF1enL7dZxdjn0IC7YxrYWj7LqiFpKmnfBFhjYow==",
-      "path": "octokit/4.0.4",
-      "hashPath": "octokit.4.0.4.nupkg.sha512"
+      "sha512": "sha512-cNspbuFsQSjbKIl+9Ko+XwvfepekDHQncnewKwCDjmsL8HaIujgKlWzmkWnWPVCmZvBdGVp2JsVECIsOkYK/MA==",
+      "path": "octokit/5.0.0",
+      "hashPath": "octokit.5.0.0.nupkg.sha512"
     },
-    "Scover.Dialogs/1.0.4": {
+    "Scover.Dialogs/1.3.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-JPqlmeVGqMCBQ6RVGfG2ojV5+e+XkTXr3coBiaAU94csCEpaffbpG97vHYuNud6rC81S3r99CPR4HE031fOFSA==",
-      "path": "scover.dialogs/1.0.4",
-      "hashPath": "scover.dialogs.1.0.4.nupkg.sha512"
+      "sha512": "sha512-DpRMstToUpf9ASvqw1ltvInb52O5WDbBxMK26UuppNXN3ie+qxVYAdkIv8IBx6GBdeaYgacSu236sAQGuT6ObA==",
+      "path": "scover.dialogs/1.3.2",
+      "hashPath": "scover.dialogs.1.3.2.nupkg.sha512"
     },
     "System.CodeDom/7.0.0": {
       "type": "package",
@@ -1312,89 +1312,89 @@
       "path": "system.security.principal.windows/5.0.0",
       "hashPath": "system.security.principal.windows.5.0.0.nupkg.sha512"
     },
-    "Vanara.Core/3.4.11": {
+    "Vanara.Core/3.4.13": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-43aix2lYmGF+TH6nTLihAAs5JiQvdHvx29/9G0wKv+a+vAER+W9T+A1n0xZmj+OaRX5ijWY9aEu9Xr7qMltr2g==",
-      "path": "vanara.core/3.4.11",
-      "hashPath": "vanara.core.3.4.11.nupkg.sha512"
+      "sha512": "sha512-kdQpFbkxf2WvQs+TcoEX5MOwQJdGs7sFMxpi6JsxMySJT1ErQQey65LQbf+B0taSv7zB0dRtuM8ZNywxVVGJqw==",
+      "path": "vanara.core/3.4.13",
+      "hashPath": "vanara.core.3.4.13.nupkg.sha512"
     },
-    "Vanara.PInvoke.ComCtl32/3.4.11": {
+    "Vanara.PInvoke.ComCtl32/3.4.13": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-QXkftC9PfuZamUfSnGUleo4PRR/FLYatC+N/AEoNNMyeuoeRpbrvEhLpaDMKOdRGBdOrrdFNJhK7JAuBN+AtPQ==",
-      "path": "vanara.pinvoke.comctl32/3.4.11",
-      "hashPath": "vanara.pinvoke.comctl32.3.4.11.nupkg.sha512"
+      "sha512": "sha512-pO2koQ9SIO6FzttLXGdGOR8a75sOjf3e7bWu4by59XddFRMqViT+bCtSJmMhMFQOZYk9mZo0v8bnDVXFbV5sIQ==",
+      "path": "vanara.pinvoke.comctl32/3.4.13",
+      "hashPath": "vanara.pinvoke.comctl32.3.4.13.nupkg.sha512"
     },
-    "Vanara.PInvoke.Cryptography/3.4.11": {
+    "Vanara.PInvoke.Cryptography/3.4.13": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-9dmnkjPle35PhAbofd8Aykuv51oMulf7FakFfxrkId01TCrp1soArH36akoolWSE7TmfPB8H9vkkBolsrlSa5Q==",
-      "path": "vanara.pinvoke.cryptography/3.4.11",
-      "hashPath": "vanara.pinvoke.cryptography.3.4.11.nupkg.sha512"
+      "sha512": "sha512-UMIbj0Hcci3Y7wdCunIhvQOS8hqsjDEOnWFu52IWEMstdkXhlgbKxD/u3RjnY+441ps90EY9GoFgnkrCgSkiUA==",
+      "path": "vanara.pinvoke.cryptography/3.4.13",
+      "hashPath": "vanara.pinvoke.cryptography.3.4.13.nupkg.sha512"
     },
-    "Vanara.PInvoke.Gdi32/3.4.11": {
+    "Vanara.PInvoke.Gdi32/3.4.13": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-2incfIj5Ffs9nRjhfZYmFFe1tIUZytBrrt7FtujB90OVyMz0zDVBTKUIQaJaR3+ZYtxz3R85qnPbVcOJdO0yDA==",
-      "path": "vanara.pinvoke.gdi32/3.4.11",
-      "hashPath": "vanara.pinvoke.gdi32.3.4.11.nupkg.sha512"
+      "sha512": "sha512-BGhqhywkL8fxsjxQRl05Goj0mMm5ZDp4DQ1Ig72cMX9ZU32LtWE/7YCN4A4iqj9o0AJYcspLoTWW2kDC/wnSUQ==",
+      "path": "vanara.pinvoke.gdi32/3.4.13",
+      "hashPath": "vanara.pinvoke.gdi32.3.4.13.nupkg.sha512"
     },
-    "Vanara.PInvoke.Kernel32/3.4.11": {
+    "Vanara.PInvoke.Kernel32/3.4.13": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-dqpKPbjrPGrm9N3sQTn8L8fq7Ui4IeRvmvTbGlY64lKUOEFwfZN8Yz9FbjGxDLWJFUSILFnoIz3yoi3Hb6Vvxg==",
-      "path": "vanara.pinvoke.kernel32/3.4.11",
-      "hashPath": "vanara.pinvoke.kernel32.3.4.11.nupkg.sha512"
+      "sha512": "sha512-TrEzIZB9nng923cmRvV+3jde3R6qYiVSk0lZtkNGOcEtq6LSo7swOAq7DEpNMYTnMl1d2v5NWPRSGgBupJ7r1g==",
+      "path": "vanara.pinvoke.kernel32/3.4.13",
+      "hashPath": "vanara.pinvoke.kernel32.3.4.13.nupkg.sha512"
     },
-    "Vanara.PInvoke.Ole/3.4.11": {
+    "Vanara.PInvoke.Ole/3.4.13": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-hN0n5nXuAdhAL8lZN0ohQZDeSZzu2bFeKA+qCvmz2UZjXIQOOOikUY+wk67INZBrx/q6flqJBKHgb+AGjJmgFg==",
-      "path": "vanara.pinvoke.ole/3.4.11",
-      "hashPath": "vanara.pinvoke.ole.3.4.11.nupkg.sha512"
+      "sha512": "sha512-g/RVWtikC2fPJLVqFpt1ncC5au6WqMJd7K9wMPy9kpFL9f2bq9HfZyLAUAuw4zp23okXfjf8HDMLcwr/0/O5vA==",
+      "path": "vanara.pinvoke.ole/3.4.13",
+      "hashPath": "vanara.pinvoke.ole.3.4.13.nupkg.sha512"
     },
-    "Vanara.PInvoke.Rpc/3.4.11": {
+    "Vanara.PInvoke.Rpc/3.4.13": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-M+ue6RiJXeRzYPhMP7RuW0vqCs60b4MfaGLug0ZFF3o6dVBZkb9Wgag50huu5BE/E3JvRxzOrt2HCqS/7q1TNw==",
-      "path": "vanara.pinvoke.rpc/3.4.11",
-      "hashPath": "vanara.pinvoke.rpc.3.4.11.nupkg.sha512"
+      "sha512": "sha512-NgX6PKb2YgSHOoJN1a0yU6HClk/PpNajx8+CBcjLB+SMFOoZsZb1IcS8eztG1+aGtbuAZHCiVmjfj4dYTZW2Fw==",
+      "path": "vanara.pinvoke.rpc/3.4.13",
+      "hashPath": "vanara.pinvoke.rpc.3.4.13.nupkg.sha512"
     },
-    "Vanara.PInvoke.Security/3.4.11": {
+    "Vanara.PInvoke.Security/3.4.13": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-0914UIynkmaF1trYBzsHxXJRZ3drtPeM9dqS13m4rdMNS+nKBCNa4Ob8Fy0AsIjCU6vOw33G29xh9abf7bt7FQ==",
-      "path": "vanara.pinvoke.security/3.4.11",
-      "hashPath": "vanara.pinvoke.security.3.4.11.nupkg.sha512"
+      "sha512": "sha512-QqeBHKzB22Yl4IgtEGW8EwKSBKzl441K7z+1mlVvtxO1abJYkVswffX6D+i2g/qqMWkLUKzI23QF8Z1Df8TQXw==",
+      "path": "vanara.pinvoke.security/3.4.13",
+      "hashPath": "vanara.pinvoke.security.3.4.13.nupkg.sha512"
     },
-    "Vanara.PInvoke.Shared/3.4.11": {
+    "Vanara.PInvoke.Shared/3.4.13": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Lf7OPFAkd/1J+/CFf1rY0qWAyXwIpXY7ZhnKfp64eRvoMufcegdloX0zBHZb6f7QbJw4kBMftNMETcECxMnnpg==",
-      "path": "vanara.pinvoke.shared/3.4.11",
-      "hashPath": "vanara.pinvoke.shared.3.4.11.nupkg.sha512"
+      "sha512": "sha512-17tZT3P75iypK1YfGZOx3QnwhXHaGgpvNh6YHFNLtNmAUeJ14KwKUZWGgVb2QaJyMG0EPwNB15c/txV82udpSQ==",
+      "path": "vanara.pinvoke.shared/3.4.13",
+      "hashPath": "vanara.pinvoke.shared.3.4.13.nupkg.sha512"
     },
-    "Vanara.PInvoke.Shell32/3.4.11": {
+    "Vanara.PInvoke.Shell32/3.4.13": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-J5DviJ6hOSTqsEgJ9iceGNZVsZVh8EZtLq0c8NUVNEzBsbY8vwrMlwLRtxiwfQPmjBR9qOIL0nDUJII+t5Jl0Q==",
-      "path": "vanara.pinvoke.shell32/3.4.11",
-      "hashPath": "vanara.pinvoke.shell32.3.4.11.nupkg.sha512"
+      "sha512": "sha512-ynjQ9IhiDHL8ns1vpUzA0vUK0Y4LBTGTUq84/p35Aw5FYR2STWDrjywldVr9U4oPuO8lp5sWyHd1ghcDiNw/lA==",
+      "path": "vanara.pinvoke.shell32/3.4.13",
+      "hashPath": "vanara.pinvoke.shell32.3.4.13.nupkg.sha512"
     },
-    "Vanara.PInvoke.ShlwApi/3.4.11": {
+    "Vanara.PInvoke.ShlwApi/3.4.13": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-cHZZLiadBsYNlG6fegVfjLVuyOl937JvUHbMKvqLeTwpXRJRvXj7Crma3QqtNud2srnD8/O4YGYQi3xU0Hryuw==",
-      "path": "vanara.pinvoke.shlwapi/3.4.11",
-      "hashPath": "vanara.pinvoke.shlwapi.3.4.11.nupkg.sha512"
+      "sha512": "sha512-3z/evvUYbmL59AROL558KAcxNo0MjvlJ8mvabGr6hWBwI7V3CDaGEhf4MuAK7hgLXizW2/j33pL8lD4Oe6UjWg==",
+      "path": "vanara.pinvoke.shlwapi/3.4.13",
+      "hashPath": "vanara.pinvoke.shlwapi.3.4.13.nupkg.sha512"
     },
-    "Vanara.PInvoke.User32/3.4.11": {
+    "Vanara.PInvoke.User32/3.4.13": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-AOx7aygLSfvqA6L9+xWDZ9e3pYUKhej50HUVtwhnOcdfWULrBeMeQMa2egksxUJ2hQoqUJ1Op11Bl3bPUlf/Yg==",
-      "path": "vanara.pinvoke.user32/3.4.11",
-      "hashPath": "vanara.pinvoke.user32.3.4.11.nupkg.sha512"
+      "sha512": "sha512-ctMzRPuYMYOIUq5SeOUb9Y5qSqSq5uxC9yEPQRHZDyFK9nMSRFPrBEk4XNXb0luaw1+cBLYdnwhSqLew0kxOwg==",
+      "path": "vanara.pinvoke.user32/3.4.13",
+      "hashPath": "vanara.pinvoke.user32.3.4.13.nupkg.sha512"
     }
   }
 }

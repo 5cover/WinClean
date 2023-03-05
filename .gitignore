@@ -357,3 +357,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/WinClean/Certificate.pfx

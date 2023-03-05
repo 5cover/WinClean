@@ -13,7 +13,9 @@ public sealed class LocalizedString : IEnumerable<KeyValuePair<string, string>>,
     public bool Equals(LocalizedString? other) => other is not null && _values.EqualsContent(other._values);
 
     /// <summary>Gets the localized string corresponding to the given culture.</summary>
-    /// <exception cref="KeyNotFoundException">No string was found for this culture or any of its parents.</exception>
+    /// <exception cref="KeyNotFoundException">
+    /// No string was found for this culture or any of its parents.
+    /// </exception>
     public string Get(CultureInfo culture)
     {
         string? localized;

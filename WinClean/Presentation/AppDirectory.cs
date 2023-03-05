@@ -1,4 +1,5 @@
 ﻿using Scover.WinClean.BusinessLogic;
+
 using static System.Environment;
 
 namespace Scover.WinClean.Presentation;

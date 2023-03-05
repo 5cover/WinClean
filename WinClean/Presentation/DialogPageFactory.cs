@@ -1,6 +1,7 @@
 ﻿using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.Resources;
+
 using static Scover.WinClean.Resources.UI.Dialogs;
 
 namespace Scover.WinClean.Presentation;
@@ -9,57 +10,65 @@ namespace Scover.WinClean.Presentation;
 public static class DialogPageFactory
 {
     /// <summary>Makes a dialog page for deleting a script.</summary>
-    /// <returns>A new <see cref="DialogPage"/> object.</returns>
-    public static Page MakeDeleteScript()
+    /// <returns>A new <see cref="Page"/> object.</returns>
+    public static Page DeleteScript() => new()
     {
-        return new Page()
+        WindowTitle = AppMetadata.Name,
+        Icon = DialogIcon.Warning,
+        Content = ConfirmScriptDeletionContent,
+        Buttons = new(defaultItem: Button.No)
         {
-            Buttons = new(defaultItem: Button.No)
-            {
-                Button.Yes,
-                Button.No
-            },
-            Content = ConfirmScriptDeletionContent,
-            Icon = DialogIcon.Warning,
-            IsCancelable = true,
-        };
-    }
+            Button.Yes,
+            Button.No
+        },
+    };
 
     /// <summary>Makes a dialog page for a filesystem error.</summary>
     /// <param name="e">The exception responsible for the filesystem error.</param>
     /// <param name="verb">The filesystem verb that could describe what was happening.</param>
     /// <param name="info">The filesystem element that was operated.</param>
     /// <remarks>
-    /// Also sets the following properties: <br><see cref="DialogPage.Icon"/> to <see cref="PageIcon.Error"/>;</br><br><see
-    /// cref="DialogPage.Content"/> to a formatted and localized error message.</br>
+    /// Also sets the following properties: <br><see cref="Page.Icon"/> to <see
+    /// cref="DialogIcon.Error"/>;</br><br><see cref="Page.Content"/> to a formatted and localized error
+    /// message.</br>
     /// </remarks>
-    /// <inheritdoc cref="DialogPage(CustomButton[])" path="/param"/>
-    /// <returns>A new <see cref="DialogPage"/> object.</returns>
-    public static Page MakeFSError(Exception e, FSVerb verb, FileSystemInfo info, CommitControlCollection buttons) => new()
+    /// <returns>A new <see cref="Page"/> object.</returns>
+    public static Page FSError(Exception e, FSVerb verb, FileSystemInfo info, ButtonCollection buttons) => new()
     {
-        Buttons = buttons,
+        WindowTitle = AppMetadata.Name,
+        Icon = DialogIcon.Error,
         Content = FSErrorContent.FormatWith(verb.Verb,
             info is FileInfo ? FileSystem.File : FileSystem.Directory,
             info.FullName,
             e.Message),
-        Icon = DialogIcon.Error
+        Buttons = buttons,
     };
 
-    /// <summary>Makes a dialog page for a script that could not be loaded because it has invalid or missing data.</summary>
+    public static Page ConfirmAbortOperation() => new()
+    {
+        WindowTitle = AppMetadata.Name,
+        Icon = DialogIcon.Warning,
+        Content = ConfirmAbortOperationContent,
+        Buttons = { Button.Yes, Button.No },
+    };
+
+    /// <summary>
+    /// Makes a dialog page for a script that could not be loaded because it has invalid or missing data.
+    /// </summary>
     /// <param name="e">The exception responsible for the error.</param>
     /// <param name="path">The path to the invalid script file.</param>
-    /// <inheritdoc cref="DialogPage(CustomButton[])" path="/param"/>
-    /// <returns>A new <see cref="DialogPage"/> object.</returns>
-    public static Page MakeInvalidScriptData(Exception e, string path, CommitControlCollection buttons)
+    /// <returns>A new <see cref="Page"/> object.</returns>
+    public static Page InvalidScriptData(Exception e, string path, ButtonCollection buttons)
     {
         Page page = new()
         {
             AllowHyperlinks = true,
-            Buttons = buttons,
+            WindowTitle = AppMetadata.Name,
+            Icon = DialogIcon.Error,
+            MainInstruction = InvalidCustomScriptDataMainInstruction,
             Content = InvalidCustomScriptDataContent.FormatWith(Path.GetFileName(path)),
             Expander = new(e.ToString()),
-            Icon = DialogIcon.Error,
-            MainInstruction = InvalidCustomScriptDataMainInstruction
+            Buttons = buttons,
         };
         page.HyperlinkClicked += (_, _) => path.Open();
         return page;

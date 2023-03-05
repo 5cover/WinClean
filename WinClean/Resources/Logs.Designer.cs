@@ -79,7 +79,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to delete log file &apos;{0]&apos;: {1}.
+        ///   Looks up a localized string similar to Failed to delete log file &apos;{0}&apos;: {1}.
         /// </summary>
         public static string FailedToDeleteLogFile {
             get {
@@ -133,7 +133,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Script &apos;{0}&apos; executed....
+        ///   Looks up a localized string similar to Script &apos;{0}&apos; executed..
         /// </summary>
         public static string ScriptExecuted {
             get {
@@ -151,7 +151,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Script &apos;{0}&apos; cannot be loaded: {1}.
+        ///   Looks up a localized string similar to Script &apos;{0}&apos; could not be loaded: {1}.
         /// </summary>
         public static string ScriptLoadError {
             get {

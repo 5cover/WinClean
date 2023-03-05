@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Optimize drives</Name>
+  <Name xml:lang="fr">Optimiser les lecteurs</Name>
+  <Description>Drive optimization includes defragmentation and slab consolidation. It improves read/write performance and potentially frees up some space.</Description>
+  <Description xml:lang="fr">L'optimisation d'un lecteur inclut sa défragmentation et sa consolidation. Elle permet d'améliorer les performances de lecture/écriture et potentiellement de libérer de l'espace.</Description>
+  <Category>Maintenance</Category>
+  <Recommended>Yes</Recommended>
+  <Host>PowerShell</Host>
+  <Impact>Storage speed</Impact>
+  <Code>Get-Volume | Optimize-Volume -NormalPriority</Code>
+</Script>

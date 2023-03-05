@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+
 using Humanizer.Localisation;
+
 using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
@@ -7,23 +9,13 @@ using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Resources;
 using Scover.WinClean.Resources.UI;
-using Vanara.PInvoke;
-using static Scover.WinClean.Resources.UI.Dialogs;
+
+using static Scover.WinClean.Resources.UI.ScriptExecution;
 
 namespace Scover.WinClean.Presentation;
 
 public partial class ScriptExecutionWizard
 {
-    private static readonly DialogIcon restorePointIcon;
-
-    static ScriptExecutionWizard()
-    {
-        // The icon handle is not freed but its lifetime is the whole application.
-        ushort piIcon = 0;
-        var restorePointIconHandle = Shell32.ExtractAssociatedIcon(IntPtr.Zero, new(Path.Join(Environment.SystemDirectory, "rstrui.exe")), ref piIcon);
-        restorePointIcon = DialogIcon.FromHandle(restorePointIconHandle.DangerousGetHandle());
-    }
-
     /// <param name="scripts">The scripts to execute.</param>
     /// <exception cref="ArgumentException"><paramref name="scripts"/> is empty.</exception>
     public ScriptExecutionWizard(IReadOnlyList<Script> scripts)
@@ -36,164 +28,154 @@ public partial class ScriptExecutionWizard
         _scripts = scripts;
 
         #region Ask to create restore point
-
         {
-            CommandLink linkYes = new(AskRestorePoint.CommandLinkYes, AskRestorePoint.CommandLinkYesNote);
-            _askRestorePoint = new Page()
+            Button linkYes = new(AskRestorePoint.CommandLinkYes, AskRestorePoint.CommandLinkYesNote);
+            _askRestorePoint = new()
             {
                 AllowHyperlinks = true,
-                Buttons = new(defaultItem: linkYes, style: CommitControlStyle.CommandLinks)
+                WindowTitle = PageWindowTitle,
+                Icon = restorePointIcon,
+                MainInstruction = AskRestorePoint.MainInstruction,
+                Buttons = new(ButtonStyle.CommandLinks, linkYes)
                 {
                     linkYes,
                     AskRestorePoint.CommandLinkNo,
+                    Button.Cancel,
                 },
-                MainInstruction = AskRestorePoint.MainInstruction,
-                Icon = restorePointIcon,
-                IsCancelable = true,
             };
-            _nextPageSelectors.Add(_askRestorePoint, clicked =>
-            {
-                var txt = (clicked as CommandLink)?.Label;
-                return txt == AskRestorePoint.CommandLinkYes
-                     ? _restorePointProgress
-                     : txt == AskRestorePoint.CommandLinkNo
-                     ? _executionProgress
-                     : null;
-            });
         }
-
         #endregion Ask to create restore point
 
         #region Restore point creation progress
-
         {
             _restorePointProgress = new()
             {
-                Buttons = { Buttons.Stop },
+                WindowTitle = PageWindowTitle,
                 Icon = restorePointIcon,
                 MainInstruction = CreatingRestorePointContent,
                 ProgressBar = new()
                 {
                     Mode = ProgressBarMode.Marquee
                 },
+                Buttons = { Buttons.Stop },
             };
-            _nextPageSelectors.Add(_restorePointProgress, clicked => (clicked as Button)?.Text == Buttons.Stop ? null : _executionProgress);
-            _restorePointProgress.Created += async (_, _) =>
-            {
-                await Task.Run(() =>
-                {
-                    // Some drives are not eligible for system restore, but Enable-ComputerRestore will still enable the
-                    // eligible ones.
-                    using Process powerShell = $"-Command Enable-ComputerRestore -Drive {string.Join(',', DriveInfo.GetDrives().Select(di => @$"""{di.Name}\"""))}".StartPowerShellWithArguments().AssertNotNull();
-                    powerShell.WaitForExit();
-                    new RestorePoint(AppMetadata.Name, EventType.BeginSystemChange, RestorePointType.ModifySettings).Create();
-                });
-                _restorePointProgress.Close();
-                Logs.RestorePointCreated.Log();
-            };
+            _restorePointProgress.Created += CreateRestorePoint;
         }
-
         #endregion Restore point creation progress
 
         #region Ask restart on completed
-
         {
             _askRestartCompleted = new()
             {
-                Buttons = { Buttons.Restart, Button.Close },
-                Content = ExecutionCompletedContent.FormatWith(_scripts.Count),
-                Icon = DialogIcon.SuccessShield,
+                IsCancelable = true,
+                WindowTitle = PageWindowTitle,
                 Header = DialogHeader.Green,
-                MainInstruction = ExecutionCompletedMainInstruction
+                Icon = DialogIcon.SuccessShield,
+                MainInstruction = ExecutionCompletedMainInstruction,
+                Content = ExecutionCompletedContent.FormatWith(_scripts.Count),
+                Buttons = { Buttons.Restart, Button.Close },
             };
-            _nextPageSelectors.Add(_askRestartCompleted, clicked =>
-            {
-                if (_executionProgress?.Verification?.IsChecked ?? false || (clicked as Button)?.Text == Buttons.Restart)
-                {
-                    RestartSystem();
-                }
-                return null;
-            });
         }
-
         #endregion Ask restart on completed
 
         #region Execution progress
-
         {
+            Button stop = new(Buttons.Stop);
+            stop.Clicked += (s, e) =>
+            {
+                using Page page = DialogPageFactory.ConfirmAbortOperation();
+                e.Cancel = Button.No.Equals(new Dialog(page).Show());
+            };
+
             _executionProgress = new()
             {
-                IsMinimizable = true,
-                IsCancelable = false,
-                Buttons = { Buttons.Stop },
-                Content = ExecutionProgressContent,
-                Expander = new()
-                {
-                    Text = ExecutionProgressExpanderTextInitializing,
-                    IsExpanded = App.Settings.ExecutionShowDetails
-                },
+                WindowTitle = PageWindowTitle,
+                Icon = softwareIcon,
                 MainInstruction = ExecutionProgressMainInstruction,
+                Content = ExecutionProgressContent,
                 ProgressBar = new()
                 {
-                    Maximum = _scripts.Count,
+                    Maximum = _scripts.Count
                 },
-                Verification = new(ExecutionProgressVerificationText)
+                Expander = new()
+                {
+                    IsExpanded = App.Settings.ExecutionShowDetails
+                },
+                Verification = new(ExecutionProgressVerificationText),
+                Buttons = { stop },
             };
-            _nextPageSelectors.Add(_executionProgress, clicked => (clicked as Button)?.Text == Buttons.Stop ? null : _askRestartCompleted);
             _executionProgress.Expander.ExpandedChanged += (_, _) => App.Settings.ExecutionShowDetails ^= true;
-            CancellationTokenSource cts = new();
-            TimeSpan timeRemaining = GetCumulatedExecutionTime(_scripts);
-            int scriptIndex = 0;
-            TimeSpan timerInterval = 1.Seconds();
-            using PeriodicTimer timer = new(timerInterval);
-
             _executionProgress.Created += StartExecution;
             _executionProgress.Created += StartTimer;
-            _executionProgress.Destroyed += (s, e) => cts.Cancel();
-
-            async void StartTimer(object? s, EventArgs e)
-            {
-                while (await timer.WaitForNextTickAsync(cts.Token))
-                {
-                    if (timeRemaining < timerInterval)
-                    {
-                        timeRemaining = TimeSpan.Zero;
-                    }
-                    else
-                    {
-                        timeRemaining -= timerInterval;
-                    }
-                    UpdateExpandedInfo();
-                }
-            }
-
-            async void StartExecution(object? s, EventArgs e)
-            {
-                Logs.StartingExecution.FormatWith(_scripts.Count).Log(LogLevel.Info);
-                await foreach (TimeSpan measuredExecutionTime in ExecuteScripts(cts.Token))
-                {
-                    UpdateExpandedInfo();
-                    timeRemaining = GetCumulatedExecutionTime(_scripts.Skip(++scriptIndex));
-                    _executionProgress.ProgressBar.Value = scriptIndex;
-                }
-
-                _executionProgress.Close();
-            }
-
-            void UpdateExpandedInfo() => _executionProgress.Expander.Text = ExecutionProgressExpanderText
-                .FormatWith(scriptIndex,
-                            _scripts.Count,
-                            _scripts.Count - scriptIndex,
-                            _scripts[scriptIndex].Name,
-                            timeRemaining.Humanize(precision: 3, minUnit: TimeUnit.Second));
-
-            TimeSpan GetCumulatedExecutionTime(IEnumerable<Script> scripts)
-                => scripts.Aggregate(TimeSpan.Zero, (sumSoFar, next) => sumSoFar
-                    + (App.ScriptExecutionTimes.TryGetValue(next.InvariantName, out TimeSpan t) ? t : App.Settings.ScriptTimeout));
         }
-
         #endregion Execution progress
-
-        _dialog = new(_askRestorePoint, _nextPageSelectors);
     }
+
+    private static string PageWindowTitle => WindowTitle.FormatWith(AppMetadata.Name);
+
+    private async void CreateRestorePoint(object? sender, EventArgs args)
+    {
+        await Task.Run(() =>
+        {
+            // Some drives are non-eligible for system restore, but Enable-ComputerRestore will still enable
+            // the eligible ones.
+            using Process powerShell = $"-Command Enable-ComputerRestore -Drive {string.Join(',', DriveInfo.GetDrives().Select(di => @$"""{di.Name}\"""))}".StartPowerShellWithArguments().AssertNotNull();
+            powerShell.WaitForExit();
+            new RestorePoint(AppMetadata.Name, EventType.BeginSystemChange, RestorePointType.ModifySettings).Create();
+        });
+        _restorePointProgress.Exit();
+        Logs.RestorePointCreated.Log();
+    }
+
+    private async void StartTimer(object? s, EventArgs e)
+    {
+        while (await _timer.WaitForNextTickAsync())
+        {
+            if (_timeRemaining < _timerInterval)
+            {
+                _timeRemaining = TimeSpan.Zero;
+            }
+            else
+            {
+                _timeRemaining -= _timerInterval;
+            }
+            UpdateExpandedInfo();
+        }
+    }
+
+    private async void StartExecution(object? s, EventArgs e)
+    {
+        Logs.StartingExecution.FormatWith(_scripts.Count).Log(LogLevel.Info);
+        UpdateExpandedInfo();
+        foreach (var script in _scripts)
+        {
+            _timeRemaining = GetCumulatedExecutionTime(_scripts.Skip(_scriptIndex));
+            UpdateExpandedInfo();
+            try
+            {
+                App.ScriptExecutionTimes[script.InvariantName] = await ExecuteScript(script, _ctsScriptExecution.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                // Stop execution
+                return;
+            }
+            catch (TimeoutException)
+            {
+                // The script was hung and the user terminated it, skip to the next one.
+            }
+            _executionProgress.ProgressBar.AssertNotNull().Value = ++_scriptIndex;
+            Logs.ScriptExecuted.FormatWith(script.InvariantName).Log();
+        }
+        Logs.ScriptsExecuted.Log(LogLevel.Info);
+        _executionProgress.Exit();
+        _timer.Dispose();
+    }
+
+    private void UpdateExpandedInfo() => _executionProgress.Expander.AssertNotNull().Text = ExecutionProgressExpanderText
+        .FormatWith(_scriptIndex,
+                    _scripts.Count,
+                    _scripts.Count - _scriptIndex,
+                    _scripts[Math.Min(_scripts.Count - 1, _scriptIndex)].Name,
+                    _timeRemaining.Humanize(precision: 3, minUnit: TimeUnit.Second));
 }

@@ -10,10 +10,12 @@ public sealed class FileScriptCollection : ScriptCollection, IMutableScriptColle
     /// <param name="directory">The directory containing the script files.</param>
     /// <param name="scriptFileExtension">The extension of the script files.</param>
     /// <param name="invalidScriptDataReloadElseIgnore">
-    /// <inheritdoc cref="InvalidScriptDataCallback" path="/summary"/> Returns <inheritdoc cref="InvalidScriptDataCallback" path="/returns"/>
+    /// <inheritdoc cref="InvalidScriptDataCallback" path="/summary"/> Returns <inheritdoc
+    /// cref="InvalidScriptDataCallback" path="/returns"/>
     /// </param>
     /// <param name="fsErrorReloadElseIgnore">
-    /// <inheritdoc cref="FSErrorCallback" path="/summary"/> Returns <inheritdoc cref="FSErrorCallback" path="/returns"/>
+    /// <inheritdoc cref="FSErrorCallback" path="/summary"/> Returns <inheritdoc cref="FSErrorCallback"
+    /// path="/returns"/>
     /// </param>
     /// <inheritdoc cref="ScriptCollection(IScriptSerializer, ScriptType)" path="/param"/>
     public FileScriptCollection(string directory,
@@ -27,25 +29,23 @@ public sealed class FileScriptCollection : ScriptCollection, IMutableScriptColle
         foreach (var filePath in Directory.EnumerateFiles(directory, $"*{scriptFileExtension}",
                      SearchOption.AllDirectories))
         {
-        retry:
-            try
+            bool retry = true;
+            while (retry)
             {
-                using Stream file = File.OpenRead(filePath);
-                var script = Deserialize(file);
-                Sources.Add(script, filePath);
-            }
-            catch (Exception e) when (e.IsFileSystem())
-            {
-                if (fsErrorReloadElseIgnore(e, FSVerb.Access, new FileInfo(filePath)))
+                try
                 {
-                    goto retry;
+                    using Stream file = File.OpenRead(filePath);
+                    var script = Deserialize(file);
+                    Sources.Add(script, filePath);
+                    retry = false;
                 }
-            }
-            catch (InvalidDataException e)
-            {
-                if (invalidScriptDataReloadElseIgnore(e, filePath))
+                catch (Exception e) when (e.IsFileSystem())
                 {
-                    goto retry;
+                    retry = fsErrorReloadElseIgnore(e, FSVerb.Access, new FileInfo(filePath));
+                }
+                catch (InvalidDataException e)
+                {
+                    retry = invalidScriptDataReloadElseIgnore(e, filePath);
                 }
             }
         }
@@ -54,13 +54,20 @@ public sealed class FileScriptCollection : ScriptCollection, IMutableScriptColle
     public void Add(Script script)
     {
         string savingPath = Path.Join(_directory, script.InvariantName.ToFilename() + _scriptFileExtension);
-        Sources.Add(script, savingPath);
+        try
+        {
+            Sources.Add(script, savingPath);
+        }
+        catch (ArgumentException e)
+        {
+            throw new ArgumentException("The script is already in this collection", nameof(script), e);
+        }
     }
 
-    public void Remove(Script script)
+    public bool Remove(Script script)
     {
         File.Delete(Sources[script]);
-        _ = Sources.Remove(script);
+        return Sources.Remove(script);
     }
 
     public void Save()

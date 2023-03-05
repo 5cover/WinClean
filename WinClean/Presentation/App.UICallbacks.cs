@@ -1,9 +1,11 @@
 ﻿using System.Windows;
+
 using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Resources;
 using Scover.WinClean.Resources.UI;
+
 using static Scover.WinClean.Resources.UI.Dialogs;
 
 namespace Scover.WinClean.Presentation;
@@ -15,11 +17,11 @@ public partial class App
         {
             Logger.Log(Logs.ScriptLoadError.FormatWith(path, e), LogLevel.Error);
 
-            using Page deleteScriptPage = DialogPageFactory.MakeDeleteScript();
+            using Page deleteScriptPage = DialogPageFactory.DeleteScript();
             Button deleteScriptButton = new(Buttons.DeleteScript);
             deleteScriptButton.Clicked += (s, e) => e.Cancel = Button.Yes.Equals(new Dialog(deleteScriptPage).Show());
 
-            using Page invalidScriptDataPage = DialogPageFactory.MakeInvalidScriptData(e, path, new(defaultItem: Button.Retry){ deleteScriptButton, Button.Retry, Button.Ignore });
+            using Page invalidScriptDataPage = DialogPageFactory.InvalidScriptData(e, path, new(defaultItem: Button.Retry){ deleteScriptButton, Button.Retry, Button.Ignore });
 
             Dialog invalidScriptData = new(invalidScriptDataPage);
             var clicked = invalidScriptData.Show();
@@ -34,7 +36,7 @@ public partial class App
         },
         (e, verb, info) =>
         {
-            using Page fsError = DialogPageFactory.MakeFSError(e, verb, info, new(){ Button.Retry, Button.Ignore });
+            using Page fsError = DialogPageFactory.FSError(e, verb, info, new(){ Button.Retry, Button.Ignore });
             fsError.MainInstruction = FSErrorLoadingCustomScriptMainInstruction;
             return Button.Retry.Equals(new Dialog(fsError).Show());
         },
@@ -45,10 +47,11 @@ public partial class App
             using Page unhandledException = new()
             {
                 AllowHyperlinks = true,
-                Buttons = { Buttons.Exit },
+                WindowTitle = UnhandledExceptionWindowTitle.FormatWith(AppMetadata.Name),
                 Icon = DialogIcon.Error,
                 Content = UnhandledExceptionDialogContent.FormatWith(ex.Message),
                 Expander = new(ex.ToString()),
+                Buttons = { Buttons.Exit },
             };
             unhandledException.HyperlinkClicked += async (s, e) =>
             {

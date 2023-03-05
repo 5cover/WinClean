@@ -1,9 +1,9 @@
-﻿using System.Collections.Specialized;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Security.Principal;
 using System.Windows;
+
 using CommandLine;
 
 using Scover.WinClean.BusinessLogic;
@@ -14,22 +14,27 @@ using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Presentation.Windows;
 using Scover.WinClean.Properties;
 using Scover.WinClean.Resources;
+
 using Vanara.PInvoke;
 
 namespace Scover.WinClean.Presentation;
 
-/// <summary>Handles the startup / shutdown strategy and holds data related to the Presentation layer.</summary>
+/// <summary>
+/// Handles the startup / shutdown strategy and holds data related to the Presentation layer.
+/// </summary>
 public sealed partial class App
 {
-    private const string ScriptsResourceNamespace = $"{nameof(Scover)}.{nameof(WinClean)}.{nameof(BusinessLogic.Scripts)}";
     private const string MetadataContentFilesNamespace = $"{nameof(Scover)}.{nameof(WinClean)}";
     private const string ScriptExecutionTimesFormatString = "c";
+    private const string DefaultScriptsResourceNamespace = $"{nameof(Scover)}.{nameof(WinClean)}.{nameof(BusinessLogic.Scripts)}";
 
+    private static readonly List<IDisposable> applicationLifetimeObjects = new();
     private static Logger? logger;
 
     static App()
     {
-        Settings.Default[nameof(Settings.ScriptExecutionTimes)] ??= new StringCollection();
+        Settings.Default[nameof(Settings.ScriptExecutionTimes)] ??= new System.Collections.Specialized.StringCollection();
+
         ScriptExecutionTimes = Settings.ScriptExecutionTimes.ParseKeysAndValues().ToDictionary(kv => kv.key.AssertNotNull(),
             kv => TimeSpan.ParseExact(kv.value.AssertNotNull(), ScriptExecutionTimesFormatString, CultureInfo.InvariantCulture));
 
@@ -44,20 +49,24 @@ public sealed partial class App
         };
     }
 
-    public static Settings Settings => Settings.Default;
-
     /// <summary>Gets the logger of the application.</summary>
     /// <remarks>Available after startup.</remarks>
     public static Logger Logger => logger.AssertNotNull();
 
-    /// <summary>Gets the script execution times dictionary, keyed by <see cref="Script.InvariantName"/>.</summary>
+    /// <summary>
+    /// Gets the script execution times dictionary, keyed by <see cref="Script.InvariantName"/>.
+    /// </summary>
     public static IDictionary<string, TimeSpan> ScriptExecutionTimes { get; }
 
-    /// <summary>Gets the collection of scripts that was initially loaded when the application started.</summary>
+    public static TypedEnumerablesDictionary ScriptMetadata { get; }
+
+    /// <summary>
+    /// Gets the collection of scripts that was initially loaded when the application started.
+    /// </summary>
     /// <remarks>Available after startup.</remarks>
     public static IEnumerable<Script> Scripts => scriptCollections.Values.SelectMany(c => c);
 
-    public static TypedEnumerablesDictionary ScriptMetadata { get; }
+    public static Settings Settings => Settings.Default;
     private static Dictionary<ScriptType, ScriptCollection> scriptCollections { get; } = new();
 
     /// <summary>Commits all changes to the scripts.</summary>
@@ -69,7 +78,7 @@ public sealed partial class App
         {
             if (scriptCollections[removedScript.Type] is IMutableScriptCollection collection)
             {
-                collection.Remove(removedScript);
+                _ = collection.Remove(removedScript);
             }
         }
 
@@ -89,6 +98,12 @@ public sealed partial class App
         Logs.ScriptsSaved.Log();
     }
 
+    /// <summary>
+    /// Keeps a reference to one or more disposable objects and schedules a call to <see
+    /// cref="IDisposable.Dispose"/> on it on application exit.
+    /// </summary>
+    public static void RegisterForAppLifetime(params IDisposable[] disposables) => applicationLifetimeObjects.AddRange(disposables);
+
     private static void Initialize(Logger loggerToUse, Callbacks callbacks)
     {
         IScriptSerializer serializer = new ScriptXmlSerializer(ScriptMetadata);
@@ -102,8 +117,7 @@ public sealed partial class App
         // 3. Load scripts.
         scriptCollections[ScriptType.Custom] = new FileScriptCollection(AppDirectory.Scripts, Settings.ScriptFileExtension,
             callbacks.ReloadElseIgnoreInvalidCustomScript, callbacks.ReloadElseIgnoreFSErrorAcessingCustomScript, serializer, ScriptType.Custom);
-        scriptCollections[ScriptType.Default] = new ManifestResourceScriptCollection(
-            $"{nameof(Scover)}.{nameof(WinClean)}.{nameof(BusinessLogic.Scripts)}", serializer, ScriptType.Default);
+        scriptCollections[ScriptType.Default] = new ManifestResourceScriptCollection(DefaultScriptsResourceNamespace, serializer, ScriptType.Default);
     }
 
     private static void EnsureAdminPrivileges()
@@ -112,7 +126,7 @@ public sealed partial class App
         {
             return;
         }
-        ProcessStartInfo processInfo = new(AppDomain.CurrentDomain.FriendlyName)
+        ProcessStartInfo processInfo = new(Environment.ProcessPath.AssertNotNull())
         {
             UseShellExecute = true,
             Verb = "runas"
@@ -123,15 +137,13 @@ public sealed partial class App
         }
         catch (Win32Exception)
         {
-            // User clicked "No" on the prompt
+            // User clicked "No" in the UAC prompt
         }
         Current.Shutdown();
     }
 
-    private sealed record Callbacks(
-        InvalidScriptDataCallback ReloadElseIgnoreInvalidCustomScript,
-        FSErrorCallback ReloadElseIgnoreFSErrorAcessingCustomScript,
-        Action<Exception> WarnOnUnhandledException);
+    private static Stream ReadContentFile(string filename)
+        => System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream($"{MetadataContentFilesNamespace}.{filename}").AssertNotNull();
 
     private static void StartConsole(IEnumerable<string> args)
     {
@@ -151,20 +163,25 @@ public sealed partial class App
 
     private static void StartGui()
     {
-        Settings.ScriptTimeout = 10.Seconds();
         Initialize(new CsvLogger(), uiCallbacks);
         new MainWindow().Show();
     }
 
-    private static Stream ReadContentFile(string filename)
-        => System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream($"{MetadataContentFilesNamespace}.{filename}").AssertNotNull();
+    private sealed record Callbacks(
+        InvalidScriptDataCallback ReloadElseIgnoreInvalidCustomScript,
+        FSErrorCallback ReloadElseIgnoreFSErrorAcessingCustomScript,
+        Action<Exception> WarnOnUnhandledException);
 
     private void ApplicationExit(object? sender, ExitEventArgs? e)
     {
-        Settings.ScriptExecutionTimes.SetContent(ScriptExecutionTimes.Select(kv => (kv.Key, kv.Value.ToString(ScriptExecutionTimesFormatString))));
+        Settings.ScriptExecutionTimes.SetContent(ScriptExecutionTimes.ToDictionary(kv => kv.Key, kv => kv.Value.ToString(ScriptExecutionTimesFormatString)));
         Settings.Save();
         Logs.SettingsSaved.Log();
         Logs.Exiting.Log();
+        foreach (var disposable in applicationLifetimeObjects)
+        {
+            disposable.Dispose();
+        }
     }
 
     private void ApplicationStartup(object? sender, StartupEventArgs? e)

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace Scover.WinClean.Presentation.Logging;
 
@@ -24,17 +23,16 @@ public abstract class Logger
              [CallerLineNumber] int callLine = 0,
              [CallerFilePath] string callFile = "")
     {
-        LogEntry entry = new(lvl.GetName(),
-                             DateTime.Now,
-                             message,
-                             caller,
-                             callLine,
-                             // Only keep the filename of the source file to avoid showing personal information in file paths.
-                             Path.GetFileName(callFile));
-        Debug.WriteLine(entry);
-        if (App.Settings.EnableLogging && lvl >= MinLevel)
+        if (App.Settings.IsLoggingEnabled && lvl >= MinLevel)
         {
-            Log(entry);
+            Log(new(lvl.GetName(),
+                    DateTime.Now,
+                    message,
+                    caller,
+                    callLine,
+                    // Only keep the filename of the source file to avoid showing personal information in
+                    // file paths.
+                    Path.GetFileName(callFile)));
         }
     }
 

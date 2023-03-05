@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Resources;
 

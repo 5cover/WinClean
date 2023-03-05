@@ -124,9 +124,6 @@
     <value>Impossible {0} {1} "{2}".
 {3}</value>
   </data>
-  <data name="HungScriptDialogContent" xml:space="preserve">
-    <value>Le script "{0}" est en cours d'exécution depuis {1} et ne s'arrêtera probablement jamais.</value>
-  </data>
   <data name="ConfirmScriptOverwriteContent" xml:space="preserve">
     <value>Le script "{0}" existe déjà. Êtes-vous sûr de vouloir l'écraser ?</value>
   </data>
@@ -144,9 +141,6 @@
   <data name="ConfirmAbortOperationContent" xml:space="preserve">
     <value>Abandonner l'opération risque de rendre le système instable. Voulez-vous vraiment continuer ?</value>
   </data>
-  <data name="CreatingRestorePointContent" xml:space="preserve">
-    <value>Création d'un point de restauration...</value>
-  </data>
   <data name="FSErrorAddingCustomScriptMainInstruction" xml:space="preserve">
     <value>Impossible d'ajouter le script personnalisé</value>
   </data>
@@ -159,28 +153,7 @@
   <data name="InvalidCustomScriptDataMainInstruction" xml:space="preserve">
     <value>Impossible de charger le script personnalisé</value>
   </data>
-  <data name="ExecutionCompletedContent" xml:space="preserve">
-    <value>{0} scripts exécutés.
-Pour terminer l'opération, il est recommandé de redémarrer le système.</value>
-  </data>
-  <data name="ExecutionProgressMainInstruction" xml:space="preserve">
-    <value>Exécution des scripts...</value>
-  </data>
-  <data name="ExecutionProgressContent" xml:space="preserve">
-    <value>Cette opération peut prendre un certain temps.</value>
-  </data>
-  <data name="ExecutionProgressVerificationText" xml:space="preserve">
-    <value>Redémarrer automatiquement une fois l'opération terminée</value>
-  </data>
-  <data name="ExecutionProgressExpanderText" xml:space="preserve">
-    <value>{0} sur {1} scripts exécutés ({2} restants)
-Script actuel : {3}
-Temps restant : {4}</value>
-  </data>
-  <data name="ExecutionCompletedMainInstruction" xml:space="preserve">
-    <value>Nettoyage terminé</value>
-  </data>
-  <data name="ExecutionProgressExpanderTextInitializing" xml:space="preserve">
-    <value>Démarrage...</value>
+  <data name="UnhandledExceptionWindowTitle" xml:space="preserve">
+    <value>{0} - Exception non gérée</value>
   </data>
 </root>

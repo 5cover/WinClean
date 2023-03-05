@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media;
+
 using Scover.WinClean.DataAccess;
 
 namespace Scover.WinClean.BusinessLogic;

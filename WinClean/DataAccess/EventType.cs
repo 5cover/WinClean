@@ -6,7 +6,9 @@ public enum EventType
 
     /// <summary>
     /// A system change has begun. A subsequent nested call does not create a new restore point.
-    /// <para>Subsequent calls must use <see cref="EndNestedSystemChange"/>, not <see cref="EndSystemChange"/>.</para>
+    /// <para>
+    /// Subsequent calls must use <see cref="EndNestedSystemChange"/>, not <see cref="EndSystemChange"/>.
+    /// </para>
     /// </summary>
     BeginNestedSystemChange = 0x66,
 

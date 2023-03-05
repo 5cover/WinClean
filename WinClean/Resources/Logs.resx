@@ -134,7 +134,7 @@
     <comment>0 : script filename or InvariantName@Invariant</comment>
   </data>
   <data name="ScriptExecuted" xml:space="preserve">
-    <value>Script '{0}' executed...</value>
+    <value>Script '{0}' executed.</value>
     <comment>0 : script InvariantName@Invariant</comment>
   </data>
   <data name="ScriptExecutionCanceled" xml:space="preserve">
@@ -150,7 +150,7 @@
     <comment>0 : script count@Invariant</comment>
   </data>
   <data name="ScriptLoadError" xml:space="preserve">
-    <value>Script '{0}' cannot be loaded: {1}</value>
+    <value>Script '{0}' could not be loaded: {1}</value>
     <comment>0 : script filename
 1 : exception@Invariant</comment>
   </data>
@@ -172,7 +172,7 @@
     <comment>@Invariant</comment>
   </data>
   <data name="FailedToDeleteLogFile" xml:space="preserve">
-    <value>Failed to delete log file '{0]': {1}</value>
+    <value>Failed to delete log file '{0}': {1}</value>
     <comment>0 : filename
 1 : exception@Invariant</comment>
   </data>

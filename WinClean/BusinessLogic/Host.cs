@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+
 using Scover.WinClean.DataAccess;
+
 using static System.IO.Path;
 
 namespace Scover.WinClean.BusinessLogic;
@@ -9,10 +11,12 @@ public sealed record Host : ScriptMetadata
     private readonly string _arguments;
     private readonly string _executable;
 
-    /// <param name="executable">The absolute path to the script host executable. May contain environment variables.</param>
+    /// <param name="executable">
+    /// The absolute path to the script host executable. May contain environment variables.
+    /// </param>
     /// <param name="arguments">
-    /// A formattable argument string passed to the executable. Must have exactly one formattable argument, <c>{0}</c>. May
-    /// contain environment variables.
+    /// A formattable argument string passed to the executable. Must have exactly one formattable argument,
+    /// <c>{0}</c>. May contain environment variables.
     /// </param>
     /// <param name="extension">The preferred script file extension.</param>
     public Host(LocalizedString name, LocalizedString description, string executable, string arguments, string extension) : base(name, description)
@@ -23,18 +27,23 @@ public sealed record Host : ScriptMetadata
     /// <summary>Executes code asynchronously.</summary>
     /// <param name="code">The code to execute.</param>
     /// <param name="timeout">
-    /// Upon reach, <paramref name="keepRunningElseTerminateHungScript"/> will be called and the script will be terminated if it
-    /// returns <see langword="false"/>. Otherwise the timeout will reset.
+    /// Upon reach, <paramref name="keepRunningElseTerminateHungScript"/> will be called and the script will
+    /// be terminated if it returns <see langword="false"/>. Otherwise the timeout will reset.
     /// </param>
     /// <param name="keepRunningElseTerminateHungScript">Callback called when the script is hung.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
-    /// <exception cref="OperationCanceledException"/>
+    /// <exception cref="TimeoutException">
+    /// The script was hung and <paramref name="keepRunningElseTerminateHungScript"/> returned <see
+    /// langword="false"/>.
+    /// </exception>
+    /// <exception cref="OperationCanceledException">The operation was canceled.</exception>
     public async Task Execute(string code, TimeSpan timeout, Func<bool> keepRunningElseTerminateHungScript, CancellationToken cancellationToken)
     {
         string tmpScriptFile = CreateTempFile(code);
         using Process hostProcess = StartHost(tmpScriptFile);
         while (!hostProcess.HasExited)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             try
             {
                 await hostProcess.WaitForExitAsync(cancellationToken).WithTimeout(timeout);
@@ -44,6 +53,7 @@ public sealed record Host : ScriptMetadata
                 if (!keepRunningElseTerminateHungScript())
                 {
                     hostProcess.Kill(true);
+                    throw;
                 }
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
 
@@ -34,7 +35,7 @@ public sealed partial class ScriptEditor
     }
 
     public static void SelectedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        => ((ScriptEditor)d).ForbidEdit = (e.NewValue as Script)?.Type == ScriptType.Default;
+        => ((ScriptEditor)d).ForbidEdit = e.NewValue is Script s && s.Type.IsEditable;
 
     private void ButtonDelete_Click(object sender, RoutedEventArgs e) => ScriptRemoved?.Invoke(this, EventArgs.Empty);
 

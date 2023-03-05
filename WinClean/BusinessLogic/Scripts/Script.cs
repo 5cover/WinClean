@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+
 using Scover.WinClean.DataAccess;
 
 using static System.Globalization.CultureInfo;
@@ -126,7 +127,7 @@ public sealed class Script : INotifyPropertyChanged
     public ScriptType Type { get; }
 
     /// <summary>Executes the script asynchronously.</summary>
-    /// <inheritdoc cref="Host.Execute" path="/param"/>
+    /// <inheritdoc cref="Host.Execute(string, TimeSpan, Func{bool}, CancellationToken)"/>
     public async Task Execute(TimeSpan timeout, HungScriptCallback keepRunningElseTerminateHungScript, CancellationToken cancellationToken)
         => await Host.Execute(Code, timeout, () => keepRunningElseTerminateHungScript(this), cancellationToken);
 

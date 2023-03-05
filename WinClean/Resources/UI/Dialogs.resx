@@ -128,11 +128,6 @@
 2 : path of the affected filesystem element as a string
 3 : exception message string</comment>
   </data>
-  <data name="HungScriptDialogContent" xml:space="preserve">
-    <value>Script "{0}" has been running for {1} and is probably hung.</value>
-    <comment>0 : name of the affected script
-1 : script timeout</comment>
-  </data>
   <data name="ConfirmScriptOverwriteContent" xml:space="preserve">
     <value>The script "{0}" already exists. Are you sure you want to overwrite it?</value>
   </data>
@@ -151,9 +146,6 @@
   <data name="ConfirmAbortOperationContent" xml:space="preserve">
     <value>Aborting the operation may make the system unstable. Are you sure you want to continue?</value>
   </data>
-  <data name="CreatingRestorePointContent" xml:space="preserve">
-    <value>Creating restore point...</value>
-  </data>
   <data name="FSErrorAddingCustomScriptMainInstruction" xml:space="preserve">
     <value>Cannot add custom script</value>
     
@@ -167,35 +159,8 @@
   <data name="InvalidCustomScriptDataMainInstruction" xml:space="preserve">
     <value>Cannot load custom script</value>
   </data>
-  <data name="ExecutionCompletedContent" xml:space="preserve">
-    <value>{0} scripts executed.
-To finish the operation, it is recommended to restart the system.</value>
-    <comment>0 : script count</comment>
-  </data>
-  <data name="ExecutionProgressContent" xml:space="preserve">
-    <value>This operation may take some time.</value>
-    
-  </data>
-  <data name="ExecutionProgressVerificationText" xml:space="preserve">
-    <value>Automatically restart when finished</value>
-  </data>
-  <data name="ExecutionProgressMainInstruction" xml:space="preserve">
-    <value>Executing the scripts...</value>
-  </data>
-  <data name="ExecutionProgressExpanderText" xml:space="preserve">
-    <value>{0} out of {1} scripts executed ({2} remaining)
-Currently executing: {3}
-Time remaining: {4}</value>
-    <comment>0 : count of scripts executed
-1 : script count
-2 : count of scripts remaining
-3 : name of the currently executing script
-4 : estimated remaining time</comment>
-  </data>
-  <data name="ExecutionCompletedMainInstruction" xml:space="preserve">
-    <value>Cleaning completed</value>
-  </data>
-  <data name="ExecutionProgressExpanderTextInitializing" xml:space="preserve">
-    <value>Initializing...</value>
+  <data name="UnhandledExceptionWindowTitle" xml:space="preserve">
+    <value>{0} - Unhandled exception</value>
+    <comment>0 : application name</comment>
   </data>
 </root>

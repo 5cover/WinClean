@@ -7,7 +7,8 @@ public interface IScriptSerializer
     /// <param name="type">The type of the script.</param>
     /// <returns>A new <see cref="Script"/> object.</returns>
     /// <exception cref="InvalidDataException">
-    /// The script could not be deserialized because <paramref name="data"/> is in an incomplete or invalid format.
+    /// The script could not be deserialized because <paramref name="data"/> is in an incomplete or invalid
+    /// format.
     /// </exception>
     Script Deserialize(ScriptType type, Stream data);
 

@@ -1,3 +1,4 @@
+[![Code Climate](https://codeclimate.com/github/5cover/WinClean.png)](https://codeclimate.com/github/5cover/WinClean.png)
 [![CodeFactor](https://www.codefactor.io/repository/github/5cover/winclean/badge)](https://www.codefactor.io/repository/github/5cover/winclean)
 
 [**Français**](README.fr.md)
