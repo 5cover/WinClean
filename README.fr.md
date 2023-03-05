@@ -1,14 +1,22 @@
-[![Code Climate](https://codeclimate.com/github/5cover/WinClean.png)](https://codeclimate.com/github/5cover/WinClean.png)
-[![CodeFactor](https://www.codefactor.io/repository/github/5cover/winclean/badge)](https://www.codefactor.io/repository/github/5cover/winclean)
+# [🇫🇷](README.fr.md)
 
-[**English**](README.md)
+<img src="https://repository-images.githubusercontent.com/511304031/b457c648-65b6-438d-9375-094c647f2066" alt="WinClean logo" width="300" align="left"/>
 
-![GitHub release (latest by date)](https://img.shields.io/github/downloads/5cover/WinClean/latest/total?label=Télécharger&logo=windows&logoColor=00BCF2)
+<div id="user-content-toc" align="center">
+  <ul>
+    <summary><h1 style="display: inline-block;">WinClean</h1></summary>
+  </ul>
+</div>
+<p align="center">Windows optimization and debloating utility.</p>
+<p align="center">
+  <a href="https://www.codefactor.io/repository/github/5cover/WinClean"><img src="https://www.codefactor.io/repository/github/5cover/winclean/badge" alt="CodeFactor" /></a>
+  <a href="https://github.com/5cover/WinClean/releases/latest"><img alt="Télécharger" src="https://img.shields.io/github/downloads/5cover/WinClean/total?label=Télécharger&color=00ac6d&logo=windows&logoColor=00abef" /></a>
+  <a href="https://github.com/5cover/WinClean/blob/master/LICENSE"><img alt="Licence" src="https://img.shields.io/github/license/5cover/winclean?label=Licence&color=00ac6d" /></a>
+</p>
 
-# WinClean
-Utilitaire d'optimisation des performances et de nettoyage de Windows, accessible aux utilisateurs moyens tout comme aux administrateurs système.
+---
 
-Améliorez les performances de Windows en quelques clics, alors alors que Windows devient de plus en plus gourmand et de moins en moins optimisé.
+Accessible aux utilisateurs moyens tout comme aux administrateurs système, WinClean permet d'améliorer les performances de Windows en quelques clics, alors alors que Windows devient de plus en plus gourmand et de moins en moins optimisé.
 
 ![Capture d'écran](https://raw.githubusercontent.com/wiki/5cover/WinClean/locale/fr-FR/img/MainWindow.png)
 
