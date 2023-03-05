@@ -25,7 +25,7 @@
     <TargetFrameworkIdentifier>.NETCoreApp</TargetFrameworkIdentifier>
     <UseWindowsForms>False</UseWindowsForms>
     <UseWPF>true</UseWPF>
-    <Version>1.2.2</Version>
+    <Version>1.3.0</Version>
     <Copyright>(c) Scover 2023</Copyright>
     <Title>$(AssemblyName)</Title>
   </PropertyGroup>
