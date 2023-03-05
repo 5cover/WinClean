@@ -1,4 +1,4 @@
-# [🇫🇷](README.fr.md)
+# [🇫🇷](README.md)
 
 <img src="https://repository-images.githubusercontent.com/511304031/b457c648-65b6-438d-9375-094c647f2066" alt="WinClean logo" width="300" align="left"/>
 
