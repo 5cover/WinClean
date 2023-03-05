@@ -1,8 +1,8 @@
-﻿using System.Collections.Specialized;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Media;
 
@@ -49,28 +49,29 @@ public static class Extensions
         }
     }
 
-    public static IEnumerable<(string? key, string? value)> ParseKeysAndValues(this StringCollection strCollection)
+    public static IEnumerable<KeyValuePair<string, string>> ParseMockDictionary(this string str)
     {
-        for (int i = 0; i < strCollection.Count; i += 2)
+        var lines = str.Split(Environment.NewLine);
+        if (lines.Length % 2 == 1)
         {
-            yield return new(strCollection[i], strCollection[i + 1]);
+            throw new ArgumentException("Not every key matches with a value", nameof(str));
+        }
+        for (int i = 0; i < lines.Length; i += 2)
+        {
+            yield return new(lines[i], lines[i + 1]);
         }
     }
 
-    /// <summary>
-    /// Replaces the content of a string collection with tuples by alternating between keys and values.
-    /// </summary>
-    /// <param name="strCollection">The string collection to update.</param>
-    /// <param name="keyValuePairs">The key/value pairs to add to <paramref name="strCollection"/>.</param>
-    /// <remarks>Keys are on even indexes. Values are on odd indexes.</remarks>
-    public static void SetContent(this StringCollection strCollection, IEnumerable<KeyValuePair<string, string>> keyValuePairs)
+    public static string ToMockStringDic<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> keyValuePairs, Func<TKey, string>? keyFormatter = null, Func<TValue, string>? valueFormatter = null)
     {
-        strCollection.Clear();
+        StringBuilder strBuilder = new();
         foreach (var (key, value) in keyValuePairs)
         {
-            _ = strCollection.Add(key);
-            _ = strCollection.Add(value);
+            _ = strBuilder
+                .AppendLine(keyFormatter?.Invoke(key) ?? key?.ToString())
+                .AppendLine(valueFormatter?.Invoke(value) ?? value?.ToString());
         }
+        return strBuilder.ToString()[..^Environment.NewLine.Length];
     }
 
     /// <summary>

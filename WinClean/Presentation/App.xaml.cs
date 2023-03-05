@@ -33,10 +33,8 @@ public sealed partial class App
 
     static App()
     {
-        Settings.Default[nameof(Settings.ScriptExecutionTimes)] ??= new System.Collections.Specialized.StringCollection();
-
-        ScriptExecutionTimes = Settings.ScriptExecutionTimes.ParseKeysAndValues().ToDictionary(kv => kv.key.AssertNotNull(),
-            kv => TimeSpan.ParseExact(kv.value.AssertNotNull(), ScriptExecutionTimesFormatString, CultureInfo.InvariantCulture));
+        ScriptExecutionTimes = Settings.ScriptExecutionTimes?.ParseMockDictionary().ToDictionary(kv => kv.Key,
+            kv => TimeSpan.ParseExact(kv.Value, ScriptExecutionTimesFormatString, CultureInfo.InvariantCulture)) ?? new Dictionary<string, TimeSpan>();
 
         IScriptMetadataDeserializer d = new ScriptMetadataXmlDeserializer();
         // Explicitely enumerate the metadata lists.
@@ -174,7 +172,7 @@ public sealed partial class App
 
     private void ApplicationExit(object? sender, ExitEventArgs? e)
     {
-        Settings.ScriptExecutionTimes.SetContent(ScriptExecutionTimes.ToDictionary(kv => kv.Key, kv => kv.Value.ToString(ScriptExecutionTimesFormatString)));
+        Settings.ScriptExecutionTimes = ScriptExecutionTimes.ToMockStringDic(valueFormatter: value => value.ToString(ScriptExecutionTimesFormatString));
         Settings.Save();
         Logs.SettingsSaved.Log();
         Logs.Exiting.Log();

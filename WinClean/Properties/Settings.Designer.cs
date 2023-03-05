@@ -116,11 +116,15 @@ namespace Scover.WinClean.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Collections.Specialized.StringCollection ScriptExecutionTimes {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ScriptExecutionTimes {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["ScriptExecutionTimes"]));
+                return ((string)(this["ScriptExecutionTimes"]));
+            }
+            set {
+                this["ScriptExecutionTimes"] = value;
             }
         }
         

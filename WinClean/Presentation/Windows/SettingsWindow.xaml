@@ -79,15 +79,15 @@
             Grid.Row="4"
             Grid.Column="0"
             Content="{x:Static ui:SettingsWindow.EnableLogging}"
-            Target="{Binding ElementName=EnableLoggingSetting}" />
+            Target="{Binding ElementName=IsLoggingEnabledSetting}" />
         <CheckBox
-            x:Name="EnableLoggingSetting"
+            x:Name="IsLoggingEnabledSetting"
             Grid.Row="4"
             Grid.Column="1"
             Margin="0,0,0,12"
             HorizontalAlignment="Center"
             DataContext="{StaticResource Settings}"
-            IsChecked="{Binding Default.EnableLogging, Mode=TwoWay}" />
+            IsChecked="{Binding Default.IsLoggingEnabled, Mode=TwoWay}" />
 
         <StackPanel
             Grid.Row="5"
