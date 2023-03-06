@@ -7,45 +7,33 @@ namespace Scover.WinClean.BusinessLogic;
 /// </summary>
 public class SourceControlClient
 {
-    private static readonly Lazy<SourceControlClient> _instance = new(() =>
+    private SourceControlClient(string latestVersionName, string latestVersionUrl, string newIssueUrl, string wikiUrl)
+        => (LatestVersionName, LatestVersionUrl, NewIssueUrl, WikiUrl) = (latestVersionName, latestVersionUrl, newIssueUrl, wikiUrl);
+
+    public static Task<SourceControlClient> Instance { get; } = GetInstance();
+    public string LatestVersionName { get; }
+
+    public string LatestVersionUrl { get; }
+
+    public string NewIssueUrl { get; }
+
+    public string WikiUrl { get; }
+
+    private static async Task<SourceControlClient> GetInstance()
     {
         try
         {
-            return new ActualSourceControlClient();
+            const string Owner = "5cover", Name = "WinClean";
+            GitHubClient github = new(new ProductHeaderValue(AppInfo.Name + AppInfo.Version));
+            var repo = await github.Repository.Get(Owner, Name);
+            var latestRelease = await github.Repository.Release.GetLatest(Owner, Name);
+
+            return new(latestRelease.Name, latestRelease.HtmlUrl, $"{repo.HtmlUrl}/issues/new", $"{repo.HtmlUrl}/wiki");
         }
-        catch (AggregateException)
+        catch (ApiException)
         {
-            // Return a mock object if the "real" source control client is unavailable due to, for instance,
-            // a network error.
-            return new();
+            // Return mock data if the "real" source control client is unavailable.
+            return new(AppInfo.Name, AppInfo.Version, "", "");
         }
-    });
-
-    public static SourceControlClient Instance => _instance.Value;
-
-    public virtual ValueTask<string> GetNewIssueUrl() => ValueTask.FromResult("");
-
-    public virtual ValueTask<string> GetWikiUrl() => ValueTask.FromResult("");
-
-    private sealed class ActualSourceControlClient : SourceControlClient
-    {
-        // WinClean repository ID (https://github.com/5cover/WinClean)
-        private const long RepoId = 511304031;
-
-        private readonly Task<Repository> _repo;
-
-        /// <summary>Creates a new <see cref="SourceControlClient"/> instance.</summary>
-        /// <exception cref="AggregateException">
-        /// An error occured with the source control API. See the inner exception for more details.
-        /// </exception>
-        public ActualSourceControlClient()
-        {
-            GitHubClient github = new(new ProductHeaderValue(AppMetadata.Name + AppMetadata.Version));
-            _repo = github.Repository.Get(RepoId);
-        }
-
-        public override async ValueTask<string> GetNewIssueUrl() => $"{(await _repo).HtmlUrl}/issues/new";
-
-        public override async ValueTask<string> GetWikiUrl() => $"{(await _repo).HtmlUrl}/wiki";
     }
 }

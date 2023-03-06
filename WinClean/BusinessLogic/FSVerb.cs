@@ -4,19 +4,19 @@ namespace Scover.WinClean.BusinessLogic;
 
 public sealed class FSVerb
 {
-    private FSVerb(string verb) => Verb = verb;
+    private FSVerb(string verb) => Name = verb;
 
     /// <summary>Access of a file system element.</summary>
-    public static FSVerb Access { get; } = new(FileSystem.Acess);
+    public static FSVerb Access { get; } = new(FSVerbs.Acess);
 
     /// <summary>Creation of a file system element.</summary>
-    public static FSVerb Create { get; } = new(FileSystem.Create);
+    public static FSVerb Create { get; } = new(FSVerbs.Create);
 
     /// <summary>Deletion of a file system element.</summary>
-    public static FSVerb Delete { get; } = new(FileSystem.Delete);
+    public static FSVerb Delete { get; } = new(FSVerbs.Delete);
 
     /// <summary>Move of a file system element.</summary>
-    public static FSVerb Move { get; } = new(FileSystem.Move);
+    public static FSVerb Move { get; } = new(FSVerbs.Move);
 
-    public string Verb { get; }
+    public string Name { get; }
 }

@@ -1,4 +1,5 @@
-﻿using Scover.WinClean.Presentation.Logging;
+﻿using Scover.WinClean.BusinessLogic;
+using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Resources;
 
 namespace Scover.WinClean.Presentation;
@@ -6,16 +7,21 @@ namespace Scover.WinClean.Presentation;
 public partial class App
 {
     private static readonly Callbacks consoleCallbacks = new(
-        (e, path) =>
+        NotifyUpdateAvailable: async () =>
+        {
+            var scc = await SourceControlClient.Instance;
+            WinClean.Resources.CommandLine.Update.FormatWith(scc.LatestVersionName, scc.LatestVersionUrl).Log(LogLevel.Info);
+        },
+        InvalidScriptData: (e, path) =>
         {
             // Log the error, but ignore invalid scripts.
             Logs.ScriptNotLoaded.FormatWith(path, e).Log(LogLevel.Error);
-            return false;
+            return InvalidScriptDataAction.Ignore;
         },
-        (e, _, info) =>
+        FSErrorReloadElseIgnore: (e) =>
         {
-            Logs.ScriptNotLoaded.FormatWith(info.FullName, e).Log(LogLevel.Error);
+            Logs.ScriptNotLoaded.FormatWith(e.Element, e).Log(LogLevel.Error);
             return false;
         },
-        e => Logger.Log(Logs.UnhandledException.FormatWith(e), LogLevel.Critical));
+        WarnOnUnhandledException: e => Logs.UnhandledException.FormatWith(e).Log(LogLevel.Critical));
 }

@@ -118,21 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Acess" xml:space="preserve">
-    <value>d'accéder au</value>
+    <value>d'accéder à</value>
   </data>
   <data name="Create" xml:space="preserve">
-    <value>de créer le</value>
+    <value>de créer</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>de supprimer le</value>
+    <value>de supprimer</value>
   </data>
   <data name="Move" xml:space="preserve">
-    <value>de déplacer le</value>
-  </data>
-  <data name="File" xml:space="preserve">
-    <value>fichier</value>
-  </data>
-  <data name="Directory" xml:space="preserve">
-    <value>dossier</value>
+    <value>de déplacer</value>
   </data>
 </root>

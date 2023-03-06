@@ -97,8 +97,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot {0} {1} &quot;{2}&quot;.
-        ///{3}.
+        ///   Looks up a localized string similar to Cannot {0} &quot;{1}&quot;. {2}.
         /// </summary>
         public static string FSErrorContent {
             get {
@@ -156,9 +155,9 @@ namespace Scover.WinClean.Resources.UI {
         ///&lt;A HREF=&quot;CopyDetails&quot;&gt;Copy details&lt;/A&gt;
         ///&lt;A HREF=&quot;ReportIssue&quot;&gt;Report this issue...&lt;/A&gt;.
         /// </summary>
-        public static string UnhandledExceptionDialogContent {
+        public static string UnhandledExceptionContent {
             get {
-                return ResourceManager.GetString("UnhandledExceptionDialogContent", resourceCulture);
+                return ResourceManager.GetString("UnhandledExceptionContent", resourceCulture);
             }
         }
         

@@ -97,10 +97,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="WindowTitle" xml:space="preserve">
-    <value>{0} - Script execution</value>
-    <comment>0 : application name</comment>
-  </data>
   <data name="CreatingRestorePointContent" xml:space="preserve">
     <value>Creating restore point...</value>
   </data>
@@ -135,5 +131,9 @@ Time remaining: {4}</value>
     <value>Script "{0}" has been running for {1} and is probably hung.</value>
     <comment>0 : name of the affected script
 1 : script timeout</comment>
+  </data>
+  <data name="WindowTitle" xml:space="preserve">
+    <value>{0} - Script execution</value>
+    <comment>0 : application name</comment>
   </data>
 </root>

@@ -7,24 +7,16 @@ using static System.Globalization.CultureInfo;
 
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
-/// <summary>An immutable script deployed with the application.</summary>
-public sealed class Script : INotifyPropertyChanged
+/// <summary>A mutable script.</summary>
+public class Script : INotifyPropertyChanged, IEquatable<Script?>
 {
     private Category _category;
     private string _code;
     private Host _host;
     private Impact _impact;
     private RecommendationLevel _recommendationLevel;
-    private bool _selected;
 
-    public Script(Category category,
-                  string code,
-                  Host host,
-                  Impact impact,
-                  RecommendationLevel recommendationLevel,
-                  LocalizedString localizedDescription,
-                  LocalizedString localizedName,
-                  ScriptType type)
+    public Script(Category category, string code, Host host, Impact impact, RecommendationLevel recommendationLevel, LocalizedString localizedDescription, LocalizedString localizedName, ScriptType type)
         => (_category, _code, _host, _impact, _recommendationLevel, LocalizedDescription, LocalizedName, Type)
          = (category, code, host, impact, recommendationLevel, localizedDescription, localizedName, type);
 
@@ -90,17 +82,6 @@ public sealed class Script : INotifyPropertyChanged
         }
     }
 
-    /// <summary>Gets or sets whether this script has been selected for execution by the user.</summary>
-    public bool IsSelected
-    {
-        get => _selected;
-        set
-        {
-            _selected = value;
-            OnPropertyChanged();
-        }
-    }
-
     public LocalizedString LocalizedDescription { get; init; }
     public LocalizedString LocalizedName { get; init; }
 
@@ -126,13 +107,17 @@ public sealed class Script : INotifyPropertyChanged
 
     public ScriptType Type { get; }
 
-    /// <summary>Executes the script asynchronously.</summary>
-    /// <inheritdoc cref="Host.Execute(string, TimeSpan, Func{bool}, CancellationToken)"/>
-    public async Task Execute(TimeSpan timeout, HungScriptCallback keepRunningElseTerminateHungScript, CancellationToken cancellationToken)
-        => await Host.Execute(Code, timeout, () => keepRunningElseTerminateHungScript(this), cancellationToken);
+    public override bool Equals(object? obj) => Equals(obj as Script);
 
-    /// <summary>Executes the script synchrounously.</summary>
-    public void Execute() => Host.Execute(Code);
+    public bool Equals(Script? other) => other is not null && InvariantName == other.InvariantName;
+
+
+    /// <summary>Executes the script.</summary>
+    /// <inheritdoc cref="Host.Execute(string)"/>
+    public ScriptExecution Execute()
+        => Host.Execute(Code);
+
+    public override int GetHashCode() => InvariantName.GetHashCode();
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new(propertyName));
 }

@@ -3,7 +3,8 @@ using System.Windows.Controls;
 
 using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic;
-using Scover.WinClean.BusinessLogic.Scripts;
+using Scover.WinClean.Presentation.Logging;
+using Scover.WinClean.Resources;
 
 using static Scover.WinClean.Resources.UI.Dialogs;
 
@@ -30,7 +31,7 @@ public partial class MainWindow
 
     private void ButtonExecuteScriptsClick(object sender, RoutedEventArgs e)
     {
-        var selectedScripts = Scripts.Where(s => s.IsSelected).ToList();
+        var selectedScripts = Scripts.Where(s => s.IsChecked).ToList();
 
         if (selectedScripts.Any())
         {
@@ -41,7 +42,7 @@ public partial class MainWindow
         using Page noScriptsSelected = new()
         {
             IsCancelable = true,
-            WindowTitle = AppMetadata.Name,
+            WindowTitle = AppInfo.Name,
             Icon = DialogIcon.Error,
             MainInstruction = NoScriptsSelectedMainInstruction,
             Content = NoScriptsSelectedContent,
@@ -61,7 +62,7 @@ public partial class MainWindow
 
     private void MenuNoneClick(object sender, RoutedEventArgs e) => CheckScripts(_ => false);
 
-    private async void MenuOnlineWikiClick(object sender, RoutedEventArgs e) => (await SourceControlClient.Instance.GetWikiUrl()).Open();
+    private async void MenuOnlineWikiClick(object sender, RoutedEventArgs e) => (await SourceControlClient.Instance).WikiUrl.Open();
 
     private void MenuOpenLogsDirClick(object sender, RoutedEventArgs e) => AppDirectory.Logs.Open();
 
@@ -81,7 +82,7 @@ public partial class MainWindow
         {
             if (dgScripts.SelectedItem is not null)
             {
-                _selectedScripts[category] = (Script)dgScripts.SelectedItem;
+                _selectedScriptsDictionary[category] = (CheckableScript)dgScripts.SelectedItem;
             }
             return;
         }
@@ -95,6 +96,7 @@ public partial class MainWindow
         App.Settings.Width = Width;
         App.Settings.Height = Height;
         App.Settings.IsMaximized = WindowState == WindowState.Maximized;
-        App.SaveScripts(Scripts);
+        App.Scripts.Save(Scripts);
+        Logs.ScriptsSaved.Log();
     }
 }

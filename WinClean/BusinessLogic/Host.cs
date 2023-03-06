@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Threading;
 
 using Scover.WinClean.DataAccess;
 
@@ -37,37 +38,24 @@ public sealed record Host : ScriptMetadata
     /// langword="false"/>.
     /// </exception>
     /// <exception cref="OperationCanceledException">The operation was canceled.</exception>
-    public async Task Execute(string code, TimeSpan timeout, Func<bool> keepRunningElseTerminateHungScript, CancellationToken cancellationToken)
+    /// <returns>A <see cref="ScriptExecution"/> instance that provides information about the ongoing script execution.</returns>
+    public ScriptExecution Execute(string code)
     {
         string tmpScriptFile = CreateTempFile(code);
-        using Process hostProcess = StartHost(tmpScriptFile);
-        while (!hostProcess.HasExited)
+        ScriptExecution execution = new(GetStartInfo(tmpScriptFile));
+        execution.ProcessExited += (s, e) =>
         {
-            cancellationToken.ThrowIfCancellationRequested();
             try
             {
-                await hostProcess.WaitForExitAsync(cancellationToken).WithTimeout(timeout);
+                
+                File.Delete(tmpScriptFile);
             }
-            catch (TimeoutException)
+            catch (Exception ex) when (ex.IsFileSystemExogenous())
             {
-                if (!keepRunningElseTerminateHungScript())
-                {
-                    hostProcess.Kill(true);
-                    throw;
-                }
+                // It's a temp file, it's fine not to delete it.
             }
-        }
-        File.Delete(tmpScriptFile);
-    }
-
-    /// <summary>Executes code synchronously.</summary>
-    /// <param name="code">The code to execute.</param>
-    public void Execute(string code)
-    {
-        string tmpScriptFile = CreateTempFile(code);
-        using Process hostProcess = StartHost(tmpScriptFile);
-        hostProcess.WaitForExit();
-        File.Delete(tmpScriptFile);
+        };
+        return execution;
     }
 
     private string CreateTempFile(string text)
@@ -77,9 +65,10 @@ public sealed record Host : ScriptMetadata
         return tmpFile;
     }
 
-    private Process StartHost(string script) => Process.Start(new ProcessStartInfo(_executable, _arguments.FormatWith(script))
+    private ProcessStartInfo GetStartInfo(string tmpScriptFile) => new(_executable, _arguments.FormatWith(tmpScriptFile))
     {
-        WindowStyle = ProcessWindowStyle.Hidden,
-        UseShellExecute = true // necessary for WindowStyle
-    }).AssertNotNull();
+        CreateNoWindow = true,
+        RedirectStandardError = true,
+        RedirectStandardOutput = true,
+    };
 }

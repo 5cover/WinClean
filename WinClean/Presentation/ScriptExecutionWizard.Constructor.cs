@@ -83,7 +83,7 @@ public partial class ScriptExecutionWizard
             Button stop = new(Buttons.Stop);
             stop.Clicked += (s, e) =>
             {
-                using Page page = DialogPageFactory.ConfirmAbortOperation();
+                using Page page = DialogPages.ConfirmAbortOperation;
                 e.Cancel = Button.No.Equals(new Dialog(page).Show());
             };
 
@@ -111,7 +111,7 @@ public partial class ScriptExecutionWizard
         #endregion Execution progress
     }
 
-    private static string PageWindowTitle => WindowTitle.FormatWith(AppMetadata.Name);
+    private static string PageWindowTitle => WindowTitle.FormatWith(AppInfo.Name);
 
     private async void CreateRestorePoint(object? sender, EventArgs args)
     {
@@ -121,26 +121,10 @@ public partial class ScriptExecutionWizard
             // the eligible ones.
             using Process powerShell = $"-Command Enable-ComputerRestore -Drive {string.Join(',', DriveInfo.GetDrives().Select(di => @$"""{di.Name}\"""))}".StartPowerShellWithArguments().AssertNotNull();
             powerShell.WaitForExit();
-            new RestorePoint(AppMetadata.Name, EventType.BeginSystemChange, RestorePointType.ModifySettings).Create();
+            new RestorePoint(AppInfo.Name, EventType.BeginSystemChange, RestorePointType.ModifySettings).Create();
         });
         _restorePointProgress.Exit();
         Logs.RestorePointCreated.Log();
-    }
-
-    private async void StartTimer(object? s, EventArgs e)
-    {
-        while (await _timer.WaitForNextTickAsync())
-        {
-            if (_timeRemaining < _timerInterval)
-            {
-                _timeRemaining = TimeSpan.Zero;
-            }
-            else
-            {
-                _timeRemaining -= _timerInterval;
-            }
-            UpdateExpandedInfo();
-        }
     }
 
     private async void StartExecution(object? s, EventArgs e)
@@ -170,6 +154,22 @@ public partial class ScriptExecutionWizard
         Logs.ScriptsExecuted.Log(LogLevel.Info);
         _executionProgress.Exit();
         _timer.Dispose();
+    }
+
+    private async void StartTimer(object? s, EventArgs e)
+    {
+        while (await _timer.WaitForNextTickAsync())
+        {
+            if (_timeRemaining < _timerInterval)
+            {
+                _timeRemaining = TimeSpan.Zero;
+            }
+            else
+            {
+                _timeRemaining -= _timerInterval;
+            }
+            UpdateExpandedInfo();
+        }
     }
 
     private void UpdateExpandedInfo() => _executionProgress.Expander.AssertNotNull().Text = ExecutionProgressExpanderText

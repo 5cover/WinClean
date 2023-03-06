@@ -117,17 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Verbose" xml:space="preserve">
-    <value>Verbeux</value>
-  </data>
-  <data name="Info" xml:space="preserve">
-    <value>Information</value>
-  </data>
   <data name="Critical" xml:space="preserve">
     <value>Critique</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Erreur</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="Verbose" xml:space="preserve">
+    <value>Verbeux</value>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>Avertissement</value>

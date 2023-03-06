@@ -11,5 +11,5 @@ public sealed partial class AboutWindow
 
     private void ButtonOKClick(object sender, RoutedEventArgs e) => Close();
 
-    private void RepoUrlRequestNavigate(object sender, RequestNavigateEventArgs e) => AppMetadata.RepositoryUrl.Open();
+    private void RepoUrlRequestNavigate(object sender, RequestNavigateEventArgs e) => AppInfo.RepositoryUrl.Open();
 }

@@ -117,24 +117,33 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MenuFile" xml:space="preserve">
-    <value>_File</value>
+  <data name="Category" xml:space="preserve">
+    <value>Cate_gory</value>
+  </data>
+  <data name="Host" xml:space="preserve">
+    <value>_Host</value>
+  </data>
+  <data name="Impact" xml:space="preserve">
+    <value>I_mpact</value>
+  </data>
+  <data name="MenuAbout" xml:space="preserve">
+    <value>_About {0}</value>
+    <comment>0 : program name</comment>
+  </data>
+  <data name="MenuAll" xml:space="preserve">
+    <value>_All</value>
     <comment />
   </data>
   <data name="MenuClearLogs" xml:space="preserve">
     <value>_Clear logs</value>
     <comment />
   </data>
-  <data name="MenuSelectScripts" xml:space="preserve">
-    <value>Select s_cripts</value>
+  <data name="MenuFile" xml:space="preserve">
+    <value>_File</value>
     <comment />
   </data>
-  <data name="RecommendationLevel" xml:space="preserve">
-    <value>_Recommended</value>
-    <comment />
-  </data>
-  <data name="MenuAll" xml:space="preserve">
-    <value>_All</value>
+  <data name="MenuHelp" xml:space="preserve">
+    <value>_Help</value>
     <comment />
   </data>
   <data name="MenuNone" xml:space="preserve">
@@ -145,18 +154,6 @@
     <value>_Online wiki</value>
     <comment />
   </data>
-  <data name="MenuHelp" xml:space="preserve">
-    <value>_Help</value>
-    <comment />
-  </data>
-  <data name="MenuSettings" xml:space="preserve">
-    <value>_Settings</value>
-    <comment />
-  </data>
-  <data name="MenuAbout" xml:space="preserve">
-    <value>_About {0}</value>
-    <comment>0 : program name</comment>
-  </data>
   <data name="MenuOpenCustomScriptsDir" xml:space="preserve">
     <value>_Open custom scripts directory</value>
     <comment />
@@ -165,16 +162,19 @@
     <value>O_pen logs directory</value>
     <comment />
   </data>
-  <data name="Category" xml:space="preserve">
-    <value>Cate_gory</value>
+  <data name="MenuSelectScripts" xml:space="preserve">
+    <value>Select s_cripts</value>
+    <comment />
   </data>
-  <data name="Impact" xml:space="preserve">
-    <value>I_mpact</value>
-  </data>
-  <data name="Host" xml:space="preserve">
-    <value>_Host</value>
+  <data name="MenuSettings" xml:space="preserve">
+    <value>_Settings</value>
+    <comment />
   </data>
   <data name="Name" xml:space="preserve">
     <value>_Name</value>
+  </data>
+  <data name="RecommendationLevel" xml:space="preserve">
+    <value>_Recommended</value>
+    <comment />
   </data>
 </root>

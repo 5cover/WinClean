@@ -17,21 +17,21 @@
         <DataTemplate DataType="scripts:Script">
             <DataTemplate.Resources>
                 <!--  Cannot use the converters resources defined in App.xaml because they are not accessible from UserControls.  -->
-                <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
-                <converters:BooleanInvertConverter x:Key="BooleanInvertConverter" />
+                <converters:IsNotNullConverter x:Key="IsNotNull" />
+                <converters:BooleanInvertConverter x:Key="BooleanInvert" />
                 <Style TargetType="ComboBoxItem">
                     <Setter Property="ToolTip" Value="{Binding Content.(scripts:Script.Description), RelativeSource={RelativeSource Self}}" />
                 </Style>
                 <Style TargetType="ComboBox">
                     <Setter Property="DisplayMemberPath" Value="Name" />
-                    <Setter Property="IsEnabled" Value="{Binding ForbidEdit, ElementName=UserControl, Converter={StaticResource BooleanInvertConverter}}" />
+                    <Setter Property="IsEnabled" Value="{Binding ForbidEdit, ElementName=UserControl, Converter={StaticResource BooleanInvert}}" />
                 </Style>
                 <Style TargetType="TextBox">
                     <Setter Property="IsReadOnly" Value="{Binding ForbidEdit, ElementName=UserControl}" />
                     <Setter Property="Padding" Value="1.5" />
                 </Style>
             </DataTemplate.Resources>
-            <Grid IsEnabled="{Binding Converter={StaticResource IsNotNullConverter}}">
+            <Grid IsEnabled="{Binding Converter={StaticResource IsNotNull}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
@@ -67,7 +67,7 @@
                     Grid.Row="2"
                     Grid.Column="0"
                     Margin="0,0,3,6"
-                    ItemsSource="{Binding Source={x:Static presentation:App.ScriptMetadata}, ConverterParameter={x:Type businessLogic:Category}, Converter={StaticResource TypedCollectionDictionaryValueConverter}}"
+                    ItemsSource="{Binding Path=Metadatas, Source={x:Static presentation:App.Scripts}, ConverterParameter={x:Type businessLogic:Category}, Converter={StaticResource TypedCollectionDictionaryValue}}"
                     SelectedItem="{Binding Category, Mode=TwoWay}"
                     SelectionChanged="ComboBoxCategorySelectionChanged" />
 
@@ -75,21 +75,21 @@
                     Grid.Row="2"
                     Grid.Column="1"
                     Margin="3,0,0,6"
-                    ItemsSource="{Binding Source={x:Static presentation:App.ScriptMetadata}, ConverterParameter={x:Type businessLogic:RecommendationLevel}, Converter={StaticResource TypedCollectionDictionaryValueConverter}}"
+                    ItemsSource="{Binding Path=Metadatas, Source={x:Static presentation:App.Scripts}, ConverterParameter={x:Type businessLogic:RecommendationLevel}, Converter={StaticResource TypedCollectionDictionaryValue}}"
                     SelectedItem="{Binding RecommendationLevel, Mode=TwoWay}" />
 
                 <ComboBox
                     Grid.Row="3"
                     Grid.Column="0"
                     Margin="0,0,3,6"
-                    ItemsSource="{Binding Source={x:Static presentation:App.ScriptMetadata}, ConverterParameter={x:Type businessLogic:Host}, Converter={StaticResource TypedCollectionDictionaryValueConverter}}"
+                    ItemsSource="{Binding Path=Metadatas, Source={x:Static presentation:App.Scripts}, ConverterParameter={x:Type businessLogic:Host}, Converter={StaticResource TypedCollectionDictionaryValue}}"
                     SelectedItem="{Binding Host, Mode=TwoWay}" />
 
                 <ComboBox
                     Grid.Row="3"
                     Grid.Column="1"
                     Margin="3,0,0,6"
-                    ItemsSource="{Binding Source={x:Static presentation:App.ScriptMetadata}, ConverterParameter={x:Type businessLogic:Impact}, Converter={StaticResource TypedCollectionDictionaryValueConverter}}"
+                    ItemsSource="{Binding Path=Metadatas, Source={x:Static presentation:App.Scripts}, ConverterParameter={x:Type businessLogic:Impact}, Converter={StaticResource TypedCollectionDictionaryValue}}"
                     SelectedItem="{Binding Impact, Mode=TwoWay}" />
 
                 <TextBox

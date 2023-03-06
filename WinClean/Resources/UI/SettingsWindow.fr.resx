@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Title" xml:space="preserve">
-    <value>Paramètres</value>
+  <data name="EnableLogging" xml:space="preserve">
+    <value>_Activer la journalisation</value>
   </data>
   <data name="ScriptTimeout" xml:space="preserve">
     <value>_Temps maximal d'exécution d'un script</value>
@@ -132,7 +132,7 @@
   <data name="ShowUpdateDialog" xml:space="preserve">
     <value>Afficher l'a_vertissement de mise à jour</value>
   </data>
-  <data name="EnableLogging" xml:space="preserve">
-    <value>_Activer la journalisation</value>
+  <data name="Title" xml:space="preserve">
+    <value>Paramètres</value>
   </data>
 </root>

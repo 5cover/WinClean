@@ -83,7 +83,7 @@ public sealed class HelpersTests
 
     [TestCaseSource(nameof(sumCases))]
     public void TestSum(TimeSpan total, IEnumerable<TimeSpan> elements)
-        => Assert.That(total, Is.EqualTo(elements.Sum<TimeSpan>(ts => ts)));
+        => Assert.That(total, Is.EqualTo(elements.Sum(ts => ts)));
 
     [TestCaseSource(nameof(toFilenameCases))]
     public void TestToFilename(string filename, string replaceInvalidCharsWith, string expectedResult) => Assert.That(filename.ToFilename(replaceInvalidCharsWith), Is.EqualTo(expectedResult));

@@ -22,14 +22,14 @@ namespace Scover.WinClean.Resources.UI {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AboutWindow {
+    public class Update {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AboutWindow() {
+        internal Update() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Scover.WinClean.Resources.UI {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scover.WinClean.Resources.UI.AboutWindow", typeof(AboutWindow).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scover.WinClean.Resources.UI.Update", typeof(Update).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,29 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to About {0}.
+        ///   Looks up a localized string similar to Version {0} is available. Consider updating to get new scripts, additional features and bugfixes. &lt;A&gt;See on GitHub&lt;/A&gt;.
         /// </summary>
-        public static string Title {
+        public static string Content {
             get {
-                return ResourceManager.GetString("Title", resourceCulture);
+                return ResourceManager.GetString("Content", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Version {0}.
+        ///   Looks up a localized string similar to Update available.
         /// </summary>
-        public static string Version {
+        public static string MainInstruction {
             get {
-                return ResourceManager.GetString("Version", resourceCulture);
+                return ResourceManager.GetString("MainInstruction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t show again.
+        /// </summary>
+        public static string Verification {
+            get {
+                return ResourceManager.GetString("Verification", resourceCulture);
             }
         }
     }

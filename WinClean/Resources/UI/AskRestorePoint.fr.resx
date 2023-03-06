@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MainInstruction" xml:space="preserve">
-    <value>Créer un point de restauration ?</value>
+  <data name="CommandLinkNo" xml:space="preserve">
+    <value>Ne pas créer de point de restauration</value>
   </data>
   <data name="CommandLinkYes" xml:space="preserve">
     <value>Créer un point de restauration système (recommandé)</value>
@@ -126,7 +126,7 @@
   <data name="CommandLinkYesNote" xml:space="preserve">
     <value>Cela vous permettra d'annuler les changements sur le point d'être apportés au système. La protection du système sera activée s'il elle ne l'est pas déjà.</value>
   </data>
-  <data name="CommandLinkNo" xml:space="preserve">
-    <value>Ne pas créer de point de restauration</value>
+  <data name="MainInstruction" xml:space="preserve">
+    <value>Créer un point de restauration ?</value>
   </data>
 </root>

@@ -16,22 +16,16 @@ public sealed class CommandLineOptions
     [Option("runScripts", SetName = "B", HelpText = "The invariant names of the scripts to run, quoted and separated by spaces.", MetaValue = "\"script1\" \"script2\" ...")]
     public IEnumerable<string>? Scripts { get; set; }
 
-    public int Execute()
+    public int Execute(IEnumerable<Script> scripts)
     {
         // Assert that the mutually exclusive groups were respected.
         Debug.Assert(RunAllScripts ^ Scripts is not null);
 
-        var scriptsQuery = App.Scripts;
-        if (Scripts is not null)
-        {
-            scriptsQuery = scriptsQuery.Where(s => Scripts.Contains(s.InvariantName));
-        }
+        List<Script> scriptsToRun = (Scripts is null ? scripts : scripts.Where(s => Scripts.Contains(s.InvariantName))).ToList();
 
-        var scripts = scriptsQuery.ToList();
+        Logs.StartingExecution.FormatWith(scriptsToRun.Count).Log(LogLevel.Info);
 
-        Logs.StartingExecution.FormatWith(scripts.Count).Log(LogLevel.Info);
-
-        foreach (Script script in scripts)
+        foreach (Script script in scriptsToRun)
         {
             Logs.ScriptExecuted.FormatWith(script.InvariantName).Log();
             script.Execute();

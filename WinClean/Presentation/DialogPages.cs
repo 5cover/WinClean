@@ -1,19 +1,32 @@
 ﻿using Scover.Dialogs;
 using Scover.WinClean.BusinessLogic;
-using Scover.WinClean.Resources;
 
 using static Scover.WinClean.Resources.UI.Dialogs;
 
 namespace Scover.WinClean.Presentation;
 
 /// <summary>Implements factory methods for commonly used dialog pages.</summary>
-public static class DialogPageFactory
+public static class DialogPages
 {
-    /// <summary>Makes a dialog page for deleting a script.</summary>
-    /// <returns>A new <see cref="Page"/> object.</returns>
-    public static Page DeleteScript() => new()
+    static DialogPages()
     {
-        WindowTitle = AppMetadata.Name,
+        ConfirmAbortOperation.ScheduleDisposeOnExit();
+        DeleteScript.ScheduleDisposeOnExit();
+    }
+
+    /// <summary>Gets the dialog page for confirming a abort operation.</summary>
+    public static Page ConfirmAbortOperation { get; } = new()
+    {
+        WindowTitle = AppInfo.Name,
+        Icon = DialogIcon.Warning,
+        Content = ConfirmAbortOperationContent,
+        Buttons = { Button.Yes, Button.No },
+    };
+
+    /// <summary>Gets the dialog page for deleting a script.</summary>
+    public static Page DeleteScript { get; } = new()
+    {
+        WindowTitle = AppInfo.Name,
         Icon = DialogIcon.Warning,
         Content = ConfirmScriptDeletionContent,
         Buttons = new(defaultItem: Button.No)
@@ -33,23 +46,15 @@ public static class DialogPageFactory
     /// message.</br>
     /// </remarks>
     /// <returns>A new <see cref="Page"/> object.</returns>
-    public static Page FSError(Exception e, FSVerb verb, FileSystemInfo info, ButtonCollection buttons) => new()
+    public static Page FSError(FileSystemException e, ButtonCollection buttons) => new()
     {
-        WindowTitle = AppMetadata.Name,
+        WindowTitle = AppInfo.Name,
         Icon = DialogIcon.Error,
-        Content = FSErrorContent.FormatWith(verb.Verb,
-            info is FileInfo ? FileSystem.File : FileSystem.Directory,
-            info.FullName,
+        Content = FSErrorContent.FormatWith(e.Verb.Name,
+            e.Element,
             e.Message),
         Buttons = buttons,
-    };
-
-    public static Page ConfirmAbortOperation() => new()
-    {
-        WindowTitle = AppMetadata.Name,
-        Icon = DialogIcon.Warning,
-        Content = ConfirmAbortOperationContent,
-        Buttons = { Button.Yes, Button.No },
+        Expander = new(e.ToString())
     };
 
     /// <summary>
@@ -63,7 +68,7 @@ public static class DialogPageFactory
         Page page = new()
         {
             AllowHyperlinks = true,
-            WindowTitle = AppMetadata.Name,
+            WindowTitle = AppInfo.Name,
             Icon = DialogIcon.Error,
             MainInstruction = InvalidCustomScriptDataMainInstruction,
             Content = InvalidCustomScriptDataContent.FormatWith(Path.GetFileName(path)),

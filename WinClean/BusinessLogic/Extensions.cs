@@ -1,4 +1,5 @@
-﻿using System.Security;
+﻿using System.Diagnostics;
+using System.Security;
 using System.Text.RegularExpressions;
 using System.Xml;
 
@@ -13,19 +14,6 @@ namespace Scover.WinClean.BusinessLogic;
 public static class Extensions
 {
     private static readonly char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
-
-    public static async Task WithTimeout(this Task task, TimeSpan timeout, string? message = null)
-    {
-        CancellationTokenSource cts = new();
-        if (task == await Task.WhenAny(task, Task.Delay(timeout, cts.Token)))
-        {
-            cts.Cancel();
-        }
-        else
-        {
-            throw message is null ? new TimeoutException() : new TimeoutException(message);
-        }
-    }
 
     public static LocalizedString GetLocalizedString(this XmlDocument doc, string name)
     {
@@ -56,7 +44,7 @@ public static class Extensions
     public static string GetSingleChild(this XmlDocument parent, string name)
         => GetSingleChild(parent.DocumentElement ?? throw new XmlException("No root exists in document."), name);
 
-    /// <summary>Checks if an exception could have been thrown by the filesystem API.</summary>
+    /// <summary>Checks if an exception is exogenous and could have been thrown by the filesystem API.</summary>
     /// <returns>
     /// <para>
     /// <see langword="true"/> if <paramref name="e"/> is of or derived from any of the following types :
@@ -66,8 +54,17 @@ public static class Extensions
     /// <para>Otherwise; <see langword="false"/>.</para>
     /// </returns>
     /// <remarks>Note that unrelated methods may throw any of these exceptions.</remarks>
-    public static bool IsFileSystem(this Exception e)
+    public static bool IsFileSystemExogenous(this Exception e)
         => e is IOException or UnauthorizedAccessException or SecurityException;
+
+    /// <summary>Opens a path with the shell.</summary>
+    /// <remarks>
+    /// If <paramref name="path"/> is empty or not valid for shell execution, no process will be started.
+    /// </remarks>
+    public static void Open(this string path) => Process.Start(new ProcessStartInfo(path)
+    {
+        UseShellExecute = true
+    })?.Dispose();
 
     public static void SetFromXml(this LocalizedString str, XmlNode node)
         => str.Set(new(node.Attributes?["xml:lang"]?.Value ?? ""), node.InnerText);
@@ -79,7 +76,7 @@ public static class Extensions
     /// </param>
     /// <returns>
     /// A new <see cref="string"/>, equivalent to <paramref name="filename"/>, but modified to be a valid
-    /// Windows filename if it <paramref name="filename"/> wasn't already.
+    /// Windows filename if it wasn't already.
     /// </returns>
     /// <exception cref="ArgumentException"/>
     /// <remarks>The length of the filename is not checked, and the casing is not modified.</remarks>
@@ -101,4 +98,17 @@ public static class Extensions
 
          : Regex.Replace(filename.Trim(), $"[{Regex.Escape(new(invalidFileNameChars))}]", replaceInvalidCharsWith,
                          RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
+    public static async Task WithTimeout(this Task task, TimeSpan timeout, string? message = null)
+    {
+        CancellationTokenSource cts = new();
+        if (task == await Task.WhenAny(task, Task.Delay(timeout, cts.Token)))
+        {
+            cts.Cancel();
+        }
+        else
+        {
+            throw message is null ? new TimeoutException() : new TimeoutException(message);
+        }
+    }
 }

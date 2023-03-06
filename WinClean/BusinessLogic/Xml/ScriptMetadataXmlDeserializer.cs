@@ -25,6 +25,12 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
         => from recommendationLevel in GetLocalizable(stream, "RecommendationLevel")
            select new RecommendationLevel(recommendationLevel.name, recommendationLevel.description, (Color)ColorConverter.ConvertFromString(recommendationLevel.element.GetAttribute("Color")));
 
+    private IEnumerable<XmlElement> GetElements(Stream s, string name)
+    {
+        _doc.Load(s);
+        return _doc.GetElementsByTagName(name).Cast<XmlElement>();
+    }
+
     private IEnumerable<(XmlElement element, LocalizedString name, LocalizedString description)> GetLocalizable(Stream stream, string elementName)
     {
         foreach (var element in GetElements(stream, elementName))
@@ -45,11 +51,5 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
             }
             yield return (element, name, description);
         }
-    }
-
-    private IEnumerable<XmlElement> GetElements(Stream s, string name)
-    {
-        _doc.Load(s);
-        return _doc.GetElementsByTagName(name).Cast<XmlElement>();
     }
 }

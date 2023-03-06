@@ -29,9 +29,6 @@
     <Copyright>(c) Scover 2023</Copyright>
     <Title>$(AssemblyName)</Title>
   </PropertyGroup>
-  <Target Name="Sign" AfterTargets="Publish">
-    <Exec Command="set thumbprint=1069e1903b197b71adfcf6d2151baf5920706a21&#xD;&#xA;certutil -store -user My %thumbprint% &gt;nul 2&gt;&amp;1&#xD;&#xA;if %errorlevel% equ 0 signtool sign /fd SHA256 /sha1 %thumbprint% /t http://timestamp.digicert.com &quot;$(PublishDir)WinClean.exe&quot;" />
-  </Target>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants)</DefineConstants>
     <DebugType>full</DebugType>
@@ -42,10 +39,6 @@
     <DefineConstants>$(DefineConstants)</DefineConstants>
     <Optimize>True</Optimize>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Scripts\Optimize drives.xml" />
-  </ItemGroup>
   
   <ItemGroup>
     <EmbeddedResource Include="Categories.xml">
@@ -70,7 +63,7 @@
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
     <PackageReference Include="Humanizer" Version="2.14.1" />
     <PackageReference Include="Octokit" Version="5.0.0" />
-    <PackageReference Include="Scover.Dialogs" Version="1.4.0" />
+    <PackageReference Include="Scover.Dialogs" Version="1.4.2" />
     <PackageReference Include="System.Management" Version="7.0.0" />
     <PackageReference Include="Vanara.Core" Version="3.4.13" />
     <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.13" />
@@ -154,10 +147,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Update="Resources\FileSystem.Designer.cs">
+    <Compile Update="Resources\FSVerbs.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>FileSystem.resx</DependentUpon>
+      <DependentUpon>FSVerbs.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\LogLevels.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -209,6 +202,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Dialogs.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\UI\Update.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Update.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -223,12 +221,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Dialog.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\FileSystem.fr.resx">
+    <EmbeddedResource Update="Resources\FSVerbs.fr.resx">
       <Generator></Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\FileSystem.resx">
+    <EmbeddedResource Update="Resources\FSVerbs.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>FileSystem.Designer.cs</LastGenOutput>
+      <LastGenOutput>FSVerbs.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\FormattableStrings.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -279,6 +277,10 @@
     <EmbeddedResource Update="Resources\UI\Dialogs.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Dialogs.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\UI\Update.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Update.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   

@@ -10,7 +10,7 @@
 <p align="center">Windows optimization and debloating utility</p>
 <p align="center">
   <a href="https://www.codefactor.io/repository/github/5cover/WinClean"><img src="https://www.codefactor.io/repository/github/5cover/winclean/badge" alt="CodeFactor" /></a>
-  <a href="https://github.com/5cover/WinClean/releases/latest"><img alt="Download" src="https://img.shields.io/github/downloads/5cover/WinClean/total?label=Download&color=00ac6d&logo=windows&logoColor=00abef" /></a>
+  <a href="https://github.com/5cover/WinClean/releases/latest"><img alt="Download" src="https://img.shields.io/github/downloads/5cover/WinClean/latest/total?label=Download&color=00ac6d&logo=windows&logoColor=00abef" /></a>
   <a href="https://github.com/5cover/WinClean/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/github/license/5cover/winclean?label=License&color=00ac6d" /></a>
 </p>
 
@@ -23,8 +23,8 @@ WinClean allows the average user as well as system administrators to improve Win
 ## ~~Yet Another PC Optimizer Scam~~
 
 ## Features
-- Run *Batch*, *PowerShell*, and *Registry Editor* scripts directly from the GUI.
-- Add custom scripts to futher clean the system.
+- Run 52 *Batch*, *PowerShell*, and *Registry Editor* scripts directly from the GUI.
+- Add custom scripts to further clean the system.
 
 ## Specs
 - .NET 6

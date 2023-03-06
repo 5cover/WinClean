@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="RecommendationLevel" xml:space="preserve">
-    <value>_Recommandé</value>
+  <data name="Category" xml:space="preserve">
+    <value>_Catégorie</value>
+  </data>
+  <data name="Host" xml:space="preserve">
+    <value>_Hôte</value>
+  </data>
+  <data name="Impact" xml:space="preserve">
+    <value>I_mpact</value>
+  </data>
+  <data name="MenuAbout" xml:space="preserve">
+    <value>À _propos de {0}</value>
     <comment />
   </data>
   <data name="MenuAll" xml:space="preserve">
@@ -145,18 +154,6 @@
     <value>_Wiki en ligne</value>
     <comment />
   </data>
-  <data name="MenuSelectScripts" xml:space="preserve">
-    <value>_Sélectionner scripts</value>
-    <comment />
-  </data>
-  <data name="MenuSettings" xml:space="preserve">
-    <value>_Paramètres</value>
-    <comment />
-  </data>
-  <data name="MenuAbout" xml:space="preserve">
-    <value>À _propos de {0}</value>
-    <comment />
-  </data>
   <data name="MenuOpenCustomScriptsDir" xml:space="preserve">
     <value>Ou_vrir le dossier des scripts personnalisés</value>
     <comment />
@@ -165,16 +162,19 @@
     <value>_Ouvrir le dossier des logs</value>
     <comment />
   </data>
-  <data name="Category" xml:space="preserve">
-    <value>_Catégorie</value>
+  <data name="MenuSelectScripts" xml:space="preserve">
+    <value>_Sélectionner scripts</value>
+    <comment />
   </data>
-  <data name="Impact" xml:space="preserve">
-    <value>I_mpact</value>
-  </data>
-  <data name="Host" xml:space="preserve">
-    <value>_Hôte</value>
+  <data name="MenuSettings" xml:space="preserve">
+    <value>_Paramètres</value>
+    <comment />
   </data>
   <data name="Name" xml:space="preserve">
     <value>_Nom</value>
+  </data>
+  <data name="RecommendationLevel" xml:space="preserve">
+    <value>_Recommandé</value>
+    <comment />
   </data>
 </root>

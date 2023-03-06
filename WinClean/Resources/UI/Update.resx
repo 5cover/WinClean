@@ -97,16 +97,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CommandLinkNo" xml:space="preserve">
-    <value>Do not create a restore point</value>
-  </data>
-  <data name="CommandLinkYes" xml:space="preserve">
-    <value>Create a system restore point (recommended)</value>
-  </data>
-  <data name="CommandLinkYesNote" xml:space="preserve">
-    <value>This will allow you to undo the changes that are about to be made to the system. System restore will be enabled if it is not already.</value>
+  <data name="Content" xml:space="preserve">
+    <value>Version {0} is available. Consider updating to get new scripts, additional features and bugfixes. &lt;A&gt;See on GitHub&lt;/A&gt;</value>
+    <comment>0 : latest version</comment>
   </data>
   <data name="MainInstruction" xml:space="preserve">
-    <value>Create a restore point?</value>
+    <value>Update available</value>
+  </data>
+  <data name="Verification" xml:space="preserve">
+    <value>Don't show again</value>
   </data>
 </root>

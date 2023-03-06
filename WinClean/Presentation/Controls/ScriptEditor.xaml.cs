@@ -11,12 +11,15 @@ public sealed partial class ScriptEditor
     public static readonly DependencyProperty ForbidEditProperty
         = DependencyProperty.Register(nameof(ForbidEdit), typeof(bool), typeof(ScriptEditor));
 
+    public static readonly DependencyProperty IsReadonlyProperty
+        = DependencyProperty.Register(nameof(IsReadonly), typeof(bool), typeof(ScriptEditor));
+
     public static readonly DependencyProperty SelectedProperty
         = DependencyProperty.Register(nameof(Selected), typeof(Script), typeof(ScriptEditor), new(SelectedPropertyChanged));
 
     public ScriptEditor() => InitializeComponent();
 
-    /// <summary><see cref="Selected"/>'s property, <see cref="Script.Category"/>, has changed.</summary>
+    /// <summary><see cref="Selected"/>'s property, <see cref="IScript.Category"/>, has changed.</summary>
     public event EventHandler? ScriptChangedCategory;
 
     /// <summary><see cref="Selected"/> was removed.</summary>
@@ -28,6 +31,12 @@ public sealed partial class ScriptEditor
         set => SetValue(ForbidEditProperty, value);
     }
 
+    public bool IsReadonly
+    {
+        get => (bool)GetValue(IsReadonlyProperty);
+        set => SetValue(IsReadonlyProperty, value);
+    }
+
     public Script? Selected
     {
         get => (Script?)GetValue(SelectedProperty);
@@ -35,7 +44,10 @@ public sealed partial class ScriptEditor
     }
 
     public static void SelectedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        => ((ScriptEditor)d).ForbidEdit = e.NewValue is Script s && s.Type.IsEditable;
+    {
+        var scriptEditor = (ScriptEditor)d;
+        scriptEditor.ForbidEdit = scriptEditor.IsReadonly || e.NewValue is { } newValue && !((Script)newValue).Type.IsMutable;
+    }
 
     private void ButtonDelete_Click(object sender, RoutedEventArgs e) => ScriptRemoved?.Invoke(this, EventArgs.Empty);
 

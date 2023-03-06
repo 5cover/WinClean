@@ -35,8 +35,6 @@ public sealed class ScriptXmlSerializerTests
   <Code>{Code}</Code>
 </Script>";
 
-    private readonly IScriptSerializer serializer = new ScriptXmlSerializer(App.ScriptMetadata);
-
     [Test]
     public void TestDeserialize()
     {
@@ -45,7 +43,7 @@ public sealed class ScriptXmlSerializerTests
         {
             file.Write(Xml);
         }
-        var s = serializer.Deserialize(ScriptType.Custom, File.OpenRead(Filename));
+        var s = new ScriptXmlSerializer(App.Scripts.Metadatas).Deserialize(ScriptType.Default, File.OpenRead(Filename));
         Assert.Multiple(() =>
         {
             Assert.That(s.LocalizedName, Is.EquivalentTo(new KeyValuePair<string, string>[] { new("", Name), new("fr", NameFr) }));
@@ -70,15 +68,15 @@ public sealed class ScriptXmlSerializerTests
 
         Script s = new(localizedName: name,
                        localizedDescription: description,
-                       category: App.ScriptMetadata.Get<Category>().Single(c => c.InvariantName == Category),
-                       recommendationLevel: App.ScriptMetadata.Get<RecommendationLevel>().Single(r => r.InvariantName == RecommendationLevel),
-                       host: App.ScriptMetadata.Get<Host>().Single(h => h.InvariantName == Host),
-                       impact: App.ScriptMetadata.Get<Impact>().Single(i => i.InvariantName == Impact),
+                       category: App.Scripts.Metadatas.Get<Category>().Single(c => c.InvariantName == Category),
+                       recommendationLevel: App.Scripts.Metadatas.Get<RecommendationLevel>().Single(r => r.InvariantName == RecommendationLevel),
+                       host: App.Scripts.Metadatas.Get<Host>().Single(h => h.InvariantName == Host),
+                       impact: App.Scripts.Metadatas.Get<Impact>().Single(i => i.InvariantName == Impact),
                        code: Code,
-                       type: ScriptType.Custom);
+                       type: ScriptType.Default);
 
         using MemoryStream ms = new();
-        serializer.Serialize(s, ms);
+        new ScriptXmlSerializer(App.Scripts.Metadatas).Serialize(s, ms);
         ms.Position = 0;
         Assert.That(new StreamReader(ms, Encoding.UTF8).ReadToEnd(), Is.EqualTo(Xml));
     }

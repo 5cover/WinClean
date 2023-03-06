@@ -11,10 +11,11 @@
             <Setter Property="MinWidth" Value="85.7" />
             <Setter Property="Padding" Value="15,3,15,3" />
         </Style>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <converters:GoldenRatioConverter x:Key="GoldenRatioConverter" />
-        <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
-        <converters:ColorToBrushConverter x:Key="ColorToBrushConverter" />
-        <converters:TypedCollectionDictionaryValueConverter x:Key="TypedCollectionDictionaryValueConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
+        <converters:GoldenRatioConverter x:Key="GoldenRatio" />
+        <converters:IsNotNullConverter x:Key="IsNotNull" />
+        <converters:ColorToBrushConverter x:Key="ColorToBrush" />
+        <converters:TypedCollectionDictionaryValueConverter x:Key="TypedCollectionDictionaryValue" />
+        <converters:DictionaryLookupConverter x:Key="DictionaryLookup" />
     </Application.Resources>
 </Application>

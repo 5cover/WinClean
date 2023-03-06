@@ -117,32 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConfirmAbortOperationContent" xml:space="preserve">
+    <value>Abandonner l'opération risque de rendre le système instable. Voulez-vous vraiment continuer ?</value>
+  </data>
   <data name="ConfirmScriptDeletionContent" xml:space="preserve">
     <value>Êtes-vous sûr de vouloir supprimer ce script ? Cette action est irréversible.</value>
-  </data>
-  <data name="FSErrorContent" xml:space="preserve">
-    <value>Impossible {0} {1} "{2}".
-{3}</value>
   </data>
   <data name="ConfirmScriptOverwriteContent" xml:space="preserve">
     <value>Le script "{0}" existe déjà. Êtes-vous sûr de vouloir l'écraser ?</value>
   </data>
-  <data name="NoScriptsSelectedMainInstruction" xml:space="preserve">
-    <value>Impossible d'exécuter les scripts car aucun script n'est sélectionné</value>
-  </data>
-  <data name="NoScriptsSelectedContent" xml:space="preserve">
-    <value>Pour sélectionner des scripts, cochez leur case à cocher associée.</value>
-  </data>
-  <data name="UnhandledExceptionDialogContent" xml:space="preserve">
-	  <value>Une exception non gérée s'est produite : {0}
-&lt;A HREF="CopyDetails"&gt;Copier les détails&lt;/A&gt;
-&lt;A HREF="ReportIssue"&gt;Signaler cette erreur...&lt;/A&gt;</value>
-  </data>
-  <data name="ConfirmAbortOperationContent" xml:space="preserve">
-    <value>Abandonner l'opération risque de rendre le système instable. Voulez-vous vraiment continuer ?</value>
-  </data>
   <data name="FSErrorAddingCustomScriptMainInstruction" xml:space="preserve">
     <value>Impossible d'ajouter le script personnalisé</value>
+  </data>
+  <data name="FSErrorContent" xml:space="preserve">
+    <value>Impossible {0} "{1}". {2}</value>
   </data>
   <data name="FSErrorLoadingCustomScriptMainInstruction" xml:space="preserve">
     <value>Impossible de charger le script personnalisé</value>
@@ -152,6 +140,17 @@
   </data>
   <data name="InvalidCustomScriptDataMainInstruction" xml:space="preserve">
     <value>Impossible de charger le script personnalisé</value>
+  </data>
+  <data name="NoScriptsSelectedContent" xml:space="preserve">
+    <value>Pour sélectionner des scripts, cochez leur case à cocher associée.</value>
+  </data>
+  <data name="NoScriptsSelectedMainInstruction" xml:space="preserve">
+    <value>Impossible d'exécuter les scripts car aucun script n'est sélectionné</value>
+  </data>
+  <data name="UnhandledExceptionContent" xml:space="preserve">
+	  <value>Une exception non gérée s'est produite : {0}
+&lt;A HREF="CopyDetails"&gt;Copier les détails&lt;/A&gt;
+&lt;A HREF="ReportIssue"&gt;Signaler cette erreur...&lt;/A&gt;</value>
   </data>
   <data name="UnhandledExceptionWindowTitle" xml:space="preserve">
     <value>{0} - Exception non gérée</value>

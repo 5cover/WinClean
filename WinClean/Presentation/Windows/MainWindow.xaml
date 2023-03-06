@@ -7,12 +7,13 @@
     xmlns:controls="clr-namespace:Scover.WinClean.Presentation.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:data="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
+    xmlns:local="clr-namespace:Scover.WinClean.Presentation.Windows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:presentation="clr-namespace:Scover.WinClean.Presentation"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
     x:Name="Window"
-    Title="{x:Static businessLogic:AppMetadata.Name}"
-    MinWidth="{Binding MinHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource GoldenRatioConverter}}"
+    Title="{x:Static businessLogic:AppInfo.Name}"
+    MinWidth="{Binding MinHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource GoldenRatio}}"
     MinHeight="436"
     Background="{x:Static SystemColors.ControlBrush}"
     Closed="WindowClosed"
@@ -59,14 +60,14 @@
                     DisplayMemberPath="Name"
                     Header="{x:Static ui:MainWindow.Category}"
                     ItemContainerStyle="{StaticResource ScriptMetadataMenuItemStyle}"
-                    ItemsSource="{Binding Source={x:Static presentation:App.ScriptMetadata}, ConverterParameter={x:Type businessLogic:Category}, Converter={StaticResource TypedCollectionDictionaryValueConverter}}" />
+                    ItemsSource="{Binding Path=Metadatas, Source={x:Static presentation:App.Scripts}, ConverterParameter={x:Type businessLogic:Category}, Converter={StaticResource TypedCollectionDictionaryValue}}" />
                 <MenuItem
                     DisplayMemberPath="Name"
                     Header="{x:Static ui:MainWindow.RecommendationLevel}"
-                    ItemsSource="{Binding Source={x:Static presentation:App.ScriptMetadata}, ConverterParameter={x:Type businessLogic:RecommendationLevel}, Converter={StaticResource TypedCollectionDictionaryValueConverter}}">
+                    ItemsSource="{Binding Path=Metadatas, Source={x:Static presentation:App.Scripts}, ConverterParameter={x:Type businessLogic:RecommendationLevel}, Converter={StaticResource TypedCollectionDictionaryValue}}">
                     <MenuItem.ItemContainerStyle>
                         <Style BasedOn="{StaticResource ScriptMetadataMenuItemStyle}" TargetType="MenuItem">
-                            <Setter Property="Background" Value="{Binding Color, Converter={StaticResource ColorToBrushConverter}, ConverterParameter=0.15}" />
+                            <Setter Property="Background" Value="{Binding Color, Converter={StaticResource ColorToBrush}, ConverterParameter=0.15}" />
                         </Style>
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
@@ -74,12 +75,12 @@
                     DisplayMemberPath="Name"
                     Header="{x:Static ui:MainWindow.Impact}"
                     ItemContainerStyle="{StaticResource ScriptMetadataMenuItemStyle}"
-                    ItemsSource="{Binding Source={x:Static presentation:App.ScriptMetadata}, ConverterParameter={x:Type businessLogic:Impact}, Converter={StaticResource TypedCollectionDictionaryValueConverter}}" />
+                    ItemsSource="{Binding Path=Metadatas, Source={x:Static presentation:App.Scripts}, ConverterParameter={x:Type businessLogic:Impact}, Converter={StaticResource TypedCollectionDictionaryValue}}" />
                 <MenuItem
                     DisplayMemberPath="Name"
                     Header="{x:Static ui:MainWindow.Host}"
                     ItemContainerStyle="{StaticResource ScriptMetadataMenuItemStyle}"
-                    ItemsSource="{Binding Source={x:Static presentation:App.ScriptMetadata}, ConverterParameter={x:Type businessLogic:Host}, Converter={StaticResource TypedCollectionDictionaryValueConverter}}" />
+                    ItemsSource="{Binding Path=Metadatas, Source={x:Static presentation:App.Scripts}, ConverterParameter={x:Type businessLogic:Host}, Converter={StaticResource TypedCollectionDictionaryValue}}" />
             </MenuItem>
             <MenuItem Click="MenuSettingsClick" Header="{x:Static ui:MainWindow.MenuSettings}" />
             <MenuItem Header="{x:Static ui:MainWindow.MenuHelp}">
@@ -87,7 +88,7 @@
                 <MenuItem Click="MenuAboutClick">
                     <MenuItem.Header>
                         <!--  HeaderStringFormat does not work with access keys  -->
-                        <AccessText Text="{Binding Source={x:Static businessLogic:AppMetadata.Name}, StringFormat={x:Static ui:MainWindow.MenuAbout}}" />
+                        <AccessText Text="{Binding Source={x:Static businessLogic:AppInfo.Name}, StringFormat={x:Static ui:MainWindow.MenuAbout}}" />
                     </MenuItem.Header>
                 </MenuItem>
             </MenuItem>
@@ -104,7 +105,7 @@
             x:Name="TabControlCategories"
             Grid.Row="1"
             Margin="0,0,3,12"
-            ItemsSource="{Binding Source={x:Static presentation:App.ScriptMetadata}, ConverterParameter={x:Type businessLogic:Category}, Converter={StaticResource TypedCollectionDictionaryValueConverter}}"
+            ItemsSource="{Binding Path=Metadatas, Source={x:Static presentation:App.Scripts}, ConverterParameter={x:Type businessLogic:Category}, Converter={StaticResource TypedCollectionDictionaryValue}}"
             SelectionChanged="TabControlCategoriesSelectionChanged">
             <TabControl.ItemContainerStyle>
                 <Style TargetType="TabItem">
@@ -163,7 +164,7 @@
                         </DataGrid.GroupStyle>
                         <DataGrid.RowStyle>
                             <Style TargetType="DataGridRow">
-                                <Setter Property="Background" Value="{Binding RecommendationLevel.Color, Converter={StaticResource ColorToBrushConverter}, ConverterParameter=0.15}" />
+                                <Setter Property="Background" Value="{Binding RecommendationLevel.Color, Converter={StaticResource ColorToBrush}, ConverterParameter=0.15}" />
                                 <Setter Property="BorderThickness" Value="1" />
                                 <Setter Property="Margin" Value="3,0" />
                                 <Style.Triggers>
@@ -219,7 +220,7 @@
                             <DataGridTemplateColumn CanUserResize="False">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox IsChecked="{Binding Path=IsChecked, UpdateSourceTrigger=PropertyChanged}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

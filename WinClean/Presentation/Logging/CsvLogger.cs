@@ -35,7 +35,7 @@ public sealed class CsvLogger : Logger, IDisposable
             {
                 File.Delete(logFile);
             }
-            catch (Exception e) when (e.IsFileSystem())
+            catch (Exception e) when (e.IsFileSystemExogenous())
             {
                 Logs.FailedToDeleteLogFile.FormatWith(logFile, e).Log(LogLevel.Error);
                 // Swallow the exception. Failing to delete a log file is not serious enough to justify
