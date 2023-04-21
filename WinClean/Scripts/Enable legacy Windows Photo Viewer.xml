@@ -8,6 +8,7 @@
   <Recommended>Limited</Recommended>
   <Host>Regedit</Host>
   <Impact>Ergonomics</Impact>
+  <Version>>=10.0.16299</Version>
   <Code>Windows Registry Editor Version 5.00
 
 [HKEYLOCALMACHINE\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations]

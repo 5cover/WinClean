@@ -177,4 +177,8 @@
     <value>_Recommended</value>
     <comment />
   </data>
+  <data name="ScriptCount" xml:space="preserve">
+    <value>{0} script(s).</value>
+    <comment>0 : script count</comment>
+  </data>
 </root>

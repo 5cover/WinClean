@@ -10,5 +10,6 @@
   <Recommended>Limited</Recommended>
   <Host>Cmd</Host>
   <Impact>Memory usage</Impact>
+  <Versions>>=10.0.10240</Versions>
   <Code>sc config WbioSrvc start= disabled</Code>
 </Script>

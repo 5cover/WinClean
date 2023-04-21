@@ -8,5 +8,6 @@
   <Recommended>Limited</Recommended>
   <Host>Cmd</Host>
   <Impact>Free storage space</Impact>
+  <Versions>>=4.0.950</Versions>
   <Code>DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.WordPad~~~~0.0.1.0</Code>
 </Script>

@@ -7,6 +7,7 @@
   <Category>Maintenance</Category>
   <Recommended>Yes</Recommended>
   <Host>Cmd</Host>
+  <Versions>>=4.10.1998</Versions>
   <Impact>Free storage space</Impact>
   <Code>REG add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Active Setup Temp Folders" /v "StateFlags2022" /t REG_DWORD /d "2" /f
 REG add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Content Indexer Cleaner" /v "StateFlags2022" /t REG_DWORD /d "2" /f

@@ -22,16 +22,6 @@ using Page = Scover.Dialogs.Page;
 
 namespace Scover.WinClean.Presentation.Windows;
 
-public class CheckableScript : Script
-{
-    public CheckableScript(Script s)
-        : base(s.Category, s.Code, s.Host, s.Impact, s.RecommendationLevel, s.LocalizedDescription, s.LocalizedName, s.Type)
-    {
-    }
-
-    public bool IsChecked { get; set; }
-}
-
 public sealed partial class MainWindow
 {
     private readonly Dictionary<Category, CheckableScript?> _selectedScriptsDictionary = new();
@@ -68,15 +58,12 @@ public sealed partial class MainWindow
     private ICollectionView ScriptCollectionView => ((CollectionViewSource)Resources["Scripts"]).View;
 
     /// <summary>Gets or sets the currently selected script.</summary>
-    /// <remarks>
-    /// Asserts that <see cref="DataGridScripts"/> is not null before setting the selected script.
-    /// </remarks>
+    /// <remarks>Asserts that <see cref="DataGridScripts"/> is not null before setting the selected script.</remarks>
     private CheckableScript? SelectedScript
     {
         get => (CheckableScript?)ScriptEditor.Selected;
         // Don't set ScriptEditor.Selected because it wouldn't update DataGridScripts.SelectedItem. Setting
-        // DataGridScripts.SelectedItem updates ScriptEditor.Selected due to a OneWayToSource binding in
-        // DataGridScripts.
+        // DataGridScripts.SelectedItem updates ScriptEditor.Selected due to a OneWayToSource binding in DataGridScripts.
         set => DataGridScripts.AssertNotNull().SelectedItem = value;
     }
 

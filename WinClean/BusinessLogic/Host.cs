@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Threading;
 
 using Scover.WinClean.DataAccess;
 
@@ -34,11 +33,12 @@ public sealed record Host : ScriptMetadata
     /// <param name="keepRunningElseTerminateHungScript">Callback called when the script is hung.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <exception cref="TimeoutException">
-    /// The script was hung and <paramref name="keepRunningElseTerminateHungScript"/> returned <see
-    /// langword="false"/>.
+    /// The script was hung and <paramref name="keepRunningElseTerminateHungScript"/> returned <see langword="false"/>.
     /// </exception>
     /// <exception cref="OperationCanceledException">The operation was canceled.</exception>
-    /// <returns>A <see cref="ScriptExecution"/> instance that provides information about the ongoing script execution.</returns>
+    /// <returns>
+    /// A <see cref="ScriptExecution"/> instance that provides information about the ongoing script execution.
+    /// </returns>
     public ScriptExecution Execute(string code)
     {
         string tmpScriptFile = CreateTempFile(code);
@@ -47,7 +47,6 @@ public sealed record Host : ScriptMetadata
         {
             try
             {
-                
                 File.Delete(tmpScriptFile);
             }
             catch (Exception ex) when (ex.IsFileSystemExogenous())

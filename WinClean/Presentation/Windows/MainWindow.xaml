@@ -7,10 +7,10 @@
     xmlns:controls="clr-namespace:Scover.WinClean.Presentation.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:data="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
-    xmlns:local="clr-namespace:Scover.WinClean.Presentation.Windows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:presentation="clr-namespace:Scover.WinClean.Presentation"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:interopServices="clr-namespace:System.Runtime.InteropServices;assembly=System.Runtime.InteropServices.RuntimeInformation"
     x:Name="Window"
     Title="{x:Static businessLogic:AppInfo.Name}"
     MinWidth="{Binding MinHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource GoldenRatio}}"
@@ -28,18 +28,13 @@
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
     </Window.Resources>
-    <Grid Margin="12">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="6" />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Menu Margin="0,0,0,12" VerticalAlignment="Center">
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom" Background="{x:Static SystemColors.ControlLightBrush}">
+            <TextBlock Text="{x:Static interopServices:RuntimeInformation.OSDescription}"/>
+            <Separator/>
+            <TextBlock Text="{Binding Scripts.Count, ElementName=Window, StringFormat={x:Static ui:MainWindow.ScriptCount}}"/>
+        </StatusBar>
+        <Menu DockPanel.Dock="Top" VerticalAlignment="Center" Background="{x:Static SystemColors.ControlLightBrush}">
             <MenuItem Header="{x:Static ui:MainWindow.MenuFile}">
                 <MenuItem Click="MenuOpenScriptsDirClick" Header="{x:Static ui:MainWindow.MenuOpenCustomScriptsDir}" />
                 <MenuItem Click="MenuOpenLogsDirClick" Header="{x:Static ui:MainWindow.MenuOpenLogsDir}" />
@@ -93,29 +88,39 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
+        <Grid Margin="12">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="8" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
-        <GridSplitter
+            <GridSplitter
             Grid.RowSpan="3"
             Grid.Column="1"
-            Margin="0,-12,0,-12"
+            Margin="0,-13,0,-13"
             HorizontalAlignment="Stretch"
             Background="{x:Static SystemColors.ControlLightBrush}" />
 
-        <TabControl
+            <TabControl
             x:Name="TabControlCategories"
-            Grid.Row="1"
+            Grid.Row="0"
             Margin="0,0,3,12"
             ItemsSource="{Binding Path=Metadatas, Source={x:Static presentation:App.Scripts}, ConverterParameter={x:Type businessLogic:Category}, Converter={StaticResource TypedCollectionDictionaryValue}}"
             SelectionChanged="TabControlCategoriesSelectionChanged">
-            <TabControl.ItemContainerStyle>
-                <Style TargetType="TabItem">
-                    <Setter Property="Header" Value="{Binding Name}" />
-                    <Setter Property="ToolTip" Value="{Binding Description}" />
-                </Style>
-            </TabControl.ItemContainerStyle>
-            <TabControl.ContentTemplate>
-                <DataTemplate DataType="businessLogic:Category">
-                    <DataGrid
+                <TabControl.ItemContainerStyle>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Header" Value="{Binding Name}" />
+                        <Setter Property="ToolTip" Value="{Binding Description}" />
+                    </Style>
+                </TabControl.ItemContainerStyle>
+                <TabControl.ContentTemplate>
+                    <DataTemplate DataType="businessLogic:Category">
+                        <DataGrid
                         AutoGenerateColumns="False"
                         CanUserAddRows="False"
                         CanUserReorderColumns="False"
@@ -127,143 +132,144 @@
                         SelectedItem="{Binding Selected, ElementName=ScriptEditor, Mode=OneWayToSource}"
                         SelectionMode="Single"
                         SelectionUnit="FullRow">
-                        <DataGrid.CommandBindings>
-                            <CommandBinding Command="Delete" Executed="DataGridScriptsDeleteExecuted" />
-                        </DataGrid.CommandBindings>
-                        <DataGrid.GroupStyle>
-                            <!--  Style for groups at top level.  -->
-                            <GroupStyle>
-                                <GroupStyle.ContainerStyle>
-                                    <Style TargetType="{x:Type GroupItem}">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                    <Expander IsExpanded="True">
-                                                        <Expander.Header>
-                                                            <DockPanel>
-                                                                <TextBlock d:DataContext="{d:DesignInstance Type=data:CollectionViewGroup}" FontWeight="SemiBold">
-                                                                    <TextBlock.Text>
-                                                                        <MultiBinding StringFormat="{}{0} ({1})">
-                                                                            <Binding Path="Name" />
-                                                                            <Binding Path="ItemCount" />
-                                                                        </MultiBinding>
-                                                                    </TextBlock.Text>
-                                                                </TextBlock>
-                                                            </DockPanel>
-                                                        </Expander.Header>
-                                                        <Expander.Content>
-                                                            <ItemsPresenter />
-                                                        </Expander.Content>
-                                                    </Expander>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </GroupStyle.ContainerStyle>
-                            </GroupStyle>
-                        </DataGrid.GroupStyle>
-                        <DataGrid.RowStyle>
-                            <Style TargetType="DataGridRow">
-                                <Setter Property="Background" Value="{Binding RecommendationLevel.Color, Converter={StaticResource ColorToBrush}, ConverterParameter=0.15}" />
-                                <Setter Property="BorderThickness" Value="1" />
-                                <Setter Property="Margin" Value="3,0" />
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#1F26A0DA" />
-                                        <Setter Property="BorderBrush" Value="#A826A0DA" />
-                                    </Trigger>
-                                    <MultiTrigger>
-                                        <MultiTrigger.Conditions>
-                                            <Condition Property="Selector.IsSelectionActive" Value="False" />
-                                            <Condition Property="IsSelected" Value="True" />
-                                        </MultiTrigger.Conditions>
-                                        <Setter Property="Background" Value="#3DDADADA" />
-                                        <Setter Property="BorderBrush" Value="#DADADA" />
-                                    </MultiTrigger>
-                                    <MultiTrigger>
-                                        <MultiTrigger.Conditions>
-                                            <Condition Property="Selector.IsSelectionActive" Value="True" />
-                                            <Condition Property="IsSelected" Value="True" />
-                                        </MultiTrigger.Conditions>
-                                        <Setter Property="Background" Value="#3D26A0DA" />
-                                        <Setter Property="BorderBrush" Value="#26A0DA" />
-                                    </MultiTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.RowStyle>
-                        <DataGrid.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="BorderBrush" Value="Transparent" />
-                                <Setter Property="Foreground" Value="Black" />
-                                <!--  Padding instead of Margin for a larger selection are  -->
-                                <Setter Property="Padding" Value="3,2" />
-                                <!--  Necessary for padding  -->
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="DataGridCell">
-                                            <Border
+                            <DataGrid.CommandBindings>
+                                <CommandBinding Command="Delete" Executed="DataGridScriptsDeleteExecuted" />
+                            </DataGrid.CommandBindings>
+                            <DataGrid.GroupStyle>
+                                <!--  Style for groups at top level.  -->
+                                <GroupStyle>
+                                    <GroupStyle.ContainerStyle>
+                                        <Style TargetType="{x:Type GroupItem}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                        <Expander IsExpanded="True">
+                                                            <Expander.Header>
+                                                                <DockPanel>
+                                                                    <TextBlock d:DataContext="{d:DesignInstance Type=data:CollectionViewGroup}" FontWeight="SemiBold">
+                                                                        <TextBlock.Text>
+                                                                            <MultiBinding StringFormat="{}{0} ({1})">
+                                                                                <Binding Path="Name" />
+                                                                                <Binding Path="ItemCount" />
+                                                                            </MultiBinding>
+                                                                        </TextBlock.Text>
+                                                                    </TextBlock>
+                                                                </DockPanel>
+                                                            </Expander.Header>
+                                                            <Expander.Content>
+                                                                <ItemsPresenter />
+                                                            </Expander.Content>
+                                                        </Expander>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </GroupStyle.ContainerStyle>
+                                </GroupStyle>
+                            </DataGrid.GroupStyle>
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Background" Value="{Binding RecommendationLevel.Color, Converter={StaticResource ColorToBrush}, ConverterParameter=0.15}" />
+                                    <Setter Property="BorderThickness" Value="1" />
+                                    <Setter Property="Margin" Value="3,0" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#1F26A0DA" />
+                                            <Setter Property="BorderBrush" Value="#A826A0DA" />
+                                        </Trigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                                <Condition Property="IsSelected" Value="True" />
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Background" Value="#3DDADADA" />
+                                            <Setter Property="BorderBrush" Value="#DADADA" />
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                                <Condition Property="IsSelected" Value="True" />
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Background" Value="#3D26A0DA" />
+                                            <Setter Property="BorderBrush" Value="#26A0DA" />
+                                        </MultiTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+                            <DataGrid.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="BorderBrush" Value="Transparent" />
+                                    <Setter Property="Foreground" Value="Black" />
+                                    <!--  Padding instead of Margin for a larger selection are  -->
+                                    <Setter Property="Padding" Value="3,2" />
+                                    <!--  Necessary for padding  -->
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="DataGridCell">
+                                                <Border
                                                 Padding="{TemplateBinding Padding}"
                                                 Background="{TemplateBinding Background}"
                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                 BorderThickness="{TemplateBinding BorderThickness}"
                                                 SnapsToDevicePixels="True">
-                                                <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </DataGrid.CellStyle>
-                        <DataGrid.Columns>
-                            <!--  Using a TemplateColumn instead of a CheckBoxColumns for single-click editing.  -->
-                            <DataGridTemplateColumn CanUserResize="False">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <CheckBox IsChecked="{Binding Path=IsChecked, UpdateSourceTrigger=PropertyChanged}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn
+                                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGrid.CellStyle>
+                            <DataGrid.Columns>
+                                <!--  Using a TemplateColumn instead of a CheckBoxColumns for single-click editing.  -->
+                                <DataGridTemplateColumn CanUserResize="False">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding Path=IsChecked, UpdateSourceTrigger=PropertyChanged}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn
                                 Binding="{Binding Name}"
                                 Header="{x:Static ui:MainWindow.Name}"
                                 IsReadOnly="True" />
-                            <DataGridTextColumn
+                                <DataGridTextColumn
                                 Binding="{Binding RecommendationLevel.Name}"
                                 Header="{x:Static ui:MainWindow.RecommendationLevel}"
                                 IsReadOnly="True" />
-                            <DataGridTextColumn
+                                <DataGridTextColumn
                                 Binding="{Binding Host.Name}"
                                 Header="{x:Static ui:MainWindow.Host}"
                                 IsReadOnly="True" />
-                            <DataGridTextColumn
+                                <DataGridTextColumn
                                 Binding="{Binding Impact.Name}"
                                 Header="{x:Static ui:MainWindow.Impact}"
                                 IsReadOnly="True" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DataTemplate>
-            </TabControl.ContentTemplate>
-        </TabControl>
-        <controls:ScriptEditor
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
+            <controls:ScriptEditor
             x:Name="ScriptEditor"
-            Grid.Row="1"
+            Grid.Row="0"
             Grid.Column="2"
             Margin="3,0,0,12"
             ScriptChangedCategory="ScriptEditorScriptChangedCategory"
             ScriptRemoved="ScriptEditorScriptRemoved" />
 
-        <Button
-            Grid.Row="2"
+            <Button
+            Grid.Row="1"
             HorizontalAlignment="Center"
             Click="ButtonAddScriptsClick"
             Content="{x:Static ui:Buttons.AddScripts}" />
 
-        <Button
-            Grid.Row="2"
+            <Button
+            Grid.Row="1"
             Grid.Column="2"
             HorizontalAlignment="Center"
             Click="ButtonExecuteScriptsClick"
             Content="{x:Static ui:Buttons.ExecuteScripts}" />
-    </Grid>
+        </Grid>
+    </DockPanel>
 </Window>

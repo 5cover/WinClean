@@ -8,6 +8,7 @@
   <Recommended>Yes</Recommended>
   <Host>PowerShell</Host>
   <Impact>Free storage space</Impact>
+  <Versions>>=6.2.9200</Versions>
   <Code># Based on https://github.com/Sycnex/Windows10Debloater/blob/master/Individual%20Scripts/Debloat%20Windows
 Import-Module Microsoft.PowerShell.Core
 Import-Module Appx

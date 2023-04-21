@@ -6,7 +6,13 @@
   <Description xml:lang="fr">L'utilitaire de vérification et de réparation des disques est fourni par Microsoft. Exécuter ce script planifiera la vérification et la réparation de tous les disques locaux au prochain redémarrage.</Description>
   <Category>Maintenance</Category>
   <Recommended>Yes</Recommended>
-  <Host>Cmd</Host>
+  <Host>PowerShell</Host>
   <Impact>Storage speed</Impact>
-  <Code>for /F "skip=1" %%C in ('wmic Volume where "DriveLetter is not Null" get DriveLetter') do for /F %%D in ("%%C") do fsutil dirty set %%D</Code>
+  <Versions>>=6.1.7600</Versions>
+  <Code>Get-WmiObject -Class Win32_Volume | Where-Object {$_.DriveType -eq 3} | ForEach-Object {
+  if ($_.DriveLetter) {
+    fsutil dirty set $_.DriveLetter
+  }
+}
+  </Code>
 </Script>

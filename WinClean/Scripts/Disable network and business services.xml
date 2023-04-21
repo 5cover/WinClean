@@ -35,6 +35,7 @@
   <Recommended>Limited</Recommended>
   <Host>Cmd</Host>
   <Impact>Memory usage</Impact>
+  <Versions>>=5.1.2600</Versions>
   <Code>sc config TrkWks start= disabled
 sc config lmhosts start= disabled
 sc config NetTcpPortSharing start= disabled

@@ -8,5 +8,6 @@
   <Recommended>Yes</Recommended>
   <Host>Cmd</Host>
   <Impact>Stability</Impact>
+  <Versions>>=5.1.2600</Versions>
   <Code>sfc /scannow</Code>
 </Script>

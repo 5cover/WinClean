@@ -3,11 +3,12 @@ using System.Runtime.CompilerServices;
 
 using Scover.WinClean.DataAccess;
 
+using Semver;
+
 using static System.Globalization.CultureInfo;
 
 namespace Scover.WinClean.BusinessLogic.Scripts;
 
-/// <summary>A mutable script.</summary>
 public class Script : INotifyPropertyChanged, IEquatable<Script?>
 {
     private Category _category;
@@ -16,9 +17,11 @@ public class Script : INotifyPropertyChanged, IEquatable<Script?>
     private Impact _impact;
     private RecommendationLevel _recommendationLevel;
 
-    public Script(Category category, string code, Host host, Impact impact, RecommendationLevel recommendationLevel, LocalizedString localizedDescription, LocalizedString localizedName, ScriptType type)
-        => (_category, _code, _host, _impact, _recommendationLevel, LocalizedDescription, LocalizedName, Type)
-         = (category, code, host, impact, recommendationLevel, localizedDescription, localizedName, type);
+    private SemVersionRange _supportedVersionsRange;
+
+    public Script(Category category, string code, Host host, Impact impact, SemVersionRange supportedVersionsRange, RecommendationLevel recommendationLevel, LocalizedString localizedDescription, LocalizedString localizedName, ScriptType type)
+            => (_category, _code, _host, _impact, _supportedVersionsRange, _recommendationLevel, LocalizedDescription, LocalizedName, Type)
+         = (category, code, host, impact, supportedVersionsRange, recommendationLevel, localizedDescription, localizedName, type);
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -31,6 +34,8 @@ public class Script : INotifyPropertyChanged, IEquatable<Script?>
             OnPropertyChanged();
         }
     }
+
+    public bool IsIncompatibleWithCurrentVersion => !SemVersion.FromVersion(Environment.OSVersion.Version).Satisfies(Versions);
 
     public string Code
     {
@@ -105,12 +110,21 @@ public class Script : INotifyPropertyChanged, IEquatable<Script?>
         }
     }
 
+    public SemVersionRange Versions
+    {
+        get => _supportedVersionsRange;
+        set
+        {
+            _supportedVersionsRange = value;
+            OnPropertyChanged();
+        }
+    }
+
     public ScriptType Type { get; }
 
     public override bool Equals(object? obj) => Equals(obj as Script);
 
     public bool Equals(Script? other) => other is not null && InvariantName == other.InvariantName;
-
 
     /// <summary>Executes the script.</summary>
     /// <inheritdoc cref="Host.Execute(string)"/>

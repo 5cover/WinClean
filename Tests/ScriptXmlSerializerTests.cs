@@ -7,11 +7,15 @@ using Scover.WinClean.BusinessLogic.Xml;
 using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation;
 
+using Semver;
+
 namespace Tests;
 
 [TestOf(typeof(ScriptXmlSerializer))]
 public sealed class ScriptXmlSerializerTests
 {
+    private readonly ScriptXmlSerializer _serializer = new(App.Scripts.Metadatas, App.DefaultScriptSupportedVersionRange);
+
     private const string
         Name = "Remove WordPad",
         NameFr = "Supprimer WordPad",
@@ -22,6 +26,7 @@ public sealed class ScriptXmlSerializerTests
         Host = "Cmd",
         Impact = "Free storage space",
         Code = "DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.WordPad~~~~0.0.1.0",
+        Versions = "1.2.3",
         Xml = $@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <Script>
   <Name>{Name}</Name>
@@ -32,6 +37,7 @@ public sealed class ScriptXmlSerializerTests
   <Recommended>{RecommendationLevel}</Recommended>
   <Host>{Host}</Host>
   <Impact>{Impact}</Impact>
+  <Versions>{Versions}</Versions>
   <Code>{Code}</Code>
 </Script>";
 
@@ -43,7 +49,7 @@ public sealed class ScriptXmlSerializerTests
         {
             file.Write(Xml);
         }
-        var s = new ScriptXmlSerializer(App.Scripts.Metadatas).Deserialize(ScriptType.Default, File.OpenRead(Filename));
+        var s = _serializer.Deserialize(ScriptType.Default, File.OpenRead(Filename));
         Assert.Multiple(() =>
         {
             Assert.That(s.LocalizedName, Is.EquivalentTo(new KeyValuePair<string, string>[] { new("", Name), new("fr", NameFr) }));
@@ -73,10 +79,11 @@ public sealed class ScriptXmlSerializerTests
                        host: App.Scripts.Metadatas.Get<Host>().Single(h => h.InvariantName == Host),
                        impact: App.Scripts.Metadatas.Get<Impact>().Single(i => i.InvariantName == Impact),
                        code: Code,
-                       type: ScriptType.Default);
+                       type: ScriptType.Default,
+                       supportedVersionsRange: SemVersionRange.Parse(Versions));
 
         using MemoryStream ms = new();
-        new ScriptXmlSerializer(App.Scripts.Metadatas).Serialize(s, ms);
+        _serializer.Serialize(s, ms);
         ms.Position = 0;
         Assert.That(new StreamReader(ms, Encoding.UTF8).ReadToEnd(), Is.EqualTo(Xml));
     }

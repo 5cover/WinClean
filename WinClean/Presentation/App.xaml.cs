@@ -1,15 +1,15 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 
 using CommandLine;
 
 using Scover.WinClean.BusinessLogic;
-using Scover.WinClean.DataAccess;
 using Scover.WinClean.Presentation.Logging;
 using Scover.WinClean.Presentation.Windows;
 using Scover.WinClean.Properties;
 using Scover.WinClean.Resources;
+
+using Semver;
 
 using Vanara.PInvoke;
 
@@ -20,6 +20,8 @@ namespace Scover.WinClean.Presentation;
 /// </summary>
 public sealed partial class App
 {
+    public static SemVersionRange DefaultScriptSupportedVersionRange { get; } = SemVersionRange.Parse(App.Settings.DefaultScriptSupportedVersionRange);
+
     private const string ScriptExecutionTimesFormatString = "c";
     private static readonly string scriptExecutionTimesSeparator = Environment.NewLine;
 

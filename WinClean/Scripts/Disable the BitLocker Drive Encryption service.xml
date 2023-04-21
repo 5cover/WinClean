@@ -8,5 +8,6 @@
   <Recommended>Limited</Recommended>
   <Host>Cmd</Host>
   <Impact>Memory usage</Impact>
+  <Versions>>=6.1.7600</Versions>
   <Code>sc config BDESVC start= disabled</Code>
 </Script>

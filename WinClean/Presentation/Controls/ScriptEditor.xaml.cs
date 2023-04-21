@@ -1,8 +1,15 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 using Scover.WinClean.BusinessLogic;
 using Scover.WinClean.BusinessLogic.Scripts;
+using Scover.WinClean.Presentation.Converters;
+
+using static Vanara.PInvoke.Ole32.PROPERTYKEY.System;
+using static Vanara.PInvoke.Shell32;
 
 namespace Scover.WinClean.Presentation.Controls;
 
@@ -59,4 +66,6 @@ public sealed partial class ScriptEditor
             ScriptChangedCategory?.Invoke(this, EventArgs.Empty);
         }
     }
+
+    public static ImageSource WarningIcon { get; } = SHSTOCKICONID.SIID_WARNING.ToBitmapSource(SHGSI.SHGSI_SMALLICON);
 }

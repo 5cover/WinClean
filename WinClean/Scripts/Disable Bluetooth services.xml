@@ -44,6 +44,7 @@
   <Recommended>Limited</Recommended>
   <Host>Cmd</Host>
   <Impact>Memory usage</Impact>
+  <Versions>>=6.2.0</Versions>
   <Code>sc config BthAvctpSvc start= disabled
 sc config BTAGService start= disabled
 sc config BthAvrcpTg start= disabled

@@ -177,4 +177,7 @@
     <value>_Recommandé</value>
     <comment />
   </data>
+  <data name="ScriptCount" xml:space="preserve">
+    <value>{0} script(s).</value>
+  </data>
 </root>

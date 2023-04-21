@@ -28,7 +28,7 @@ public sealed class CommandLineOptions
         foreach (Script script in scriptsToRun)
         {
             Logs.ScriptExecuted.FormatWith(script.InvariantName).Log();
-            script.Execute();
+            _ = script.Execute();
         }
 
         Logs.ScriptsExecuted.Log(LogLevel.Info);

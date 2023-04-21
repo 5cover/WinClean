@@ -8,5 +8,6 @@
   <Recommended>Yes</Recommended>
   <Host>Cmd</Host>
   <Impact>Stability</Impact>
-  <Code>dism /Online /Quiet /Cleanup-image /Restorehealth</Code>
+  <Versions>>=6.1.7600</Versions>
+  <Code>dism /Online /Cleanup-image /Restorehealth</Code>
 </Script>

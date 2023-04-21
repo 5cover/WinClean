@@ -8,5 +8,6 @@
   <Recommended>Limited</Recommended>
   <Host>Cmd</Host>
   <Impact>Memory usage</Impact>
+  <Versions>>=10.0.0</Versions>
   <Code>sc config MapsBroker start= disabled</Code>
 </Script>

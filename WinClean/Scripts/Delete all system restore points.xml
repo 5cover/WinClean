@@ -6,7 +6,8 @@
   <Description xml:lang="fr">Un point de restauration est une image du système permettant d'annuler les modifications du système apportées ultérieurement à sa création.</Description>
   <Category>Maintenance</Category>
   <Recommended>Limited</Recommended>
-  <Host>PowerShell</Host>
+  <Host>Cmd</Host>
   <Impact>Free storage space</Impact>
-  <Code>vssadmin delete shadows /all /quiet</Code>
+  <Versions>>=5.2.0</Versions>
+  <Code>vssadmin delete shadows /all</Code>
 </Script>

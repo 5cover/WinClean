@@ -8,5 +8,6 @@
   <Recommended>Yes</Recommended>
   <Host>PowerShell</Host>
   <Impact>Storage speed</Impact>
+  <Versions>>=10.0.15063</Versions>
   <Code>Get-Volume | Optimize-Volume -NormalPriority</Code>
 </Script>

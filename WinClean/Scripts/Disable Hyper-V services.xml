@@ -30,6 +30,7 @@
   <Recommended>Limited</Recommended>
   <Host>Cmd</Host>
   <Impact>Memory usage</Impact>
+  <Versions>>=6.0.0</Versions>
   <Code>sc config vmicshutdown start= disabled
 sc config vmicrdv start= disabled
 sc config vmicvmsession start= disabled

@@ -6,21 +6,19 @@
 - Smart Card;
 - Smart Card Device Enumeration Service;
 - Smart card PnP Class Filter Driver;
-- Smart Card Removal Policy;
-- Smartlocker Filter Driver.</Description>
+- Smart Card Removal Policy;</Description>
   <Description xml:lang="fr">Les services suivants seront désactivés :
 - Service Carte à puce ;
 - Service d’énumération de périphériques de carte à puce ;
 - Microsoft Smart Card Reader Filter Driver ;
-- Service Stratégie de retrait de la carte à puce ;
-- Smartlocker Filter Driver.</Description>
+- Service Stratégie de retrait de la carte à puce.</Description>
   <Category>Debloat</Category>
   <Recommended>Limited</Recommended>
   <Host>Cmd</Host>
   <Impact>Memory usage</Impact>
+  <Versions>>=6.1.7600</Versions>
   <Code>sc config SCardSvr start= disabled
 sc config ScDeviceEnum start= disabled
 sc config scfilter start= disabled
-sc config SCPolicySvc start= disabled
-sc config applockerfltr start= disabled</Code>
+sc config SCPolicySvc start= disabled</Code>
 </Script>

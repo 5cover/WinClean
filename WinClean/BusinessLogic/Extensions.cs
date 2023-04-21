@@ -25,24 +25,38 @@ public static class Extensions
         return localizedNodeTexts;
     }
 
-    /// <summary>Gets the single child element with the specified name.</summary>
+    /// <summary>Gets the single child element with the specified name</summary>
     /// <param name="parent">The parent node.</param>
     /// <param name="name">The tag name of the element to search for.</param>
-    /// <returns>The <see cref="XmlNode.InnerText"/> of the single child node.</returns>
+    /// <returns>The <see cref="XmlNode.InnerText"/> of the element</returns>
     /// <exception cref="XmlException">
-    /// There are no or multiple elements named <paramref name="name"/>.
+    /// There no or are multiple elements named <paramref name="name"/>.
     /// </exception>
     public static string GetSingleChild(this XmlElement parent, string name)
-    {
-        var elements = parent.GetElementsByTagName(name);
-        return elements.Count > 1
-            ? throw new XmlException($"'{parent.Name}' has {elements.Count} childs named '{name}' but only one was expected.")
-            : elements[0]?.InnerText ?? throw new XmlException($"'{parent.Name}' has no child named '{name}'.");
-    }
+        => parent.GetSingleChildOrDefault(name) ?? throw new XmlException($"'{parent.Name}' has no child named '{name}'.");
 
     /// <inheritdoc cref="GetSingleChild(XmlElement, string)"/>
     public static string GetSingleChild(this XmlDocument parent, string name)
         => GetSingleChild(parent.DocumentElement ?? throw new XmlException("No root exists in document."), name);
+
+    /// <inheritdoc cref="GetSingleChildOrDefault(XmlElement, string)"/>
+    public static string? GetSingleChildOrDefault(this XmlDocument parent, string name)
+        => GetSingleChildOrDefault(parent.DocumentElement ?? throw new XmlException("No root exists in document."), name);
+
+    /// <summary>Gets the single child element with the specified name</summary>
+    /// <param name="parent">The parent node.</param>
+    /// <param name="name">The tag name of the element to search for.</param>
+    /// <returns>The <see cref="XmlNode.InnerText"/> of the element, or <see langword="null"/> if it was not found.</returns>
+    /// <exception cref="XmlException">
+    /// There are multiple elements named <paramref name="name"/>.
+    /// </exception>
+    public static string? GetSingleChildOrDefault(this XmlElement parent, string name)
+    {
+        var elements = parent.GetElementsByTagName(name);
+        return elements.Count > 1
+            ? throw new XmlException($"'{parent.Name}' has {elements.Count} childs named '{name}' but only one was expected.")
+            : elements[0]?.InnerText;
+    }
 
     /// <summary>Checks if an exception is exogenous and could have been thrown by the filesystem API.</summary>
     /// <returns>

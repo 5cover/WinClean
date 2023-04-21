@@ -8,6 +8,7 @@
   <Recommended>Limited</Recommended>
   <Host>PowerShell</Host>
   <Impact>Ergonomics</Impact>
+  <Versions>>=10.0.10240</Versions>
   <Code>Import-Module Microsoft.PowerShell.Management
 Import-Module Appx
 

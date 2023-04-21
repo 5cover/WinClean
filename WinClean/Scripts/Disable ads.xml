@@ -8,6 +8,7 @@
   <Recommended>Yes</Recommended>
   <Host>Regedit</Host>
   <Impact>Ergonomics</Impact>
+  <Versions>>=10.0.0</Versions>
   <Code>Windows Registry Editor Version 5.00
 
 [HKEYCURRENTUSER\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]

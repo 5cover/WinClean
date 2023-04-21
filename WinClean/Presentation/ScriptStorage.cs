@@ -14,9 +14,8 @@ public sealed class ScriptStorage : IEnumerable<Script>
     private const string MetadataContentFilesNamespace = $"{nameof(Scover)}.{nameof(WinClean)}";
 
     private readonly List<ScriptRepository> _repos = new();
-    private bool _loaded;
-
     private readonly IScriptSerializer _serializer;
+    private bool _loaded;
 
     public ScriptStorage()
     {
@@ -33,7 +32,7 @@ public sealed class ScriptStorage : IEnumerable<Script>
         static Stream ReadContentFile(string filename)
             => AppInfo.Assembly.GetManifestResourceStream($"{MetadataContentFilesNamespace}.{filename}").AssertNotNull();
 
-        _serializer = new ScriptXmlSerializer(Metadatas);
+        _serializer = new ScriptXmlSerializer(Metadatas, App.DefaultScriptSupportedVersionRange);
     }
 
     public TypedEnumerablesDictionary Metadatas { get; }
@@ -41,10 +40,11 @@ public sealed class ScriptStorage : IEnumerable<Script>
     private IEnumerable<MutableScriptRepository> MutableRepos => _repos.OfType<MutableScriptRepository>();
     private IEnumerable<Script> Scripts => _repos.SelectMany(repo => repo);
 
-    private record StoredScript(Uri Source, Script script, bool IsMutable, bool IsOpenable);
+    private sealed record StoredScript(Uri Source, Script script, bool IsMutable, bool IsOpenable);
 
     /// <summary>
-    /// Deserializes a script from <paramref name="source"/>, adds it to the appropriate repository and returns it.
+    /// Deserializes a script from <paramref name="source"/>, adds it to the appropriate repository and
+    /// returns it.
     /// </summary>
     /// <param name="type">The type of script to create.</param>
     /// <param name="source">The source of the script to add. It must exist.</param>

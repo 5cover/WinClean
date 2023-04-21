@@ -8,5 +8,6 @@
   <Recommended>Limited</Recommended>
   <Host>Cmd</Host>
   <Impact>Free storage space</Impact>
+  <Versions>>=6.1.7600</Versions>
   <Code>DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0</Code>
 </Script>

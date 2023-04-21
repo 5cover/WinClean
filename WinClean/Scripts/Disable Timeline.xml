@@ -8,6 +8,7 @@
   <Recommended>Yes</Recommended>
   <Host>Regedit</Host>
   <Impact>Ergonomics</Impact>
+  <Versions>>=10.0.17134</Versions>
   <Code>Windows Registry Editor Version 5.00
 
 [HKEYLOCALMACHINE\SOFTWARE\Policies\Microsoft\Windows\System]

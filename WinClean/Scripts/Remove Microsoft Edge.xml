@@ -8,6 +8,7 @@
   <Recommended>Limited</Recommended>
   <Host>Cmd</Host>
   <Impact>Free storage space</Impact>
+  <Versions>>=10.0.19042</Versions>
   <Code>:: Modified version of Shadow Whisperer's Remove-Edge-Chromium script. See https://github.com/ShadowWhisperer/Remove-Edge-Chromium
 
 :: Stop Edge Task

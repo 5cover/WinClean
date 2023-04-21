@@ -8,5 +8,6 @@
   <Recommended>Limited</Recommended>
   <Host>Cmd</Host>
   <Impact>Memory usage</Impact>
+  <Versions>>=10.0.14393</Versions>
   <Code>sc config FrameServer start= disabled</Code>
 </Script>

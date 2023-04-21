@@ -1,9 +1,13 @@
 ﻿using System.ComponentModel;
+using static Vanara.PInvoke.Shell32;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Interop;
+using Vanara.PInvoke;
 
 namespace Scover.WinClean.Presentation;
 
@@ -27,6 +31,15 @@ public static class Extensions
                 yield return childOfChild;
             }
         }
+    }
+
+    public static BitmapSource ToBitmapSource(this SHSTOCKICONID stockIconId, SHGSI flags)
+    {
+        var info = SHSTOCKICONINFO.Default;
+        SHGetStockIconInfo(stockIconId, flags | SHGSI.SHGSI_ICON, ref info).ThrowIfFailed();
+        var res = Imaging.CreateBitmapSourceFromHIcon(info.hIcon.DangerousGetHandle(), Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+        Win32Error.ThrowLastErrorIfFalse(User32.DestroyIcon(info.hIcon));
+        return res;
     }
 
     public static InvalidEnumArgumentException NewInvalidEnumArgumentException<TEnum>(this TEnum value, [CallerArgumentExpression(nameof(value))] string argumentName = "") where TEnum : struct, Enum

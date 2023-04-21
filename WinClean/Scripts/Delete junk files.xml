@@ -16,7 +16,20 @@ Types de fichiers concernés :
 Attention : ce script pourrait supprimer des fichiers utiles portant ces extensions.</Description>
   <Category>Maintenance</Category>
   <Recommended>Limited</Recommended>
-  <Host>Cmd</Host>
+  <Host>PowerShell</Host>
   <Impact>Free storage space</Impact>
-  <Code>for /F "skip=1" %%C in ('wmic Volume where "DriveLetter is not Null" get DriveLetter') do for /F %%D in ("%%C") do cd /d %%D &amp; del /f /s /q *.log,*.etl,*.lck,*.tmp,*.temp,*.dmp</Code>
+  <Versions>>=6.1.7600</Versions>
+  <Code>
+$extensions = @('*.log','*.etl','*.lck','*.tmp','*.temp','*.dmp')
+$drives = Get-PSDrive -PSProvider FileSystem
+foreach ($drive in $drives) {
+  Write-Host "Deleting files in $($drive.Name):"
+  foreach ($extension in $extensions) {
+    $files = Get-ChildItem -Path "$($drive.Name):\" -Include $extension -Recurse -Force
+    foreach ($file in $files) {
+      Write-Host "Deleting $($file.FullName)"
+      Remove-Item $file.FullName -Force
+    }
+  }
+}</Code>
 </Script>

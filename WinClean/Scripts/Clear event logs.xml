@@ -8,6 +8,7 @@
   <Recommended>Limited</Recommended>
   <Host>PowerShell</Host>
   <Impact>Free storage space</Impact>
+  <Versions>>=6.1.7600</Versions>
   <Code>Import-Module Microsoft.PowerShell.Management
 Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }</Code>
 </Script>
