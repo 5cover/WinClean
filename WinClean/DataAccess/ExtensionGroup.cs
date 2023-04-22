@@ -4,7 +4,7 @@ using Microsoft.Win32;
 
 namespace Scover.WinClean.DataAccess;
 
-/// <summary>A group of related extensions</summary>
+/// <summary>A group of related extensions.</summary>
 public sealed class ExtensionGroup : IEnumerable<string>
 {
     private readonly IEnumerable<string> _extensions;
@@ -15,6 +15,15 @@ public sealed class ExtensionGroup : IEnumerable<string>
     /// <inheritdoc cref="ExtensionGroup(IEnumerable{string})"/>
     public ExtensionGroup(params string[] extensions) : this((IEnumerable<string>)extensions)
     {
+    }
+
+    public string Filter
+    {
+        get
+        {
+            string extensions = string.Join(";", _extensions.Select(ext => $"*{ext}"));
+            return $"{Name} ({extensions})|{extensions}";
+        }
     }
 
     public string Name

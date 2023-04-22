@@ -126,16 +126,10 @@ public sealed partial class MainWindow
             DefaultExt = App.Settings.ScriptFileExtension,
             Multiselect = true,
             ReadOnlyChecked = true,
+            Filter = new ExtensionGroup(App.Settings.ScriptFileExtension).Filter
         };
-        MakeFilter(new(App.Settings.ScriptFileExtension));
 
         return !ofd.ShowDialog(this) ?? true ? Enumerable.Empty<string>() : ofd.FileNames;
-
-        void MakeFilter(ExtensionGroup group)
-        {
-            string extensions = string.Join(";", group.Select(ext => $"*{ext}"));
-            ofd.Filter = $"{group.Name} ({extensions})|{extensions}";
-        }
     }
 
     private void CheckScripts(Predicate<CheckableScript> check)
