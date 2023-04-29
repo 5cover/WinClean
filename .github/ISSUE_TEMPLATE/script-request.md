@@ -1,6 +1,6 @@
 ---
 name: Script request
-about: Suggest a new script to ship with all WinClean installations
+about: Suggest a new script to embed in all WinClean installations
 title: "[SCRIPT]"
 labels: enhancement
 assignees: 5cover
@@ -13,8 +13,8 @@ A clear and concise description of the purpose of this script.
 **Manual alternative?**
 Steps for reproducing the action executed by this script manually. If not available, explain why.
 
-**The script host**
-The script host you chose and why. Try to favor PowerShell if possible.
+**Host**
+The script host you chose and why.
 
 **Additional context**
 Add any other context or screenshots about the script.
