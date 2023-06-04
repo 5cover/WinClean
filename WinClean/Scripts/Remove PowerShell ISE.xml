@@ -5,9 +5,10 @@
   <Description>PowerShell ISE can be deleted if you don't use it.</Description>
   <Description xml:lang="fr">PowerShell ISE peut être supprimé si vous ne l'utilisez pas.</Description>
   <Category>Debloat</Category>
-  <Recommended>Limited</Recommended>
-  <Host>Cmd</Host>
+  <Safety>Limited</Safety>
   <Impact>Free storage space</Impact>
   <Versions>>=6.1.7600</Versions>
-  <Code>DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0</Code>
+  <Code>
+    <Execute Host="Cmd">DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0</Execute>
+  </Code>
 </Script>

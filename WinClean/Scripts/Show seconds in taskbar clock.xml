@@ -5,11 +5,22 @@
   <Description>Display seconds in the clock at the bottom right corner of the screen.</Description>
   <Description xml:lang="fr">Afficher les secondes dans l'horloge au coin inférieur droit de l'écran.</Description>
   <Category>Customization</Category>
-  <Recommended>Limited</Recommended>
-  <Host>Regedit</Host>
+  <Safety>Limited</Safety>
   <Impact>Ergonomics</Impact>
-  <Code>Windows Registry Editor Version 5.00
+  <Code>
+    <Enable Host="Regedit">Windows Registry Editor Version 5.00
 
-[HKEYCURRENTUSER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
-"ShowSecondsInSystemClock"=dword:00000001</Code>
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"ShowSecondsInSystemClock"=dword:1</Enable>
+    <Disable Host="Regedit">Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"ShowSecondsInSystemClock"=dword:0</Disable>
+    <Detect Host="PowerShell">Switch (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowSecondsInSystemClock")
+{
+  0 {exit 0}
+  1 {exit 1}
+  default {exit -1}
+}</Detect>
+  </Code>
 </Script>

@@ -29,7 +29,7 @@ DisableProgramGroupPage=yes
 LicenseFile=..\..\LICENSE
 OutputDir={#_Output}
 OutputBaseFilename={#SetupName}
-SetupIconFile=..\Resources\WinClean.ico
+SetupIconFile=..\WinClean.ico
 SignTool=signtool
 SolidCompression=yes
 
@@ -89,7 +89,7 @@ DotNetRuntimeFailed1603=A fatal error occurred while installing the .NET Desktop
 fr.DotNetRuntimeFailed1603=Une erreur critique s'est produite pendant l'installation de .NET Desktop Runtime. Corrigez l'erreur puis redémarrez l'installation.
 
 DotNetRuntimeFailed5100=Your computer does not meet the requirements of the .NET Desktop Runtime.
-fr.DotNetRuntimeFailed5100=Vote ordinateur ne correspond pas à la configuration requise de .NET Desktop Runtime. 
+fr.DotNetRuntimeFailed5100=Votre ordinateur ne correspond pas à la configuration requise de .NET Desktop Runtime. 
 
 DotNetRuntimeFailedOther=The .NET Desktop Runtime installer exited with an unexpected status code "%1". Please review any other messages shown by the installer to determine whether the installation completed successfully, and abort this installation and fix the problem if it did not.
 fr.DotNetRuntimeFailedOther=L'installeur de .NET Desktop Runtime a renvoyé un code d'erreur innatendu "%1". Veuillez consulter tous les autres messages affichés par le programme d'installation pour déterminer si l'installation s'est terminée avec succès, et abandonner cette installation et résoudre le problème si ce n'est pas le cas.

@@ -5,11 +5,11 @@
   <Description>Disk Cleanup (cleanmgr.exe) is a tool that deletes junk files and frees disk space. Overwrites configuration number 2022.</Description>
   <Description xml:lang="fr">Le nettoyage de disque (cleanmgr.exe) est un outil qui supprime les fichiers inutiles et libère de l'espace disque. Écrase la configuration numéro 2022.</Description>
   <Category>Maintenance</Category>
-  <Recommended>Yes</Recommended>
-  <Host>Cmd</Host>
+  <Safety>Safe</Safety>
   <Versions>>=4.10.1998</Versions>
   <Impact>Free storage space</Impact>
-  <Code>REG add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Active Setup Temp Folders" /v "StateFlags2022" /t REG_DWORD /d "2" /f
+  <Code>
+    <Execute Host="Cmd">REG add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Active Setup Temp Folders" /v "StateFlags2022" /t REG_DWORD /d "2" /f
 REG add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Content Indexer Cleaner" /v "StateFlags2022" /t REG_DWORD /d "2" /f
 REG add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\D3D Shader Cache" /v "StateFlags2022" /t REG_DWORD /d "2" /f
 REG add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Delivery Optimization Files" /v "StateFlags2022" /t REG_DWORD /d "2" /f
@@ -37,5 +37,6 @@ REG add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Wi
 REG add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Windows Error Reporting Files" /v "StateFlags2022" /t REG_DWORD /d "2" /f
 REG add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Windows ESD installation files" /v "StateFlags2022" /t REG_DWORD /d "2" /f
 REG add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Windows Upgrade Log Files" /v "StateFlags2022" /t REG_DWORD /d "2" /f
-cleanmgr /sagerun:2022</Code>
+cleanmgr /sagerun:2022</Execute>
+  </Code>
 </Script>

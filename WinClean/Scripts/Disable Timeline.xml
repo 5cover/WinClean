@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Script>
   <Name>Disable Timeline</Name>
-  <Name xml:lang="fr">Désactiver la chronologie</Name>
-  <Description>Timeline allows users to review their activity history and quickly return to their previous tasks.</Description>
-  <Description xml:lang="fr">La chronologie permet aux utilisateurs de revoir l'historique de leur activité et de retourner rapidement à leurs taches précédentes.</Description>
+  <Name xml:lang="fr">Désactiver la Chronologie</Name>
+  <Description>Timeline allows users to review their activity history and quickly exit to their previous tasks.</Description>
+  <Description xml:lang="fr">La Chronologie permet aux utilisateurs de revoir l'historique de leur activité et de retourner rapidement à leurs taches précédentes.</Description>
   <Category>Customization</Category>
-  <Recommended>Yes</Recommended>
-  <Host>Regedit</Host>
+  <Safety>Safe</Safety>
   <Impact>Ergonomics</Impact>
   <Versions>>=10.0.17134</Versions>
-  <Code>Windows Registry Editor Version 5.00
-
-[HKEYLOCALMACHINE\SOFTWARE\Policies\Microsoft\Windows\System]
-"EnableActivityFeed"=dword:00000000</Code>
+  <Code>
+    <Enable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System]
+"EnableActivityFeed"=dword:0</Enable>
+    <Disable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System]
+"EnableActivityFeed"=dword:1</Disable>
+    <Detect Host="PowerShell">switch (Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Name "EnableActivityFeed")
+{
+    0 {exit 1}
+    1 {exit 0}
+    default {exit -1}
+}</Detect>
+  </Code>
 </Script>

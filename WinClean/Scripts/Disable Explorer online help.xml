@@ -2,13 +2,19 @@
 <Script>
   <Name>Disable Explorer online help</Name>
   <Name xml:lang="fr">Désactiver l'aide en ligne dans l'Explorateur de fichiers</Name>
-  <Description>By default, pressing F1 in File Explorer redirects to a web page.</Description>
-  <Description xml:lang="fr">Par défaut, appuyer sur F1 dans l'Explorateur de fichiers redirige vers une page Web.</Description>
+  <Description>By default, pressing F1 in File Explorer redirects to a web page. This settings applies to the current user.</Description>
+  <Description xml:lang="fr">Par défaut, appuyer sur F1 dans l'Explorateur de fichiers redirige vers une page Web. Ce paramètre s'applique à l'utilisateur actuel.</Description>
   <Category>Customization</Category>
-  <Recommended>Yes</Recommended>
-  <Host>Cmd</Host>
+  <Safety>Safe</Safety>
   <Impact>Ergonomics</Impact>
-  <Code>taskkill /f /im HelpPane.exe
-takeown /f %WinDir%\HelpPane.exe
-icacls %WinDir%\HelpPane.exe /deny Everyone:(X)</Code>
+  <Code>
+    <Enable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_CURRENT_USER\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win32]
+@=""
+[HKEY_CURRENT_USER\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64]
+@=""</Enable>
+    <Disable Host="Regedit">Windows Registry Editor Version 5.00
+[-HKEY_CURRENT_USER\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0]</Disable>
+    <Detect Host="PowerShell">exit [int](Test-Path "HKCU:\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0")</Detect>
+  </Code>
 </Script>

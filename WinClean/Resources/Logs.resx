@@ -135,10 +135,6 @@
     <comment>0 : script name
 1 : script timeout@Invariant</comment>
   </data>
-  <data name="RebootingForAppMaintenance" xml:space="preserve">
-    <value>Rebooting for application maintenance...</value>
-    <comment>@Invariant</comment>
-  </data>
   <data name="RestorePointCreated" xml:space="preserve">
     <value>Restore point created.</value>
     <comment>@Invariant</comment>
@@ -152,14 +148,6 @@
     <value>Can't add script '{0}' as script '{0}' already exists.</value>
     <comment>0 : script filename
 1 : script InvariantName@Invariant</comment>
-  </data>
-  <data name="ScriptExecuted" xml:space="preserve">
-    <value>Script '{0}' executed.</value>
-    <comment>0 : script InvariantName@Invariant</comment>
-  </data>
-  <data name="ScriptExecutionCanceled" xml:space="preserve">
-    <value>Script execution canceled.</value>
-    <comment>@Invariant</comment>
   </data>
   <data name="ScriptLoadError" xml:space="preserve">
     <value>Script '{0}' could not be loaded: {1}</value>
@@ -183,6 +171,10 @@
     <value>Scripts saved.</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="ScriptStartedExecution" xml:space="preserve">
+    <value>Script '{0}' started execution.</value>
+    <comment>0 : script InvariantName@Invariant</comment>
+  </data>
   <data name="SettingsSaved" xml:space="preserve">
     <value>Settings saved.</value>
     <comment>@Invariant</comment>
@@ -190,6 +182,10 @@
   <data name="StartingExecution" xml:space="preserve">
     <value>Starting the execution of {0} script(s)...</value>
     <comment>0 : script count@Invariant</comment>
+  </data>
+  <data name="SystemRestartInitiated" xml:space="preserve">
+    <value>System restart initiated.</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="UnhandledException" xml:space="preserve">
     <value>An unhandled exception occured: {0}</value>

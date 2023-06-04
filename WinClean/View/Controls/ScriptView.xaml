@@ -1,0 +1,163 @@
+﻿<UserControl
+    x:Class="Scover.WinClean.View.Controls.ScriptView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:metadatas="clr-namespace:Scover.WinClean.Model.Metadatas"
+    xmlns:res="clr-namespace:Scover.WinClean.Resources"
+    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    x:Name="userControl"
+    mc:Ignorable="d">
+    <UserControl.ContentTemplate>
+        <DataTemplate DataType="viewModel:ScriptViewModel">
+            <DataTemplate.Resources>
+                <Style TargetType="ComboBoxItem">
+                    <Setter Property="ToolTip" Value="{Binding Content.Description, RelativeSource={RelativeSource Self}}" />
+                </Style>
+                <Style TargetType="xctk:WatermarkComboBox">
+                    <Setter Property="DisplayMemberPath" Value="Name" />
+                    <Setter Property="IsEnabled" Value="{Binding AllowEdit, ElementName=userControl}" />
+                </Style>
+                <Style TargetType="xctk:WatermarkTextBox">
+                    <Setter Property="IsReadOnly" Value="{Binding AllowEdit, ElementName=userControl, Converter={StaticResource BooleanInvert}}" />
+                </Style>
+            </DataTemplate.Resources>
+            <Grid IsEnabled="{Binding Converter={StaticResource IsNotNull}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <DockPanel
+                    Grid.ColumnSpan="2"
+                    Margin="0,0,0,12"
+                    Background="#50ffff00"
+                    Visibility="{Binding IsIncompatibleWithCurrentVersion, Converter={StaticResource BooleanToVisibility}, FallbackValue=Collapsed}">
+                    <Image
+                        Width="{Binding WarningIcon.PixelWidth, ElementName=userControl}"
+                        Height="{Binding WarningIcon.PixelHeight, ElementName=userControl}"
+                        Margin="3"
+                        VerticalAlignment="Center"
+                        DockPanel.Dock="Left"
+                        Source="{Binding WarningIcon, ElementName=userControl}" />
+                    <TextBlock
+                        Margin="3"
+                        Text="{x:Static ui:ScriptView.IncompatibleScript}"
+                        TextWrapping="Wrap" />
+                </DockPanel>
+
+                <DockPanel
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="0,0,0,6">
+                    <xctk:WatermarkTextBox
+                        Padding="6,0"
+                        DockPanel.Dock="Right"
+                        IsReadOnly="True"
+                        MaxLines="1"
+                        Text="{Binding Versions, Mode=OneWay}"
+                        Watermark="{x:Static res:Script.Versions}" />
+                    <xctk:WatermarkTextBox
+                        Margin="0,0,6,0"
+                        MaxLines="1"
+                        Text="{Binding Name, Mode=TwoWay}"
+                        Watermark="{x:Static res:Script.Name}" />
+                </DockPanel>
+
+
+                <xctk:WatermarkTextBox
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="0,0,0,6"
+                    AcceptsReturn="True"
+                    Text="{Binding Description, Mode=TwoWay}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Auto"
+                    Watermark="{x:Static res:Script.Description}" />
+
+                <xctk:WatermarkComboBox
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Margin="0,0,3,6"
+                    ItemsSource="{Binding Metadatas, ElementName=userControl, ConverterParameter={x:Type metadatas:Category}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
+                    SelectedItem="{Binding Category, Mode=TwoWay}"
+                    SelectionChanged="ComboBoxCategorySelectionChanged"
+                    Watermark="{x:Static res:Script.Category}" />
+
+                <xctk:WatermarkComboBox
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Margin="3,0,0,6"
+                    ItemsSource="{Binding Metadatas, ElementName=userControl, ConverterParameter={x:Type metadatas:SafetyLevel}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
+                    SelectedItem="{Binding SafetyLevel, Mode=TwoWay}"
+                    Watermark="{x:Static res:Script.SafetyLevel}" />
+
+                <!--<xctk:WatermarkComboBox
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="0,0,3,6"
+                    ItemsSource="{Binding Metadatas, ElementName=userControl, ConverterParameter={x:Type metadatas:Host}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
+                    SelectedItem="{Binding Host, Mode=TwoWay}"
+                    Watermark="{x:Static res:Script.Host}" />-->
+
+                <xctk:WatermarkComboBox
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Margin="3,0,0,6"
+                    ItemsSource="{Binding Metadatas, ElementName=userControl, ConverterParameter={x:Type metadatas:Impact}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
+                    SelectedItem="{Binding Impact, Mode=TwoWay}"
+                    Watermark="{x:Static res:Script.Impact}" />
+
+                <!--<xctk:WatermarkTextBox
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="0,0,0,6"
+                    AcceptsReturn="True"
+                    FontFamily="Consolas"
+                    HorizontalScrollBarVisibility="Auto"
+                    Text="{Binding Code, Mode=TwoWay}"
+                    VerticalScrollBarVisibility="Auto"
+                    Watermark="{x:Static res:Script.Code}" />-->
+
+                <!--  {Binding} for content doesn't update properly  -->
+                <controls:ScriptCodeView
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Content="{Binding Content, ElementName=userControl}"
+                    IsReadOnly="{Binding AllowEdit, ElementName=userControl, Converter={StaticResource BooleanInvert}}" />
+
+                <Button
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Padding="15,3,15,3"
+                    HorizontalAlignment="Right"
+                    Click="ButtonDelete_Click"
+                    Content="{x:Static ui:Buttons.Delete}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Visibility" Value="{Binding AllowEdit, ElementName=userControl, Converter={StaticResource BooleanToVisibility}}" />
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </DataTemplate>
+    </UserControl.ContentTemplate>
+</UserControl>

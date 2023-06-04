@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>Launch Notepad</Name>
+  <Description>Launches notepad and waits for exit.</Description>
+  <Category>Maintenance</Category>
+  <Safety>Safe</Safety>
+  <Impact>Ergonomics</Impact>
+  <Code>
+    <Execute Host="Cmd">%windir%\System32\notepad.exe</Execute>
+  </Code>
+</Script>

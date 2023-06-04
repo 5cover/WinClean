@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Category" xml:space="preserve">
-    <value>Cate_gory</value>
+    <value>_Category</value>
   </data>
   <data name="Host" xml:space="preserve">
     <value>_Host</value>
@@ -173,9 +173,8 @@
   <data name="Name" xml:space="preserve">
     <value>_Name</value>
   </data>
-  <data name="RecommendationLevel" xml:space="preserve">
-    <value>_Recommended</value>
-    <comment />
+  <data name="SafetyLevel" xml:space="preserve">
+    <value>S_afety</value>
   </data>
   <data name="ScriptCount" xml:space="preserve">
     <value>{0} script(s).</value>

@@ -70,11 +70,29 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scripts added by the user. They can be modified..
+        /// </summary>
+        public static string CustomDescription {
+            get {
+                return ResourceManager.GetString("CustomDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default.
         /// </summary>
         public static string Default {
             get {
                 return ResourceManager.GetString("Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scripts embedded in the application. They cannot be modified..
+        /// </summary>
+        public static string DefaultDescription {
+            get {
+                return ResourceManager.GetString("DefaultDescription", resourceCulture);
             }
         }
     }

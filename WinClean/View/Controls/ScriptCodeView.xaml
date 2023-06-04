@@ -1,0 +1,139 @@
+﻿<UserControl
+    x:Class="Scover.WinClean.View.Controls.ScriptCodeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:metadatas="clr-namespace:Scover.WinClean.Model.Metadatas"
+    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
+    x:Name="userControl"
+    mc:Ignorable="d">
+    <!--  UseLayoutRounding prevents blurry Host icons  -->
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="\View\ResourceDictionaries\FixBindingErrors.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.ContentTemplate>
+        <DataTemplate DataType="viewModel:ScriptViewModel">
+            <TabControl
+                ItemContainerStyle="{StaticResource TabControlFix}"
+                ItemsSource="{Binding Code}"
+                SelectedItem="{Binding SelectedCode}">
+                <TabControl.ContentTemplate>
+                    <DataTemplate DataType="collections:KeyValuePair&lt;metadatas:Capability,model:ScriptAction&gt;">
+                        <DockPanel>
+                            <ComboBox
+                                Margin="0,0,0,3"
+                                DockPanel.Dock="Top"
+                                IsEnabled="{Binding IsReadOnly, ElementName=userControl, Converter={StaticResource BooleanInvert}}"
+                                ItemsSource="{Binding Metadatas, ElementName=userControl, ConverterParameter={x:Type metadatas:Host}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
+                                SelectedItem="{Binding Value.Host}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate DataType="metadatas:Host">
+                                        <StackPanel Orientation="Horizontal" ToolTip="{Binding Description}">
+                                            <Image
+                                                Width="{Binding Icon.PixelWidth}"
+                                                Height="{Binding Icon.PixelWidth}"
+                                                VerticalAlignment="Center"
+                                                RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                                Source="{Binding Icon}" />
+                                            <TextBlock Margin="6,0,0,0" Text="{Binding Name}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                                <ComboBox.ItemContainerStyle>
+                                    <Style TargetType="ComboBoxItem">
+                                        <Setter Property="Control.HorizontalContentAlignment" Value="Left" />
+                                        <Setter Property="Control.VerticalContentAlignment" Value="Top" />
+                                    </Style>
+                                </ComboBox.ItemContainerStyle>
+                            </ComboBox>
+                            <TextBox
+                                AcceptsReturn="True"
+                                FontFamily="Consolas"
+                                HorizontalScrollBarVisibility="Auto"
+                                IsReadOnly="{Binding IsReadOnly, ElementName=userControl}"
+                                Text="{Binding Value.Code, Mode=TwoWay}"
+                                VerticalScrollBarVisibility="Auto" />
+                        </DockPanel>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+                <TabControl.ItemTemplate>
+                    <DataTemplate DataType="collections:KeyValuePair&lt;metadatas:Capability,model:ScriptAction&gt;">
+                        <StackPanel>
+                            <StackPanel
+                                Margin="0,3,0,0"
+                                Orientation="Horizontal"
+                                ToolTip="{x:Static ui:ScriptCodeView.SelectedDescription}">
+                                <Image
+                                    Width="16"
+                                    Height="16"
+                                    VerticalAlignment="Center"
+                                    Source="{StaticResource Checkmark}" />
+                                <TextBlock
+                                    Margin="4,0,0,0"
+                                    FontWeight="Bold"
+                                    Text="{x:Static ui:ScriptCodeView.Selected}" />
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Style.Triggers>
+                                            <DataTrigger Value="False">
+                                                <DataTrigger.Binding>
+                                                    <MultiBinding Converter="{StaticResource Equals}">
+                                                        <Binding Path="Key" />
+                                                        <Binding ElementName="userControl" Path="Content.DesiredCapability" />
+                                                    </MultiBinding>
+                                                </DataTrigger.Binding>
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Content.IsSelected, ElementName=userControl}" Value="False">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                            </StackPanel>
+                            <StackPanel
+                                Margin="0,3,0,0"
+                                Orientation="Horizontal"
+                                ToolTip="{x:Static ui:ScriptCodeView.EffectiveDescription}">
+                                <Image
+                                    Width="16"
+                                    Height="16"
+                                    VerticalAlignment="Center"
+                                    Source="{StaticResource Gear}" />
+                                <TextBlock
+                                    Margin="4,0,0,0"
+                                    FontWeight="Bold"
+                                    Text="{x:Static ui:ScriptCodeView.Effective}" />
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Style.Triggers>
+                                            <DataTrigger Value="False">
+                                                <DataTrigger.Binding>
+                                                    <MultiBinding Converter="{StaticResource Equals}">
+                                                        <Binding Path="Key" />
+                                                        <Binding
+                                                            ElementName="userControl"
+                                                            IsAsync="True"
+                                                            Path="Content.Code.EffectiveCapability" />
+                                                    </MultiBinding>
+                                                </DataTrigger.Binding>
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                            </StackPanel>
+                            <TextBlock Text="{Binding Key.Name}" ToolTip="{Binding Key.Description}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+            </TabControl>
+        </DataTemplate>
+    </UserControl.ContentTemplate>
+</UserControl>

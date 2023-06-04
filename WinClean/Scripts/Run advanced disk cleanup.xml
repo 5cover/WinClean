@@ -13,10 +13,10 @@
 - Les fichiers journaux seront supprimés
   </Description>
   <Category>Maintenance</Category>
-  <Recommended>Limited</Recommended>
-  <Host>Cmd</Host>
+  <Safety>Limited</Safety>
   <Impact>Free storage space</Impact>
-  <Code>cd /d "%temp%"
+  <Code>
+    <Execute Host="Cmd">cd /d "%temp%"
 takeown  /r /d o /f *
 icacls * /t /c /grant:r "%username%":F
 del /f /s /q *
@@ -89,5 +89,6 @@ del /f /s /q *
 cd /d "%userprofile%\Cookies"
 takeown  /r /d o /f *
 icacls * /t /c /grant:r "%username%":F
-del /f /s /q *</Code>
+del /f /s /q *</Execute>
+  </Code>
 </Script>

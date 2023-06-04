@@ -1,11 +1,11 @@
 using System.Collections;
+using System.Globalization;
 using System.Xml;
 
 using Humanizer;
 
-using Scover.WinClean.BusinessLogic;
-using Scover.WinClean.DataAccess;
-using Scover.WinClean.Presentation;
+using Scover.WinClean;
+using Scover.WinClean.Model;
 
 namespace Tests;
 
@@ -54,17 +54,17 @@ public sealed class HelpersTests
         XmlDocument doc = new();
         doc.LoadXml(xml);
 
-        Assert.That(doc.GetSingleChild(name), Is.EqualTo(innerText));
+        Assert.That(doc.GetSingleChildText(name), Is.EqualTo(innerText));
     }
 
-    [TestCase("<Tests/>", "'Tests' has no child named 'Test'.")]
-    [TestCase("<Tests><Test/><Test/></Tests>", "'Tests' has 2 childs named 'Test' but only one was expected.")]
+    [TestCase("<Tests/>", "'Tests' has no child element named 'Test'.")]
+    [TestCase("<Tests><Test/><Test/></Tests>", "'Tests' has 2 child elements named 'Test' but only one was expected.")]
     public void TestGetSingleNodeException(string xml, string exceptionMessage)
     {
         XmlDocument doc = new();
         doc.LoadXml(xml);
 
-        var e = Assert.Throws<XmlException>(() => doc.GetSingleChild("Test"));
+        var e = Assert.Throws<XmlException>(() => doc.GetSingleChildText("Test"));
         Assert.That(e!.Message, Is.EqualTo(exceptionMessage));
     }
 
@@ -78,7 +78,7 @@ public sealed class HelpersTests
 
         str.SetFromXml(doc.DocumentElement.AssertNotNull());
 
-        Assert.That(str.Single(), Is.EqualTo(KeyValuePair.Create(cultureName, value)));
+        Assert.That(str.Single(), Is.EqualTo(KeyValuePair.Create(new CultureInfo(cultureName), value)));
     }
 
     [TestCaseSource(nameof(sumCases))]
@@ -94,6 +94,21 @@ public sealed class HelpersTests
         var e = Assert.Throws<ArgumentException>(() => filename.ToFilename(replaceInvalidCharsWith));
         Assert.That(e!.Message, Is.EqualTo(exceptionMessage));
     }
+
+    [TestCase(new object[] { new object[0] })]
+    [TestCase(new object[] { new object?[] { null } })]
+    [TestCase(new object[] { new object?[] { null, null, null } })]
+    [TestCase(new object[] { new object?[] { null, "", 0, 10.9, null } })]
+    public void TestWithoutNull(IEnumerable<object?> sequence)
+    {
+        var sequenceWithoutNull = sequence.WithoutNull();
+        Assert.That(sequenceWithoutNull, Does.Not.Contains(null));
+        Assert.That(sequenceWithoutNull.Count(), Is.EqualTo(sequence.Count() - sequence.Count(o => o is null)));
+    }
+
+    [TestCase("1.2.3")]
+    [TestCase("1.2.3.4")]
+    public void TestWithoutRevision(string version) => Assert.That(new Version(version).WithoutRevision().Revision, Is.EqualTo(-1));
 
     private sealed class EqualContentCases : IEnumerable<TestCaseData>
     {

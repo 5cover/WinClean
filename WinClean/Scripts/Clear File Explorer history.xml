@@ -5,12 +5,13 @@
   <Description>When accessing files or folders in File Explorer, Windows keeps a shortcut to the folder/file in File Explorer history.</Description>
   <Description xml:lang="fr">Lors de l'accès à des fichiers ou dossiers dans l'Explorateur de fichiers, Windows conserve un raccourci vers le dossier/fichier dans l'historique de l'Explorateur de fichiers.</Description>
   <Category>Maintenance</Category>
-  <Recommended>Limited</Recommended>
-  <Host>Cmd</Host>
+  <Safety>Limited</Safety>
   <Impact>Privacy</Impact>
-  <Code>del /F %APPDATA%\Microsoft\Windows\Recent\*
+  <Code>
+    <Execute Host="Cmd">del /F %APPDATA%\Microsoft\Windows\Recent\*
 del /F %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\*
 del /F %APPDATA%\Microsoft\Windows\Recent\CustomDestinations\*
-reg delete HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\RunMRU /VA /F
-reg delete HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths /VA /F</Code>
+reg delete HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\RunMRU /VA /F
+reg delete HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths /VA /F</Execute>
+  </Code>
 </Script>

@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- https://winaero.com/windows-10-deleting-thumbnail-cache/ -->
 <Script>
-  <Name>Keep thumbnail cache after reboot</Name>
-  <Name xml:lang="fr">Conserver le cache des miniatures après le redémarrage</Name>
-  <Description>By default, thumbnail cache is rebuilt after each reboot.</Description>
-  <Description xml:lang="fr">Par défaut, le cache des miniatures est reconstruit après chaque redémarrage.</Description>
+  <Name>Keep thumbnail cache</Name>
+  <Name xml:lang="fr">Conserver le cache des miniatures</Name>
+  <Description>By default, thumbnail cache is rebuilt on startup. Disabling this behavior decreases startup time. This settings affects the current user.</Description>
+  <Description xml:lang="fr">Par défaut, le cache des miniatures est reconstruit au démarrage. Désactiver ce comportement réduit le temps de démarrage. Ce paramètre affecte l'utilisateur actuel.</Description>
   <Category>Debloat</Category>
-  <Recommended>Yes</Recommended>
-  <Host>Regedit</Host>
+  <Safety>Safe</Safety>
   <Impact>Startup time</Impact>
-  <Code>Windows Registry Editor Version 5.00
-[HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache]
-"Autorun"=dword:00000000
-[HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache]
-"Autorun"=dword:00000000</Code>
+  <Code>
+    <Enable Host="Regedit">Windows Registry Editor Version 5.00
+    
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache]
+"Autorun"=dword:0
+    
+[HKEY_CURRENT_USER\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache]
+"Autorun"=dword:0</Enable>
+        <Disable Host="Regedit">Windows Registry Editor Version 5.00
+    
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache]
+"Autorun"=dword:1
+    
+[HKEY_CURRENT_USER\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache]
+"Autorun"=dword:1</Disable>
+    <Detect Host="PowerShell">switch (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name "Autorun")
+{
+    0 {exit 1}
+    1 {exit 0}
+    default {exit -1}
+}</Detect>
+  </Code>
 </Script>

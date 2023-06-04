@@ -97,36 +97,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CreatingRestorePointContent" xml:space="preserve">
-    <value>Creating restore point...</value>
-  </data>
-  <data name="ExecutionCompletedContent" xml:space="preserve">
-    <value>{0} scripts executed.
-To finish the operation, it is recommended to restart the system.</value>
-    <comment>0 : script count</comment>
-  </data>
-  <data name="ExecutionCompletedMainInstruction" xml:space="preserve">
-    <value>Cleaning completed</value>
-  </data>
-  <data name="ExecutionProgressContent" xml:space="preserve">
-    <value>This operation may take some time.</value>
-  </data>
-  <data name="ExecutionProgressExpanderText" xml:space="preserve">
-    <value>{0} out of {1} scripts executed ({2} remaining)
-Currently executing: {3}
-Time remaining: {4}</value>
-    <comment>0 : count of scripts executed
-1 : script count
-2 : count of scripts remaining
-3 : name of the currently executing script
-4 : estimated remaining time</comment>
-  </data>
-  <data name="ExecutionProgressMainInstruction" xml:space="preserve">
-    <value>Executing the scripts...</value>
-  </data>
-  <data name="ExecutionProgressVerificationText" xml:space="preserve">
-    <value>Automatically restart when finished</value>
-  </data>
   <data name="HungScriptDialogContent" xml:space="preserve">
     <value>Script "{0}" has been running for {1} and is probably hung.</value>
     <comment>0 : name of the affected script

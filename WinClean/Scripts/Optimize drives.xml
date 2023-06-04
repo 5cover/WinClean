@@ -5,9 +5,10 @@
   <Description>Drive optimization includes defragmentation and slab consolidation. It improves read/write performance and potentially frees up some space.</Description>
   <Description xml:lang="fr">L'optimisation d'un lecteur inclut sa défragmentation et sa consolidation. Elle permet d'améliorer les performances de lecture/écriture et potentiellement de libérer de l'espace.</Description>
   <Category>Maintenance</Category>
-  <Recommended>Yes</Recommended>
-  <Host>PowerShell</Host>
+  <Safety>Safe</Safety>
   <Impact>Storage speed</Impact>
   <Versions>>=10.0.15063</Versions>
-  <Code>Get-Volume | Optimize-Volume -NormalPriority</Code>
+  <Code>
+    <Execute Host="PowerShell">Get-Volume | Optimize-Volume -NormalPriority</Execute>
+  </Code>
 </Script>

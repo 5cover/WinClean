@@ -173,9 +173,8 @@
   <data name="Name" xml:space="preserve">
     <value>_Nom</value>
   </data>
-  <data name="RecommendationLevel" xml:space="preserve">
-    <value>_Recommandé</value>
-    <comment />
+  <data name="SafetyLevel" xml:space="preserve">
+    <value>Sû_reté</value>
   </data>
   <data name="ScriptCount" xml:space="preserve">
     <value>{0} script(s).</value>

@@ -1,0 +1,54 @@
+﻿<xctk:WizardPage
+    x:Class="Scover.WinClean.View.Pages.Page2"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pages="clr-namespace:Scover.WinClean.ViewModel.Pages"
+    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Title="{x:Static ui:Page2.Title}"
+    d:DataContext="{d:DesignInstance Type=pages:Page2ViewModel}"
+    BackButtonVisibility="Collapsed"
+    NextButtonVisibility="Collapsed"
+    mc:Ignorable="d">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Enter">
+            <i:InvokeCommandAction Command="{Binding Start}" />
+        </i:EventTrigger>
+        <!--  Not using Leave because it is not fired when window is closed  -->
+        <i:EventTrigger EventName="Finished" SourceObject="{Binding}">
+            <i:InvokeCommandAction Command="{Binding Stop}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Cancel" SourceObject="{Binding RelativeSource={RelativeSource AncestorType=xctk:Wizard}}">
+            <i:InvokeCommandAction Command="{Binding Stop}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <DockPanel Margin="10">
+        <ProgressBar
+            Height="23"
+            Margin="0,0,0,10"
+            DockPanel.Dock="Top"
+            Maximum="{Binding ExecutionInfos.Source.Count, Mode=OneTime}"
+            Value="{Binding ScriptIndex, Mode=OneWay}" />
+        <TextBlock Margin="0,0,0,10" DockPanel.Dock="Top">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{x:Static ui:Page2.ProgressFormat}">
+                    <Binding Path="ScriptIndex" UpdateSourceTrigger="PropertyChanged" />
+                    <Binding Path="ExecutionInfos.Source.Count" UpdateSourceTrigger="PropertyChanged" />
+                    <Binding Path="ScriptsRemaining" UpdateSourceTrigger="PropertyChanged" />
+                    <Binding Path="ExecutingExecutionInfo.Script.Name" UpdateSourceTrigger="PropertyChanged" />
+                    <Binding Path="FormattedTimeRemaining" UpdateSourceTrigger="PropertyChanged" />
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+        <CheckBox
+            Content="{x:Static ui:Page2.RestartWhenFinished}"
+            DockPanel.Dock="Bottom"
+            IsChecked="{Binding RestartWhenFinished}" />
+        <controls:ExecutionInfoListView Margin="0,0,0,10" Content="{Binding ExecutionInfoListViewModel}" />
+    </DockPanel>
+</xctk:WizardPage>

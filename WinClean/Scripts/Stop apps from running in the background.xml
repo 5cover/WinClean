@@ -5,11 +5,22 @@
   <Description>Some apps keep processes running in the background. Disabling this behavior frees up memory and decreases the number of running processes.</Description>
   <Description xml:lang="fr">Certaines applications conservent des processus en arrière-plan. Inderdire ce comportement permet de libérer de la mémoire et diminue le nombre de processus en cours d'exécution.</Description>
   <Category>Debloat</Category>
-  <Recommended>Yes</Recommended>
-  <Host>Regedit</Host>
+  <Safety>Safe</Safety>
   <Impact>Memory usage</Impact>
-  <Code>Windows Registry Editor Version 5.00
+  <Code>
+    <Enable Host="Regedit">Windows Registry Editor Version 5.00
 
-[HKEYCURRENTUSER\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications]
-"GlobalUserDisabled"=dword:00000001</Code>
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications]
+"GlobalUserDisabled"=dword:1</Enable>
+    <Disable Host="Regedit">Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications]
+"GlobalUserDisabled"=dword:0</Disable>
+    <Detect Host="PowerShell">Switch (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" -Name "GlobalUserDisabled")
+{
+  0 {exit 0}
+  1 {exit 1}
+  default {exit -1}
+}</Detect>
+  </Code>
 </Script>

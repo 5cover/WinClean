@@ -15,11 +15,11 @@ Types de fichiers concernés :
 - Fichiers de vidage mémoire d'erreurs système (*.dmp)
 Attention : ce script pourrait supprimer des fichiers utiles portant ces extensions.</Description>
   <Category>Maintenance</Category>
-  <Recommended>Limited</Recommended>
-  <Host>PowerShell</Host>
+  <Safety>Limited</Safety>
   <Impact>Free storage space</Impact>
   <Versions>>=6.1.7600</Versions>
   <Code>
+    <Execute Host="PowerShell">
 $extensions = @('*.log','*.etl','*.lck','*.tmp','*.temp','*.dmp')
 $drives = Get-PSDrive -PSProvider FileSystem
 foreach ($drive in $drives) {
@@ -31,5 +31,6 @@ foreach ($drive in $drives) {
       Remove-Item $file.FullName -Force
     }
   }
-}</Code>
+}</Execute>
+  </Code>
 </Script>

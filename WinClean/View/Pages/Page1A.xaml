@@ -1,0 +1,27 @@
+﻿<xctk:WizardPage
+    x:Class="Scover.WinClean.View.Pages.Page1A"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pages="clr-namespace:Scover.WinClean.ViewModel.Pages"
+    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Title="{x:Static ui:Page1A.Title}"
+    d:DataContext="{d:DesignInstance Type=pages:Page1AViewModel}"
+    BackButtonVisibility="Collapsed"
+    CanCancel="False"
+    Description="{x:Static ui:Page1A.Description}"
+    NextButtonVisibility="Collapsed"
+    mc:Ignorable="d">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Enter">
+            <i:InvokeCommandAction Command="{Binding Start}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <ProgressBar IsIndeterminate="True" />
+
+</xctk:WizardPage>

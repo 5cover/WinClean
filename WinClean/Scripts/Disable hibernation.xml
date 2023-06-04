@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Script>
   <Name>Disable hibernation</Name>
-  <Name xml:lang="fr">Désactiver l'hibernation</Name>
+  <Name xml:lang="fr">Désactiver la mise en veille prolongée</Name>
   <Description>When the system shuts down, Windows keeps a partial copy of the RAM on disk to speed up the next boot. Disabling this feature frees up disk space but may increase boot time depending on disk speed. It's recommended to select this script if you use a solid state drive as your system drive, as the system startup time penalty will be negligible.</Description>
   <Description xml:lang="fr">À l'arrêt du système, Windows conserve une copie partielle de la mémoire vive sur le disque afin d'accélérer le prochain démarrage. Désactiver cette fonctionnalité libère de l'espace disque mais peut augmenter le temps de démarrage selon la vitesse du disque. Il est recommandé de sélectionner ce script si vous utilisez un disque SSD comme disque système, car la pénalité de temps de démarrage du système sera négligeable.</Description>
   <Category>Debloat</Category>
-  <Recommended>Limited</Recommended>
-  <Host>Cmd</Host>
+  <Safety>Limited</Safety>
   <Impact>Free storage space</Impact>
   <Versions>>=5.1.2600</Versions>
-  <Code>powercfg -h off</Code>
+  <Code>
+    <Enable Host="Cmd">powercfg -h off</Enable>
+    <Disable Host="Cmd">powercfg -h on</Disable>
+  </Code>
 </Script>

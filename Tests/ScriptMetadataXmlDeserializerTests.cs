@@ -2,9 +2,9 @@ using System.Globalization;
 using System.Text;
 using System.Windows.Media;
 
-using Scover.WinClean.BusinessLogic;
-using Scover.WinClean.BusinessLogic.Xml;
-using Scover.WinClean.DataAccess;
+using Scover.WinClean.Model;
+using Scover.WinClean.Model.Metadatas;
+using Scover.WinClean.Model.Serialization.Xml;
 
 namespace Tests;
 
@@ -40,7 +40,7 @@ public sealed class ScriptMetadataXmlDeserializerTests
 
     [TestCase($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
 <Hosts>
-  <Host>
+  <Host Type=""Program"">
     <Name>{Name}</Name>
     <Name xml:lang=""en"">{NameEn}</Name>
     <Name xml:lang=""fr"">{NameFr}</Name>
@@ -52,7 +52,7 @@ public sealed class ScriptMetadataXmlDeserializerTests
   </Host>
 </Hosts>")]
     public void TestMakeHosts(string xml)
-        => Assert.That(_deserializer.GetHosts(ToStream(xml)).Single(), Is.EqualTo(new Host(Loc(Name, NameFr, NameEn), Loc(Desc, DescFr), Executable, Arguments, Extension)));
+        => Assert.That(_deserializer.GetHosts(ToStream(xml)).Single(), Is.EqualTo(new ProgramHost(Loc(Name, NameFr, NameEn), Loc(Desc, DescFr), null, Executable, Arguments, Extension)));
 
     [TestCase($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
 <Impacts>
@@ -67,29 +67,29 @@ public sealed class ScriptMetadataXmlDeserializerTests
         => Assert.That(_deserializer.GetImpacts(ToStream(xml)).Single(), Is.EqualTo(new Impact(Loc(Name, NameFr), Loc(Desc, DescFr))));
 
     [TestCase($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-<RecommendationLevels>
-  <RecommendationLevel Color=""{Color}"">
+<SafetyLevels>
+  <SafetyLevel Color=""{Color}"">
     <Name>{Name}</Name>
     <Name xml:lang=""fr"">{NameFr}</Name>
     <Description>{Desc}</Description>
     <Description xml:lang=""fr"">{DescFr}</Description>
-  </RecommendationLevel>
-</RecommendationLevels>")]
-    public void TestMakeRecommendationLevels(string xml)
-        => Assert.That(_deserializer.GetRecommendationLevels(ToStream(xml)).Single(), Is.EqualTo(new RecommendationLevel(Loc(Name, NameFr), Loc(Desc, DescFr), (Color)ColorConverter.ConvertFromString(Color))));
+  </SafetyLevel>
+</SafetyLevels>")]
+    public void TestMakeSafetyLevels(string xml)
+        => Assert.That(_deserializer.GetSafetyLevels(ToStream(xml)).Single(), Is.EqualTo(new SafetyLevel(Loc(Name, NameFr), Loc(Desc, DescFr), (Color)ColorConverter.ConvertFromString(Color))));
 
     private static LocalizedString Loc(string invariant, string fr)
     {
         LocalizedString ls = new();
-        ls.Set(CultureInfo.InvariantCulture, invariant);
-        ls.Set(cultureFr, fr);
+        ls[CultureInfo.InvariantCulture] = invariant;
+        ls[cultureFr] = fr;
         return ls;
     }
 
     private static LocalizedString Loc(string invariant, string fr, string en)
     {
         LocalizedString ls = Loc(invariant, fr);
-        ls.Set(cultureEn, en);
+        ls[cultureEn] = en;
         return ls;
     }
 

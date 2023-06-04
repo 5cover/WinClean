@@ -1,0 +1,14 @@
+﻿<?xml version="1.0"?>
+<Script>
+  <Name>Create or delete file</Name>
+  <Description>Creates a file when enabled and deletes it when disabled.</Description>
+  <Category>Maintenance</Category>
+  <Safety>Limited</Safety>
+  <Impact>Ergonomics</Impact>
+  <Code>
+    <Enable Host="Cmd">echo This is the file created by the "Create or delete file" script. > CreateOrDeleteFile.txt
+%windir%\System32\notepad.exe CreateOrDeleteFile.txt</Enable>
+    <Disable Host="Cmd">del CreateOrDeleteFile.txt</Disable>
+    <Detect Host="PowerShell">return [int](Test-Path -Path CreateOrDeleteFile.txt -PathType Leaf)</Detect>
+  </Code>
+</Script>

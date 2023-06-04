@@ -35,7 +35,7 @@ if (Test-Path Cert:\CurrentUser\My\$thumbprint)
 else
 {
     # no-op dummy exe
-    $signFile = "doskey"
+    $signFile = "systray"
 }
 
 # Compile scripts

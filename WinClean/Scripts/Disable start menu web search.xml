@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Script>
-  <Name>Disable start menu web search</Name>
+  <Name>Disable Start menu web search</Name>
   <Name xml:lang="fr">Désactiver la recherche web dans le menu Démarrer</Name>
-  <Description>By default, Start Menu search results are mixed with Bing and Microsoft Store search results.</Description>
-  <Description xml:lang="fr">Par défaut, les résultats des recherche dans le Menu Démarrer sont mélangés avec des résultats de recherche Bing et Microsoft Store.</Description>
+  <Description>By default, Start Menu search results are mixed with Bing and Microsoft Store search results. This setting affects the current user.</Description>
+  <Description xml:lang="fr">Par défaut, les résultats des recherche dans le Menu Démarrer sont mélangés avec des résultats de recherche Bing et Microsoft Store. Ce paramètre affecte l'utilisateur actuel.</Description>
   <Category>Customization</Category>
-  <Recommended>Limited</Recommended>
-  <Host>Regedit</Host>
+  <Safety>Limited</Safety>
   <Impact>Ergonomics</Impact>
-  <Code>Windows Registry Editor Version 5.00
-
-[HKEYCURRENTUSER\SOFTWARE\Policies\Microsoft\Windows\Explorer]
-"DisableSearchBoxSuggestions"=dword:00000001</Code>
+  <Code>
+    <Enable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\Explorer]
+"DisableSearchBoxSuggestions"=dword:1</Enable>
+    <Disable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\Explorer]
+"DisableSearchBoxSuggestions"=dword:0</Disable>
+    <Detect Host="PowerShell">Switch (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Name "DisableSearchBoxSuggestions")
+{
+1 {exit 1}
+0 {exit 0}
+default {exit -1}
+}</Detect>
+  </Code>
 </Script>

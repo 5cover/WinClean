@@ -49,7 +49,7 @@ dotnet_diagnostic.IDE0250.severity = suggestion
 csharp_space_around_declaration_statements = ignore
 
 # IDE1006: Naming Styles
-dotnet_diagnostic.IDE1006.severity = none
+dotnet_diagnostic.IDE1006.severity = silent
 dotnet_diagnostic.CA1200.severity = suggestion
 dotnet_diagnostic.CA1309.severity = suggestion
 dotnet_diagnostic.CA1311.severity = suggestion
@@ -128,6 +128,22 @@ dotnet_diagnostic.IDE0220.severity = suggestion
 dotnet_diagnostic.IDE0230.severity = suggestion
 dotnet_diagnostic.IDE0240.severity = suggestion
 dotnet_diagnostic.IDE0241.severity = suggestion
+csharp_style_prefer_readonly_struct_member = true:suggestion
+dotnet_diagnostic.IDE0251.severity = suggestion
+dotnet_diagnostic.IDE0260.severity = suggestion
+dotnet_diagnostic.IDE0270.severity = suggestion
+dotnet_diagnostic.IDE0280.severity = suggestion
+dotnet_diagnostic.IDE1005.severity = suggestion
+dotnet_diagnostic.IDE2000.severity = suggestion
+dotnet_diagnostic.IDE2001.severity = suggestion
+dotnet_diagnostic.IDE2002.severity = suggestion
+dotnet_diagnostic.IDE2003.severity = suggestion
+dotnet_diagnostic.IDE2004.severity = suggestion
+dotnet_diagnostic.IDE2005.severity = suggestion
+dotnet_diagnostic.IDE2006.severity = suggestion
+
+# AsyncFixer03: Fire-and-forget async-void methods or delegates
+dotnet_diagnostic.AsyncFixer03.severity = silent
 
 [*.{cs,vb}]
 #### Naming styles ####
@@ -215,8 +231,8 @@ dotnet_diagnostic.CA1000.severity = suggestion
 dotnet_diagnostic.CA1010.severity = suggestion
 dotnet_diagnostic.CA1036.severity = suggestion
 dotnet_diagnostic.CA1051.severity = suggestion
-dotnet_diagnostic.CA1304.severity = suggestion
-dotnet_diagnostic.CA1305.severity = suggestion
+dotnet_diagnostic.CA1304.severity = silent
+dotnet_diagnostic.CA1305.severity = silent
 dotnet_diagnostic.CA1310.severity = suggestion
 dotnet_diagnostic.CA1707.severity = suggestion
 dotnet_diagnostic.CA1708.severity = suggestion
@@ -233,3 +249,5 @@ dotnet_diagnostic.CA1848.severity = suggestion
 dotnet_diagnostic.CA1852.severity = suggestion
 dotnet_diagnostic.IDE0033.severity = suggestion
 dotnet_diagnostic.IDE0070.severity = suggestion
+dotnet_diagnostic.CA2201.severity = suggestion
+dotnet_diagnostic.CA2251.severity = suggestion

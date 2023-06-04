@@ -1,0 +1,85 @@
+﻿<UserControl
+    x:Class="Scover.WinClean.View.Controls.ExecutionInfoView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
+    x:Name="userControl"
+    mc:Ignorable="d">
+    <UserControl.ContentTemplate>
+        <DataTemplate DataType="viewModel:ExecutionInfoViewModel">
+            <!--  chaud: why border and why this color?  -->
+            <Border
+                BorderBrush="#FF828790"
+                BorderThickness="1"
+                CornerRadius="1">
+                <DockPanel Margin="10">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                        <CheckBox
+                            x:Name="stdOutCheckBox"
+                            Margin="0,0,20,0"
+                            Content="{x:Static ui:ExecutionInfoView.StandardOutput}"
+                            IsChecked="True" />
+                        <CheckBox
+                            x:Name="stdErrCheckBox"
+                            Margin="0,0,20,0"
+                            Content="{x:Static ui:ExecutionInfoView.StandardError}" />
+                        <CheckBox x:Name="wordWrapCheckBox" Content="{x:Static ui:ExecutionInfoView.WordWrap}" />
+                    </StackPanel>
+                    <avalonEdit:TextEditor
+                        x:Name="textEditor"
+                        FontFamily="Consolas"
+                        IsReadOnly="True"
+                        ScrollBar.Scroll="TextEditor_Scroll"
+                        ShowLineNumbers="True"
+                        WordWrap="{Binding IsChecked, ElementName=wordWrapCheckBox}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="TextChanged" SourceName="textEditor">
+                                <i:CallMethodAction
+                                    IsEnabled="{Binding UserIsNotScrolling}"
+                                    MethodName="ScrollToEnd"
+                                    TargetObject="{Binding ElementName=textEditor}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <avalonEdit:TextEditor.Resources>
+                            <Style TargetType="avalonEdit:TextView">
+                                <Setter Property="Margin" Value="10,0,0,0" />
+                            </Style>
+                        </avalonEdit:TextEditor.Resources>
+                        <avalonEdit:TextEditor.Style>
+                            <Style TargetType="avalonEdit:TextEditor">
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsChecked, ElementName=stdOutCheckBox}" Value="False" />
+                                            <Condition Binding="{Binding IsChecked, ElementName=stdErrCheckBox}" Value="True" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Document" Value="{Binding Progress.StandardError}" />
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsChecked, ElementName=stdOutCheckBox}" Value="True" />
+                                            <Condition Binding="{Binding IsChecked, ElementName=stdErrCheckBox}" Value="False" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Document" Value="{Binding Progress.StandardOutput}" />
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsChecked, ElementName=stdOutCheckBox}" Value="True" />
+                                            <Condition Binding="{Binding IsChecked, ElementName=stdErrCheckBox}" Value="True" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Document" Value="{Binding Progress.FullOutput}" />
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </avalonEdit:TextEditor.Style>
+                    </avalonEdit:TextEditor>
+                </DockPanel>
+            </Border>
+        </DataTemplate>
+    </UserControl.ContentTemplate>
+</UserControl>

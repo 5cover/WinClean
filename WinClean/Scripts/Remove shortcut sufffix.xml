@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Remove shortcut suffix</Name>
+  <Name xml:lang="fr">Supprimer le suffixe de raccourci</Name>
+  <Description>By default, shortcuts are named with the suffix "- Shortcut".</Description>
+  <Description xml:lang="fr">Par défaut, les raccourcis sont nommés avec le suffixe " - Raccourci".</Description>
+  <Category>Customization</Category>
+  <Safety>Limited</Safety>
+  <Impact>Ergonomics</Impact>
+  <Code>
+    <Enable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer]
+"link"=hex:00,00,00,00</Enable>
+    <Disable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer]
+"link"=hex:1e,00,00,00</Disable>
+    <Detect Host="PowerShell">$r = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" -Name "link"
+if (($r -eq 0).Count -eq $r.Count) { exit 1 }
+elif ($r.Count -ge 1 -and $r[0] -eq 0x1e) { exit 0 }
+else { exit -1 }</Detect>
+  </Code>
+</Script>

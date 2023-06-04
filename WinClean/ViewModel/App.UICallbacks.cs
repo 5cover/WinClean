@@ -1,0 +1,91 @@
+﻿using System.Windows;
+
+using Scover.Dialogs;
+using Scover.WinClean.Model;
+using Scover.WinClean.Resources;
+using Scover.WinClean.Resources.UI;
+using Scover.WinClean.Services;
+using Scover.WinClean.ViewModel.Logging;
+
+using static Scover.WinClean.Resources.UI.Dialogs;
+
+namespace Scover.WinClean.ViewModel;
+
+public partial class App
+{
+    private static readonly Callbacks uiCallbacks = new(
+        NotifyUpdateAvailable: async () =>
+        {
+            var scc = await SourceControlClient.Instance;
+            using Page update = new()
+            {
+                AllowHyperlinks = true,
+                IsCancelable = true,
+                MainInstruction = Update.MainInstruction,
+                Sizing = Sizing.Content,
+                Icon = DialogIcon.Information,
+                Content = Update.Content.FormatWith(scc.LatestVersionName),
+                Verification  = new(Update.Verification),
+            };
+            update.HyperlinkClicked += (_, _) => scc.LatestVersionUrl.Open();
+            update.Verification.Checked += (_, _) => ServiceProvider.Get<ISettings>().ShowUpdateDialog ^= true;
+            _ = new Dialog(update).Show();
+        },
+        InvalidScriptData: (e, path) =>
+        {
+            Logs.ScriptLoadError.FormatWith(path, e).Log(LogLevel.Error);
+
+            using Page deleteScriptPage = DialogPages.DeleteScript;
+
+            Button deleteScriptButton = new(Buttons.DeleteScript);
+            deleteScriptButton.Clicked += (s, e) => e.Cancel = !Button.Yes.Equals(new Dialog(deleteScriptPage).Show());
+
+            using Page invalidScriptDataPage = DialogPages.InvalidScriptData(e, path, new(defaultItem: Button.TryAgain){ deleteScriptButton, Button.TryAgain, Button.Ignore });
+
+            Dialog invalidScriptData = new(invalidScriptDataPage);
+            var clicked = invalidScriptData.Show();
+
+            if (deleteScriptButton.Equals(clicked))
+            {
+                Logs.ScriptRemoved.FormatWith(path).Log();
+                return InvalidScriptDataAction.Remove;
+            }
+
+            return Button.Retry.Equals(clicked) ? InvalidScriptDataAction.Reload : InvalidScriptDataAction.Ignore;
+        },
+        FSErrorReloadElseIgnore: e =>
+        {
+            using Page fsError = DialogPages.FSError(e, new(){ Button.Retry, Button.Ignore });
+            fsError.MainInstruction = FSErrorLoadingCustomScriptMainInstruction;
+            return Button.Retry.Equals(new Dialog(fsError).Show());
+        },
+        WarnOnUnhandledException: ex =>
+        {
+            Logs.UnhandledException.FormatWith(ex).Log(LogLevel.Critical);
+
+            using Page unhandledException = new()
+            {
+                AllowHyperlinks = true,
+                WindowTitle = UnhandledExceptionWindowTitle.FormatWith(ServiceProvider.Get<IApplicationInfo>().Name),
+                Icon = DialogIcon.Error,
+                Content = UnhandledExceptionContent.FormatWith(ex.Message),
+                Expander = new(ex.ToString()),
+                Buttons = { Button.Ignore, Buttons.Exit },
+            };
+            unhandledException.HyperlinkClicked += async (s, e) =>
+            {
+                switch (e.Href)
+                {
+                    case "CopyDetails":
+                        Clipboard.SetText(ex.ToString());
+                        break;
+
+                    case "ReportIssue":
+                        (await SourceControlClient.Instance).NewIssueUrl.Open();
+                        break;
+                }
+            };
+
+            return Button.Ignore.Equals(new Dialog(unhandledException).Show());
+        });
+}

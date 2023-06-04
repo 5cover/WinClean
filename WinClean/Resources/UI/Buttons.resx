@@ -120,6 +120,9 @@
   <data name="AddScripts" xml:space="preserve">
     <value>Add scripts</value>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="Exit" xml:space="preserve">
     <value>Exit</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>

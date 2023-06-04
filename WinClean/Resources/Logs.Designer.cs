@@ -97,15 +97,6 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rebooting for application maintenance....
-        /// </summary>
-        public static string RebootingForAppMaintenance {
-            get {
-                return ResourceManager.GetString("RebootingForAppMaintenance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Restore point created..
         /// </summary>
         public static string RestorePointCreated {
@@ -129,24 +120,6 @@ namespace Scover.WinClean.Resources {
         public static string ScriptAlreadyExistsCannotBeAdded {
             get {
                 return ResourceManager.GetString("ScriptAlreadyExistsCannotBeAdded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Script &apos;{0}&apos; executed..
-        /// </summary>
-        public static string ScriptExecuted {
-            get {
-                return ResourceManager.GetString("ScriptExecuted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Script execution canceled..
-        /// </summary>
-        public static string ScriptExecutionCanceled {
-            get {
-                return ResourceManager.GetString("ScriptExecutionCanceled", resourceCulture);
             }
         }
         
@@ -196,6 +169,15 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Script &apos;{0}&apos; started execution..
+        /// </summary>
+        public static string ScriptStartedExecution {
+            get {
+                return ResourceManager.GetString("ScriptStartedExecution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings saved..
         /// </summary>
         public static string SettingsSaved {
@@ -210,6 +192,15 @@ namespace Scover.WinClean.Resources {
         public static string StartingExecution {
             get {
                 return ResourceManager.GetString("StartingExecution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System restart initiated..
+        /// </summary>
+        public static string SystemRestartInitiated {
+            get {
+                return ResourceManager.GetString("SystemRestartInitiated", resourceCulture);
             }
         }
         
