@@ -20,7 +20,7 @@
         <converters:IsNotNullConverter x:Key="IsNotNull" />
         <converters:TypedEnumerableDictionaryLookupConverter x:Key="TypedEnumerableDictionaryLookup" />
         <converters:EqualsConverter x:Key="Equals" />
-        <converters:FlattenSubgroupsItemsConverter x:Key="FlattenSubgroupsItems" />
+        <converters:FlattenGroupsItemsConverter x:Key="FlattenGroupsItems" />
         <BitmapImage x:Key="Cross" UriSource="/Resources/Images/Cross.ico" />
         <BitmapImage x:Key="Checkmark" UriSource="/Resources/Images/Checkmark.ico" />
         <BitmapImage x:Key="Gear" UriSource="/Resources/Images/Gear.png" />

@@ -120,7 +120,7 @@
                             <!--  Groups by Usage  -->
                             <behaviors:TabContent.Template>
                                 <DataTemplate DataType="{x:Type CollectionViewGroup}">
-                                    <controls:ScriptListView Content="{Binding Items, Converter={StaticResource FlattenSubgroupsItems}}" />
+                                    <controls:ScriptListView Content="{Binding Items, Converter={StaticResource FlattenGroupsItems}}" />
                                 </DataTemplate>
                             </behaviors:TabContent.Template>
                             <TabControl.ItemContainerStyle>
