@@ -13,6 +13,7 @@
     <OutputType>WinExe</OutputType>
     <Platforms>AnyCPU</Platforms>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <EnableWindowsTargeting>True</EnableWindowsTargeting>
     <RepositoryUrl>https://github.com/5cover/WinClean</RepositoryUrl>
     <RootNamespace>Scover.WinClean</RootNamespace>
     <SignAssembly>True</SignAssembly>
@@ -100,7 +101,7 @@
     <EmbeddedResource Include="Scripts\Show ads and suggestions.xml" />
     <EmbeddedResource Include="Scripts\Disable delivery optimization.xml" />
     <EmbeddedResource Include="Scripts\Don%27t block downloaded files.xml" />
-    <EmbeddedResource Include="Scripts\Disable explorer online help.xml" />
+    <EmbeddedResource Include="Scripts\Disable Explorer online help.xml" />
     <EmbeddedResource Include="Scripts\Disable hibernation.xml" />
     <EmbeddedResource Include="Scripts\Remove shortcut sufffix.xml" />
     <EmbeddedResource Include="Scripts\Disable Start menu web search.xml" />
