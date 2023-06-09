@@ -6,7 +6,7 @@
   <Description>By default, a warning is disaplayed when the user opens a downloaded file. This setting affects all users.</Description>
   <Description xml:lang="fr">Par défaut, un avertissement est affiché lorsque l'utilisateur ouvre un fichier téléchargé. Ce paramètre affecte tous les utilisateurs.</Description>
   <Category>Customization</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Versions>>=5.1.2600</Versions>
   <Code>

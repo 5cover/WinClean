@@ -5,15 +5,15 @@
   <Description>Explorer will show a warning before merging folders.</Description>
   <Description xml:lang="fr">L'Explorateur de fichiers affichera un avertissement avant de fusionner des fichiers.</Description>
   <Category>Customization</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>
     <Enable Host="Regedit">Windows Registry Editor Version 5.00
-    
+
 [HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
 "HideMergeConflicts"=dword:0</Enable>
     <Disable Host="Regedit">Windows Registry Editor Version 5.00
-    
+
 [HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
 "HideMergeConflicts"=dword:1</Disable>
     <Detect Host="PowerShell">Switch (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideMergeConflicts")

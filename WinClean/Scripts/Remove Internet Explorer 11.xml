@@ -5,7 +5,7 @@
   <Description>Internet Explorer 11 can be deleted if you don't use it. You won't be able to access the web anymore if you don't have another browser.</Description>
   <Description xml:lang="fr">Internet Explorer 11 peut être supprimé si vous ne l'utilisez pas. Vous ne pourrez plus accéder au Web si vous n'avez pas d'autre navigateur.</Description>
   <Category>Debloat</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Code>
     <Execute Host="Cmd">DISM /Online /Remove-Capability /CapabilityName:Browser.InternetExplorer~~~~0.0.11.0</Execute>

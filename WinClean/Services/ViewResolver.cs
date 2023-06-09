@@ -8,13 +8,13 @@ public sealed class ViewResolver : IViewResolver
 
     public FrameworkElement GetView<TViewModel>(TViewModel viewModel)
     {
-        var view = (FrameworkElement)Activator.CreateInstance(_viewsByViewModels[typeof(TViewModel)]).AssertNotNull();
+        var view = (FrameworkElement)Activator.CreateInstance(_viewsByViewModels[typeof(TViewModel)]).NotNull();
         view.DataContext = viewModel;
         return view;
     }
 
     public FrameworkElement GetView<TViewModel>() where TViewModel : new() => GetView(new TViewModel());
 
-    public void RegisterView<TViewModel, TView>() where TView : FrameworkElement, new()
+    public void Register<TViewModel, TView>() where TView : FrameworkElement, new()
                 => _viewsByViewModels[typeof(TViewModel)] = typeof(TView);
 }

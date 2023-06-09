@@ -5,7 +5,7 @@
   <Description>The System File Checker tool (SFC) is a Microsoft utility that checks the integrity of critical system files and repaires them.</Description>
   <Description xml:lang="fr">L'utilitaire de contrôle de l'intégrité système est fourni par Microsoft. Il vérifie et répare les fichiers systèmes critiques.</Description>
   <Category>Maintenance</Category>
-  <Safety>Safe</Safety>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Stability</Impact>
   <Versions>>=5.1.2600</Versions>
   <Code>

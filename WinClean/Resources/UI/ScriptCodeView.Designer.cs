@@ -61,15 +61,6 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Effective.
-        /// </summary>
-        public static string Effective {
-            get {
-                return ResourceManager.GetString("Effective", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à This action is effective on the system..
         /// </summary>
         public static string EffectiveDescription {
@@ -79,11 +70,11 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Selected.
+        ///   Recherche une chaîne localisée semblable à This host is incompatible with this Windows version and may not work properly..
         /// </summary>
-        public static string Selected {
+        public static string IncompatibleHost {
             get {
-                return ResourceManager.GetString("Selected", resourceCulture);
+                return ResourceManager.GetString("IncompatibleHost", resourceCulture);
             }
         }
         

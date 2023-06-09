@@ -3,7 +3,7 @@
   <Name>Wait 1 second</Name>
   <Description>Waits 1 second and exits.</Description>
   <Category>Maintenance</Category>
-  <Safety>Safe</Safety>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>
     <Execute Host="PowerShell">Start-Sleep 1</Execute>

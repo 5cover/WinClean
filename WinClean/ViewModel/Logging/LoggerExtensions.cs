@@ -10,5 +10,5 @@ public static class LoggerExtensions
         [CallerMemberName] string caller = "",
         [CallerLineNumber] int callLine = 0,
         [CallerFilePath] string callFile = "")
-        => App.Logger.Log(message, lvl, caller, callLine, callFile);
+        => App.Current.Logger.Log(message, lvl, caller, callLine, callFile);
 }

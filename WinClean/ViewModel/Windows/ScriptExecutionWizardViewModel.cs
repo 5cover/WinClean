@@ -8,6 +8,7 @@ namespace Scover.WinClean.ViewModel.Windows;
 public sealed class ScriptExecutionWizardViewModel : ObservableObject, IDisposable
 {
     private readonly CollectionWrapper<IList<ExecutionInfoViewModel>, ExecutionInfoViewModel> _executionInfos;
+
     public ScriptExecutionWizardViewModel(IList<ExecutionInfoViewModel> executionInfos)
     {
         _executionInfos = new(executionInfos);

@@ -5,7 +5,7 @@
   <Description>PowerShell ISE can be deleted if you don't use it.</Description>
   <Description xml:lang="fr">PowerShell ISE peut être supprimé si vous ne l'utilisez pas.</Description>
   <Category>Debloat</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Versions>>=6.1.7600</Versions>
   <Code>

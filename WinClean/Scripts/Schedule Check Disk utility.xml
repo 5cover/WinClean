@@ -5,7 +5,7 @@
   <Description>The disk check and repair utility is provided by Microsoft. Executing this script will plan a disk check and repair for all local disks on next reboot.</Description>
   <Description xml:lang="fr">L'utilitaire de vérification et de réparation des disques est fourni par Microsoft. Exécuter ce script planifiera la vérification et la réparation de tous les disques locaux au prochain redémarrage.</Description>
   <Category>Maintenance</Category>
-  <Safety>Safe</Safety>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Storage speed</Impact>
   <Versions>>=6.1.7600</Versions>
   <Code>

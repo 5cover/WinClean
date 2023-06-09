@@ -30,5 +30,7 @@ public abstract class ScriptRepository : IReadOnlyCollection<Script>
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+    /// <exception cref="DeserializationException"/>
+    /// <exception cref="FileSystemException"/>
     protected abstract void LoadScripts();
 }

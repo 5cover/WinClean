@@ -5,7 +5,7 @@
   <Description>Show checkboxes for selecting files and folders in Explorer.</Description>
   <Description xml:lang="fr">Afficher des cases à cocher pour la sélection de fichiers et dossiers dans l'Explorateur de Fichiers.</Description>
   <Category>Customization</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>
     <Enable Host="Regedit">Windows Registry Editor Version 5.00

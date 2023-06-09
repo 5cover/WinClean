@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace Scover.WinClean.View.Behaviors;
+namespace Scover.WinClean.View;
 
 /// <summary>Attached properties for persistent tab control</summary>
 /// <remarks>
@@ -174,7 +174,7 @@ public static class TabContent
         }
 
         TabControl tabControl = obj as TabControl ?? throw new InvalidOperationException("Cannot set TabContent.IsCached on object of type " + args.NewValue.GetType().Name +
-                ". Only objects of type TabControl can have TabContent.IsCached property.");
+                   ". Only objects of type TabControl can have TabContent.IsCached property.");
 
         bool newValue = (bool)args.NewValue;
 

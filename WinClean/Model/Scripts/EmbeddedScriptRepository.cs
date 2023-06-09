@@ -23,7 +23,7 @@ public class EmbeddedScriptRepository : ScriptRepository
         var assembly = ServiceProvider.Get<IApplicationInfo>().Assembly;
         foreach (var resName in assembly.GetManifestResourceNames().Where(name => name.StartsWith(_namespace, StringComparison.Ordinal)))
         {
-            using Stream stream = assembly.GetManifestResourceStream(resName).AssertNotNull();
+            using Stream stream = assembly.GetManifestResourceStream(resName).NotNull();
 
             _scripts.Add(Serializer.Deserialize(Type, stream));
         }

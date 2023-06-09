@@ -25,13 +25,13 @@ public sealed class MetadatasProvider : IMetadatasProvider
     public TypedEnumerableDictionary Metadatas => _metadatas.Value;
 
     public T GetMetadata<T>(string invariantName) where T : ScriptLocalizedStringMetadata
-        => Metadatas.Get<T>().Single(m => GetMetadataPredicate(invariantName, m));
+        => Metadatas.Get<T>().Single(m => CompareMetadatas(invariantName, m));
 
     public T? GetMetadataOrDefault<T>(string invariantName) where T : ScriptLocalizedStringMetadata
-        => Metadatas.Get<T>().SingleOrDefault(m => GetMetadataPredicate(invariantName, m));
+        => Metadatas.Get<T>().SingleOrDefault(m => CompareMetadatas(invariantName, m));
 
-    private static bool GetMetadataPredicate(string invariantName, ScriptLocalizedStringMetadata m) => m.InvariantName.Equals(invariantName, StringComparison.OrdinalIgnoreCase);
+    private static bool CompareMetadatas(string invariantName, ScriptLocalizedStringMetadata m) => m.InvariantName.Equals(invariantName, StringComparison.OrdinalIgnoreCase);
 
     private static Stream ReadContentFile(string filename)
-        => ServiceProvider.Get<IApplicationInfo>().Assembly.GetManifestResourceStream($"{MetadataContentFilesNamespace}.{filename}").AssertNotNull();
+        => ServiceProvider.Get<IApplicationInfo>().Assembly.GetManifestResourceStream($"{MetadataContentFilesNamespace}.{filename}").NotNull();
 }

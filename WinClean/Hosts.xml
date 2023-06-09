@@ -9,7 +9,7 @@
     <Executable>%COMSPEC%</Executable>
     <Arguments>/d /c "{0}"</Arguments>
     <Extension>.cmd</Extension>
-    <Icon Filename="%COMSPEC%" Index="0"/>
+    <Icon Filename="%COMSPEC%" Index="0" />
   </Host>
   <Host Type="Program">
     <Name>PowerShell</Name>
@@ -20,7 +20,8 @@
     <Executable>%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\powershell.exe</Executable>
     <Arguments>-ExecutionPolicy Unrestricted -File "{0}"</Arguments>
     <Extension>.ps1</Extension>
-    <Icon Filename="%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\powershell.exe" Index="0"/>
+    <Icon Filename="%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\powershell.exe" Index="0" />
+    <Versions>>=6.1.0</Versions>
   </Host>
   <Host Type="Program">
     <Name>Regedit</Name>
@@ -31,7 +32,7 @@
     <Executable>%SYSTEMROOT%\regedit.exe</Executable>
     <Arguments>/s {0}</Arguments>
     <Extension>.reg</Extension>
-    <Icon Filename="%SYSTEMROOT%\regedit.exe" Index="-100"/>
+    <Icon Filename="%SYSTEMROOT%\regedit.exe" Index="-100" />
   </Host>
   <Host Type="Shell">
     <Name>Execute</Name>
@@ -40,7 +41,6 @@
     <Description>Executes a script's code as an independent program.</Description>
     <Description xml:lang="fr">Exécute le code d'un script en tant que programme indépendant.</Description>
     <CommandLine>{0}</CommandLine>
-    <Icon Filename="%SYSTEMROOT%\SystemResources\shell32.dll.mun" Index="-25"/>
+    <Icon Filename="%SYSTEMROOT%\System32\shell32.dll" Index="-25" />
   </Host>
-
 </Hosts>

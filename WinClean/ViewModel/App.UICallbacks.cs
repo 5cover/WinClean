@@ -7,8 +7,6 @@ using Scover.WinClean.Resources.UI;
 using Scover.WinClean.Services;
 using Scover.WinClean.ViewModel.Logging;
 
-using static Scover.WinClean.Resources.UI.Dialogs;
-
 namespace Scover.WinClean.ViewModel;
 
 public partial class App
@@ -31,16 +29,16 @@ public partial class App
             update.Verification.Checked += (_, _) => ServiceProvider.Get<ISettings>().ShowUpdateDialog ^= true;
             _ = new Dialog(update).Show();
         },
-        InvalidScriptData: (e, path) =>
+        ScriptLoadError: (e, path) =>
         {
             Logs.ScriptLoadError.FormatWith(path, e).Log(LogLevel.Error);
 
-            using Page deleteScriptPage = DialogPages.DeleteScript;
+            using Page deleteScriptPage = DialogPages.ConfirmScriptDeletion();
 
             Button deleteScriptButton = new(Buttons.DeleteScript);
             deleteScriptButton.Clicked += (s, e) => e.Cancel = !Button.Yes.Equals(new Dialog(deleteScriptPage).Show());
 
-            using Page invalidScriptDataPage = DialogPages.InvalidScriptData(e, path, new(defaultItem: Button.TryAgain){ deleteScriptButton, Button.TryAgain, Button.Ignore });
+            using Page invalidScriptDataPage = DialogPages.ScriptLoadError(e, path, new(defaultItem: Button.TryAgain){ deleteScriptButton, Button.TryAgain, Button.Ignore });
 
             Dialog invalidScriptData = new(invalidScriptDataPage);
             var clicked = invalidScriptData.Show();
@@ -51,13 +49,13 @@ public partial class App
                 return InvalidScriptDataAction.Remove;
             }
 
-            return Button.Retry.Equals(clicked) ? InvalidScriptDataAction.Reload : InvalidScriptDataAction.Ignore;
+            return Button.TryAgain.Equals(clicked) ? InvalidScriptDataAction.Reload : InvalidScriptDataAction.Ignore;
         },
         FSErrorReloadElseIgnore: e =>
         {
-            using Page fsError = DialogPages.FSError(e, new(){ Button.Retry, Button.Ignore });
-            fsError.MainInstruction = FSErrorLoadingCustomScriptMainInstruction;
-            return Button.Retry.Equals(new Dialog(fsError).Show());
+            using Page fsError = DialogPages.FSError(e, new(){ Button.TryAgain, Button.Ignore });
+            fsError.MainInstruction = WinClean.Resources.UI.Dialogs.FSErrorLoadingCustomScriptMainInstruction;
+            return Button.TryAgain.Equals(new Dialog(fsError).Show());
         },
         WarnOnUnhandledException: ex =>
         {
@@ -66,9 +64,9 @@ public partial class App
             using Page unhandledException = new()
             {
                 AllowHyperlinks = true,
-                WindowTitle = UnhandledExceptionWindowTitle.FormatWith(ServiceProvider.Get<IApplicationInfo>().Name),
+                WindowTitle = WinClean.Resources.UI.Dialogs.UnhandledExceptionWindowTitle.FormatWith(ServiceProvider.Get<IApplicationInfo>().Name),
                 Icon = DialogIcon.Error,
-                Content = UnhandledExceptionContent.FormatWith(ex.Message),
+                Content = WinClean.Resources.UI.Dialogs.UnhandledExceptionContent.FormatWith(ex.Message),
                 Expander = new(ex.ToString()),
                 Buttons = { Button.Ignore, Buttons.Exit },
             };

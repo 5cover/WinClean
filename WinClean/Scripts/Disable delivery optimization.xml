@@ -5,7 +5,7 @@
   <Description>By default, Windows downloads updates from other PCs on the network. Disabling this feature allows updates to be downloaded only from Microsoft servers.</Description>
   <Description xml:lang="fr">Par défaut, Windows télécharge les mises à jour depuis d'autres PC sur le réseau. Désactiver cette fonctionnalité permet de télécharger les mises à jour uniquement depuis les serveurs Microsoft.</Description>
   <Category>Debloat</Category>
-  <Safety>Safe</Safety>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Privacy</Impact>
   <Versions>>=10.0.10240</Versions>
   <Code>

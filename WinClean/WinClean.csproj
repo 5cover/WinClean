@@ -62,7 +62,8 @@
     <PackageReference Include="Jab" Version="0.8.6" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="Octokit" Version="6.0.0" />
-    <PackageReference Include="Scover.Dialogs" Version="1.4.2" />
+    <PackageReference Include="Optional" Version="4.0.0" />
+    <PackageReference Include="Scover.Dialogs" Version="1.4.3" />
     <PackageReference Include="Semver" Version="2.3.0" />
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
     <PackageReference Include="System.Management" Version="7.0.1" />
@@ -87,6 +88,8 @@
   <ItemGroup>
     <Resource Include="Resources\Images\Cross.ico" />
     <Resource Include="Resources\Images\Gear.png" />
+    <Resource Include="Resources\Images\Pause.png" />
+    <Resource Include="Resources\Images\Play.png" />
     <Resource Include="Resources\Images\WinClean.png" />
   </ItemGroup>
   
@@ -135,15 +138,25 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>PersistentSettings.settings</DependentUpon>
     </Compile>
-    <Compile Update="Resources\CommandLine.Designer.cs">
+    <Compile Update="Resources\Capabilities.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>CommandLine.resx</DependentUpon>
+      <DependentUpon>Capabilities.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\ConsoleMode.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ConsoleMode.resx</DependentUpon>
     </Compile>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\ElementFor.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ElementFor.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\ExecutionResult.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -180,10 +193,10 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Resources\UI\ExecutionInfoListView.Designer.cs">
+    <Compile Update="Resources\UI\ExecutionInfosView.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>ExecutionInfoListView.resx</DependentUpon>
+      <DependentUpon>ExecutionInfosView.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\UI\ExecutionInfoView.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -220,11 +233,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ScriptView.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\UI\ScriptExecution.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ScriptExecution.resx</DependentUpon>
-    </Compile>
     <Compile Update="Resources\Script.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -258,9 +266,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\CommandLine.resx">
+    <EmbeddedResource Update="Resources\Capabilities.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CommandLine.Designer.cs</LastGenOutput>
+      <LastGenOutput>Capabilities.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ConsoleMode.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ConsoleMode.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Dialog.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -268,6 +280,10 @@
     <EmbeddedResource Update="Resources\Dialog.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Dialog.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ElementFor.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ElementFor.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\ExecutionResult.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -307,9 +323,9 @@
       <LastGenOutput>Buttons.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\UI\ExecutionInfoListView.resx">
+    <EmbeddedResource Update="Resources\UI\ExecutionInfosView.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExecutionInfoListView.Designer.cs</LastGenOutput>
+      <LastGenOutput>ExecutionInfosView.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\ExecutionInfoView.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -338,10 +354,6 @@
     <EmbeddedResource Update="Resources\UI\ScriptView.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ScriptView.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\UI\ScriptExecution.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ScriptExecution.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Script.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

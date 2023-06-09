@@ -135,11 +135,11 @@
   <data name="FSErrorLoadingCustomScriptMainInstruction" xml:space="preserve">
     <value>Impossible de charger le script personnalisé</value>
   </data>
-  <data name="InvalidCustomScriptDataContent" xml:space="preserve">
-    <value>Le script personnalisé "{0}" a des données manquantes ou invalides. &lt;A&gt;Modifier le script...&lt;/A&gt;</value>
+  <data name="ScriptLoadErrorContent" xml:space="preserve">
+    <value>Le script "{0}" a des données manquantes ou invalides. &lt;A&gt;Modifier le script...&lt;/A&gt;</value>
   </data>
-  <data name="InvalidCustomScriptDataMainInstruction" xml:space="preserve">
-    <value>Impossible de charger le script personnalisé</value>
+  <data name="ScriptLoadErrorMainInstruction" xml:space="preserve">
+    <value>Impossible de charger le script</value>
   </data>
   <data name="NoScriptsSelectedContent" xml:space="preserve">
     <value>Pour sélectionner des scripts, cochez leur case à cocher associée.</value>

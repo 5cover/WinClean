@@ -8,8 +8,8 @@ namespace Scover.WinClean.ViewModel;
 
 public sealed class ExecutionProgressViewModel : ObservableObject, IProgress<ProcessOutput>
 {
-    public TextDocument ErrorOutput { get; } = CreateDocument();
     public TextDocument FullOutput { get; } = CreateDocument();
+    public TextDocument StandardError { get; } = CreateDocument();
     public TextDocument StandardOutput { get; } = CreateDocument();
 
     public void Report(ProcessOutput value)
@@ -19,7 +19,7 @@ public sealed class ExecutionProgressViewModel : ObservableObject, IProgress<Pro
 
         (var document, var propName) = value.Kind switch
         {
-            ProcessOutputKind.Error => (ErrorOutput, nameof(ErrorOutput)),
+            ProcessOutputKind.Error => (StandardError, nameof(StandardError)),
             ProcessOutputKind.Standard => (StandardOutput, nameof(StandardOutput)),
             _ => throw value.Kind.NewInvalidEnumArgumentException()
         };

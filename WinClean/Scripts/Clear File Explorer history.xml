@@ -5,7 +5,7 @@
   <Description>When accessing files or folders in File Explorer, Windows keeps a shortcut to the folder/file in File Explorer history.</Description>
   <Description xml:lang="fr">Lors de l'accès à des fichiers ou dossiers dans l'Explorateur de fichiers, Windows conserve un raccourci vers le dossier/fichier dans l'historique de l'Explorateur de fichiers.</Description>
   <Category>Maintenance</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Privacy</Impact>
   <Code>
     <Execute Host="Cmd">del /F %APPDATA%\Microsoft\Windows\Recent\*

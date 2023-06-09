@@ -12,15 +12,45 @@ public sealed class ScriptCode : IDictionary<Capability, ScriptAction>
 
     public ScriptCode(Dictionary<Capability, ScriptAction> actions) => _actions = actions;
 
+    public int Count => _actions.Count;
     public ICollection<Capability> Keys => _actions.Keys;
     public ICollection<ScriptAction> Values => _actions.Values;
-    public int Count => _actions.Count;
     bool ICollection<KeyValuePair<Capability, ScriptAction>>.IsReadOnly => ((ICollection<KeyValuePair<Capability, ScriptAction>>)_actions).IsReadOnly;
     public ScriptAction this[Capability key] { get => _actions[key]; set => _actions[key] = value; }
 
     public void Add(Capability key, ScriptAction value) => _actions.Add(key, value);
 
     public bool ContainsKey(Capability key) => _actions.ContainsKey(key);
+
+    public Capability? DetectCapability(TimeSpan timeout)
+    {
+        if (TryGetValue(Capability.Detect, out var detect))
+        {
+            var (_, hostProcess) = StartHostProcess(detect);
+
+            if (hostProcess.WaitForExit(Convert.ToInt32(timeout.TotalMilliseconds)))
+            {
+                return Capability.FromInteger(hostProcess.ExitCode);
+            }
+            // Detection took too long : kill process.
+            hostProcess.Kill(true);
+        }
+
+        return null;
+    }
+
+    public async Task<Capability?> DetectCapabilityAsync(CancellationToken cancellationToken)
+    {
+        if (!TryGetValue(Capability.Detect, out var detect))
+        {
+            return null;
+        }
+
+        var (_, hostProcess) = StartHostProcess(detect);
+        await hostProcess.WaitForExitAsync(cancellationToken);
+
+        return Capability.FromInteger(hostProcess.ExitCode);
+    }
 
     public IEnumerator<KeyValuePair<Capability, ScriptAction>> GetEnumerator() => ((IEnumerable<KeyValuePair<Capability, ScriptAction>>)_actions).GetEnumerator();
 
@@ -40,19 +70,6 @@ public sealed class ScriptCode : IDictionary<Capability, ScriptAction>
 
     bool ICollection<KeyValuePair<Capability, ScriptAction>>.Remove(KeyValuePair<Capability, ScriptAction> item) => ((ICollection<KeyValuePair<Capability, ScriptAction>>)_actions).Remove(item);
 
-    public async Task<Capability?> DetectCapabilityAsync(CancellationToken cancellationToken)
-    {
-        if (!TryGetValue(Capability.Detect, out var detect))
-        {
-            return null;
-        }
-
-        var (_, hostProcess) = StartHostProcess(detect);
-        await hostProcess.WaitForExitAsync(cancellationToken);
-
-        return Capability.FromInteger(hostProcess.ExitCode);
-    }
-
     private static (HostStartInfo startInfo, Process hostProcess) StartHostProcess(ScriptAction detect)
     {
         HostStartInfo startInfo = detect.CreateHostStartInfo();
@@ -61,24 +78,6 @@ public sealed class ScriptCode : IDictionary<Capability, ScriptAction>
             FileName = startInfo.Filename,
             Arguments = startInfo.Arguments,
             CreateNoWindow = true,
-        }).AssertNotNull());
+        }).NotNull());
     }
-
-    public Capability? DetectCapability(TimeSpan timeout)
-    {
-        if (TryGetValue(Capability.Detect, out var detect))
-        {
-            var (_, hostProcess) = StartHostProcess(detect);
-
-            if (hostProcess.WaitForExit(Convert.ToInt32(timeout.TotalMilliseconds)))
-            {
-                return Capability.FromInteger(hostProcess.ExitCode);
-            }
-            // Detection took too long : kill process.
-            hostProcess.Kill(true);
-        }
-
-        return null;
-    }
-
 }

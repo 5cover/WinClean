@@ -9,7 +9,7 @@ public interface IScriptSerializer
     /// <param name="data">A stream with read access.</param>
     /// <param name="type">The type of the script to create.</param>
     /// <returns>A new <see cref="IScript"/> object.</returns>
-    /// <exception cref="InvalidDataException">
+    /// <exception cref="DeserializationException">
     /// The script could not be deserialized because <paramref name="data"/> is in an incomplete or invalid
     /// format.
     /// </exception>

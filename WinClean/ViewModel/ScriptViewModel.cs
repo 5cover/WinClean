@@ -2,6 +2,8 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
+using Optional;
+
 using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Model.Scripts;
@@ -15,19 +17,15 @@ namespace Scover.WinClean.ViewModel;
 
 public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, IEquatable<Script?>
 {
-    private bool _isSelected;
-    private Capability? _desiredCapability;
+    private KeyValuePair<Capability, ScriptAction> _selectedCode;
 
     public ScriptViewModel(Script model)
     {
         Model = model;
         Code = new(model.Code);
-        SelectedCode = model.Code.FirstOrDefault();
+        SelectedCode = model.Code.First();
     }
 
-    [Bindable(false)] // Hide from binding auto-completion
-    public Script Model { get; }
-    public KeyValuePair<Capability, ScriptAction>? SelectedCode { get; set; }
     public Category Category
     {
         get => Model.Category;
@@ -37,23 +35,26 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
             OnPropertyChanged();
         }
     }
+
     public ScriptCodeViewModel Code { get; }
+
     public string Description
     {
         get => Model.LocalizedDescription[CurrentUICulture];
         set => Model.LocalizedDescription[CurrentUICulture] = value;
     }
-    public TimeSpan ExecutionTime
+
+    public Option<TimeSpan> ExecutionTime
     {
-        get => Settings.ScriptExecutionTimes.TryGetValue(InvariantName, out var time) ? time : Settings.ScriptTimeout;
+        get => Settings.ScriptExecutionTimes.TryGetValue(InvariantName, out var time) ? time.Some() : time.None();
         set
         {
-            if (!Settings.ScriptExecutionTimes.TryAdd(InvariantName, value))
-            {
-                Settings.ScriptExecutionTimes[InvariantName] = value;
-            }
+            value.Match(time => Settings.ScriptExecutionTimes.SetOrAdd(InvariantName, time),
+                        () => Settings.ScriptExecutionTimes.Remove(InvariantName));
+            OnPropertyChanged();
         }
     }
+
     public Impact Impact
     {
         get => Model.Impact;
@@ -63,9 +64,14 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
             OnPropertyChanged();
         }
     }
+
     public string InvariantName => Model.InvariantName;
-    public bool IsIncompatibleWithCurrentVersion => !SemVersion.FromVersion(Environment.OSVersion.Version.WithoutRevision()).Satisfies(Model.Versions);
+
+    [Bindable(false)] // Hide from binding auto-completion
+    public Script Model { get; }
+
     public string Name { get => Model.Name; set => Model.Name = value; }
+
     public SafetyLevel SafetyLevel
     {
         get => Model.SafetyLevel;
@@ -76,9 +82,20 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
         }
     }
 
-    public Usage Usage => Usage.Get(Model);
+    public KeyValuePair<Capability, ScriptAction> SelectedCode
+    {
+        get => _selectedCode;
+        set
+        {
+            _selectedCode = value;
+            OnPropertyChanged();
+        }
+    }
 
+    public ScriptSelection Selection { get; } = new();
     public ScriptType Type => Model.Type;
+    public IReadOnlyCollection<Usage> Usages => Usage.GetUsages(Model).ToList();
+
     public SemVersionRange Versions
     {
         get => Model.Versions;
@@ -89,35 +106,13 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
         }
     }
 
-    public bool IsSelected
-    {
-        get => _isSelected;
-        set
-        {
-            _isSelected = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(DesiredAction));
-        }
-    }
-
-    public Capability? DesiredCapability
-    {
-        get => _desiredCapability;
-        set
-        {
-            _desiredCapability = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(DesiredAction));
-        }
-    }
-
-    public ScriptAction? DesiredAction =>
-        IsSelected && // The script is selecte
-        DesiredCapability is not null && // A capability has be choosen
-        Code.TryGetValue(DesiredCapability, out var action) && // The capability exists
-        DesiredCapability != Code.EffectiveCapability // The capability is different from the effective capability.
-            ? action : null;
     private static ISettings Settings => ServiceProvider.Get<ISettings>();
+
+    public Option<ExecutionInfoViewModel> CreateExecutionInfo() =>
+           Selection.DesiredCapability is { } desiredCapability && // A capability has be choosen
+        Code.TryGetValue(desiredCapability, out var action) && // The capability exists
+        !desiredCapability.Equals(Code.EffectiveCapability) // The capability is different from the effective capability.
+        ? new ExecutionInfoViewModel(this, desiredCapability, action).Some() : Option.None<ExecutionInfoViewModel>();
 
     public override bool Equals(object? obj) => Equals(obj as ScriptViewModel);
 

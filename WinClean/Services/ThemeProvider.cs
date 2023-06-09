@@ -24,7 +24,7 @@ public sealed class ThemeProvider : IThemeProvider
         FontWeight fontWeight = FontWeight.FromOpenTypeWeight(pFont.lfWeight);
 
         LengthConverter converter = new();
-        double fontSize = (double)converter.ConvertFrom($"{Math.Abs(pFont.GetPointSize())}pt")!;
+        double fontSize = (double)converter.ConvertFrom($"{Math.Abs(pFont.GetPointSize())}pt").NotNull();
 
         return new(foreground, fontSize, fontFamily, fontWeight);
     });

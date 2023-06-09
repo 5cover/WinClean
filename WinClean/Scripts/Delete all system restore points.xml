@@ -5,9 +5,9 @@
   <Description>A restore point is a system image used to undo changes to the system made after it was created.</Description>
   <Description xml:lang="fr">Un point de restauration est une image du système permettant d'annuler les modifications du système apportées ultérieurement à sa création.</Description>
   <Category>Maintenance</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Free storage space</Impact>
-  <Versions>>=5.2.0</Versions>
+  <Versions>>=5.1.0</Versions>
   <Code>
     <Execute Host="Cmd">vssadmin delete shadows /all</Execute>
   </Code>

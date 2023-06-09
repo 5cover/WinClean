@@ -7,18 +7,18 @@ public sealed class FileScriptRepository : MutableScriptRepository
 {
     private readonly string _directory;
     private readonly FSErrorCallback _fsErrorReloadElseIgnore;
-    private readonly InvalidScriptDataCallback _invalidScriptData;
     private readonly string _scriptFileExtension;
+    private readonly ScriptDeserializationErrorCallback _scriptLoadError;
     private readonly BidirectionalDictionary<string, Script> _scripts = new();
 
     public FileScriptRepository(string directory,
                                 string scriptFileExtension,
-                                InvalidScriptDataCallback invalidScriptData,
+                                ScriptDeserializationErrorCallback scriptLoadError,
                                 FSErrorCallback fsErrorReloadElseIgnore,
                                 IScriptSerializer serializer,
                                 ScriptType type) : base(serializer, type)
-        => (_directory, _scriptFileExtension, _invalidScriptData, _fsErrorReloadElseIgnore)
-            = (directory, scriptFileExtension, invalidScriptData, fsErrorReloadElseIgnore);
+        => (_directory, _scriptFileExtension, _scriptLoadError, _fsErrorReloadElseIgnore)
+            = (directory, scriptFileExtension, scriptLoadError, fsErrorReloadElseIgnore);
 
     public override int Count => _scripts.Count;
 
@@ -35,6 +35,9 @@ public sealed class FileScriptRepository : MutableScriptRepository
         }
     }
 
+    /// <exception cref="DeserializationException"/>
+    /// <exception cref="FileSystemException"/>
+    /// <exception cref="ScriptAlreadyExistsException"/>
     public override Script Add(string source)
     {
         try
@@ -104,9 +107,9 @@ public sealed class FileScriptRepository : MutableScriptRepository
                 {
                     retry = _fsErrorReloadElseIgnore(e);
                 }
-                catch (InvalidDataException e)
+                catch (DeserializationException e)
                 {
-                    var action = _invalidScriptData(e, filePath);
+                    var action = _scriptLoadError(e, filePath);
                     if (action is InvalidScriptDataAction.Remove)
                     {
                         File.Delete(filePath);

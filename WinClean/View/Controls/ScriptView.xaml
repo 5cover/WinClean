@@ -1,16 +1,16 @@
 ﻿<UserControl
     x:Class="Scover.WinClean.View.Controls.ScriptView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:metadatas="clr-namespace:Scover.WinClean.Model.Metadatas"
     xmlns:res="clr-namespace:Scover.WinClean.Resources"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
-    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-    x:Name="userControl"
+    x:Name="scriptViewUserControl"
     mc:Ignorable="d">
     <UserControl.ContentTemplate>
         <DataTemplate DataType="viewModel:ScriptViewModel">
@@ -20,20 +20,20 @@
                 </Style>
                 <Style TargetType="xctk:WatermarkComboBox">
                     <Setter Property="DisplayMemberPath" Value="Name" />
-                    <Setter Property="IsEnabled" Value="{Binding AllowEdit, ElementName=userControl}" />
+                    <Setter Property="IsEnabled" Value="{Binding AllowEdit, ElementName=scriptViewUserControl}" />
                 </Style>
                 <Style TargetType="xctk:WatermarkTextBox">
-                    <Setter Property="IsReadOnly" Value="{Binding AllowEdit, ElementName=userControl, Converter={StaticResource BooleanInvert}}" />
+                    <Setter Property="IsReadOnly" Value="{Binding AllowEdit, ElementName=scriptViewUserControl, Converter={StaticResource BooleanInvert}}" />
                 </Style>
             </DataTemplate.Resources>
             <Grid IsEnabled="{Binding Converter={StaticResource IsNotNull}}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition />
+                    <RowDefinition Height="2*" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition />
+                    <RowDefinition Height="3*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -44,19 +44,26 @@
                 <DockPanel
                     Grid.ColumnSpan="2"
                     Margin="0,0,0,12"
-                    Background="#50ffff00"
-                    Visibility="{Binding IsIncompatibleWithCurrentVersion, Converter={StaticResource BooleanToVisibility}, FallbackValue=Collapsed}">
+                    Background="#50ffff00">
                     <Image
-                        Width="{Binding WarningIcon.PixelWidth, ElementName=userControl}"
-                        Height="{Binding WarningIcon.PixelHeight, ElementName=userControl}"
                         Margin="3"
                         VerticalAlignment="Center"
                         DockPanel.Dock="Left"
-                        Source="{Binding WarningIcon, ElementName=userControl}" />
+                        Source="{Binding WarningIcon, ElementName=scriptViewUserControl}"
+                        Style="{StaticResource Icon}" />
                     <TextBlock
                         Margin="3"
                         Text="{x:Static ui:ScriptView.IncompatibleScript}"
                         TextWrapping="Wrap" />
+                    <DockPanel.Style>
+                        <Style TargetType="DockPanel">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Versions, Converter={StaticResource CurrentVersionSatisfiesRange}}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DockPanel.Style>
                 </DockPanel>
 
                 <DockPanel
@@ -78,7 +85,6 @@
                         Watermark="{x:Static res:Script.Name}" />
                 </DockPanel>
 
-
                 <xctk:WatermarkTextBox
                     Grid.Row="2"
                     Grid.Column="0"
@@ -94,7 +100,7 @@
                     Grid.Row="3"
                     Grid.Column="0"
                     Margin="0,0,3,6"
-                    ItemsSource="{Binding Metadatas, ElementName=userControl, ConverterParameter={x:Type metadatas:Category}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
+                    ItemsSource="{Binding Metadatas, ElementName=scriptViewUserControl, ConverterParameter={x:Type metadatas:Category}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
                     SelectedItem="{Binding Category, Mode=TwoWay}"
                     SelectionChanged="ComboBoxCategorySelectionChanged"
                     Watermark="{x:Static res:Script.Category}" />
@@ -103,45 +109,31 @@
                     Grid.Row="3"
                     Grid.Column="1"
                     Margin="3,0,0,6"
-                    ItemsSource="{Binding Metadatas, ElementName=userControl, ConverterParameter={x:Type metadatas:SafetyLevel}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
+                    ItemsSource="{Binding Metadatas, ElementName=scriptViewUserControl, ConverterParameter={x:Type metadatas:SafetyLevel}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
                     SelectedItem="{Binding SafetyLevel, Mode=TwoWay}"
-                    Watermark="{x:Static res:Script.SafetyLevel}" />
-
-                <!--<xctk:WatermarkComboBox
-                    Grid.Row="4"
-                    Grid.Column="0"
-                    Margin="0,0,3,6"
-                    ItemsSource="{Binding Metadatas, ElementName=userControl, ConverterParameter={x:Type metadatas:Host}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
-                    SelectedItem="{Binding Host, Mode=TwoWay}"
-                    Watermark="{x:Static res:Script.Host}" />-->
+                    Watermark="{x:Static res:Script.SafetyLevel}">
+                    <ComboBox.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource {x:Type ComboBoxItem}}" TargetType="ComboBoxItem">
+                            <Setter Property="Background" Value="{Binding Color, Converter={StaticResource ColorToBrush}, ConverterParameter=0.15}" />
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </xctk:WatermarkComboBox>
 
                 <xctk:WatermarkComboBox
                     Grid.Row="4"
                     Grid.Column="1"
                     Margin="3,0,0,6"
-                    ItemsSource="{Binding Metadatas, ElementName=userControl, ConverterParameter={x:Type metadatas:Impact}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
+                    ItemsSource="{Binding Metadatas, ElementName=scriptViewUserControl, ConverterParameter={x:Type metadatas:Impact}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
                     SelectedItem="{Binding Impact, Mode=TwoWay}"
                     Watermark="{x:Static res:Script.Impact}" />
-
-                <!--<xctk:WatermarkTextBox
-                    Grid.Row="5"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    Margin="0,0,0,6"
-                    AcceptsReturn="True"
-                    FontFamily="Consolas"
-                    HorizontalScrollBarVisibility="Auto"
-                    Text="{Binding Code, Mode=TwoWay}"
-                    VerticalScrollBarVisibility="Auto"
-                    Watermark="{x:Static res:Script.Code}" />-->
 
                 <!--  {Binding} for content doesn't update properly  -->
                 <controls:ScriptCodeView
                     Grid.Row="5"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
-                    Content="{Binding Content, ElementName=userControl}"
-                    IsReadOnly="{Binding AllowEdit, ElementName=userControl, Converter={StaticResource BooleanInvert}}" />
+                    Content="{Binding Content, ElementName=scriptViewUserControl}"
+                    IsReadOnly="{Binding AllowEdit, ElementName=scriptViewUserControl, Converter={StaticResource BooleanInvert}}" />
 
                 <Button
                     Grid.Row="6"
@@ -153,7 +145,7 @@
                     Content="{x:Static ui:Buttons.Delete}">
                     <Button.Style>
                         <Style TargetType="Button">
-                            <Setter Property="Visibility" Value="{Binding AllowEdit, ElementName=userControl, Converter={StaticResource BooleanToVisibility}}" />
+                            <Setter Property="Visibility" Value="{Binding AllowEdit, ElementName=scriptViewUserControl, Converter={StaticResource BooleanToVisibility}}" />
                         </Style>
                     </Button.Style>
                 </Button>

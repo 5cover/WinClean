@@ -22,8 +22,8 @@ public sealed class Page1AViewModel : WizardPageViewModel
     {
         await Task.Run(()
             => ServiceProvider.Get<IOperatingSystem>().CreateRestorePoint(ServiceProvider.Get<IApplicationInfo>().Name,
-                                                                                 RestorePointEventType.BeginSystemChange,
-                                                                                 RestorePointType.ModifySettings), cancellationToken);
+                                                                          RestorePointEventType.BeginSystemChange,
+                                                                              RestorePointType.ModifySettings), cancellationToken);
         Logs.RestorePointCreated.Log(LogLevel.Info);
         OnFinished();
     }

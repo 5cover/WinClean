@@ -10,7 +10,7 @@ https://winaero.com/how-to-disable-ads-in-windows-11/
   <Description>This script disables ads and app suggestions. This setting affects the current user.</Description>
   <Description xml:lang="fr">Ce script désactive les publicités et les suggestions d'applications. Ce paramètre affecte l'utilisateur actuel.</Description>
   <Category>Debloat</Category>
-  <Safety>Safe</Safety>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Versions>>=10.0.0</Versions>
   <Code>
@@ -81,10 +81,10 @@ https://winaero.com/how-to-disable-ads-in-windows-11/
     "SubscribedContent-353694Enabled",
     "SubscribedContent-353696Enabled",
     "SystemPaneSuggestionsEnabled")
-    
+
 $currentValues += Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name (
     "ShowSyncProviderNotifications")
-    
+
 $currentValues += Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo" -Name (
     "Enabled")
 

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Globalization;
 using System.Text;
 using System.Xml.Linq;
 
@@ -10,79 +8,72 @@ using Scover.WinClean.Services;
 
 using Semver;
 
-using static System.Globalization.CultureInfo;
-
 namespace Tests;
 
 [TestOf(typeof(ScriptXmlSerializer))]
-public sealed partial class ScriptXmlSerializerTests
+public sealed partial class ScriptXmlSerializerTests : SerializationTests
 {
-    private const string otherCultureName = "fr";
-    private static readonly CultureInfo otherCulture = new(otherCultureName);
-    private static SemVersionRange DefaultVersions => ServiceProvider.Get<ISettings>().DefaultScriptSupportedVersionRange;
-    private static readonly TestingScript script1 = new("Debloat", "Free storage space", "Limited",
-        new()
-        {
-            [InvariantCulture] = "Remove WordPad",
-            [otherCulture] = "Supprimer WordPad"
-        },
-        new()
-        {
-            [InvariantCulture] = "WordPad can be deleted if you don't use it.",
-            [otherCulture] = "WordPad peut être supprimé si vous ne l'utilisez pas."
-        },
-        new()
+    private static readonly TestScript script1 = new("Debloat", "Free storage space", "Limited",
+        Localize("Remove WordPad", "Supprimer WordPad"),
+        Localize("WordPad can be deleted if you don't use it.", "WordPad peut être supprimé si vous ne l'utilisez pas."),
+        new(new()
         {
             [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Cmd"), "DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.WordPad~~~~0.0.1.0")
-        },
+        }),
         ScriptType.Custom,
-        DefaultVersions
-        );
+        DefaultVersions);
 
-    private static readonly TestingScript script2 = new("Maintenance", "Privacy", "Safe",
-        new()
-        {
-            [InvariantCulture] = "Test script name",
-            [otherCulture] = "Nom du script de test"
-        },
-        new()
-        {
-            [InvariantCulture] = "Test script description.",
-            [otherCulture] = "Nom du script de description."
-        },
-        new()
+    private static readonly TestScript script2 = new("Maintenance", "Privacy", "Safe",
+        Localize("Test script name", "Nom du script de test"),
+        Localize("Test script description.", "Nom du script de description."),
+        new(new()
         {
             [Capability.Enable] = new(Metadatas.GetMetadata<Host>("Regedit"), "Windows Registry Editor 5.00"),
             [Capability.Disable] = new(Metadatas.GetMetadata<Host>("Cmd"), "echo %path%"),
             [Capability.Detect] = new(Metadatas.GetMetadata<Host>("PowerShell"), "systray.exe")
-        },
+        }),
         ScriptType.Default,
         SemVersionRange.Parse(">=10.0.1048||6.1.*"));
 
-    private static readonly TestingScript script3 = new("Customization", "Ergonomics", "Limited",
-        new()
-        {
-            [InvariantCulture] = "Remove shortcut suffix",
-            [otherCulture] = "Supprimer le suffixe de raccourci",
-        },
-        new()
-        {
-            [InvariantCulture] = "By default, shortcuts are named with the suffix \"- Shortcut\".",
-            [otherCulture] = "Par défaut, les raccourcis sont nommés avec le suffixe \" - Raccourci\".",
-        },
-        new()
+    private static readonly TestScript script3 = new("Customization", "Ergonomics", "Limited",
+        Localize("Remove shortcut suffix", "Supprimer le suffixe de raccourci"),
+        Localize("By default, shortcuts are named with the suffix \"- Shortcut\".", "Par défaut, les raccourcis sont nommés avec le suffixe \" - Raccourci\"."),
+        new(new()
         {
             [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Regedit"), @"Windows Registry Editor Version 5.00
 [HKEYCURRENTUSER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer]
 ""link""=hex:1b,00,00,00")
-        },
+        }),
         ScriptType.Default,
         DefaultVersions);
 
-    private readonly ScriptXmlSerializer _serializer = new(DefaultVersions);
+    private readonly ScriptXmlSerializer _serializer = new();
+    private static SemVersionRange DefaultVersions => ServiceProvider.Get<ISettings>().DefaultScriptVersions;
+
+    private static IEnumerable<TestCaseData> DeserializeCases
+    {
+        get
+        {
+            yield return new(script1.Xml, script1.Value);
+            yield return new(script2.Xml, script2.Value);
+            yield return new(script3.Xml, script3.Value);
+            yield return new(script3.ExpectedPre130Xml, script3.Value);
+        }
+    }
+
     private static IMetadatasProvider Metadatas => ServiceProvider.Get<IMetadatasProvider>();
 
-    [TestCaseSource(typeof(DeserializeCases))]
+    private static IEnumerable<TestCaseData> SerializeCases
+    {
+        get
+        {
+            yield return new(script1.Value, script1.Xml);
+            yield return new(script2.Value, script2.Xml);
+            yield return new(script3.Value, script3.Xml);
+        }
+    }
+
+    [TestCaseSource(nameof(DeserializeCases))]
     public void TestDeserialize(StringBuilder xml, Script expected)
     {
         const string Filename = "TestCustomScript.xml";
@@ -101,7 +92,7 @@ public sealed partial class ScriptXmlSerializerTests
         AssertScriptsEqual(s, expected);
     }
 
-    [TestCaseSource(typeof(SerializeCases))]
+    [TestCaseSource(nameof(SerializeCases))]
     public void TestSerialize(Script script, StringBuilder expectedXml)
     {
         using MemoryStream ms = new();
@@ -120,29 +111,4 @@ public sealed partial class ScriptXmlSerializerTests
         Assert.That(script1.Type, Is.EqualTo(script2.Type));
         Assert.That(script1.Code, Is.EquivalentTo(script2.Code));
     });
-
-    private sealed class DeserializeCases : IEnumerable<TestCaseData>
-    {
-        public IEnumerator<TestCaseData> GetEnumerator()
-        {
-            yield return new(script1.ExpectedXml, script1.Script);
-            yield return new(script2.ExpectedXml, script2.Script);
-            yield return new(script3.ExpectedXml, script3.Script);
-            yield return new(script3.ExpectedPre130Xml, script3.Script);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    }
-
-    private sealed class SerializeCases : IEnumerable<TestCaseData>
-    {
-        public IEnumerator<TestCaseData> GetEnumerator()
-        {
-            yield return new(script1.Script, script1.ExpectedXml);
-            yield return new(script2.Script, script2.ExpectedXml);
-            yield return new(script3.Script, script3.ExpectedXml);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    }
 }

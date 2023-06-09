@@ -3,7 +3,7 @@
   <Name>Wait 3 seconds</Name>
   <Description>Waits 3 seconds and exits.</Description>
   <Category>Maintenance</Category>
-  <Safety>Safe</Safety>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>
     <Execute Host="PowerShell">Start-Sleep 3</Execute>

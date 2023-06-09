@@ -5,8 +5,9 @@
   <Description>Display seconds in the clock at the bottom right corner of the screen.</Description>
   <Description xml:lang="fr">Afficher les secondes dans l'horloge au coin inférieur droit de l'écran.</Description>
   <Category>Customization</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Ergonomics</Impact>
+  <Versions>>=10.0.10240 &lt;10.0.22000 || >=10.0.25247</Versions>
   <Code>
     <Enable Host="Regedit">Windows Registry Editor Version 5.00
 

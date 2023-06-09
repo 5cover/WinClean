@@ -5,7 +5,7 @@
   <Description>Timeline allows users to review their activity history and quickly exit to their previous tasks.</Description>
   <Description xml:lang="fr">La Chronologie permet aux utilisateurs de revoir l'historique de leur activité et de retourner rapidement à leurs taches précédentes.</Description>
   <Category>Customization</Category>
-  <Safety>Safe</Safety>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Versions>>=10.0.17134</Versions>
   <Code>

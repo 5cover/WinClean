@@ -10,6 +10,6 @@ public sealed class ExecutionResultViewModel
 
     public TimeSpan ExecutionTime => _model.ExecutionTime;
     public int ExitCode => _model.ExitCode;
-    public string? FormattedExecutionTime => Convert.ToInt32(ExecutionTime.TotalMilliseconds).Milliseconds().ToString("g");
+    public string? FormattedExecutionTime => ExecutionTime.FormatToSeconds();
     public bool Succeeded => _model.Succeeded;
 }

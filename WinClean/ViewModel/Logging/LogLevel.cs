@@ -1,8 +1,4 @@
-﻿using System.Globalization;
-
-using Scover.WinClean.Resources;
-
-namespace Scover.WinClean.ViewModel.Logging;
+﻿namespace Scover.WinClean.ViewModel.Logging;
 
 public enum LogLevel
 {
@@ -10,11 +6,5 @@ public enum LogLevel
     Info = 1,
     Warning = 2,
     Error = 3,
-    Critical = 4
-}
-
-public static class LogLevelExtensions
-{
-    public static string GetName(this LogLevel logLevel)
-        => LogLevels.ResourceManager.GetString(Enum.GetName(logLevel).AssertNotNull(), CultureInfo.InvariantCulture).AssertNotNull();
+    Critical = 4,
 }

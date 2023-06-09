@@ -2,9 +2,7 @@
 
 namespace Scover.WinClean.Model.Metadatas;
 
-/// <summary>
-/// What a script can be used as.
-/// </summary>
+/// <summary>What a script can be used as.</summary>
 public sealed class Usage : ScriptResourceMetadata
 {
     private readonly IReadOnlyCollection<Capability> _capabilities;
@@ -13,10 +11,9 @@ public sealed class Usage : ScriptResourceMetadata
         => _capabilities = capabilities;
 
     public static Usage Actions { get; } = new(nameof(Actions), Capability.Execute);
-    public static Usage Settings { get; } = new(nameof(Settings), Capability.Enable, Capability.Disable);
-    public static Usage Other { get; } = new(nameof(Other));
     public static IReadOnlyCollection<Usage> Instances => Multiton<Usage, Usage>.Instances;
+    public static Usage Settings { get; } = new(nameof(Settings), Capability.Enable, Capability.Disable);
 
-    public static Usage Get(Script script)
-        => Instances.Where(usage => usage._capabilities.All(script.Code.Keys.Contains)).MaxBy(u => u._capabilities.Count).AssertNotNull();
+    public static IEnumerable<Usage> GetUsages(Script script)
+        => Instances.Where(usage => usage._capabilities.All(script.Code.Keys.Contains));
 }

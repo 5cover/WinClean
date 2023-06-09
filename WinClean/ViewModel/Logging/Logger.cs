@@ -20,14 +20,14 @@ public abstract class Logger
     /// <param name="callLine"><see cref="CallerLineNumberAttribute"/> - Don't specify</param>
     /// <param name="callFile"><see cref="CallerFilePathAttribute"/> - Don't specify</param>
     public void Log(string message,
-             LogLevel lvl = LogLevel.Verbose,
-             [CallerMemberName] string caller = "",
-             [CallerLineNumber] int callLine = 0,
-             [CallerFilePath] string callFile = "")
+               LogLevel lvl = LogLevel.Verbose,
+               [CallerMemberName] string caller = "",
+               [CallerLineNumber] int callLine = 0,
+               [CallerFilePath] string callFile = "")
     {
         if (ServiceProvider.Get<ISettings>().IsLoggingEnabled && lvl >= MinLevel)
         {
-            Log(new(lvl.GetName(),
+            Log(new(lvl,
                     DateTime.Now,
                     message,
                     caller,
@@ -41,7 +41,7 @@ public abstract class Logger
     protected abstract void Log(LogEntry entry);
 
     ///<remarks>Topmost = leftmost.</remarks>
-    protected sealed record LogEntry(string Level,
+    protected sealed record LogEntry(LogLevel Level,
                             DateTime Date,
                             string Message,
                             string Caller,

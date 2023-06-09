@@ -5,7 +5,7 @@
   <Description>By default, pressing F1 in File Explorer redirects to a web page. This settings applies to the current user.</Description>
   <Description xml:lang="fr">Par défaut, appuyer sur F1 dans l'Explorateur de fichiers redirige vers une page Web. Ce paramètre s'applique à l'utilisateur actuel.</Description>
   <Category>Customization</Category>
-  <Safety>Safe</Safety>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>
     <Enable Host="Regedit">Windows Registry Editor Version 5.00

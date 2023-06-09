@@ -2,6 +2,8 @@
 
 using Humanizer.Localisation;
 
+using Optional;
+
 using Scover.WinClean.Resources;
 using Scover.WinClean.Services;
 using Scover.WinClean.ViewModel.Logging;
@@ -13,36 +15,56 @@ public sealed class Page2ViewModel : WizardPageViewModel
     private bool _executionPaused;
     private bool _restartWhenFinished;
     private int _scriptIndex = -1;
-    private TimeSpan _timeRemaining;
+    private Option<TimeSpan> _timeRemaining;
 
     public Page2ViewModel(CollectionWrapper<IList<ExecutionInfoViewModel>, ExecutionInfoViewModel> executionInfos)
     {
         ExecutionInfos = executionInfos;
-        ExecutionInfoListViewModel = new(executionInfos.View);
-        Start = new AsyncRelayCommand(Combine(StartTimer, ExecuteScripts));
+        Start = new AsyncRelayCommand(async ct =>
+        {
+            try
+            {
+                _ = StartTimer(ct); // fire & forget
+                await ExecuteScripts(ct);
+            }
+            catch (OperationCanceledException)
+            {
+                // Make sure this doesn't go unhandled if a View isn't there to swallow the exception.
+            }
+        });
         Stop = new RelayCommand(Start.Cancel);
+
+        AbortScript = new RelayCommand(() => ExecutingExecutionInfo.NotNull().Abort(), () => ExecutingExecutionInfo is not null);
 
         Pause = new RelayCommand(() =>
         {
-            _executionPaused = true;
-            Pause!.NotifyCanExecuteChanged();
-            Resume!.NotifyCanExecuteChanged();
-            ExecutingExecutionInfo.AssertNotNull().Pause();
-        }, () => !_executionPaused);
-
+            ExecutingExecutionInfo.NotNull().Pause();
+            ExecutionPaused = true;
+        }, () => ExecutingExecutionInfo is not null && !ExecutionPaused);
         Resume = new RelayCommand(() =>
         {
-            ExecutingExecutionInfo.AssertNotNull().Resume();
-            Resume!.NotifyCanExecuteChanged();
-            Pause!.NotifyCanExecuteChanged();
-            _executionPaused = false;
-        }, () => _executionPaused);
+            ExecutingExecutionInfo.NotNull().Resume();
+            ExecutionPaused = false;
+        }, () => ExecutingExecutionInfo is not null && ExecutionPaused);
     }
 
+    public IRelayCommand AbortScript { get; }
     public ExecutionInfoViewModel? ExecutingExecutionInfo => ScriptIndex == -1 || ScriptIndex == ExecutionInfos.Source.Count ? null : ExecutionInfos.Source[ScriptIndex];
+    public CollectionWrapper<IList<ExecutionInfoViewModel>, ExecutionInfoViewModel> ExecutionInfos { get; }
 
-    public string FormattedTimeRemaining => TimeRemaining.Humanize(precision: 3, minUnit: TimeUnit.Second);
+    public bool ExecutionPaused
+    {
+        get => _executionPaused;
+        private set
+        {
+            _executionPaused = value;
+            OnPropertyChanged();
+            Pause.NotifyCanExecuteChanged();
+            Resume.NotifyCanExecuteChanged();
+        }
+    }
 
+    public string FormattedTimeRemaining => TimeRemaining.Match(t => t.Humanize(precision: 3, minUnit: TimeUnit.Second), () => Script.TimeSpanUnknown);
     public IRelayCommand Pause { get; }
 
     public bool RestartWhenFinished
@@ -67,22 +89,18 @@ public sealed class Page2ViewModel : WizardPageViewModel
             OnPropertyChanged();
             OnPropertyChanged(nameof(ExecutingExecutionInfo));
             OnPropertyChanged(nameof(ScriptsRemaining));
+            AbortScript.NotifyCanExecuteChanged();
+            Pause.NotifyCanExecuteChanged();
+            Resume.NotifyCanExecuteChanged();
         }
     }
 
-    public CollectionWrapper<IList<ExecutionInfoViewModel>, ExecutionInfoViewModel> ExecutionInfos { get; }
-
     public int ScriptsRemaining => ExecutionInfos.Source.Count - ScriptIndex;
-
-    public ExecutionInfoListViewModel ExecutionInfoListViewModel { get; }
-
     public IAsyncRelayCommand Start { get; }
-
     public IRelayCommand Stop { get; }
-
     private static TimeSpan TimerInterval => 1.Seconds();
 
-    private TimeSpan TimeRemaining
+    private Option<TimeSpan> TimeRemaining
     {
         get => _timeRemaining;
         set
@@ -93,32 +111,17 @@ public sealed class Page2ViewModel : WizardPageViewModel
         }
     }
 
-    private static T Combine<T>(params T[] delegates) where T : Delegate => (T)Delegate.Combine(delegates)!;
-
-    private static TimeSpan GetCumulatedExecutionTime(IEnumerable<ScriptViewModel> scripts) => scripts.Aggregate(TimeSpan.Zero, (sumSoFar, next) =>
-    {
-        var settings = ServiceProvider.Get<ISettings>();
-        return sumSoFar + (settings.ScriptExecutionTimes.TryGetValue(next.InvariantName, out TimeSpan t) ? t : settings.ScriptTimeout);
-    });
+    private static Option<TimeSpan> GetCumulatedExecutionTime(IEnumerable<ScriptViewModel> scripts) => scripts.Aggregate(TimeSpan.Zero.Some(), (sumSoFar, next)
+        => sumSoFar.FlatMap(t => next.ExecutionTime.Map(et => et + t)));
 
     private async Task ExecuteScripts(CancellationToken cancellationToken)
     {
         ScriptIndex = 0;
+
         foreach (var executionInfo in ExecutionInfos.Source)
         {
-            try
-            {
-                executionInfo.Script.ExecutionTime = (await executionInfo.ExecuteAsync(cancellationToken)).ExecutionTime;
-            }
-            catch (OperationCanceledException)
-            {
-                // User canceled excecution
-                return;
-            }
-            catch (TimeoutException)
-            {
-                // User terminated hung script, keep going.
-            }
+            executionInfo.Result = await executionInfo.ExecuteAsync(cancellationToken);
+            executionInfo.Script.ExecutionTime = executionInfo.Result.ExecutionTime.Some();
             ++ScriptIndex;
         }
         if (RestartWhenFinished)
@@ -137,14 +140,16 @@ public sealed class Page2ViewModel : WizardPageViewModel
         using PeriodicTimer timer = new(TimerInterval);
         while (await timer.WaitForNextTickAsync(cancellationToken))
         {
-            if (TimeRemaining < TimerInterval)
+            if (ExecutionPaused)
             {
-                TimeRemaining = TimeSpan.Zero;
+                continue;
             }
-            else
-            {
-                TimeRemaining -= TimerInterval;
-            }
+
+            // Prevent TimeRemaining from becoming negative. If we reach zero then it means we
+            // underestimated execution time.
+            TimeRemaining = TimeRemaining.FlatMap(t => t > TimerInterval
+                ? (t - TimerInterval).Some()
+                : Option.None<TimeSpan>());
         }
     }
 }

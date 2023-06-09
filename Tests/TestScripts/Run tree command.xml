@@ -3,7 +3,7 @@
   <Name>Run tree command</Name>
   <Description>Run the cmd "tree" command on the local disk root directory and exits.</Description>
   <Category>Maintenance</Category>
-  <Safety>Safe</Safety>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>
     <Execute Host="Cmd">cd\

@@ -3,7 +3,7 @@
   <Name>Create or delete file</Name>
   <Description>Creates a file when enabled and deletes it when disabled.</Description>
   <Category>Maintenance</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>
     <Enable Host="Cmd">echo This is the file created by the "Create or delete file" script. > CreateOrDeleteFile.txt

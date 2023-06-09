@@ -5,7 +5,7 @@
   <Description>Disk Cleanup (cleanmgr.exe) is a tool that deletes junk files and frees disk space. Overwrites configuration number 2022.</Description>
   <Description xml:lang="fr">Le nettoyage de disque (cleanmgr.exe) est un outil qui supprime les fichiers inutiles et libère de l'espace disque. Écrase la configuration numéro 2022.</Description>
   <Category>Maintenance</Category>
-  <Safety>Safe</Safety>
+  <SafetyLevel>Safe</SafetyLevel>
   <Versions>>=4.10.1998</Versions>
   <Impact>Free storage space</Impact>
   <Code>

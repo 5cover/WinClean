@@ -16,15 +16,19 @@ public sealed class CsvLogger : Logger, IDisposable
     private const string DateTimeFilenameFormat = "yyyy-MM-dd--HH-mm-ss";
     private const string LogFileExtension = ".csv";
 
-    private readonly CsvWriter _csvWriter;
+    private readonly Lazy<CsvWriter> _csvWriter;
 
     private readonly string _currentLogFile;
 
     public CsvLogger()
     {
         _currentLogFile = Path.Join(AppDirectory.Logs, Process.GetCurrentProcess().StartTime.ToString(DateTimeFilenameFormat, DateTimeFormatInfo.InvariantInfo) + LogFileExtension);
-        _csvWriter = new(new StreamWriter(_currentLogFile, false, Encoding.Unicode), new CsvConfiguration(CultureInfo.InvariantCulture));
-        _csvWriter.WriteHeader<LogEntry>();
+        // Defer writer creation. This prevents the creating of empty log file at the start of the program.
+        _csvWriter = new(() =>
+        {
+            CsvWriter writer = new(new StreamWriter(_currentLogFile, false, Encoding.Unicode), new CsvConfiguration(CultureInfo.InvariantCulture));
+            return writer;
+        });
     }
 
     public override Task ClearLogs() => Task.Run(() =>
@@ -45,15 +49,15 @@ public sealed class CsvLogger : Logger, IDisposable
         Logs.ClearedLogsFolder.Log();
     });
 
-    public void Dispose() => _csvWriter.Dispose();
+    public void Dispose() => _csvWriter.Value.Dispose();
 
     protected override void Log(LogEntry entry)
     {
         lock (_csvWriter)
         {
-            _csvWriter.NextRecord();
-            _csvWriter.WriteRecord(entry);
-            _csvWriter.Flush();
+            _csvWriter.Value.NextRecord();
+            _csvWriter.Value.WriteRecord(entry);
+            _csvWriter.Value.Flush();
         }
     }
 

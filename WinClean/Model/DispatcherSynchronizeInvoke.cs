@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Threading;
 
-namespace Scover.WinClean.View.Behaviors;
+namespace Scover.WinClean.Model;
 
 public sealed class DispatcherSynchronizeInvoke : ISynchronizeInvoke
 {
@@ -9,11 +9,12 @@ public sealed class DispatcherSynchronizeInvoke : ISynchronizeInvoke
 
     public DispatcherSynchronizeInvoke(Dispatcher dispatcher) => _dispatcher = dispatcher;
 
+    public bool InvokeRequired => !_dispatcher.CheckAccess();
+
     public IAsyncResult BeginInvoke(Delegate method, object?[]? args) =>
-        // Obtaining a DispatcherOperation instance
-        // and wrapping it with our proxy class
-        new DispatcherAsyncResult(
-            _dispatcher.BeginInvoke(method, DispatcherPriority.Normal, args));
+           // Obtaining a DispatcherOperation instance and wrapping it with our proxy class
+           new DispatcherAsyncResult(
+           _dispatcher.BeginInvoke(method, DispatcherPriority.Normal, args));
 
     public object EndInvoke(IAsyncResult result)
     {
@@ -23,8 +24,6 @@ public sealed class DispatcherSynchronizeInvoke : ISynchronizeInvoke
     }
 
     public object Invoke(Delegate method, object?[]? args) => _dispatcher.Invoke(method, DispatcherPriority.Normal, args);
-
-    public bool InvokeRequired => !_dispatcher.CheckAccess();
 
     // We also could use the DispatcherOperation.Task directly
     private sealed class DispatcherAsyncResult : IAsyncResult
@@ -37,11 +36,10 @@ public sealed class DispatcherSynchronizeInvoke : ISynchronizeInvoke
             result = operation.Task;
         }
 
-        public DispatcherOperation Operation { get; }
-
-        public bool IsCompleted => result.IsCompleted;
-        public WaitHandle AsyncWaitHandle => result.AsyncWaitHandle;
         public object? AsyncState => result.AsyncState;
+        public WaitHandle AsyncWaitHandle => result.AsyncWaitHandle;
         public bool CompletedSynchronously => result.CompletedSynchronously;
+        public bool IsCompleted => result.IsCompleted;
+        public DispatcherOperation Operation { get; }
     }
 }

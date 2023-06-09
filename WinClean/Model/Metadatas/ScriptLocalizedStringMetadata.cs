@@ -15,4 +15,6 @@ public abstract record ScriptLocalizedStringMetadata : IMetadata
     public string InvariantName => _name[CultureInfo.InvariantCulture];
     public string Name => _name[CultureInfo.CurrentUICulture];
     public string InvariantDescription => _description[CultureInfo.InvariantCulture];
+
+    public int CompareTo(object? obj) => Name.CompareTo((obj as IMetadata)?.Name);
 }

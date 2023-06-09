@@ -12,19 +12,20 @@ public sealed class Script : IEquatable<Script?>
         => (Category, Impact, Versions, SafetyLevel, LocalizedDescription, LocalizedName, Type, Code)
             = (category, impact, versions, safetyLevel, localizedDescription, localizedName, type, code);
 
+    public Category Category { get; set; }
+    public ScriptCode Code { get; }
+    public Impact Impact { get; set; }
+    public string InvariantName => LocalizedName[InvariantCulture];
+    public LocalizedString LocalizedDescription { get; init; }
+    public LocalizedString LocalizedName { get; init; }
+
     public string Name
     {
         get => LocalizedName[CurrentUICulture];
         set => LocalizedName[CurrentUICulture] = value;
     }
-    public string InvariantName => LocalizedName[InvariantCulture];
-    public LocalizedString LocalizedName { get; init; }
-    public LocalizedString LocalizedDescription { get; init; }
 
-    public Category Category { get; set; }
-    public Impact Impact { get; set; }
     public SafetyLevel SafetyLevel { get; set; }
-    public ScriptCode Code { get; }
     public ScriptType Type { get; }
 
     /// <summary>Supported Windows versions range in SemVer 2.0.0 standard version range syntax.</summary>

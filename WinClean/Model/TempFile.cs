@@ -2,9 +2,12 @@
 
 namespace Scover.WinClean.Model;
 
+/// <summary>Encapsulates a temporary file.</summary>
 public sealed class TempFile : IDisposable
 {
     private TempFile(string extension) => Filename = Join(GetTempPath(), ChangeExtension(GetRandomFileName(), extension));
+
+    public string Filename { get; }
 
     public static TempFile Create(string extension, string contents)
     {
@@ -12,8 +15,6 @@ public sealed class TempFile : IDisposable
         File.WriteAllText(tempFile.Filename, contents);
         return tempFile;
     }
-
-    public string Filename { get; }
 
     public void Delete()
     {

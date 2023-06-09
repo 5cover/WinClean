@@ -15,8 +15,9 @@ public sealed record ProcessOutput(ProcessOutputKind Kind, string? Text);
 public sealed class ExecutionInfo : IDisposable
 {
     private readonly Process _hostProcess;
-    private readonly Stopwatch _stopwatch = new();
     private readonly HostStartInfo _hostStartInfo;
+    private readonly Stopwatch _stopwatch = new();
+
     public ExecutionInfo(ScriptAction action, ISynchronizeInvoke? synchronizingObject = null)
     {
         _hostStartInfo = action.CreateHostStartInfo();
@@ -38,9 +39,18 @@ public sealed class ExecutionInfo : IDisposable
 
     private event EventHandler? _executionFinished;
 
+    public void Abort()
+    {
+        if (!_hostProcess.IsRunning())
+        {
+            throw new InvalidOperationException("Host process is not executing. Execution is not underway.");
+        }
+        _hostProcess.Kill(true);
+    }
+
     public void Dispose()
     {
-        if (_hostProcess.HasExited)
+        if (!_hostProcess.IsRunning())
         {
             _hostProcess.Dispose();
             _hostStartInfo.Dispose();
@@ -57,7 +67,9 @@ public sealed class ExecutionInfo : IDisposable
 
     public ExecutionResult Execute()
     {
-        Debug.Assert(_hostProcess.Start());
+        DenyIfExecuting();
+
+        _ = _hostProcess.Start();
         _stopwatch.Restart();
         _hostProcess.WaitForExit();
         _stopwatch.Stop();
@@ -66,54 +78,67 @@ public sealed class ExecutionInfo : IDisposable
     }
 
     /// <summary>Executes the script asynchronously.</summary>
-    public async Task<ExecutionResult> ExecuteAsync(TimeSpan timeout, Func<bool> hungScriptkeepRunningElseTerminate, IProgress<ProcessOutput> progress, CancellationToken cancellationToken = default)
+    public async Task<ExecutionResult> ExecuteAsync(IProgress<ProcessOutput> progress, CancellationToken cancellationToken = default)
     {
+        DenyIfExecuting();
+
         _hostProcess.OutputDataReceived += OnOutputDataReceived;
         _hostProcess.ErrorDataReceived += OnErrorDataReceived;
-        _hostProcess.Exited += OnExit;
 
-        Debug.Assert(_hostProcess.Start());
-        _hostProcess.BeginOutputReadLine();
-        _hostProcess.BeginErrorReadLine();
-        _stopwatch.Restart();
-
-        // Register after starting in case of cancellation before starting
-        using var reg = cancellationToken.Register(KillHost);
-
-        while (true)
+        try
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            try
-            {
-                await _hostProcess.WaitForExitAsync(cancellationToken).WithTimeout(timeout);
-                ExecutionResult result = new(_hostProcess.ExitCode, _stopwatch.Elapsed);
-                _executionFinished?.Invoke(this, EventArgs.Empty);
-                return result;
-            }
-            catch (TimeoutException)
-            {
-                if (!hungScriptkeepRunningElseTerminate())
-                {
-                    KillHost();
-                    throw;
-                }
-            }
-        }
+            _ = _hostProcess.Start();
+            _hostProcess.BeginOutputReadLine();
+            _hostProcess.BeginErrorReadLine();
 
-        void OnErrorDataReceived(object s, DataReceivedEventArgs e) => progress.Report(new(ProcessOutputKind.Error, e.Data));
-        void OnOutputDataReceived(object s, DataReceivedEventArgs e) => progress.Report(new(ProcessOutputKind.Standard, e.Data));
-        void OnExit(object? s, EventArgs e)
+            _stopwatch.Restart();
+
+            // Register after starting in case of cancellation before starting
+            // Note: Win32Exceptions for Access denied errors will be thrown by the Process class. They are
+            // handled internally, so it's not a problem, but they're still visible by the debugger. This is
+            // because the Process class enumerates all system processes to build the process tree, but
+            // doesn't have permission to open all of them.
+            using var reg = cancellationToken.Register(() => _hostProcess.Kill(true));
+
+            await _hostProcess.WaitForExitAsync(cancellationToken);
+        }
+        finally
         {
             _stopwatch.Stop();
             _hostProcess.OutputDataReceived -= OnOutputDataReceived;
             _hostProcess.ErrorDataReceived -= OnErrorDataReceived;
-            _hostProcess.Exited -= OnExit;
+        }
+
+        ExecutionResult result = new(_hostProcess.ExitCode, _stopwatch.Elapsed);
+
+        _executionFinished?.Invoke(this, EventArgs.Empty);
+        return result;
+
+        void OnErrorDataReceived(object s, DataReceivedEventArgs e) => progress.Report(new(ProcessOutputKind.Error, e.Data));
+        void OnOutputDataReceived(object s, DataReceivedEventArgs e) => progress.Report(new(ProcessOutputKind.Standard, e.Data));
+    }
+
+    public void Pause()
+    {
+        foreach (var p in _hostProcess.GetProcessTree())
+        {
+            p.Suspend();
         }
     }
 
-    public void Pause() => _hostProcess.Suspend();
+    public void Resume()
+    {
+        foreach (var p in _hostProcess.GetProcessTree())
+        {
+            p.Resume();
+        }
+    }
 
-    public void Resume() => _hostProcess.Resume();
-
-    private void KillHost() => _hostProcess.Kill(true);
+    private void DenyIfExecuting()
+    {
+        if (_hostProcess.IsRunning())
+        {
+            throw new InvalidOperationException("Host process is already executing. Execution may already be underway.");
+        }
+    }
 }

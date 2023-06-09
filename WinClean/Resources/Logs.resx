@@ -130,58 +130,50 @@
     <comment>0 : filename
 1 : exception@Invariant</comment>
   </data>
-  <data name="HungScript" xml:space="preserve">
-    <value>Script '{0}' has been executing for {1} and is probably hung.</value>
-    <comment>0 : script name
-1 : script timeout@Invariant</comment>
-  </data>
   <data name="RestorePointCreated" xml:space="preserve">
     <value>Restore point created.</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ScriptAdded" xml:space="preserve">
-    <value>Script '{0}' added as '{1}'.</value>
+    <value>Script at '{0}' added as '{1}'.</value>
     <comment>0 : script filename
 1 : script InvariantName@Invariant</comment>
   </data>
-  <data name="ScriptAlreadyExistsCannotBeAdded" xml:space="preserve">
-    <value>Can't add script '{0}' as script '{0}' already exists.</value>
+  <data name="ScriptAlreadyExistsCannotAdd" xml:space="preserve">
+    <value>Can't add script at '{0}' as script '{1}' already exists.</value>
     <comment>0 : script filename
 1 : script InvariantName@Invariant</comment>
+  </data>
+  <data name="ScriptDeserializationFailedCannotAdd" xml:space="preserve">
+    <value>Can't add script at '{0}' as deserialization failed.</value>
+    <comment>0 : script filename@Invariant</comment>
   </data>
   <data name="ScriptLoadError" xml:space="preserve">
-    <value>Script '{0}' could not be loaded: {1}</value>
+    <value>Script at '{0}' could not be loaded: {1}</value>
     <comment>0 : script filename
 1 : exception@Invariant</comment>
   </data>
   <data name="ScriptNotLoaded" xml:space="preserve">
-    <value>Script '{0}' was not loaded: {1}</value>
+    <value>Script at '{0}' was not loaded: {1}</value>
     <comment>0 : script filename
 1 : exception@Invariant</comment>
+  </data>
+  <data name="ScriptOverwritten" xml:space="preserve">
+    <value>Script '{1}' overwritten by script at {0}.</value>
+    <comment>0 : script filename
+1 : script InvariantName@Invariant</comment>
   </data>
   <data name="ScriptRemoved" xml:space="preserve">
     <value>Script '{0}' removed.</value>
     <comment>0 : script filename or InvariantName@Invariant</comment>
   </data>
-  <data name="ScriptsExecuted" xml:space="preserve">
-    <value>Script(s) executed sucessfully.</value>
-    <comment>@Invariant</comment>
-  </data>
   <data name="ScriptsSaved" xml:space="preserve">
     <value>Scripts saved.</value>
     <comment>@Invariant</comment>
   </data>
-  <data name="ScriptStartedExecution" xml:space="preserve">
-    <value>Script '{0}' started execution.</value>
-    <comment>0 : script InvariantName@Invariant</comment>
-  </data>
   <data name="SettingsSaved" xml:space="preserve">
     <value>Settings saved.</value>
     <comment>@Invariant</comment>
-  </data>
-  <data name="StartingExecution" xml:space="preserve">
-    <value>Starting the execution of {0} script(s)...</value>
-    <comment>0 : script count@Invariant</comment>
   </data>
   <data name="SystemRestartInitiated" xml:space="preserve">
     <value>System restart initiated.</value>

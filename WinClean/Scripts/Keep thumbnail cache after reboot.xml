@@ -6,21 +6,21 @@
   <Description>By default, thumbnail cache is rebuilt on startup. Disabling this behavior decreases startup time. This settings affects the current user.</Description>
   <Description xml:lang="fr">Par défaut, le cache des miniatures est reconstruit au démarrage. Désactiver ce comportement réduit le temps de démarrage. Ce paramètre affecte l'utilisateur actuel.</Description>
   <Category>Debloat</Category>
-  <Safety>Safe</Safety>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Startup time</Impact>
   <Code>
     <Enable Host="Regedit">Windows Registry Editor Version 5.00
-    
+
 [HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache]
 "Autorun"=dword:0
-    
+
 [HKEY_CURRENT_USER\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache]
 "Autorun"=dword:0</Enable>
         <Disable Host="Regedit">Windows Registry Editor Version 5.00
-    
+
 [HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache]
 "Autorun"=dword:1
-    
+
 [HKEY_CURRENT_USER\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache]
 "Autorun"=dword:1</Disable>
     <Detect Host="PowerShell">switch (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\Thumbnail Cache" -Name "Autorun")

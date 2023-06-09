@@ -21,14 +21,15 @@ public sealed class Settings : ISettings
         SetComputedAppSettings();
     }
 
-    public SemVersionRange DefaultScriptSupportedVersionRange { get; private set; }
+    public SemVersionRange DefaultHostVersions { get; private set; }
+    public SemVersionRange DefaultScriptVersions { get; private set; }
     public double Height { get => AppSettings.Height; set => AppSettings.Height = value; }
     public bool IsLoggingEnabled { get => AppSettings.IsLoggingEnabled; set => AppSettings.IsLoggingEnabled = value; }
     public bool IsMaximized { get => AppSettings.IsMaximized; set => AppSettings.IsMaximized = value; }
     public double Left { get => AppSettings.Left; set => AppSettings.Left = value; }
+    public TimeSpan ScriptDetectionTimeout { get => AppSettings.ScriptDetectionTimeout; set => AppSettings.ScriptDetectionTimeout = value; }
     public IDictionary<string, TimeSpan> ScriptExecutionTimes { get; private set; }
     public string ScriptFileExtension => AppSettings.ScriptFileExtension;
-    public TimeSpan ScriptTimeout { get => AppSettings.ScriptTimeout; set => AppSettings.ScriptTimeout = value; }
     public bool ShowUpdateDialog { get => AppSettings.ShowUpdateDialog; set => AppSettings.ShowUpdateDialog = value; }
     public double Top { get => AppSettings.Top; set => AppSettings.Top = value; }
     public double Width { get => AppSettings.Width; set => AppSettings.Width = value; }
@@ -51,34 +52,31 @@ public sealed class Settings : ISettings
         PersistentSettings.Save();
     }
 
+    /// <exception cref="ArgumentException">Not every key matches with a value.</exception>
     private static IEnumerable<KeyValuePair<string, string>> ParseMockDictionary(string str, string separator)
     {
         if (str == "")
         {
             yield break;
         }
-        var keysAndValues = str.Split(separator);
-        if (keysAndValues.Length % 2 == 1)
+        foreach (var kvp in str.Split(separator).StrictPartition(2))
         {
-            throw new ArgumentException("Not every key matches with a value", nameof(str));
-        }
-        for (int i = 0; i < keysAndValues.Length; i += 2)
-        {
-            yield return new(keysAndValues[i], keysAndValues[i + 1]);
+            yield return new(kvp.ElementAt(0), kvp.ElementAt(1));
         }
     }
 
-    private static string ToMockStringDic<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> keyValuePairs, string separator, Func<TKey, string>? keyFormatter = null, Func<TValue, string>? valueFormatter = null)
+    /// <exception cref="ArgumentException"><paramref name="separator"/> is empty.</exception>
+    private static string ToMockStringDic<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> kvps, string separator, Func<TKey, string>? keyFormatter = null, Func<TValue, string>? valueFormatter = null)
     {
         return separator == ""
             ? throw new ArgumentException("Separator is empty", nameof(separator))
-            : new StringBuilder().AppendJoin(separator, keyValuePairs.SelectMany(kv => Zip(Format(kv.Key, keyFormatter), Format(kv.Value, valueFormatter)))).ToString();
+            : new StringBuilder().AppendJoin(separator, kvps.SelectMany(kv => Zip(Format(kv.Key, keyFormatter), Format(kv.Value, valueFormatter)))).ToString();
 
         string? Format<T>(T t, Func<T, string>? formatter)
         {
             var tstr = formatter?.Invoke(t) ?? t?.ToString();
             return tstr?.Contains(separator) ?? false
-                ? throw new ArgumentException("One of formatted keys or values contain the separator", nameof(keyValuePairs))
+                ? throw new ArgumentException("One of formatted keys or values contain the separator", nameof(kvps))
                 : tstr;
         }
         static IEnumerable<string?> Zip(string? s1, string? s2)
@@ -88,8 +86,10 @@ public sealed class Settings : ISettings
         }
     }
 
-    [MemberNotNull(nameof(DefaultScriptSupportedVersionRange))]
-    private void SetComputedAppSettings() => DefaultScriptSupportedVersionRange = SemVersionRange.Parse(AppSettings.DefaultScriptSupportedVersionRange);
-
-    public TimeSpan ScriptDetectionTimeout { get => AppSettings.ScriptDetectionTimeout; set => AppSettings.ScriptDetectionTimeout = value; }
+    [MemberNotNull(nameof(DefaultScriptVersions), nameof(DefaultHostVersions))]
+    private void SetComputedAppSettings()
+    {
+        DefaultScriptVersions = SemVersionRange.Parse(AppSettings.DefaultScriptVersions);
+        DefaultHostVersions = SemVersionRange.Parse(AppSettings.DefaultHostVersions);
+    }
 }

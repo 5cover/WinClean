@@ -5,7 +5,7 @@
   <Description>Microsoft Edge comes pre-installed with Windows and cannot be fully uninstalled by conventional means. This script removes Microsoft Edge and frees up disk space. </Description>
   <Description xml:lang="fr">Microsoft Edge est préinstallé avec Windows et impossible à désinstaller complètement par des moyens conventionnels. Ce script supprime Microsoft Edge et libère de l'espace disque.</Description>
   <Category>Debloat</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Versions>>=10.0.19042</Versions>
   <Code>

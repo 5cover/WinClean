@@ -3,7 +3,7 @@
   <Name>Wait 5 seconds</Name>
   <Description>Waits 5 seconds and exits.</Description>
   <Category>Maintenance</Category>
-  <Recommended>Yes</Recommended>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>
     <Execute Host="PowerShell">Start-Sleep 5</Execute>

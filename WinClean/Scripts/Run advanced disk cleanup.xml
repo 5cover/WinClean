@@ -13,7 +13,7 @@
 - Les fichiers journaux seront supprimés
   </Description>
   <Category>Maintenance</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Code>
     <Execute Host="Cmd">cd /d "%temp%"

@@ -103,12 +103,6 @@
   <data name="ActionsDescription" xml:space="preserve">
     <value>Scripts that can be executed.</value>
   </data>
-  <data name="Other" xml:space="preserve">
-    <value>Other</value>
-  </data>
-  <data name="OtherDescription" xml:space="preserve">
-    <value>Miscellaneous scripts that don't correspond to any other usage.</value>
-  </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>

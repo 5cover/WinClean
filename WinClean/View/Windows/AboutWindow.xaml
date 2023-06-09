@@ -1,12 +1,13 @@
 ﻿<Window
     x:Class="Scover.WinClean.View.Windows.AboutWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
     xmlns:windows="clr-namespace:Scover.WinClean.ViewModel.Windows"
+    x:Name="aboutWindow"
     Title="{Binding ApplicationName, StringFormat={x:Static ui:AboutWindow.Title}}"
     Height="220"
     d:DataContext="{d:DesignInstance Type=windows:AboutViewModel}"
@@ -36,8 +37,7 @@
         <Image
             Grid.RowSpan="3"
             Margin="0,0,12,0"
-            Source="{StaticResource WinClean}"
-            Stretch="Uniform" />
+            Source="{StaticResource WinClean}" />
 
         <TextBlock
             Grid.Row="0"
@@ -61,7 +61,7 @@
             IsDefault="True">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Click">
-                    <i:CallMethodAction MethodName="Close" TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
+                    <i:CallMethodAction MethodName="Close" TargetObject="{Binding ElementName=aboutWindow}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </Button>

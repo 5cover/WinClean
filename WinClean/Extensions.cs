@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Management;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -14,9 +13,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
 
+using CommunityToolkit.Mvvm.Input;
+
+using Optional;
+using Optional.Unsafe;
+
 using Scover.WinClean.Model;
-using Scover.WinClean.View.Behaviors;
-using Scover.WinClean.ViewModel;
 
 using Vanara.PInvoke;
 
@@ -28,20 +30,7 @@ public static class Extensions
 {
     private static readonly char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
 
-    public static void RemoveCurrentItem<TSource, TItem>(this CollectionWrapper<TSource, TItem> collectionWrapper) where TSource : ICollection<TItem>
-        => Debug.Assert(collectionWrapper.Source.Remove(collectionWrapper.CurrentItem));
-
-    public static ISynchronizeInvoke GetSynchronizationObject(this DispatcherObject dispatcherObject) => new DispatcherSynchronizeInvoke(dispatcherObject.Dispatcher);
-
-    /// <summary>Asserts that <paramref name="t"/> isn't <see langword="null"/>.</summary>
-    /// <returns><paramref name="t"/>, not null.</returns>
-    public static T AssertNotNull<T>([NotNull] this T? t, string? message = null)
-    {
-        Debug.Assert(t is not null, message);
-        return t;
-    }
-    public static IEnumerable<TSource> WithoutNull<TSource>(this IEnumerable<TSource?> source)
-        => source.Aggregate(Enumerable.Empty<TSource>(), (accumulator, next) => next == null ? accumulator : accumulator.Append(next));
+    public static bool CanExecute(this IRelayCommand relayCommand) => relayCommand.CanExecute(null);
 
     /// <summary>Checks if 2 dictionaries are equivalent and hold the same content.</summary>
     /// <remarks>
@@ -49,7 +38,10 @@ public static class Extensions
     /// IEnumerable{TSource})"/>, the order of the elements isn't taken into account.
     /// </remarks>
     public static bool EqualsContent<TKey, TValue>(this IDictionary<TKey, TValue> d1, IDictionary<TKey, TValue> d2)
-            => d1.Count == d2.Count && !d1.Except(d2).Any();
+           => d1.Count == d2.Count && !d1.Except(d2).Any();
+
+    public static string FormatToSeconds(this TimeSpan t)
+        => Convert.ToInt32(t.TotalSeconds).Seconds().ToString("g");
 
     public static LocalizedString GetLocalizedString(this XmlDocument doc, string name)
     {
@@ -60,6 +52,18 @@ public static class Extensions
         }
         return localizedNodeTexts;
     }
+
+    /// <summary>Get the process tree for this process.</summary>
+    /// <param name="process"></param>
+    /// <returns>
+    /// The process tree for this process, starting from the deepest descendants to the children.
+    /// </returns>
+    /// <remarks>The returned collection includes <paramref name="process"/> as the last element.</remarks>
+    public static IEnumerable<Process> GetProcessTree(this Process process)
+        => new ManagementObjectSearcher($"Select ProcessID From Win32_Process Where ParentProcessID={process.Id}")
+        .Get().Cast<ManagementObject>()
+        .SelectMany(m => Process.GetProcessById(Convert.ToInt32(m["ProcessID"])).GetProcessTree())
+        .Append(process);
 
     /// <inheritdoc cref="GetSingleChildOrDefault(XmlElement, string)"/>
     /// <returns>The single child element.</returns>
@@ -112,6 +116,8 @@ public static class Extensions
             : elements[0]?.InnerText;
     }
 
+    public static ISynchronizeInvoke GetSynchronizationObject(this DispatcherObject dispatcherObject) => new DispatcherSynchronizeInvoke(dispatcherObject.Dispatcher);
+
     /// <summary>
     /// Checks if an exception is exogenous and could have been thrown by the filesystem API.
     /// </summary>
@@ -127,8 +133,30 @@ public static class Extensions
     public static bool IsFileSystemExogenous(this Exception e)
         => e is IOException or UnauthorizedAccessException or SecurityException;
 
+    public static bool IsRunning(this Process process)
+    {
+        try
+        {
+            Process.GetProcessById(process.Id).Dispose();
+        }
+        catch (Exception e) when (e is ArgumentException or InvalidOperationException)
+        {
+            return false;
+        }
+        return true;
+    }
+
     public static InvalidEnumArgumentException NewInvalidEnumArgumentException<TEnum>(this TEnum value, [CallerArgumentExpression(nameof(value))] string argumentName = "") where TEnum : struct, Enum
         => new(argumentName, Convert.ToInt32(value, CultureInfo.InvariantCulture), typeof(TEnum));
+
+    /// <summary>Asserts that <paramref name="t"/> isn't <see langword="null"/>.</summary>
+    /// <remarks>This is a safer replacement for the null-forgiving operator ( <c>!</c>).</remarks>
+    /// <returns><paramref name="t"/>, not null.</returns>
+    public static T NotNull<T>([NotNull] this T? t, string? message = null)
+    {
+        Debug.Assert(t is not null, message);
+        return t;
+    }
 
     /// <summary>Opens a path with the shell.</summary>
     /// <remarks>
@@ -139,12 +167,50 @@ public static class Extensions
         UseShellExecute = true
     })?.Dispose();
 
-    public static Version WithoutRevision(this Version version) => version.Revision != -1 ? new(version.Major, version.Minor, version.Build) : version;
+    public static IEnumerable<IEnumerable<T>> Partition<T>(this IEnumerable<T> input, int blockSize)
+    {
+        var enumerator = input.GetEnumerator();
 
-    public static void Resume(this Process process) => NtResumeProcess(process.Handle);
+        while (enumerator.MoveNext())
+        {
+            yield return NextPartition(enumerator, blockSize);
+        }
+
+        static IEnumerable<T> NextPartition(IEnumerator<T> enumerator, int blockSize)
+        {
+            do
+            {
+                yield return enumerator.Current;
+            }
+            while (--blockSize > 0 && enumerator.MoveNext());
+        }
+    }
+
+    public static void Resume(this Process process)
+    {
+        NtResumeProcess(process.Handle);
+        Win32Error.ThrowLastError();
+    }
 
     public static void SetFromXml(this LocalizedString str, XmlNode node)
-                => str[node.Attributes?["xml:lang"]?.Value is { } cultureName ? new(cultureName) : CultureInfo.InvariantCulture] = node.InnerText;
+               => str[node.Attributes?["xml:lang"]?.Value is { } cultureName ? new(cultureName) : CultureInfo.InvariantCulture] = node.InnerText;
+
+    public static void SetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dic, TKey key, TValue value) where TKey : notnull
+    {
+        if (!dic.TryAdd(key, value))
+        {
+            dic[key] = value;
+        }
+    }
+
+    /// <exception cref="ArgumentException">Count is not a multiple of block size.</exception>
+    public static IEnumerable<IEnumerable<T>> StrictPartition<T>(this IEnumerable<T> input, int blockSize) => input.Count() % blockSize == 0
+        ? input.Partition(blockSize)
+        : throw new ArgumentException("Count is not a multiple of block size.", nameof(input));
+
+    public static IEnumerable<IEnumerable<T>>? StrictPartitionOrDefault<T>(this IEnumerable<T> input, int blockSize) => input.Count() % blockSize == 0
+           ? input.Partition(blockSize)
+             : null;
 
     /// <summary>
     /// Computes the sum of a sequence of time intervals that are obtained by invoking a transform function
@@ -157,7 +223,11 @@ public static class Extensions
     public static TimeSpan Sum<TSource>(this IEnumerable<TSource> source, Func<TSource, TimeSpan> selector)
         => source.Aggregate(TimeSpan.Zero, (sumSoFar, nextSource) => sumSoFar + selector(nextSource));
 
-    public static void Suspend(this Process process) => NtSuspendProcess(process.Handle);
+    public static void Suspend(this Process process)
+    {
+        NtSuspendProcess(process.Handle);
+        Win32Error.ThrowLastError();
+    }
 
     public static BitmapSource ToBitmapSource(this SHSTOCKICONID stockIconId, SHGSI flags)
     {
@@ -184,35 +254,29 @@ public static class Extensions
     /// <remarks>The length of the filename is not checked, and the casing is not modified.</remarks>
     public static string ToFilename(this string filename, string replaceInvalidCharsWith = "_")
         => string.IsNullOrWhiteSpace(filename)
-             ? throw new ArgumentException("Is null, empty, or whitespace.", nameof(filename))
+            ? throw new ArgumentException("Is null, empty, or whitespace.", nameof(filename))
 
-         : string.IsNullOrEmpty(replaceInvalidCharsWith)
-             ? throw new ArgumentException("Is null or empty.", nameof(replaceInvalidCharsWith))
+        : string.IsNullOrEmpty(replaceInvalidCharsWith)
+              ? throw new ArgumentException("Is null or empty.", nameof(replaceInvalidCharsWith))
 
-         : filename.All(c => c == '.')
-             ? throw new ArgumentException("Consists only of dots", nameof(filename))
+          : filename.All(c => c == '.')
+              ? throw new ArgumentException("Consists only of dots", nameof(filename))
 
-         : replaceInvalidCharsWith.All(c => c == '.')
-             ? throw new ArgumentException("Consists only of dots.", nameof(replaceInvalidCharsWith))
+          : replaceInvalidCharsWith.All(c => c == '.')
+              ? throw new ArgumentException("Consists only of dots.", nameof(replaceInvalidCharsWith))
 
-         : replaceInvalidCharsWith.IndexOfAny(invalidFileNameChars) != -1
-             ? throw new ArgumentException("Contains invalid filename chars.", nameof(replaceInvalidCharsWith))
+          : replaceInvalidCharsWith.IndexOfAny(invalidFileNameChars) != -1
+              ? throw new ArgumentException("Contains invalid filename chars.", nameof(replaceInvalidCharsWith))
 
-         : Regex.Replace(filename.Trim(), $"[{Regex.Escape(new(invalidFileNameChars))}]", replaceInvalidCharsWith,
-                         RegexOptions.Compiled | RegexOptions.CultureInvariant);
+          : Regex.Replace(filename.Trim(), $"[{Regex.Escape(new(invalidFileNameChars))}]", replaceInvalidCharsWith,
+                          RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
-    public static async Task WithTimeout(this Task task, TimeSpan timeout)
-    {
-        CancellationTokenSource cts = new();
-        if (task == await Task.WhenAny(task, Task.Delay(timeout, cts.Token)))
-        {
-            cts.Cancel();
-        }
-        else
-        {
-            throw new TimeoutException();
-        }
-    }
+    public static IEnumerable<T> WhereSome<T>(this IEnumerable<Option<T>> source) => source.Where(o => o.HasValue).Select(o => o.ValueOrFailure());
+
+    public static IEnumerable<TSource> WithoutNull<TSource>(this IEnumerable<TSource?> source)
+                                           => source.Aggregate(Enumerable.Empty<TSource>(), (accumulator, next) => next == null ? accumulator : accumulator.Append(next));
+
+    public static Version WithoutRevision(this Version version) => version.Revision != -1 ? new(version.Major, version.Minor, version.Build) : version;
 
     [DllImport("ntdll.dll", SetLastError = true)]
     private static extern void NtResumeProcess(IntPtr processHandle);

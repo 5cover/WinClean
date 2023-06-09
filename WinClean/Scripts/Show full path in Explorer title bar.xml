@@ -5,7 +5,7 @@
   <Description>Description anglaise</Description>
   <Description xml:lang="fr">Afficher le chemin d'accès complet du répertoire actuel dans la barre de titre de l'Explorateur de Fichiers.</Description>
   <Category>Customization</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>
     <Enable Host="Regedit">Windows Registry Editor Version 5.00

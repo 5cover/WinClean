@@ -6,7 +6,7 @@ public interface IScriptMetadataDeserializer
 {
     /// <summary>Deserializes a collection of categories from the specified stream.</summary>
     /// <param name="stream">A stream with read access.</param>
-    /// <exception cref="InvalidDataException">
+    /// <exception cref="DeserializationException">
     /// <paramref name="stream"/> is in a invalid or incomplete format.
     /// </exception>
     /// <returns>A collection of deserialized <see cref="Category"/> objects.</returns>
@@ -14,7 +14,7 @@ public interface IScriptMetadataDeserializer
 
     /// <summary>Deserializes a collection of hosts from the specified stream.</summary>
     /// <param name="stream">A stream with read access.</param>
-    /// <exception cref="InvalidDataException">
+    /// <exception cref="DeserializationException">
     /// <paramref name="stream"/> is in a invalid or incomplete format.
     /// </exception>
     /// <returns>A collection of deserialized <see cref="Host"/> objects.</returns>
@@ -22,7 +22,7 @@ public interface IScriptMetadataDeserializer
 
     /// <summary>Deserializes a collection of impacts from the specified stream.</summary>
     /// <param name="stream">A stream with read access.</param>
-    /// <exception cref="InvalidDataException">
+    /// <exception cref="DeserializationException">
     /// <paramref name="stream"/> is in a invalid or incomplete format.
     /// </exception>
     /// <returns>A collection of deserialized <see cref="Impact"/> objects.</returns>
@@ -30,7 +30,7 @@ public interface IScriptMetadataDeserializer
 
     /// <summary>Deserializes a collection of safety levels from the specified stream.</summary>
     /// <param name="stream">A stream with read access.</param>
-    /// <exception cref="InvalidDataException">
+    /// <exception cref="DeserializationException">
     /// <paramref name="stream"/> is in a invalid or incomplete format.
     /// </exception>
     /// <returns>A collection of deserialized <see cref="SafetyLevel"/> objects.</returns>

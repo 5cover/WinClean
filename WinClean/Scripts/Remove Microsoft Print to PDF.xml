@@ -5,8 +5,8 @@
   <Description>Microsoft Print to PDF can be deleted if you don't use it.</Description>
   <Description xml:lang="fr">Microsoft Print to PDF peut être supprimé si vous ne l'utilisez pas.</Description>
   <Category>Debloat</Category>
-  <Safety>Limited</Safety>
-  <Impact>Memory usage</Impact>
+  <SafetyLevel>Limited</SafetyLevel>
+  <Impact>Ergonomics</Impact>
   <Code>
     <Execute Host="PowerShell">Import-Module PrintManagement
   Remove-Printer -Name "Microsoft Print to PDF"</Execute>

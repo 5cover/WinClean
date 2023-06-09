@@ -9,19 +9,21 @@ using Scover.WinClean.Model;
 
 namespace Tests;
 
-public sealed class HelpersTests
+public sealed class ExtensionsTests
 {
     private const string ToFilenameArg1 = " (Parameter 'filename')";
     private const string ToFilenameArg2 = " (Parameter 'replaceInvalidCharsWith')";
 
-    private static readonly TestCaseData[] sumCases = {
+    private static readonly TestCaseData[] sumCases =
+    {
         new(10.Hours(), new[]{ 10.Hours() }),
         new(10.Hours(), new[]{ 5.Hours(), 5.Hours() }),
         new(10.Hours(), new[]{ 5, 3, 2 }.Select(s => s.Hours())),
         new(10.Hours(), new[]{ 0.3, 1.7, 4.6, 3.4 }.Select(s => s.Hours()))
     };
 
-    private static readonly TestCaseData[] toFilenameCases = {
+    private static readonly TestCaseData[] toFilenameCases =
+    {
         new("  validFilename ", "_", "validFilename"),
         new("invalid/filename", "_", "invalid_filename"),
         new("  /\\invalid:?filename\0    ", "_", "__invalid__filename_"),
@@ -32,7 +34,8 @@ public sealed class HelpersTests
         new(@"  C:\This\Is\A\Path ", "!!", "C!!!!This!!Is!!A!!Path")
     };
 
-    private static readonly TestCaseData[] toFilenameInvalidCases = {
+    private static readonly TestCaseData[] toFilenameInvalidCases =
+    {
         new(null, "", "Is null, empty, or whitespace."+ToFilenameArg1),
         new("", "", "Is null, empty, or whitespace."+ToFilenameArg1),
         new("  ", "", "Is null, empty, or whitespace."+ToFilenameArg1),
@@ -76,7 +79,7 @@ public sealed class HelpersTests
         doc.LoadXml(xml);
         LocalizedString str = new();
 
-        str.SetFromXml(doc.DocumentElement.AssertNotNull());
+        str.SetFromXml(doc.DocumentElement.NotNull());
 
         Assert.That(str.Single(), Is.EqualTo(KeyValuePair.Create(new CultureInfo(cultureName), value)));
     }

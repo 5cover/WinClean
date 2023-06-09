@@ -14,19 +14,17 @@ public sealed class OperatingSystem : IOperatingSystem
     {
         get
         {
-            ManagementScope scope = new(@"\\.\root\CIMV2");
-            using ManagementObjectSearcher searcher = new(scope, new ObjectQuery("SELECT * FROM Win32_ShadowVolumeSupport"));
+            using ManagementObjectSearcher searcher = new(@"\\.\root\CIMV2", "SELECT Dependent FROM Win32_ShadowVolumeSupport");
 
-            foreach (var driveLetter in searcher.Get().Cast<ManagementObject>().Select(shadowVolumeSupport
-                => (string)new ManagementObject((string)shadowVolumeSupport["Dependent"])["DriveLetter"]).Where(driveLetter => !string.IsNullOrEmpty(driveLetter)))
+            foreach (var driveLetter in searcher.Get().Cast<ManagementObject>()
+                .Select(shadowVolumeSupport => (string)new ManagementObject((string)shadowVolumeSupport["Dependent"])["DriveLetter"])
+                .Where(driveLetter => !string.IsNullOrEmpty(driveLetter)))
             {
                 yield return new(driveLetter);
             }
         }
     }
 
-    /// <summary>Creates a restore point on the local system.</summary>
-    /// <exception cref="InvalidOperationException">System restore is disabled.</exception>
     public void CreateRestorePoint(string description, RestorePointEventType eventType, RestorePointType type)
     {
         using ManagementClass systemRestore = new(@"\\localhost\root\default", "SystemRestore", new());
@@ -53,5 +51,6 @@ public sealed class OperatingSystem : IOperatingSystem
     }
 
     public void RestartForOSReconfig(bool force)
-        => Win32Error.ThrowLastErrorIfFalse(InitiateSystemShutdownEx(null, null, 0, force, true, SHTDN_REASON_MAJOR_OPERATINGSYSTEM | SHTDN_REASON_MINOR_RECONFIG));
+        => Win32Error.ThrowLastErrorIfFalse(InitiateSystemShutdownEx(null, null, 0, force, true,
+            SHTDN_REASON_MAJOR_OPERATINGSYSTEM | SHTDN_REASON_MINOR_RECONFIG));
 }

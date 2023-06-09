@@ -9,5 +9,5 @@ public interface IViewResolver
 
     public FrameworkElement GetView<TViewModel>() where TViewModel : new();
 
-    public void RegisterView<TViewModel, TView>() where TView : FrameworkElement, new();
+    public void Register<TViewModel, TView>() where TView : FrameworkElement, new();
 }

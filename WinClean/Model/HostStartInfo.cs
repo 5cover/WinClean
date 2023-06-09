@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace Scover.WinClean.Model;
+﻿namespace Scover.WinClean.Model;
 
 /// <summary>Information for executing a script host program.</summary>
 public class HostStartInfo : IDisposable
@@ -11,9 +9,5 @@ public class HostStartInfo : IDisposable
     public virtual string Arguments { get; }
     public virtual string Filename { get; }
 
-    public virtual void Dispose()
-    {
-        GC.SuppressFinalize(this);
-        Debug.WriteLine("HostStartInfo.Dispose()"); // chaud
-    }
+    public virtual void Dispose() => GC.SuppressFinalize(this);
 }

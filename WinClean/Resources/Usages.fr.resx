@@ -123,12 +123,6 @@
   <data name="ActionsDescription" xml:space="preserve">
     <value>Scripts pouvant être exécutés.</value>
   </data>
-  <data name="Other" xml:space="preserve">
-    <value>Autre</value>
-  </data>
-  <data name="OtherDescription" xml:space="preserve">
-    <value>Scripts divers qui ne correspondent à aucun autre usage.</value>
-  </data>
   <data name="Settings" xml:space="preserve">
     <value>Paramètres</value>
   </data>

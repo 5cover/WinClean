@@ -1,14 +1,13 @@
 ﻿<UserControl
     x:Class="Scover.WinClean.View.Controls.ExecutionInfoView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
-    x:Name="userControl"
     mc:Ignorable="d">
     <UserControl.ContentTemplate>
         <DataTemplate DataType="viewModel:ExecutionInfoViewModel">
@@ -33,9 +32,11 @@
                     <avalonEdit:TextEditor
                         x:Name="textEditor"
                         FontFamily="Consolas"
+                        HorizontalScrollBarVisibility="Auto"
                         IsReadOnly="True"
                         ScrollBar.Scroll="TextEditor_Scroll"
                         ShowLineNumbers="True"
+                        VerticalScrollBarVisibility="Auto"
                         WordWrap="{Binding IsChecked, ElementName=wordWrapCheckBox}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="TextChanged" SourceName="textEditor">

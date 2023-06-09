@@ -2,28 +2,26 @@
 using Scover.WinClean.Model;
 using Scover.WinClean.Services;
 
-using static Scover.WinClean.Resources.UI.Dialogs;
-
 namespace Scover.WinClean.ViewModel;
 
 /// <summary>Implements factory methods for commonly used dialog pages.</summary>
 public static class DialogPages
 {
     /// <summary>Gets the dialog page for confirming a abort operation.</summary>
-    public static Page ConfirmAbortOperation => new()
+    public static Page ConfirmAbortOperation() => new()
     {
         WindowTitle = ServiceProvider.Get<IApplicationInfo>().Name,
         Icon = DialogIcon.Warning,
-        Content = ConfirmAbortOperationContent,
+        Content = Resources.UI.Dialogs.ConfirmAbortOperationContent,
         Buttons = { Button.Yes, Button.No },
     };
 
-    /// <summary>Gets the dialog page for deleting a script.</summary>
-    public static Page DeleteScript => new()
+    /// <summary>Gets the dialog page for confirming the deletion of a script.</summary>
+    public static Page ConfirmScriptDeletion() => new()
     {
         WindowTitle = ServiceProvider.Get<IApplicationInfo>().Name,
         Icon = DialogIcon.Warning,
-        Content = ConfirmScriptDeletionContent,
+        Content = Resources.UI.Dialogs.ConfirmScriptDeletionContent,
         Buttons = new(defaultItem: Button.No)
         {
             Button.Yes,
@@ -45,7 +43,7 @@ public static class DialogPages
     {
         WindowTitle = ServiceProvider.Get<IApplicationInfo>().Name,
         Icon = DialogIcon.Error,
-        Content = FSErrorContent.FormatWith(e.Verb.Name,
+        Content = Resources.UI.Dialogs.FSErrorContent.FormatWith(e.Verb.Name,
             e.Element,
             e.Message),
         Buttons = buttons,
@@ -58,17 +56,18 @@ public static class DialogPages
     /// <param name="e">The exception responsible for the error.</param>
     /// <param name="path">The path to the invalid script file.</param>
     /// <returns>A new <see cref="Page"/> object.</returns>
-    public static Page InvalidScriptData(Exception e, string path, ButtonCollection buttons)
+    public static Page ScriptLoadError(Exception e, string path, ButtonCollection buttons)
     {
         Page page = new()
         {
             AllowHyperlinks = true,
-            WindowTitle = ServiceProvider.Get<IApplicationInfo>().Name,
-            Icon = DialogIcon.Error,
-            MainInstruction = InvalidCustomScriptDataMainInstruction,
-            Content = InvalidCustomScriptDataContent.FormatWith(Path.GetFileName(path)),
-            Expander = new(e.ToString()),
             Buttons = buttons,
+            Content = Resources.UI.Dialogs.ScriptLoadErrorContent.FormatWith(Path.GetFileName(path)),
+            Expander = new(e.ToString()),
+            Icon = DialogIcon.Error,
+            MainInstruction = Resources.UI.Dialogs.ScriptLoadErrorMainInstruction,
+            Sizing = Sizing.Content,
+            WindowTitle = ServiceProvider.Get<IApplicationInfo>().Name,
         };
         page.HyperlinkClicked += (_, _) => path.Open();
         return page;

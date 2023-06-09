@@ -6,8 +6,10 @@ public static class Multiton<TEnum, TInstance>
 {
     public static IReadOnlyCollection<TInstance> Instances => Cache.Instances.Value;
 
+    /// <exception cref="InvalidOperationException"/>
     public static TInstance GetInstance(Func<TInstance, bool> predicate) => Instances.Single(predicate);
 
+    /// <exception cref="InvalidOperationException"/>
     public static TInstance? GetInstanceOrDefault(Func<TInstance, bool> predicate) => Instances.SingleOrDefault(predicate);
 
     private static class Cache

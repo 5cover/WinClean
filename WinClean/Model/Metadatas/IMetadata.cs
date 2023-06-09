@@ -2,7 +2,7 @@
 
 namespace Scover.WinClean.Model.Metadatas;
 
-public interface IMetadata
+public interface IMetadata : IComparable
 {
     /// <summary>Gets the description for <see cref="CultureInfo.CurrentUICulture"/>.</summary>
     string Description { get; }

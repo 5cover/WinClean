@@ -10,9 +10,9 @@ public partial class App
         NotifyUpdateAvailable: async () =>
         {
             var scc = await SourceControlClient.Instance;
-            WinClean.Resources.CommandLine.Update.FormatWith(scc.LatestVersionName, scc.LatestVersionUrl).Log(LogLevel.Info);
+            Console.WriteLine(ConsoleMode.Update.FormatWith(scc.LatestVersionName, scc.LatestVersionUrl));
         },
-        InvalidScriptData: (e, path) =>
+        ScriptLoadError: (e, path) =>
         {
             // Log the error, but ignore invalid scripts.
             Logs.ScriptNotLoaded.FormatWith(path, e).Log(LogLevel.Error);

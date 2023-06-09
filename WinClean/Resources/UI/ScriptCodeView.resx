@@ -97,14 +97,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Effective" xml:space="preserve">
-    <value>Effective</value>
-  </data>
   <data name="EffectiveDescription" xml:space="preserve">
     <value>This action is effective on the system.</value>
   </data>
-  <data name="Selected" xml:space="preserve">
-    <value>Selected</value>
+  <data name="IncompatibleHost" xml:space="preserve">
+    <value>This host is incompatible with this Windows version and may not work properly.</value>
   </data>
   <data name="SelectedDescription" xml:space="preserve">
     <value>This is the action that will be executed.</value>

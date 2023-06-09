@@ -5,7 +5,7 @@
   <Description>One Drive comes preinstalled with Windows. This script removes One Drive and frees up disk space.</Description>
   <Description xml:lang="fr">One Drive est préinstallé avec Windows. Ce script supprime One Drive et libère de l'espace disque.</Description>
   <Category>Debloat</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Versions>>=6.3.9600</Versions>
   <Code>

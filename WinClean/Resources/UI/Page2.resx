@@ -97,6 +97,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AbortScript" xml:space="preserve">
+    <value>Abort script</value>
+  </data>
+  <data name="AbortScriptDescription" xml:space="preserve">
+    <value>Aborts the execution of the current script. Useful when a script is hung.</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="PauseDescription" xml:space="preserve">
+    <value>Suspends the processed associated with the current script.</value>
+  </data>
   <data name="ProgressFormat" xml:space="preserve">
     <value>{0} out of {1} scripts executed ({2} remaining)
 Currently executing: {3}
@@ -109,6 +121,12 @@ Time remaining: {4}</value>
   </data>
   <data name="RestartWhenFinished" xml:space="preserve">
     <value>Automatically restart when finished</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>Resume</value>
+  </data>
+  <data name="ResumeDescription" xml:space="preserve">
+    <value>Resumes the processes associated with the current script.</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Executing scripts</value>

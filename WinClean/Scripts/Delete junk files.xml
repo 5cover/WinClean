@@ -15,7 +15,7 @@ Types de fichiers concernés :
 - Fichiers de vidage mémoire d'erreurs système (*.dmp)
 Attention : ce script pourrait supprimer des fichiers utiles portant ces extensions.</Description>
   <Category>Maintenance</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Versions>>=6.1.7600</Versions>
   <Code>

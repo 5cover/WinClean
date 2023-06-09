@@ -15,6 +15,7 @@ public abstract class MutableScriptRepository : ScriptRepository
     /// <exception cref="ScriptAlreadyExistsException">
     /// A script with <paramref name="source"/> as a source already exists in the repository.
     /// </exception>
+    /// <exception cref="DeserializationException">Script deserialization failed.</exception>
     public abstract Script Add(string source);
 
     /// <summary>Adds a new script.</summary>

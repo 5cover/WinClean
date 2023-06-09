@@ -5,7 +5,7 @@
   <Description>System events and errors are stored in event logs. Tenths of thousands of events can accumulate there and occupy disk space.</Description>
   <Description xml:lang="fr">Les évènements et des erreurs système sont stockés dans les journaux d'événements. Plusieurs dizaines de milliers d'évènements peuvent s'y accumuler et occuper de l'espace disque.</Description>
   <Category>Maintenance</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Versions>>=6.1.7600</Versions>
   <Code>

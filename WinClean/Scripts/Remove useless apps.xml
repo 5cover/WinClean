@@ -5,7 +5,7 @@
   <Description>Dozens of useless application packages are installed by default. Removing them frees up disk space.</Description>
   <Description xml:lang="fr">Plusieurs dizaines de packages d'application inutiles sont installés par défaut. Les supprimer libère de l'epace disque.</Description>
   <Category>Debloat</Category>
-  <Safety>Safe</Safety>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Versions>>=6.2.9200</Versions>
   <Code>

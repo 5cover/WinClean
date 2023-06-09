@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,10 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="HungScriptDialogContent" xml:space="preserve">
-    <value>Le script "{0}" est en cours d'exécution depuis {1} et ne s'arrêtera probablement jamais.</value>
+  <data name="ExecutingScript" xml:space="preserve">
+    <value>Executing script '{0}' with capability '{0}'.</value>
+    <comment>0 : script name
+1 : capability name@Invariant</comment>
   </data>
-  <data name="WindowTitle" xml:space="preserve">
-    <value>{0} - Exécution des scripts</value>
+  <data name="Script" xml:space="preserve">
+    <value>Script</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ScriptCount" xml:space="preserve">
+    <value>{0} are available.</value>
+    <comment>0 : available script quantity@Invariant</comment>
+  </data>
+  <data name="ScriptExecuted" xml:space="preserve">
+    <value>Script '{0}' executed
+Exit code: {1}
+Execution time: {2}
+Succeded?: {3}</value>
+    <comment>0 : script name
+1 : execution exit code
+2 : execution time
+3 : execution succeeded?@Invariant</comment>
+  </data>
+  <data name="StartingExecution" xml:space="preserve">
+    <value>Starting execution of {0} script(s).</value>
+    <comment>0 : script count@Invariant</comment>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Version {0} is available. Consider updating to get new scripts and features. Download it at {1}.</value>
+    <comment>0 : latest version number
+1 : latest version URL@Invariant</comment>
   </data>
 </root>

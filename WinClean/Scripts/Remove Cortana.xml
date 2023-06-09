@@ -5,9 +5,9 @@
   <Description>This scripts removes Cortana, the start menu assistant.</Description>
   <Description xml:lang="fr">Ce script supprime Cortana, l'assistant du menu démarrer.</Description>
   <Category>Debloat</Category>
-  <Safety>Limited</Safety>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Ergonomics</Impact>
-  <Versions>>=10.0.10240</Versions>
+  <Versions>>=10.0.0</Versions>
   <Code>
     <Execute Host="PowerShell">Import-Module Microsoft.PowerShell.Management
 Import-Module Appx

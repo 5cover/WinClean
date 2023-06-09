@@ -5,7 +5,7 @@
   <Description>Some apps keep processes running in the background. Disabling this behavior frees up memory and decreases the number of running processes.</Description>
   <Description xml:lang="fr">Certaines applications conservent des processus en arrière-plan. Inderdire ce comportement permet de libérer de la mémoire et diminue le nombre de processus en cours d'exécution.</Description>
   <Category>Debloat</Category>
-  <Safety>Safe</Safety>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Memory usage</Impact>
   <Code>
     <Enable Host="Regedit">Windows Registry Editor Version 5.00

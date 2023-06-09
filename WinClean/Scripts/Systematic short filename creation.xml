@@ -5,7 +5,7 @@
   <Description>By default, the file system preserves, with each folder and directory, its name, in 8.3 format. Disabling this slightly speeds up file system operations.</Description>
   <Description xml:lang="fr">Par défaut, le système de fichiers conserve, avec chaque dossier et répertoire, son nom, en format 8.3. Désactiver cela accélère légèrement les opérations du système de fichier.</Description>
   <Category>Debloat</Category>
-  <Safety>Safe</Safety>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Storage speed</Impact>
   <Code>
     <Enable Host="Cmd">fsutil 8dot3name set 0</Enable>

@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:Scover.WinClean.View.Converters"
     Exit="ApplicationExit"
+    ShutdownMode="OnExplicitShutdown"
     Startup="ApplicationStartup">
     <Application.Resources>
         <Style TargetType="Button">
@@ -11,19 +12,24 @@
             <Setter Property="MinWidth" Value="85.7" />
             <Setter Property="Padding" Value="15,3,15,3" />
         </Style>
+        <Style x:Key="Icon" TargetType="Image">
+            <Setter Property="Width" Value="16" />
+            <Setter Property="Height" Value="16" />
+        </Style>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
         <converters:BooleanInvertConverter x:Key="BooleanInvert" />
         <converters:ColorToBrushConverter x:Key="ColorToBrush" />
         <converters:DictionaryLookupConverter x:Key="DictionaryLookup" />
         <converters:GoldenRatioConverter x:Key="GoldenRatio" />
-        <converters:IconToImageSourceConverter x:Key="IconToImageSource" />
         <converters:IsNotNullConverter x:Key="IsNotNull" />
         <converters:TypedEnumerableDictionaryLookupConverter x:Key="TypedEnumerableDictionaryLookup" />
         <converters:EqualsConverter x:Key="Equals" />
-        <converters:FlattenGroupsItemsConverter x:Key="FlattenGroupsItems" />
+        <converters:CurrentVersionSatisfiesRangeConverter x:Key="CurrentVersionSatisfiesRange" />
         <BitmapImage x:Key="Cross" UriSource="/Resources/Images/Cross.ico" />
         <BitmapImage x:Key="Checkmark" UriSource="/Resources/Images/Checkmark.ico" />
         <BitmapImage x:Key="Gear" UriSource="/Resources/Images/Gear.png" />
         <BitmapImage x:Key="WinClean" UriSource="/Resources/Images/WinClean.png" />
+        <BitmapImage x:Key="Pause" UriSource="/Resources/Images/Pause.png" />
+        <BitmapImage x:Key="Play" UriSource="/Resources/Images/Play.png" />
     </Application.Resources>
 </Application>

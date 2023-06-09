@@ -11,8 +11,9 @@ namespace Scover.WinClean.ViewModel;
 
 public sealed class ScriptCodeViewModel : ObservableObject, IDictionary<Capability, ScriptAction>
 {
-    private readonly ScriptCode _model;
     private readonly Lazy<Capability?> _effectiveCapability;
+    private readonly ScriptCode _model;
+
     public ScriptCodeViewModel(ScriptCode model)
     {
         _model = model;
@@ -21,9 +22,7 @@ public sealed class ScriptCodeViewModel : ObservableObject, IDictionary<Capabili
 
     public int Count => _model.Count;
 
-    /// <remarks>
-    /// Use IsAsync=true when binding to this property.
-    /// </remarks>
+    /// <remarks>Use IsAsync=true when binding to this property.</remarks>
     public Capability? EffectiveCapability => _effectiveCapability.Value;
 
     public bool IsReadOnly => ((ICollection<KeyValuePair<Capability, ScriptAction>>)_model).IsReadOnly;

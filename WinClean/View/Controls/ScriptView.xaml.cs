@@ -28,6 +28,7 @@ public sealed partial class ScriptView : INotifyPropertyChanged
     /// <summary><see cref="Script"/> was removed.</summary>
     public event EventHandler? ScriptRemoved;
 
+    public static TypedEnumerableDictionary Metadatas => ServiceProvider.Get<IMetadatasProvider>().Metadatas;
     public static ImageSource WarningIcon { get; } = SHSTOCKICONID.SIID_WARNING.ToBitmapSource(SHGSI.SHGSI_SMALLICON);
     public bool AllowEdit { get; private set; }
 
@@ -56,6 +57,4 @@ public sealed partial class ScriptView : INotifyPropertyChanged
             ScriptChangedCategory?.Invoke(this, EventArgs.Empty);
         }
     }
-
-    public static TypedEnumerableDictionary Metadatas => ServiceProvider.Get<IMetadatasProvider>().Metadatas;
 }

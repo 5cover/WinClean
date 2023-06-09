@@ -1,4 +1,4 @@
-﻿using System.Windows.Media.Imaging;
+﻿using Semver;
 
 using Vanara.PInvoke;
 
@@ -7,7 +7,7 @@ namespace Scover.WinClean.Model.Metadatas;
 public sealed record ShellHost : Host
 {
     private readonly string _commandLine;
-    public ShellHost(LocalizedString name, LocalizedString description, BitmapSource? icon, string commandLine) : base(name, description, icon) => _commandLine = commandLine;
+    public ShellHost(LocalizedString name, LocalizedString description, SemVersionRange versions, (string filename, int index)? icon, string commandLine) : base(name, description, versions, icon) => _commandLine = commandLine;
 
     public override HostStartInfo CreateHostStartInfo(string code)
     {
