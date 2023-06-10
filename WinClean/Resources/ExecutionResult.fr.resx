@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MeasuredExecutionTime" xml:space="preserve">
-    <value>Temps d'exécution mesuré</value>
-  </data>
   <data name="EstimatedExecutionTime" xml:space="preserve">
     <value>Temps d'exécution estimé</value>
   </data>
   <data name="ExitCode" xml:space="preserve">
     <value>Code de sortie</value>
+  </data>
+  <data name="MeasuredExecutionTime" xml:space="preserve">
+    <value>Temps d'exécution mesuré</value>
   </data>
 </root>

@@ -24,7 +24,7 @@ using Script = Scover.WinClean.Resources.Script;
 
 namespace Scover.WinClean.ViewModel.Windows;
 
-public sealed class MainViewModel : ObservableObject
+public sealed partial class MainViewModel : ObservableObject
 {
     private readonly Lazy<PropertyInfo[]> _scriptProperties = new(typeof(Script).GetProperties(BindingFlags.Public | BindingFlags.Instance));
     private ScriptViewModel? _selectedScript;
@@ -90,8 +90,7 @@ public sealed class MainViewModel : ObservableObject
 
         RemoveCurrentScript = new RelayCommand(() =>
         {
-            using Page page = DialogPages.ConfirmScriptDeletion();
-            if (Button.Yes.Equals(new Dialog(page).Show()))
+            if (PageFactory.Confirm(PageFactory.MakeConfirmScriptDeletion))
             {
                 Debug.Assert(Scripts.Remove(SelectedScript.NotNull()));
             }
@@ -191,19 +190,18 @@ public sealed class MainViewModel : ObservableObject
             {
                 using var file = File.OpenRead(path);
                 ScriptViewModel script = new(ServiceProvider.Get<IScriptStorage>().Serializer.Deserialize(ScriptType.Custom, file));
-                Logs.ScriptAdded.FormatWith(path, script.InvariantName).Log();
                 return script.Some();
             }
             catch (DeserializationException e)
             {
                 Logs.ScriptLoadError.FormatWith(path, e).Log(LogLevel.Error);
-                using Page page = DialogPages.ScriptLoadError(e, path, new() { Button.TryAgain, Button.Ignore });
+                using Page page = PageFactory.MakeScriptLoadError(e, path, new() { Button.TryAgain, Button.Ignore });
                 retry = Button.TryAgain.Equals(new Dialog(page).Show());
             }
             catch (Exception e) when (e.IsFileSystemExogenous())
             {
                 Logs.ScriptLoadError.FormatWith(path, e).Log(LogLevel.Error);
-                using Page fsErrorPage = DialogPages.FSError(new FileSystemException(e, FSVerb.Access, path), new() { Button.TryAgain, Button.Ignore });
+                using Page fsErrorPage = PageFactory.MakeFSError(new FileSystemException(e, FSVerb.Access, path), new() { Button.TryAgain, Button.Ignore });
                 fsErrorPage.MainInstruction = Resources.UI.Dialogs.FSErrorAddingCustomScriptMainInstruction;
                 retry = Button.TryAgain.Equals(new Dialog(fsErrorPage).Show());
             }
@@ -216,63 +214,6 @@ public sealed class MainViewModel : ObservableObject
         foreach (var script in Scripts)
         {
             script.Selection.IsSelected = check(script);
-        }
-    }
-
-    private sealed class ScriptAddStrategy
-    {
-        private readonly Func<ICollection<ScriptViewModel>, string, Option<ScriptViewModel>, bool> _add;
-
-        private ScriptAddStrategy(Func<ICollection<ScriptViewModel>, string, Option<ScriptViewModel>, bool> add) => _add = add;
-
-        public static ScriptAddStrategy Add { get; } = new((scripts, path, script) => script.Match(s =>
-        {
-            scripts.Add(s);
-            Logs.ScriptAdded.FormatWith(path, s).Log();
-            return true;
-        },
-        () => false));
-
-        public static ScriptAddStrategy DontAddBecauseAlreadyExists { get; } = new((_, path, script) =>
-        {
-            script.MatchSome(s => Logs.ScriptAlreadyExistsCannotAdd.FormatWith(path, s.InvariantName).Log(LogLevel.Info));
-            return false;
-        });
-
-        public static ScriptAddStrategy DontAddBecauseDeserializationFailed { get; } = new((_, path, _) =>
-        {
-            Logs.ScriptDeserializationFailedCannotAdd.FormatWith(path).Log(LogLevel.Info);
-            return false;
-        });
-
-        public static ScriptAddStrategy Overwrite { get; } = new((scripts, path, script) => script.Match(s =>
-        {
-            Debug.Assert(scripts.Remove(s));
-            scripts.Add(s);
-            Logs.ScriptOverwritten.FormatWith(path, s.InvariantName).Log(LogLevel.Info);
-            return true;
-        },
-        () => false));
-
-        public static bool AddScript(ICollection<ScriptViewModel> scripts, string path, Option<ScriptViewModel> newScript)
-        => newScript.Match(s =>
-            scripts.Contains(s)
-                ? AskUserToOverwriteScript(s)
-                    ? Overwrite
-                    : DontAddBecauseAlreadyExists
-                : Add,
-        () => DontAddBecauseDeserializationFailed)._add(scripts, path, newScript);
-
-        private static bool AskUserToOverwriteScript(ScriptViewModel existingScript)
-        {
-            using Page overwrite = new()
-            {
-                WindowTitle = ServiceProvider.Get<IApplicationInfo>().Name,
-                Icon = DialogIcon.Warning,
-                Content = Resources.UI.Dialogs.ConfirmScriptOverwriteContent.FormatWith(existingScript.Name),
-                Buttons = { Button.Yes, Button.No },
-            };
-            return Button.Yes.Equals(new Dialog(overwrite).Show(ParentWindow.Active));
         }
     }
 }

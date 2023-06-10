@@ -6,6 +6,8 @@ using CommunityToolkit.Mvvm.Input;
 
 using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;
+using Scover.WinClean.Resources;
+using Scover.WinClean.ViewModel.Logging;
 
 namespace Scover.WinClean.ViewModel;
 
@@ -52,15 +54,33 @@ public sealed class ExecutionInfoViewModel : ObservableObject
         }
     }
 
-    public void Abort() => _model.Abort();
+    public void Abort()
+    {
+        _model.Abort();
+        Format(Logs.ScriptExecutionAborted).Log(LogLevel.Info);
+    }
 
     public void Dispose() => _model.Dispose();
 
     /// <inheritdoc cref="ExecutionInfo.ExecuteAsync(IProgress{ProcessOutput}, CancellationToken)"/>
     public async Task<ExecutionResultViewModel> ExecuteAsync(CancellationToken cancellationToken = default)
-        => new(await _model.ExecuteAsync(Progress, cancellationToken));
+    {
+        var result = await _model.ExecuteAsync(Progress, cancellationToken);
+        Logs.ScriptExecutionCompleted.FormatWith(Script.InvariantName, Capability.InvariantName, result.ExitCode, result.Succeeded).Log();
+        return new(result);
+    }
 
-    public void Pause() => _model.Pause();
+    public void Pause()
+    {
+        _model.Pause();
+        Format(Logs.ScriptExecutionPaused).Log();
+    }
 
-    public void Resume() => _model.Resume();
+    public void Resume()
+    {
+        _model.Resume();
+        Format(Logs.ScriptExecutionResumed).Log();
+    }
+
+    private string Format(string message) => message.FormatWith(Script.InvariantName, Capability.InvariantName);
 }

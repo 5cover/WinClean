@@ -140,13 +140,35 @@
 1 : script InvariantName@Invariant</comment>
   </data>
   <data name="ScriptAlreadyExistsCannotAdd" xml:space="preserve">
-    <value>Can't add script at '{0}' as script '{1}' already exists.</value>
+    <value>Couldn't add script at '{0}' as script '{1}' already exists.</value>
     <comment>0 : script filename
 1 : script InvariantName@Invariant</comment>
   </data>
   <data name="ScriptDeserializationFailedCannotAdd" xml:space="preserve">
-    <value>Can't add script at '{0}' as deserialization failed.</value>
+    <value>Couldn't add script at '{0}' as deserialization failed.</value>
     <comment>0 : script filename@Invariant</comment>
+  </data>
+  <data name="ScriptExecutionAborted" xml:space="preserve">
+    <value>Execution '{0}' ('{1}') aborted.</value>
+    <comment>0 : script InvariantName
+1 : capability InvariantName@Invariant</comment>
+  </data>
+  <data name="ScriptExecutionCompleted" xml:space="preserve">
+    <value>Execution of script '{0}' ('{1}') completed (exit code: {2}, succeeded? : {3})</value>
+    <comment>0 : script InvariantName
+1 : capability InvariantName
+2 : script execution result exit code
+3 : script execution result succeeded?@Invariant</comment>
+  </data>
+  <data name="ScriptExecutionPaused" xml:space="preserve">
+    <value>Execution of script '{0}' ('{1}') paused.</value>
+    <comment>0 : script InvariantName
+1 : capability InvariantName@Invariant</comment>
+  </data>
+  <data name="ScriptExecutionResumed" xml:space="preserve">
+    <value>Execution of script '{0}' ('{1}') resumed.</value>
+    <comment>0 : script InvariantName
+1 : capability InvariantName@Invariant</comment>
   </data>
   <data name="ScriptLoadError" xml:space="preserve">
     <value>Script at '{0}' could not be loaded: {1}</value>
@@ -179,12 +201,20 @@
     <value>System restart initiated.</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="SystemRestoreDisabledForDrive" xml:space="preserve">
+    <value>System restore disabled for drive '{0}'.</value>
+    <comment>0 : drive@Invariant</comment>
+  </data>
+  <data name="SystemRestoreEnabledForDrive" xml:space="preserve">
+    <value>System restore enabled for drive '{0}'.</value>
+    <comment>0 : drive@Invariant</comment>
+  </data>
   <data name="UnhandledException" xml:space="preserve">
     <value>An unhandled exception occured: {0}</value>
     <comment>0 : exception@Invariant</comment>
   </data>
   <data name="UpdateAvailable" xml:space="preserve">
-    <value>Version {0} is available (current version is {1})</value>
+    <value>Version {0} is available (current version is {1}).</value>
     <comment>0 : latest version
 1 : current version@Invariant</comment>
   </data>

@@ -106,7 +106,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Can&apos;t add script at &apos;{0}&apos; as script &apos;{1}&apos; already exists..
+        ///   Recherche une chaîne localisée semblable à Couldn&apos;t add script at &apos;{0}&apos; as script &apos;{1}&apos; already exists..
         /// </summary>
         public static string ScriptAlreadyExistsCannotAdd {
             get {
@@ -115,11 +115,47 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Can&apos;t add script at &apos;{0}&apos; as deserialization failed..
+        ///   Recherche une chaîne localisée semblable à Couldn&apos;t add script at &apos;{0}&apos; as deserialization failed..
         /// </summary>
         public static string ScriptDeserializationFailedCannotAdd {
             get {
                 return ResourceManager.GetString("ScriptDeserializationFailedCannotAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Execution &apos;{0}&apos; (&apos;{1}&apos;) aborted..
+        /// </summary>
+        public static string ScriptExecutionAborted {
+            get {
+                return ResourceManager.GetString("ScriptExecutionAborted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Execution of script &apos;{0}&apos; (&apos;{1}&apos;) completed (exit code: {2}, succeeded? : {3}).
+        /// </summary>
+        public static string ScriptExecutionCompleted {
+            get {
+                return ResourceManager.GetString("ScriptExecutionCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Execution of script &apos;{0}&apos; (&apos;{1}&apos;) paused..
+        /// </summary>
+        public static string ScriptExecutionPaused {
+            get {
+                return ResourceManager.GetString("ScriptExecutionPaused", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Execution of script &apos;{0}&apos; (&apos;{1}&apos;) resumed..
+        /// </summary>
+        public static string ScriptExecutionResumed {
+            get {
+                return ResourceManager.GetString("ScriptExecutionResumed", resourceCulture);
             }
         }
         
@@ -187,6 +223,24 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à System restore disabled for drive &apos;{0}&apos;..
+        /// </summary>
+        public static string SystemRestoreDisabledForDrive {
+            get {
+                return ResourceManager.GetString("SystemRestoreDisabledForDrive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à System restore enabled for drive &apos;{0}&apos;..
+        /// </summary>
+        public static string SystemRestoreEnabledForDrive {
+            get {
+                return ResourceManager.GetString("SystemRestoreEnabledForDrive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à An unhandled exception occured: {0}.
         /// </summary>
         public static string UnhandledException {
@@ -196,7 +250,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Version {0} is available (current version is {1}).
+        ///   Recherche une chaîne localisée semblable à Version {0} is available (current version is {1})..
         /// </summary>
         public static string UpdateAvailable {
             get {

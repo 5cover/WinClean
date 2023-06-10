@@ -34,12 +34,10 @@ public partial class App
         {
             Logs.ScriptLoadError.FormatWith(path, e).Log(LogLevel.Error);
 
-            using Page deleteScriptPage = DialogPages.ConfirmScriptDeletion();
-
             Button deleteScriptButton = new(Buttons.DeleteScript);
-            deleteScriptButton.Clicked += (s, e) => e.Cancel = !Button.Yes.Equals(new Dialog(deleteScriptPage).Show());
+            deleteScriptButton.Clicked += (s, e) => e.Cancel = !PageFactory.Confirm(PageFactory.MakeConfirmScriptDeletion);
 
-            using Page invalidScriptDataPage = DialogPages.ScriptLoadError(e, path, new(defaultItem: Button.TryAgain){ deleteScriptButton, Button.TryAgain, Button.Ignore });
+            using Page invalidScriptDataPage = PageFactory.MakeScriptLoadError(e, path, new(defaultItem: Button.TryAgain){ deleteScriptButton, Button.TryAgain, Button.Ignore });
 
             Dialog invalidScriptData = new(invalidScriptDataPage);
             var clicked = invalidScriptData.Show();
@@ -54,7 +52,7 @@ public partial class App
         },
         FSErrorReloadElseIgnore: e =>
         {
-            using Page fsError = DialogPages.FSError(e, new(){ Button.TryAgain, Button.Ignore });
+            using Page fsError = PageFactory.MakeFSError(e, new(){ Button.TryAgain, Button.Ignore });
             fsError.MainInstruction = WinClean.Resources.UI.Dialogs.FSErrorLoadingCustomScriptMainInstruction;
             return Button.TryAgain.Equals(new Dialog(fsError).Show());
         },

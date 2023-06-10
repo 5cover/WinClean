@@ -10,7 +10,7 @@ namespace Scover.WinClean.Services;
 
 public sealed class OperatingSystem : IOperatingSystem
 {
-    public IEnumerable<DriveInfo> EligibleDrives
+    public IEnumerable<DriveInfo> SystemRestoreEligibleDrives
     {
         get
         {

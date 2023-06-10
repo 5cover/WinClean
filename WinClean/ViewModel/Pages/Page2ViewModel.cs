@@ -32,9 +32,21 @@ public sealed class Page2ViewModel : WizardPageViewModel
                 // Make sure this doesn't go unhandled if a View isn't there to swallow the exception.
             }
         });
-        Stop = new RelayCommand(Start.Cancel);
+        Stop = new RelayCommand(() =>
+        {
+            if (PageFactory.Confirm(PageFactory.MakeConfirmAbortOperation))
+            {
+                Start.Cancel();
+            }
+        });
 
-        AbortScript = new RelayCommand(() => ExecutingExecutionInfo.NotNull().Abort(), () => ExecutingExecutionInfo is not null);
+        AbortScript = new RelayCommand(() =>
+        {
+            if (PageFactory.Confirm(PageFactory.MakeConfirmAbortOperation))
+            {
+                ExecutingExecutionInfo.NotNull().Abort();
+            }
+        }, () => ExecutingExecutionInfo is not null);
 
         Pause = new RelayCommand(() =>
         {

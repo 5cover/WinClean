@@ -29,5 +29,5 @@ public sealed class Page1ViewModel : WizardPageViewModel
         }
     }
 
-    public IEnumerable<DriveInfoViewModel> SystemRestoreEligibleDrives { get; } = ServiceProvider.Get<IOperatingSystem>().EligibleDrives.Select(drive => new DriveInfoViewModel(drive));
+    public IEnumerable<DriveInfoViewModel> SystemRestoreEligibleDrives { get; } = ServiceProvider.Get<IOperatingSystem>().SystemRestoreEligibleDrives.Select(drive => new DriveInfoViewModel(drive));
 }

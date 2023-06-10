@@ -5,10 +5,17 @@ using Scover.WinClean.Services;
 namespace Scover.WinClean.ViewModel;
 
 /// <summary>Implements factory methods for commonly used dialog pages.</summary>
-public static class DialogPages
+public static class PageFactory
 {
+    public static bool Confirm(Func<Page> pageFactory)
+    {
+        using Page page = pageFactory();
+        return Button.Yes.Equals(new Dialog(page).Show());
+    }
+
     /// <summary>Gets the dialog page for confirming a abort operation.</summary>
-    public static Page ConfirmAbortOperation() => new()
+    /// <remarks>Buttons: <see cref="Button.Yes"/>, <see cref="Button.No"/>.</remarks>
+    public static Page MakeConfirmAbortOperation() => new()
     {
         WindowTitle = ServiceProvider.Get<IApplicationInfo>().Name,
         Icon = DialogIcon.Warning,
@@ -17,12 +24,13 @@ public static class DialogPages
     };
 
     /// <summary>Gets the dialog page for confirming the deletion of a script.</summary>
-    public static Page ConfirmScriptDeletion() => new()
+    /// <remarks>Buttons: <see cref="Button.Yes"/>, <see cref="Button.No"/>.</remarks>
+    public static Page MakeConfirmScriptDeletion() => new()
     {
         WindowTitle = ServiceProvider.Get<IApplicationInfo>().Name,
         Icon = DialogIcon.Warning,
         Content = Resources.UI.Dialogs.ConfirmScriptDeletionContent,
-        Buttons = new(defaultItem: Button.No)
+        Buttons = new()
         {
             Button.Yes,
             Button.No
@@ -30,16 +38,13 @@ public static class DialogPages
     };
 
     /// <summary>Makes a dialog page for a filesystem error.</summary>
-    /// <param name="e">The exception responsible for the filesystem error.</param>
-    /// <param name="verb">The filesystem verb that could describe what was happening.</param>
-    /// <param name="info">The filesystem element that was operated.</param>
     /// <remarks>
     /// Also sets the following properties: <br><see cref="Page.Icon"/> to <see
     /// cref="DialogIcon.Error"/>;</br><br><see cref="Page.Content"/> to a formatted and localized error
     /// message.</br>
     /// </remarks>
     /// <returns>A new <see cref="Page"/> object.</returns>
-    public static Page FSError(FileSystemException e, ButtonCollection buttons) => new()
+    public static Page MakeFSError(FileSystemException e, ButtonCollection buttons) => new()
     {
         WindowTitle = ServiceProvider.Get<IApplicationInfo>().Name,
         Icon = DialogIcon.Error,
@@ -56,7 +61,7 @@ public static class DialogPages
     /// <param name="e">The exception responsible for the error.</param>
     /// <param name="path">The path to the invalid script file.</param>
     /// <returns>A new <see cref="Page"/> object.</returns>
-    public static Page ScriptLoadError(Exception e, string path, ButtonCollection buttons)
+    public static Page MakeScriptLoadError(Exception e, string path, ButtonCollection buttons)
     {
         Page page = new()
         {
