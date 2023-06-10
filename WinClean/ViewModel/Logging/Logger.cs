@@ -11,7 +11,7 @@ public abstract class Logger
     public LogLevel MinLevel { get; set; } = LogLevel.Verbose;
 
     /// <summary>Clears the logs.</summary>
-    public abstract Task ClearLogs();
+    public abstract Task ClearLogsAsync();
 
     /// <summary>Logs a string.</summary>
     /// <param name="message">The string to log.</param>

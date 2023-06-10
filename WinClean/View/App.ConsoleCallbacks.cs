@@ -2,7 +2,7 @@
 using Scover.WinClean.Resources;
 using Scover.WinClean.ViewModel.Logging;
 
-namespace Scover.WinClean.ViewModel;
+namespace Scover.WinClean.View;
 
 public partial class App
 {

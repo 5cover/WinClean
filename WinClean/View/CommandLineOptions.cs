@@ -7,7 +7,7 @@ using Scover.WinClean.ViewModel.Logging;
 
 using Script = Scover.WinClean.Model.Scripts.Script;
 
-namespace Scover.WinClean.ViewModel;
+namespace Scover.WinClean.View;
 
 public sealed class CommandLineOptions
 {
@@ -37,7 +37,7 @@ Script and capability names are case sensitive and follow ordinal string compari
 
     public int Execute(IEnumerable<Script> scripts)
     {
-        App.Current.Logger.MinLevel = LogLevel;
+        ((App)System.Windows.Application.Current).Logger.MinLevel = LogLevel;
 
         try
         {

@@ -15,6 +15,7 @@ using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Model.Serialization;
 using Scover.WinClean.Resources;
 using Scover.WinClean.Services;
+using Scover.WinClean.View;
 using Scover.WinClean.ViewModel.Logging;
 
 using Button = Scover.Dialogs.Button;
@@ -155,7 +156,7 @@ public sealed class MainViewModel : ObservableObject
     public IRelayCommand AddScripts { get; }
     public IRelayCommand CheckAllScripts { get; }
     public IRelayCommand<object> CheckScriptsByProperty { get; }
-    public IAsyncRelayCommand ClearLogs { get; } = new AsyncRelayCommand(App.Current.Logger.ClearLogs);
+    public IAsyncRelayCommand ClearLogs { get; } = new AsyncRelayCommand(App.CurrentApp.Logger.ClearLogsAsync);
     public IRelayCommand ExecuteScripts { get; }
     public IRelayCommand OpenCustomScriptsDir { get; } = new RelayCommand(() => AppDirectory.Scripts.Open());
     public IRelayCommand OpenLogsDir { get; } = new RelayCommand(() => AppDirectory.Logs.Open());

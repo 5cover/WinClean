@@ -1,5 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 
+using Scover.WinClean.View;
+
 namespace Scover.WinClean.ViewModel.Logging;
 
 public static class LoggerExtensions
@@ -10,5 +12,5 @@ public static class LoggerExtensions
         [CallerMemberName] string caller = "",
         [CallerLineNumber] int callLine = 0,
         [CallerFilePath] string callFile = "")
-        => App.Current.Logger.Log(message, lvl, caller, callLine, callFile);
+        => App.CurrentApp.Logger.Log(message, lvl, caller, callLine, callFile);
 }

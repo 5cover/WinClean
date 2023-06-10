@@ -17,7 +17,7 @@
     <RepositoryUrl>https://github.com/5cover/WinClean</RepositoryUrl>
     <RootNamespace>Scover.WinClean</RootNamespace>
     <SignAssembly>True</SignAssembly>
-    <StartupObject>Scover.WinClean.ViewModel.App</StartupObject>
+    <StartupObject>Scover.WinClean.View.App</StartupObject>
     <TargetFramework>net6.0-windows7.0</TargetFramework>
     <UseWindowsForms>False</UseWindowsForms>
     <UseWPF>true</UseWPF>
@@ -78,7 +78,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ApplicationDefinition Include="ViewModel\App.xaml" />
+    <ApplicationDefinition Include="View\App.xaml" />
   </ItemGroup>
 
   <ItemGroup>

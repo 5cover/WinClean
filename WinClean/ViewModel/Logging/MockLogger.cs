@@ -2,7 +2,7 @@
 
 public sealed class MockLogger : Logger
 {
-    public override Task ClearLogs() => Task.CompletedTask;
+    public override Task ClearLogsAsync() => Task.CompletedTask;
 
     protected override void Log(LogEntry entry)
     {

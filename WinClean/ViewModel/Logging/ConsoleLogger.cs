@@ -6,7 +6,7 @@ namespace Scover.WinClean.ViewModel.Logging;
 
 public sealed class ConsoleLogger : Logger
 {
-    public override Task ClearLogs()
+    public override Task ClearLogsAsync()
     {
         Console.Clear();
         return Task.CompletedTask;

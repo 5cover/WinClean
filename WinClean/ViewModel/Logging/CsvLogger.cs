@@ -23,7 +23,7 @@ public sealed class CsvLogger : Logger, IDisposable
     public CsvLogger()
     {
         _currentLogFile = Path.Join(AppDirectory.Logs, Process.GetCurrentProcess().StartTime.ToString(DateTimeFilenameFormat, DateTimeFormatInfo.InvariantInfo) + LogFileExtension);
-        // Defer writer creation. This prevents the creating of empty log file at the start of the program.
+        // Defer writer creation. This prevents creating of empty log file at the start of the program.
         _csvWriter = new(() =>
         {
             CsvWriter writer = new(new StreamWriter(_currentLogFile, false, Encoding.Unicode), new CsvConfiguration(CultureInfo.InvariantCulture));
@@ -31,7 +31,7 @@ public sealed class CsvLogger : Logger, IDisposable
         });
     }
 
-    public override Task ClearLogs() => Task.Run(() =>
+    public override Task ClearLogsAsync() => Task.Run(() =>
     {
         foreach (string logFile in Directory.EnumerateFiles(AppDirectory.Logs, $"*{LogFileExtension}").Where(CanLogFileBeDeleted))
         {

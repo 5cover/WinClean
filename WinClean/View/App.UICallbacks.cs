@@ -5,9 +5,10 @@ using Scover.WinClean.Model;
 using Scover.WinClean.Resources;
 using Scover.WinClean.Resources.UI;
 using Scover.WinClean.Services;
+using Scover.WinClean.ViewModel;
 using Scover.WinClean.ViewModel.Logging;
 
-namespace Scover.WinClean.ViewModel;
+namespace Scover.WinClean.View;
 
 public partial class App
 {

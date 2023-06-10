@@ -2,11 +2,11 @@
 
 public sealed class DeserializationChainException : DeserializationException
 {
-    public DeserializationChainException(string targetName, string erroneousData, IDictionary<string, Exception> deserializerExceptions)
+    public DeserializationChainException(string targetName, string erroneousData, IReadOnlyDictionary<string, Exception> deserializerExceptions)
         : base(targetName, erroneousData)
         => DeserializerExceptions = deserializerExceptions;
 
-    public IDictionary<string, Exception> DeserializerExceptions { get; }
+    public IReadOnlyDictionary<string, Exception> DeserializerExceptions { get; }
 
     public override string ToString() => string.Concat(DeserializerExceptions.Select(kv => $"{kv.Key}: {kv.Value.Message}{Environment.NewLine}")) + base.ToString();
 }

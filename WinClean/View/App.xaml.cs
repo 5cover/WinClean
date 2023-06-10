@@ -15,12 +15,12 @@ using Scover.WinClean.ViewModel.Windows;
 
 using Vanara.PInvoke;
 
-namespace Scover.WinClean.ViewModel;
+namespace Scover.WinClean.View;
 
 /// <summary>Handles the startup / shutdown strategy and holds data related to the View layer.</summary>
 public sealed partial class App
 {
-    public static new App Current => (App)Application.Current;
+    public static App CurrentApp => (App)Current;
     public Logger Logger { get; private set; } = new MockLogger();
 
     private void ApplicationExit(object? sender, ExitEventArgs? e) => Logs.Exiting.Log();
