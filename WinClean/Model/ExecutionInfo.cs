@@ -37,7 +37,7 @@ public sealed class ExecutionInfo : IDisposable
         };
     }
 
-    private event EventHandler? _executionFinished;
+    private event TypeEventHandler<ExecutionInfo>? _executionFinished;
 
     public void Abort()
     {

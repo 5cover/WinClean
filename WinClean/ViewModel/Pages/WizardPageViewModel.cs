@@ -10,7 +10,7 @@ public partial class WizardPageViewModel : ObservableObject
     /// <summary>
     /// Indicates that a page has finised and that the wizard should navigate to the next page.
     /// </summary>
-    public event EventHandler? Finished;
+    public event TypeEventHandler<WizardPageViewModel>? Finished;
 
     protected void OnFinished() => Finished?.Invoke(this, EventArgs.Empty);
 }

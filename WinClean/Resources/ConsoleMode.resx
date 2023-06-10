@@ -144,9 +144,11 @@ Succeded?: {3}</value>
     <value>Starting execution of {0} script(s).</value>
     <comment>0 : script count@Invariant</comment>
   </data>
-  <data name="Update" xml:space="preserve">
-    <value>Version {0} is available. Consider updating to get new scripts and features. Download it at {1}.</value>
-    <comment>0 : latest version number
-1 : latest version URL@Invariant</comment>
+  <data name="UpdateMessage" xml:space="preserve">
+    <value>Version {0} available (current version is {1}).
+Consider updating to get new scripts and features. Download the latest version at {2}.</value>
+    <comment>0 : latest version
+1 : current version
+2 : latest version URL@Invariant</comment>
   </data>
 </root>

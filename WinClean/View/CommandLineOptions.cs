@@ -51,8 +51,8 @@ Script and capability names are case sensitive and follow ordinal string compari
                 ExecuteRunScripts(scripts);
             }
         }
-        // Display argument errors instead of letting them go unhandled.
-        catch (ArgumentException e)
+        // Display argument exceptions instead of letting them go unhandled.
+        catch (ConsoleArgumentException e)
         {
             e.Message.Log(LogLevel.Critical);
             return 1;
@@ -81,19 +81,19 @@ Script and capability names are case sensitive and follow ordinal string compari
 
     private void ExecuteRunScripts(IEnumerable<Script> scripts)
     {
-        var executionInfos = (RunScripts.StrictPartitionOrDefault(2) ?? throw new ArgumentException("Not every capability matches with a script.", nameof(RunScripts))).Select(e =>
+        var executionInfos = (RunScripts.StrictPartitionOrDefault(2) ?? throw new ConsoleArgumentException("Not every capability matches with a script.", nameof(RunScripts))).Select(e =>
         {
             var (capabilityInvariantName, scriptInvariantName) = (e.ElementAt(0), e.ElementAt(1));
 
             var capability = Capability.FromResourceNameOrDefault(capabilityInvariantName)
-                ?? throw new ArgumentException($"No capability found for invariant name '{capabilityInvariantName}'.", nameof(RunScripts));
+                ?? throw new ConsoleArgumentException($"No capability found for invariant name '{capabilityInvariantName}'.", nameof(RunScripts));
 
             var script = scripts.FirstOrDefault(s => s.InvariantName == scriptInvariantName)
-                ?? throw new ArgumentException($"No script found for invariant name '{scriptInvariantName}'.", nameof(RunScripts));
+                ?? throw new ConsoleArgumentException($"No script found for invariant name '{scriptInvariantName}'.", nameof(RunScripts));
 
             return script.Code.ContainsKey(capability)
                 ? (script, capability)
-                : throw new ArgumentException($"Script '{script.InvariantName}' doesn't contain capability '{capability.InvariantName}'.", nameof(RunScripts));
+                : throw new ConsoleArgumentException($"Script '{script.InvariantName}' doesn't contain capability '{capability.InvariantName}'.", nameof(RunScripts));
         }).ToList();
 
         Console.WriteLine(ConsoleMode.StartingExecution.FormatWith(executionInfos.Count));
@@ -106,6 +106,13 @@ Script and capability names are case sensitive and follow ordinal string compari
                                                                     result.ExitCode,
                                                                     result.ExecutionTime.FormatToSeconds(),
                                                                     result.Succeeded));
+        }
+    }
+
+    private sealed class ConsoleArgumentException : ArgumentException
+    {
+        public ConsoleArgumentException(string message, string argumentName) : base(message, argumentName)
+        {
         }
     }
 }

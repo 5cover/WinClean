@@ -23,10 +23,10 @@ public sealed partial class ScriptView : INotifyPropertyChanged
     /// <summary>
     /// <see cref="Script"/>'s property, <see cref="ScriptViewModel.Category"/>, has changed.
     /// </summary>
-    public event EventHandler? ScriptChangedCategory;
+    public event TypeEventHandler<ScriptView>? ScriptChangedCategory;
 
     /// <summary><see cref="Script"/> was removed.</summary>
-    public event EventHandler? ScriptRemoved;
+    public event TypeEventHandler<ScriptView>? ScriptRemoved;
 
     public static TypedEnumerableDictionary Metadatas => ServiceProvider.Get<IMetadatasProvider>().Metadatas;
     public static ImageSource WarningIcon { get; } = SHSTOCKICONID.SIID_WARNING.ToBitmapSource(SHGSI.SHGSI_SMALLICON);

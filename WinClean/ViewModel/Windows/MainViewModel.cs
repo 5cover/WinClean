@@ -56,8 +56,8 @@ public sealed class MainViewModel : ObservableObject
 
         SaveScripts = new RelayCommand(() =>
         {
-            Logs.ScriptsSaved.Log();
             ServiceProvider.Get<IScriptStorage>().Save(Scripts.Select(svm => svm.Model));
+            Logs.ScriptsSaved.Log();
         });
 
         CheckScriptsByProperty = new RelayCommand<object>(expectedPropertyValue => SelectScripts(s =>

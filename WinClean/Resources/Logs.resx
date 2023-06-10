@@ -183,4 +183,9 @@
     <value>An unhandled exception occured: {0}</value>
     <comment>0 : exception@Invariant</comment>
   </data>
+  <data name="UpdateAvailable" xml:space="preserve">
+    <value>Version {0} is available (current version is {1})</value>
+    <comment>0 : latest version
+1 : current version@Invariant</comment>
+  </data>
 </root>

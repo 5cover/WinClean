@@ -63,9 +63,11 @@ public sealed partial class App
 
         ServiceProvider.Get<IScriptStorage>().Load(callbacks.ScriptLoadError, callbacks.FSErrorReloadElseIgnore);
 
-        if (ServiceProvider.Get<ISettings>().ShowUpdateDialog
-            && (await SourceControlClient.Instance).LatestVersionName != ServiceProvider.Get<IApplicationInfo>().Version)
+        var latestVersion = (await SourceControlClient.Instance).LatestVersionName;
+        var currentVersion = ServiceProvider.Get<IApplicationInfo>().Version;
+        if (ServiceProvider.Get<ISettings>().ShowUpdateDialog && latestVersion != currentVersion)
         {
+            Logs.UpdateAvailable.FormatWith(latestVersion, currentVersion).Log(LogLevel.Info);
             await callbacks.NotifyUpdateAvailable();
         }
     }

@@ -8,19 +8,18 @@ public abstract class MutableScriptRepository : ScriptRepository
     protected MutableScriptRepository(IScriptSerializer serializer, ScriptType type) : base(serializer, type)
     { }
 
-    /// <summary>Adds a new script with the specified source.</summary>
-    /// <param name="source">The source of the script to add. It must exist.</param>
+    /// <summary>Adds a script with the specified source.</summary>
+    /// <param name="source">The source of the script to add. It must not exist in the repository.</param>
     /// <returns>The script that was added.</returns>
     /// <exception cref="FileSystemException">A filesystem exception occured.</exception>
-    /// <exception cref="ScriptAlreadyExistsException">
-    /// A script with <paramref name="source"/> as a source already exists in the repository.
-    /// </exception>
     /// <exception cref="DeserializationException">Script deserialization failed.</exception>
+    /// <exception cref="ScriptAlreadyExistsException">
+    /// <paramref name="script"/> already exists in the repository.
+    /// </exception>
     public abstract Script Add(string source);
 
     /// <summary>Adds a new script.</summary>
-    /// <param name="script">The script to add.</param>
-    /// <remarks>The source will be added to the repository only once <see cref="Save"/> is called.</remarks>
+    /// <param name="script">The script to add. It must not exist in the repository.</param>
     /// <exception cref="ScriptAlreadyExistsException">
     /// <paramref name="script"/> already exists in the repository.
     /// </exception>
@@ -41,9 +40,6 @@ public abstract class MutableScriptRepository : ScriptRepository
     /// <see langword="true"/> if the script was successfully removed otherwise, <see langword="false"/>.
     /// This method also returns <see langword="false"/> if script was not found in the repository.
     /// </returns>
-    /// <remarks>
-    /// The removal will be performed immediately, and not when <see cref="Save"/> is called.
-    /// </remarks>
     public abstract bool Remove(string source);
 
     /// <summary>Removes a script from a repository.</summary>
@@ -53,11 +49,5 @@ public abstract class MutableScriptRepository : ScriptRepository
     /// langword="false"/>. This method also returns <see langword="false"/> if script was not found in the
     /// repository.
     /// </returns>
-    /// <remarks>
-    /// The removal will be performed immediately, and not when <see cref="Save"/> is called.
-    /// </remarks>
     public abstract bool Remove(Script script);
-
-    /// <summary>Saves the scripts to persistent storage.</summary>
-    public abstract void Save();
 }

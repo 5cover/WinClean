@@ -194,5 +194,14 @@ namespace Scover.WinClean.Resources {
                 return ResourceManager.GetString("UnhandledException", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Version {0} is available (current version is {1}).
+        /// </summary>
+        public static string UpdateAvailable {
+            get {
+                return ResourceManager.GetString("UpdateAvailable", resourceCulture);
+            }
+        }
     }
 }

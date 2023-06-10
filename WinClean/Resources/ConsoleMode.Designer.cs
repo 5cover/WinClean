@@ -109,11 +109,12 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Version {0} is available. Consider updating to get new scripts and features. Download it at {1}..
+        ///   Recherche une chaîne localisée semblable à Version {0} available (current version is {1}).
+        ///Consider updating to get new scripts and features. Download the latest version at {2}..
         /// </summary>
-        public static string Update {
+        public static string UpdateMessage {
             get {
-                return ResourceManager.GetString("Update", resourceCulture);
+                return ResourceManager.GetString("UpdateMessage", resourceCulture);
             }
         }
     }

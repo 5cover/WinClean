@@ -20,6 +20,8 @@ public sealed class ScriptStorage : IScriptStorage
 
     public Script Add(ScriptType type, string source) => MutableRepos.Single(repo => repo.Type == type).Add(source);
 
+    public void Add(Script script) => MutableRepos.Single(repo => repo.Type == script.Type).Add(script);
+
     public void Load(ScriptDeserializationErrorCallback scriptLoadError, FSErrorCallback fsErrorReloadElseIgnore)
     {
         if (_loaded)
@@ -36,15 +38,9 @@ public sealed class ScriptStorage : IScriptStorage
         _loaded = true;
     }
 
+    /// <summary>Removes a script from the storage.</summary>
+    ///<inheritdoc cref="MutableScriptRepository.Remove(Script)"/>
     public bool Remove(Script script) => MutableRepos.Single(repo => repo.Type == script.Type).Remove(script);
-
-    public void Save()
-    {
-        foreach (var mutableRepo in MutableRepos)
-        {
-            mutableRepo.Save();
-        }
-    }
 
     public void Save(IEnumerable<Script> newScripts)
     {
@@ -55,8 +51,7 @@ public sealed class ScriptStorage : IScriptStorage
         }
         foreach (var addedScript in newScripts.Except(Scripts))
         {
-            MutableRepos.Single(repo => repo.Type == addedScript.Type).Add(addedScript);
+            Add(addedScript);
         }
-        Save();
     }
 }

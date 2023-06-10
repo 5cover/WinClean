@@ -33,27 +33,23 @@ public sealed class FileScriptRepository : MutableScriptRepository
         {
             throw new ScriptAlreadyExistsException(script, e);
         }
+        using Stream file = File.Create(_scripts.Inverse[script]);
+        Serializer.Serialize(script, file);
     }
 
-    /// <exception cref="DeserializationException"/>
-    /// <exception cref="FileSystemException"/>
-    /// <exception cref="ScriptAlreadyExistsException"/>
     public override Script Add(string source)
     {
         try
         {
             using Stream file = File.OpenRead(source);
-            var script = Serializer.Deserialize(Type, file);
-            _scripts.Add(source, script);
-            return script;
+
+            var newScript = Serializer.Deserialize(Type, file);
+            Add(newScript);
+            return newScript;
         }
         catch (Exception e) when (e.IsFileSystemExogenous())
         {
             throw new FileSystemException(e, FSVerb.Access, source);
-        }
-        catch (ArgumentException e)
-        {
-            throw new ScriptAlreadyExistsException(_scripts[source], e);
         }
     }
 
@@ -82,25 +78,16 @@ public sealed class FileScriptRepository : MutableScriptRepository
         return _scripts.Remove(source);
     }
 
-    public override void Save()
-    {
-        foreach (Script script in this)
-        {
-            using Stream file = File.Create(_scripts.Inverse[script]);
-            Serializer.Serialize(script, file);
-        }
-    }
-
     protected override void LoadScripts()
     {
-        foreach (var filePath in Directory.EnumerateFiles(_directory, '*' + _scriptFileExtension, SearchOption.AllDirectories))
+        foreach (var scriptFile in Directory.EnumerateFiles(_directory, '*' + _scriptFileExtension, SearchOption.AllDirectories))
         {
-            bool retry = true;
-            while (retry)
+            bool retry;
+            do
             {
                 try
                 {
-                    _ = Add(filePath);
+                    _ = Load(scriptFile);
                     retry = false;
                 }
                 catch (FileSystemException e)
@@ -109,14 +96,29 @@ public sealed class FileScriptRepository : MutableScriptRepository
                 }
                 catch (DeserializationException e)
                 {
-                    var action = _scriptLoadError(e, filePath);
+                    var action = _scriptLoadError(e, scriptFile);
                     if (action is InvalidScriptDataAction.Remove)
                     {
-                        File.Delete(filePath);
+                        File.Delete(scriptFile);
                     }
                     retry = action is InvalidScriptDataAction.Reload;
                 }
-            }
+            } while (retry);
+        }
+    }
+
+    private Script Load(string source)
+    {
+        try
+        {
+            using Stream file = File.OpenRead(source);
+            var script = Serializer.Deserialize(Type, file);
+            _scripts.Add(source, script);
+            return script;
+        }
+        catch (Exception e) when (e.IsFileSystemExogenous())
+        {
+            throw new FileSystemException(e, FSVerb.Access, source);
         }
     }
 }

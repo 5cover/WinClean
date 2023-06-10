@@ -1,5 +1,6 @@
 ﻿using Scover.WinClean.Model;
 using Scover.WinClean.Resources;
+using Scover.WinClean.Services;
 using Scover.WinClean.ViewModel.Logging;
 
 namespace Scover.WinClean.View;
@@ -10,7 +11,7 @@ public partial class App
         NotifyUpdateAvailable: async () =>
         {
             var scc = await SourceControlClient.Instance;
-            Console.WriteLine(ConsoleMode.Update.FormatWith(scc.LatestVersionName, scc.LatestVersionUrl));
+            Console.WriteLine(ConsoleMode.UpdateMessage.FormatWith(scc.LatestVersionName, ServiceProvider.Get<IApplicationInfo>().Version, scc.LatestVersionUrl));
         },
         ScriptLoadError: (e, path) =>
         {
