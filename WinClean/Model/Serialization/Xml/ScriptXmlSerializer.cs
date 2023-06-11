@@ -32,7 +32,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
         }
         catch (XmlException e)
         {
-            throw new DeserializationException("Script", innerException: e);
+            throw new DeserializationException(nameof(Script), innerException: e);
         }
 
         Dictionary<string, Exception> deserializerExceptions = new();
@@ -49,7 +49,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             }
         }
 
-        throw new DeserializationChainException("Script", d.OuterXml, deserializerExceptions);
+        throw new DeserializationChainException(nameof(Script), d.OuterXml, deserializerExceptions);
     }
 
     public void Serialize(Script script, Stream stream)
@@ -59,7 +59,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
         // Explicit UTF-8 for clarity
         _ = d.AppendChild(d.CreateXmlDeclaration("1.0", "UTF-8", null));
 
-        var root = d.CreateElement("Script");
+        var root = d.CreateElement(ElementFor.Script);
         _ = d.AppendChild(root);
 
         // The append order is significant.

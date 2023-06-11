@@ -1,18 +1,14 @@
-﻿using Scover.Dialogs;
+﻿using System.Diagnostics;
+
+using Scover.Dialogs;
 using Scover.WinClean.Model;
 using Scover.WinClean.Services;
 
 namespace Scover.WinClean.ViewModel;
 
 /// <summary>Implements factory methods for commonly used dialog pages.</summary>
-public static class PageFactory
+public static class DialogFactory
 {
-    public static bool Confirm(Func<Page> pageFactory)
-    {
-        using Page page = pageFactory();
-        return Button.Yes.Equals(new Dialog(page).Show());
-    }
-
     /// <summary>Gets the dialog page for confirming a abort operation.</summary>
     /// <remarks>Buttons: <see cref="Button.Yes"/>, <see cref="Button.No"/>.</remarks>
     public static Page MakeConfirmAbortOperation() => new()
@@ -76,5 +72,19 @@ public static class PageFactory
         };
         page.HyperlinkClicked += (_, _) => path.Open();
         return page;
+    }
+
+    /// <summary></summary>
+    /// <param name="pageFactory"></param>
+    /// <remarks>
+    /// This method takes ownership of the return value of <paramref name="pageFactory"/>. The page must
+    /// contain the <see cref="Button.Yes"/> and <see cref="Button.No"/> buttons.
+    /// </remarks>
+    /// <returns></returns>
+    public static bool ShowConfirmation(Func<Page> pageFactory)
+    {
+        using Page page = pageFactory();
+        Debug.Assert(page.Buttons.ItemsEqual(new[] { Button.Yes, Button.No }));
+        return Button.Yes.Equals(new Dialog(page).Show());
     }
 }

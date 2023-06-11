@@ -12,6 +12,7 @@
     <UserControl.ContentTemplate>
         <DataTemplate>
             <DataGrid
+                x:Name="scriptsDataGrid"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
                 CanUserDeleteRows="False"
@@ -20,6 +21,7 @@
                 GridLinesVisibility="None"
                 HeadersVisibility="Column"
                 ItemsSource="{Binding}"
+                SelectedIndex="0"
                 SelectedItem="{Binding SelectedScript, Mode=TwoWay, ElementName=scriptListViewUserControl}"
                 SelectionMode="Single"
                 SelectionUnit="FullRow"

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 using Optional;
 
@@ -17,21 +15,22 @@ namespace Scover.WinClean.ViewModel;
 
 public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, IEquatable<Script?>
 {
+    private readonly Script _model;
     private KeyValuePair<Capability, ScriptAction> _selectedCode;
 
     public ScriptViewModel(Script model)
     {
-        Model = model;
+        _model = model;
         Code = new(model.Code);
         SelectedCode = model.Code.First();
     }
 
     public Category Category
     {
-        get => Model.Category;
+        get => _model.Category;
         set
         {
-            Model.Category = value;
+            _model.Category = value;
             OnPropertyChanged();
         }
     }
@@ -40,8 +39,8 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
 
     public string Description
     {
-        get => Model.LocalizedDescription[CurrentUICulture];
-        set => Model.LocalizedDescription[CurrentUICulture] = value;
+        get => _model.LocalizedDescription[CurrentUICulture];
+        set => _model.LocalizedDescription[CurrentUICulture] = value;
     }
 
     public Option<TimeSpan> ExecutionTime
@@ -57,27 +56,24 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
 
     public Impact Impact
     {
-        get => Model.Impact;
+        get => _model.Impact;
         set
         {
-            Model.Impact = value;
+            _model.Impact = value;
             OnPropertyChanged();
         }
     }
 
-    public string InvariantName => Model.InvariantName;
+    public string InvariantName => _model.InvariantName;
 
-    [Bindable(false)] // Hide from binding auto-completion
-    public Script Model { get; }
-
-    public string Name { get => Model.Name; set => Model.Name = value; }
+    public string Name { get => _model.Name; set => _model.Name = value; }
 
     public SafetyLevel SafetyLevel
     {
-        get => Model.SafetyLevel;
+        get => _model.SafetyLevel;
         set
         {
-            Model.SafetyLevel = value;
+            _model.SafetyLevel = value;
             OnPropertyChanged();
         }
     }
@@ -93,32 +89,34 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
     }
 
     public ScriptSelection Selection { get; } = new();
-    public ScriptType Type => Model.Type;
-    public IReadOnlyCollection<Usage> Usages => Usage.GetUsages(Model).ToList();
+    public ScriptType Type => _model.Type;
+    public IReadOnlyCollection<Usage> Usages => Usage.GetUsages(_model).ToList();
 
     public SemVersionRange Versions
     {
-        get => Model.Versions;
+        get => _model.Versions;
         set
         {
-            Model.Versions = value;
+            _model.Versions = value;
             OnPropertyChanged();
         }
     }
 
     private static ISettings Settings => ServiceProvider.Get<ISettings>();
 
-    public Option<ExecutionInfoViewModel> CreateExecutionInfo() =>
-           Selection.DesiredCapability is { } desiredCapability && // A capability has be choosen
+    public override bool Equals(object? obj) => Equals(obj as ScriptViewModel);
+
+    public bool Equals(ScriptViewModel? other) => other is not null && _model.Equals(other._model);
+
+    public bool Equals(Script? other) => _model.Equals(other);
+
+    public override int GetHashCode() => _model.GetHashCode();
+
+    public bool RemoveFromStorage() => ServiceProvider.Get<IScriptStorage>().Remove(_model);
+
+    public Option<ExecutionInfoViewModel> TryCreateExecutionInfo() =>
+        Selection.DesiredCapability is { } desiredCapability && // A capability has be choosen
         Code.TryGetValue(desiredCapability, out var action) && // The capability exists
         !desiredCapability.Equals(Code.EffectiveCapability) // The capability is different from the effective capability.
         ? new ExecutionInfoViewModel(this, desiredCapability, action).Some() : Option.None<ExecutionInfoViewModel>();
-
-    public override bool Equals(object? obj) => Equals(obj as ScriptViewModel);
-
-    public bool Equals(ScriptViewModel? other) => other is not null && Model.Equals(other.Model);
-
-    public bool Equals(Script? other) => Model.Equals(other);
-
-    public override int GetHashCode() => Model.GetHashCode();
 }

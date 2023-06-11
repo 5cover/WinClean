@@ -18,13 +18,6 @@ public abstract class MutableScriptRepository : ScriptRepository
     /// </exception>
     public abstract Script Add(string source);
 
-    /// <summary>Adds a new script.</summary>
-    /// <param name="script">The script to add. It must not exist in the repository.</param>
-    /// <exception cref="ScriptAlreadyExistsException">
-    /// <paramref name="script"/> already exists in the repository.
-    /// </exception>
-    public abstract void Add(Script script);
-
     /// <summary>Returns whether a source exists within a repository.</summary>
     /// <returns>
     /// <see langword="true"/> if <paramref name="source"/> exists in this repository, else <see
@@ -32,6 +25,11 @@ public abstract class MutableScriptRepository : ScriptRepository
     /// </returns>
     public abstract bool Contains(string source);
 
+    /// <summary>Returns whether a script exists within a repository.</summary>
+    /// <returns>
+    /// <see langword="true"/> if <paramref name="script"/> exists in this repository, else <see
+    /// langword="false"/>.
+    /// </returns>
     public abstract bool Contains(Script script);
 
     /// <summary>Removes a script from a repository at a specified source.</summary>

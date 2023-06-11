@@ -12,6 +12,7 @@ using Optional;
 using Scover.Dialogs;
 using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;
+using Scover.WinClean.Model.Scripts;
 using Scover.WinClean.Model.Serialization;
 using Scover.WinClean.Resources;
 using Scover.WinClean.Services;
@@ -44,6 +45,8 @@ public sealed partial class MainViewModel : ObservableObject
             return svm;
         }));
 
+        Scripts.CollectionChanged += ScriptsCollectionChanged;
+
         ScriptGroups = new CollectionViewSource()
         {
             Source = Scripts,
@@ -54,35 +57,27 @@ public sealed partial class MainViewModel : ObservableObject
             }
         };
 
-        SaveScripts = new RelayCommand(() =>
-        {
-            ServiceProvider.Get<IScriptStorage>().Save(Scripts.Select(svm => svm.Model));
-            Logs.ScriptsSaved.Log();
-        });
-
-        CheckScriptsByProperty = new RelayCommand<object>(expectedPropertyValue => SelectScripts(s =>
-        {
-            ArgumentNullException.ThrowIfNull(expectedPropertyValue);
-            object? scriptPropertyValue = _scriptProperties.Value.Single(p => p.PropertyType == expectedPropertyValue.GetType()).GetValue(s);
-            return expectedPropertyValue.Equals(scriptPropertyValue);
-        }));
+        CheckScriptsByProperty = new RelayCommand<object>(expectedPropertyValue => SelectScripts(s
+            => expectedPropertyValue.NotNull().Equals(
+                _scriptProperties.Value.Single(p => p.PropertyType == expectedPropertyValue.GetType()).GetValue(s))));
 
         CheckAllScripts = new RelayCommand(() => SelectScripts(_ => true));
         UncheckAllScripts = new RelayCommand(() => SelectScripts(_ => false));
 
         AddScripts = new RelayCommand(() =>
         {
-            var scriptFileExtension = ServiceProvider.Get<ISettings>().ScriptFileExtension;
-            Option<ScriptViewModel> lastAddedScript = Option.None<ScriptViewModel>();
+            var lastAddedScript = Option.None<ScriptViewModel>();
 
-            var paths = ServiceProvider.Get<IDialogCreator>().ShowOpenFileDialog(new(scriptFileExtension), scriptFileExtension, true, true);
+            var paths = ServiceProvider.Get<IDialogCreator>().ShowOpenFileDialog(new(Settings.ScriptFileExtension), Settings.ScriptFileExtension, true, true);
 
-            foreach ((var path, var script) in paths.Select(p => (p, DeserializeNewScript(p))))
+            foreach (var path in paths)
             {
-                if (ScriptAddStrategy.AddScript(Scripts, path, script))
+                var script = TryAddNewScript(path);
+                script.MatchSome(s =>
                 {
-                    lastAddedScript = script;
-                }
+                    Scripts.Add(s);
+                    lastAddedScript = s.Some();
+                });
             }
 
             lastAddedScript.MatchSome(s => SelectedScript = s);
@@ -90,7 +85,7 @@ public sealed partial class MainViewModel : ObservableObject
 
         RemoveCurrentScript = new RelayCommand(() =>
         {
-            if (PageFactory.Confirm(PageFactory.MakeConfirmScriptDeletion))
+            if (DialogFactory.ShowConfirmation(DialogFactory.MakeConfirmScriptDeletion))
             {
                 Debug.Assert(Scripts.Remove(SelectedScript.NotNull()));
             }
@@ -98,7 +93,7 @@ public sealed partial class MainViewModel : ObservableObject
 
         ExecuteScripts = new RelayCommand(() =>
         {
-            if (Scripts.Where(s => s.Selection.IsSelected).Select(s => s.CreateExecutionInfo()).WhereSome().ToList() is { Count: > 0 } executionInfos)
+            if (Scripts.Where(s => s.Selection.IsSelected).Select(s => s.TryCreateExecutionInfo()).WhereSome().ToList() is { Count: > 0 } executionInfos)
             {
                 using ScriptExecutionWizardViewModel viewModel = new(executionInfos);
                 _ = ServiceProvider.Get<IDialogCreator>().ShowDialog(viewModel);
@@ -119,37 +114,21 @@ public sealed partial class MainViewModel : ObservableObject
 
     public static string ApplicationName => ServiceProvider.Get<IApplicationInfo>().Name;
 
-    public static double Height
-    {
-        get => ServiceProvider.Get<ISettings>().Height;
-        set => ServiceProvider.Get<ISettings>().Height = value;
-    }
+    public static double Height { get => Settings.Height; set => Settings.Height = value; }
 
-    public static double Left
-    {
-        get => ServiceProvider.Get<ISettings>().Left;
-        set => ServiceProvider.Get<ISettings>().Left = value;
-    }
+    public static double Left { get => Settings.Left; set => Settings.Left = value; }
 
     public static TypedEnumerableDictionary Metadatas => ServiceProvider.Get<IMetadatasProvider>().Metadatas;
     public static int ScriptCount => ServiceProvider.Get<IScriptStorage>().ScriptCount;
 
-    public static double Top
-    {
-        get => ServiceProvider.Get<ISettings>().Top;
-        set => ServiceProvider.Get<ISettings>().Top = value;
-    }
+    public static double Top { get => Settings.Top; set => Settings.Top = value; }
 
-    public static double Width
-    {
-        get => ServiceProvider.Get<ISettings>().Width;
-        set => ServiceProvider.Get<ISettings>().Width = value;
-    }
+    public static double Width { get => Settings.Width; set => Settings.Width = value; }
 
     public static WindowState WindowState
     {
-        get => ServiceProvider.Get<ISettings>().IsMaximized ? WindowState.Maximized : WindowState.Normal;
-        set => ServiceProvider.Get<ISettings>().IsMaximized = value is WindowState.Maximized;
+        get => Settings.IsMaximized ? WindowState.Maximized : WindowState.Normal;
+        set => Settings.IsMaximized = value is WindowState.Maximized;
     }
 
     public IRelayCommand AddScripts { get; }
@@ -157,11 +136,10 @@ public sealed partial class MainViewModel : ObservableObject
     public IRelayCommand<object> CheckScriptsByProperty { get; }
     public IAsyncRelayCommand ClearLogs { get; } = new AsyncRelayCommand(App.CurrentApp.Logger.ClearLogsAsync);
     public IRelayCommand ExecuteScripts { get; }
-    public IRelayCommand OpenCustomScriptsDir { get; } = new RelayCommand(() => AppDirectory.Scripts.Open());
-    public IRelayCommand OpenLogsDir { get; } = new RelayCommand(() => AppDirectory.Logs.Open());
+    public IRelayCommand OpenCustomScriptsDir { get; } = new RelayCommand(AppDirectory.Scripts.Open);
+    public IRelayCommand OpenLogsDir { get; } = new RelayCommand(AppDirectory.Logs.Open);
     public IAsyncRelayCommand OpenOnlineWiki { get; } = new AsyncRelayCommand(async () => (await SourceControlClient.Instance).WikiUrl.Open());
     public IRelayCommand RemoveCurrentScript { get; }
-    public IRelayCommand SaveScripts { get; }
     public CollectionViewSource ScriptGroups { get; }
     public ObservableCollection<ScriptViewModel> Scripts { get; }
 
@@ -175,38 +153,62 @@ public sealed partial class MainViewModel : ObservableObject
         }
     }
 
-    public IRelayCommand ShowAboutWindow { get; } = new RelayCommand(() => ServiceProvider.Get<IDialogCreator>().ShowDialog(new AboutViewModel()));
-
-    public IRelayCommand ShowSettingsWindow { get; } = new RelayCommand(() => ServiceProvider.Get<IDialogCreator>().ShowDialog(new SettingsViewModel()));
-
+    public IRelayCommand ShowAboutWindow { get; } = new RelayCommand(() => _ = ServiceProvider.Get<IDialogCreator>().ShowDialog(new AboutViewModel()));
+    public IRelayCommand ShowSettingsWindow { get; } = new RelayCommand(() => _ = ServiceProvider.Get<IDialogCreator>().ShowDialog(new SettingsViewModel()));
     public IRelayCommand UncheckAllScripts { get; }
+    private static ISettings Settings => ServiceProvider.Get<ISettings>();
 
-    private static Option<ScriptViewModel> DeserializeNewScript(string path)
+    private static Option<ScriptViewModel> TryAddNewScript(string path)
     {
         bool retry;
         do
         {
             try
             {
-                using var file = File.OpenRead(path);
-                ScriptViewModel script = new(ServiceProvider.Get<IScriptStorage>().Serializer.Deserialize(ScriptType.Custom, file));
-                return script.Some();
+                return new ScriptViewModel(ServiceProvider.Get<IScriptStorage>().Add(ScriptType.Custom, path)).Some();
             }
             catch (DeserializationException e)
             {
                 Logs.ScriptLoadError.FormatWith(path, e).Log(LogLevel.Error);
-                using Page page = PageFactory.MakeScriptLoadError(e, path, new() { Button.TryAgain, Button.Ignore });
+                using Page page = DialogFactory.MakeScriptLoadError(e, path, new() { Button.TryAgain, Button.Ignore });
                 retry = Button.TryAgain.Equals(new Dialog(page).Show());
             }
-            catch (Exception e) when (e.IsFileSystemExogenous())
+            catch (FileSystemException e)
             {
                 Logs.ScriptLoadError.FormatWith(path, e).Log(LogLevel.Error);
-                using Page fsErrorPage = PageFactory.MakeFSError(new FileSystemException(e, FSVerb.Access, path), new() { Button.TryAgain, Button.Ignore });
+                using Page fsErrorPage = DialogFactory.MakeFSError(e, new() { Button.TryAgain, Button.Ignore });
                 fsErrorPage.MainInstruction = Resources.UI.Dialogs.FSErrorAddingCustomScriptMainInstruction;
                 retry = Button.TryAgain.Equals(new Dialog(fsErrorPage).Show());
             }
+            catch (ScriptAlreadyExistsException e)
+            {
+                retry = DialogFactory.ShowConfirmation(() => new Page()
+                {
+                    WindowTitle = ServiceProvider.Get<IApplicationInfo>().Name,
+                    Icon = DialogIcon.Warning,
+                    Content = Resources.UI.Dialogs.ConfirmScriptOverwriteContent.FormatWith(e.ExistingScript.Name),
+                    Buttons = { Button.Yes, Button.No },
+                });
+                if (retry)
+                {
+                    Debug.Assert(ServiceProvider.Get<IScriptStorage>().Remove(e.ExistingScript));
+                    Logs.ScriptOverwritten.FormatWith(path, e.ExistingScript.InvariantName).Log(LogLevel.Info);
+                }
+            }
         } while (retry);
         return Option.None<ScriptViewModel>();
+    }
+
+    private void ScriptsCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        if (e.OldItems is not null)
+        {
+            foreach (var removedScript in e.OldItems.Cast<ScriptViewModel>())
+            {
+                Debug.Assert(removedScript.RemoveFromStorage());
+            }
+        }
+        // Added items are already added to storage in TryAddNewScript()
     }
 
     private void SelectScripts(Predicate<ScriptViewModel> check)

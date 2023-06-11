@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Script>
-  <Name>Systematic short filename creation</Name>
-  <Name xml:lang="fr">Création systématique de noms de fichier courts</Name>
+  <Name>Disable systematic short filename creation</Name>
+  <Name xml:lang="fr">Désactiver la création systématique de noms de fichier courts</Name>
   <Description>By default, the file system preserves, with each folder and directory, its name, in 8.3 format. Disabling this slightly speeds up file system operations.</Description>
   <Description xml:lang="fr">Par défaut, le système de fichiers conserve, avec chaque dossier et répertoire, son nom, en format 8.3. Désactiver cela accélère légèrement les opérations du système de fichier.</Description>
   <Category>Debloat</Category>
   <SafetyLevel>Safe</SafetyLevel>
   <Impact>Storage speed</Impact>
   <Code>
-    <Enable Host="Cmd">fsutil 8dot3name set 0</Enable>
-    <Disable Host="Cmd">fsutil 8dot3name set 1</Disable>
+    <Enable Host="Cmd">fsutil 8dot3name set 1</Enable>
+    <Disable Host="Cmd">fsutil 8dot3name set 2</Disable>
     <Detect Host="PowerShell">$r = (fsutil 8dot3name query)
-if ($r.Contains('0')) { exit 1 }
-elif ($r.Contains('1')) { exit 0 }
+if ($r.Contains('1')) { exit 1 }
+elif ($r.Contains('2')) { exit 0 }
 else { exit -1 }</Detect>
   </Code>
 </Script>

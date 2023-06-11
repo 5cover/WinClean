@@ -4,7 +4,7 @@ namespace Tests;
 
 public abstract class TestSerializable<T>
 {
-    protected TestSerializable(StringBuilder xml, T value) => (Xml, Value) = (xml, value);
+    protected TestSerializable(T value, StringBuilder xml) => (Xml, Value) = (xml, value);
 
     public T Value { get; }
     public StringBuilder Xml { get; }

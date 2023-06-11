@@ -6,7 +6,6 @@ using System.Management;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
@@ -32,16 +31,8 @@ public static class Extensions
 
     public static bool CanExecute(this IRelayCommand relayCommand) => relayCommand.CanExecute(null);
 
-    /// <summary>Checks if 2 dictionaries are equivalent and hold the same content.</summary>
-    /// <remarks>
-    /// Contrarily to <see cref="Enumerable.SequenceEqual{TSource}(IEnumerable{TSource},
-    /// IEnumerable{TSource})"/>, the order of the elements isn't taken into account.
-    /// </remarks>
-    public static bool EqualsContent<TKey, TValue>(this IDictionary<TKey, TValue> d1, IDictionary<TKey, TValue> d2)
-           => d1.Count == d2.Count && !d1.Except(d2).Any();
-
     public static string FormatToSeconds(this TimeSpan t)
-        => Convert.ToInt32(t.TotalSeconds).Seconds().ToString("g");
+           => Convert.ToInt32(t.TotalSeconds).Seconds().ToString("g");
 
     public static LocalizedString GetLocalizedString(this XmlDocument doc, string name)
     {
@@ -146,6 +137,13 @@ public static class Extensions
         return true;
     }
 
+    /// <summary>Checks if 2 collections are equivalent and hold the same content.</summary>
+    /// <remarks>
+    /// Contrarily to <see cref="Enumerable.SequenceEqual{TSource}(IEnumerable{TSource},
+    /// IEnumerable{TSource})"/>, the order of the elements isn't taken into account.
+    /// </remarks>
+    public static bool ItemsEqual<T>(this IEnumerable<T> e1, IEnumerable<T> e2) => !e1.Except(e2).Any();
+
     public static InvalidEnumArgumentException NewInvalidEnumArgumentException<TEnum>(this TEnum value, [CallerArgumentExpression(nameof(value))] string argumentName = "") where TEnum : struct, Enum
         => new(argumentName, Convert.ToInt32(value, CultureInfo.InvariantCulture), typeof(TEnum));
 
@@ -167,25 +165,6 @@ public static class Extensions
         UseShellExecute = true
     })?.Dispose();
 
-    public static IEnumerable<IEnumerable<T>> Partition<T>(this IEnumerable<T> input, int blockSize)
-    {
-        var enumerator = input.GetEnumerator();
-
-        while (enumerator.MoveNext())
-        {
-            yield return NextPartition(enumerator, blockSize);
-        }
-
-        static IEnumerable<T> NextPartition(IEnumerator<T> enumerator, int blockSize)
-        {
-            do
-            {
-                yield return enumerator.Current;
-            }
-            while (--blockSize > 0 && enumerator.MoveNext());
-        }
-    }
-
     public static void Resume(this Process process)
     {
         NtResumeProcess(process.Handle);
@@ -202,15 +181,6 @@ public static class Extensions
             dic[key] = value;
         }
     }
-
-    /// <exception cref="ArgumentException">Count is not a multiple of block size.</exception>
-    public static IEnumerable<IEnumerable<T>> StrictPartition<T>(this IEnumerable<T> input, int blockSize) => input.Count() % blockSize == 0
-        ? input.Partition(blockSize)
-        : throw new ArgumentException("Count is not a multiple of block size.", nameof(input));
-
-    public static IEnumerable<IEnumerable<T>>? StrictPartitionOrDefault<T>(this IEnumerable<T> input, int blockSize) => input.Count() % blockSize == 0
-           ? input.Partition(blockSize)
-             : null;
 
     /// <summary>
     /// Computes the sum of a sequence of time intervals that are obtained by invoking a transform function
@@ -240,36 +210,6 @@ public static class Extensions
 
     public static BitmapSource ToBitmapSource(this HICON hIcon)
         => Imaging.CreateBitmapSourceFromHIcon(hIcon.DangerousGetHandle(), Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-    /// <summary>Creates a valid Windows filename from a string.</summary>
-    /// <param name="filename">The filename candidate.</param>
-    /// <param name="replaceInvalidCharsWith">
-    /// What to replace invalid filename chars in <paramref name="filename"/> with.
-    /// </param>
-    /// <returns>
-    /// A new <see cref="string"/>, equivalent to <paramref name="filename"/>, but modified to be a valid
-    /// Windows filename if it wasn't already.
-    /// </returns>
-    /// <exception cref="ArgumentException"/>
-    /// <remarks>The length of the filename is not checked, and the casing is not modified.</remarks>
-    public static string ToFilename(this string filename, string replaceInvalidCharsWith = "_")
-        => string.IsNullOrWhiteSpace(filename)
-            ? throw new ArgumentException("Is null, empty, or whitespace.", nameof(filename))
-
-        : string.IsNullOrEmpty(replaceInvalidCharsWith)
-              ? throw new ArgumentException("Is null or empty.", nameof(replaceInvalidCharsWith))
-
-          : filename.All(c => c == '.')
-              ? throw new ArgumentException("Consists only of dots", nameof(filename))
-
-          : replaceInvalidCharsWith.All(c => c == '.')
-              ? throw new ArgumentException("Consists only of dots.", nameof(replaceInvalidCharsWith))
-
-          : replaceInvalidCharsWith.IndexOfAny(invalidFileNameChars) != -1
-              ? throw new ArgumentException("Contains invalid filename chars.", nameof(replaceInvalidCharsWith))
-
-          : Regex.Replace(filename.Trim(), $"[{Regex.Escape(new(invalidFileNameChars))}]", replaceInvalidCharsWith,
-                          RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
     public static IEnumerable<T> WhereSome<T>(this IEnumerable<Option<T>> source) => source.Where(o => o.HasValue).Select(o => o.ValueOrFailure());
 

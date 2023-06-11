@@ -7,7 +7,7 @@
   <Category>Debloat</Category>
   <SafetyLevel>Safe</SafetyLevel>
   <Impact>Privacy</Impact>
-  <Versions>>=10.0.10240</Versions>
+  <Versions>>=10.0.0</Versions>
   <Code>
     <Enable Host="Cmd">sc config DoSvc start= demand</Enable>
     <Disable Host="Cmd">sc config DoSvc start= auto</Disable>

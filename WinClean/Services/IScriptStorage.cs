@@ -19,22 +19,17 @@ public interface IScriptStorage
     /// <param name="source">The source of the script to add. It must exist.</param>
     /// <returns>The new script.</returns>
     /// <inheritdoc cref="MutableScriptRepository.Add(string)" path="/exception"/>
-    /// <exception cref="InvalidOperationException">
-    /// No repository was found for the type of this script.
+    /// <exception cref="ArgumentException">
+    /// No mutable repository was found for this type of script.
     /// </exception>
     Script Add(ScriptType type, string source);
 
-    /// <exception cref="InvalidOperationException">
-    /// No repository was found for the type of this script.
-    /// </exception>
-    /// <exception cref="ScriptAlreadyExistsException">
-    /// <paramref name="script"/> already exists in the repository.
-    /// </exception>
-    void Add(Script script);
-
     void Load(ScriptDeserializationErrorCallback scriptLoadError, FSErrorCallback fsErrorReloadElseIgnore);
 
+    /// <summary>Removes a script from the storage.</summary>
+    ///<inheritdoc cref="MutableScriptRepository.Remove(Script)"/>
+    /// <exception cref="ArgumentException">
+    /// No mutable repository was found for this type of script.
+    /// </exception>
     bool Remove(Script script);
-
-    void Save(IEnumerable<Script> newScripts);
 }

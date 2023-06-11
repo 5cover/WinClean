@@ -45,7 +45,7 @@ public sealed class LocalizedString : IDictionary<CultureInfo, string>, IEquatab
 
     public override bool Equals(object? obj) => Equals(obj as LocalizedString);
 
-    public bool Equals(LocalizedString? other) => other is not null && _values.EqualsContent(other._values);
+    public bool Equals(LocalizedString? other) => other is not null && _values.ItemsEqual(other._values);
 
     public IEnumerator<KeyValuePair<CultureInfo, string>> GetEnumerator() => _values.GetEnumerator();
 

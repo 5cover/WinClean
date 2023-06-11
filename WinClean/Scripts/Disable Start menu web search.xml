@@ -7,7 +7,7 @@
   <Category>Customization</Category>
   <SafetyLevel>Limited</SafetyLevel>
   <Impact>Ergonomics</Impact>
-  <Versions>>=10.0.10240 &lt;10.0.22000</Versions>
+  <Versions>>=10.0.0 &lt;10.0.22000</Versions>
   <Code>
     <Enable Host="Regedit">Windows Registry Editor Version 5.00
 [HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\Explorer]

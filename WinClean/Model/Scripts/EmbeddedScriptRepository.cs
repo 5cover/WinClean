@@ -18,7 +18,9 @@ public class EmbeddedScriptRepository : ScriptRepository
 
     public override IEnumerator<Script> GetEnumerator() => _scripts.GetEnumerator();
 
-    protected override void LoadScripts()
+    protected override void Clear() => _scripts.Clear();
+
+    protected override void Load()
     {
         var assembly = ServiceProvider.Get<IApplicationInfo>().Assembly;
         foreach (var resName in assembly.GetManifestResourceNames().Where(name => name.StartsWith(_namespace, StringComparison.Ordinal)))

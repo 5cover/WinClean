@@ -59,9 +59,9 @@ public sealed class Settings : ISettings
         {
             yield break;
         }
-        foreach (var kvp in str.Split(separator).StrictPartition(2))
+        foreach (var kvp in str.Split(separator).Chunk(2))
         {
-            yield return new(kvp.ElementAt(0), kvp.ElementAt(1));
+            yield return new(kvp[0], kvp[1]);
         }
     }
 

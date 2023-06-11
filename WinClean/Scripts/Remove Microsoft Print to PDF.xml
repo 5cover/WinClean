@@ -9,6 +9,6 @@
   <Impact>Ergonomics</Impact>
   <Code>
     <Execute Host="PowerShell">Import-Module PrintManagement
-  Remove-Printer -Name "Microsoft Print to PDF"</Execute>
+Remove-Printer -Name "Microsoft Print to PDF"</Execute>
   </Code>
 </Script>

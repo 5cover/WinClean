@@ -13,7 +13,9 @@ namespace Tests;
 [TestOf(typeof(ScriptXmlSerializer))]
 public sealed partial class ScriptXmlSerializerTests : SerializationTests
 {
-    private static readonly TestScript script1 = new("Debloat", "Free storage space", "Limited",
+    private const string ScriptResourceNamespace = $"{nameof(Scover)}.{nameof(Scover.WinClean)}.Scripts.";
+
+    private static readonly TestScript script1 = TestScript.Create("Debloat", "Free storage space", "Limited",
         Localize("Remove WordPad", "Supprimer WordPad"),
         Localize("WordPad can be deleted if you don't use it.", "WordPad peut être supprimé si vous ne l'utilisez pas."),
         new(new()
@@ -23,7 +25,7 @@ public sealed partial class ScriptXmlSerializerTests : SerializationTests
         ScriptType.Custom,
         DefaultVersions);
 
-    private static readonly TestScript script2 = new("Maintenance", "Privacy", "Safe",
+    private static readonly TestScript script2 = TestScript.Create("Maintenance", "Privacy", "Safe",
         Localize("Test script name", "Nom du script de test"),
         Localize("Test script description.", "Nom du script de description."),
         new(new()
@@ -35,7 +37,7 @@ public sealed partial class ScriptXmlSerializerTests : SerializationTests
         ScriptType.Default,
         SemVersionRange.Parse(">=10.0.1048||6.1.*"));
 
-    private static readonly TestScript script3 = new("Customization", "Ergonomics", "Limited",
+    private static readonly TestScript script3 = TestScript.Create("Customization", "Ergonomics", "Limited",
         Localize("Remove shortcut suffix", "Supprimer le suffixe de raccourci"),
         Localize("By default, shortcuts are named with the suffix \"- Shortcut\".", "Par défaut, les raccourcis sont nommés avec le suffixe \" - Raccourci\"."),
         new(new()
@@ -47,7 +49,7 @@ public sealed partial class ScriptXmlSerializerTests : SerializationTests
         ScriptType.Default,
         DefaultVersions);
 
-    private readonly ScriptXmlSerializer _serializer = new();
+    private static readonly ScriptXmlSerializer serializer = new();
     private static SemVersionRange DefaultVersions => ServiceProvider.Get<ISettings>().DefaultScriptVersions;
 
     private static IEnumerable<TestCaseData> DeserializeCases
@@ -86,7 +88,7 @@ public sealed partial class ScriptXmlSerializerTests : SerializationTests
         Script s;
         using (var file = File.OpenRead(Filename))
         {
-            s = _serializer.Deserialize(expected.Type, file);
+            s = serializer.Deserialize(expected.Type, file);
         }
 
         AssertScriptsEqual(s, expected);
@@ -96,7 +98,7 @@ public sealed partial class ScriptXmlSerializerTests : SerializationTests
     public void TestSerialize(Script script, StringBuilder expectedXml)
     {
         using MemoryStream ms = new();
-        _serializer.Serialize(script, ms);
+        serializer.Serialize(script, ms);
         ms.Position = 0;
         Assert.That(XNode.DeepEquals(XElement.Load(ms), XElement.Parse(expectedXml.ToString())));
     }

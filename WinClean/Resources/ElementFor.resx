@@ -185,6 +185,10 @@
     <value>SafetyLevel</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="Script" xml:space="preserve">
+    <value>Script</value>
+    <comment>@Invariant</comment>
+  </data>
   <data name="ShellHost" xml:space="preserve">
     <value>Shell</value>
     <comment>@Invariant</comment>

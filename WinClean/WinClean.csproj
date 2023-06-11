@@ -35,6 +35,10 @@
     <DefineConstants>$(DefineConstants)</DefineConstants>
     <Optimize>True</Optimize>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Scripts\Enable Verbose status messages.xml" />
+  </ItemGroup>
   
   <ItemGroup>
     <EmbeddedResource Include="Categories.xml">
@@ -50,6 +54,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Scripts\Optimize drives.xml" />
+    <EmbeddedResource Include="Scripts\Enable Verbose status messages.xml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -108,7 +113,7 @@
     <EmbeddedResource Include="Scripts\Disable hibernation.xml" />
     <EmbeddedResource Include="Scripts\Remove shortcut sufffix.xml" />
     <EmbeddedResource Include="Scripts\Disable Start menu web search.xml" />
-    <EmbeddedResource Include="Scripts\Systematic short filename creation.xml" />
+    <EmbeddedResource Include="Scripts\Disable systematic short filename creation.xml" />
     <EmbeddedResource Include="Scripts\Disable telemetry and data collection.xml" />
     <EmbeddedResource Include="Scripts\Disable Timeline.xml" />
     <EmbeddedResource Include="Scripts\Keep thumbnail cache after reboot.xml" />

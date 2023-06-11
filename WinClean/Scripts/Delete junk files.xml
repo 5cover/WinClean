@@ -4,23 +4,22 @@
   <Name xml:lang="fr">Supprimer les fichiers inutiles</Name>
   <Description>This script goes through all files on all local disks and deletes any temporary files or log files. This type of cleaning can free up a considerable amount of disk space, especially if it has never been run.
 Affected file types:
-- Log files (*.log; *.etl; *.lck)
-- Temporary files (*.tmp; *.temp)
-- System error memory dump files (*.dmp)
+  - Log files (*.log; *.etl; *.lck)
+  - Temporary files (*.tmp; *.temp)
+  - System error memory dump files (*.dmp)
 Warning: this script might delete useful files with these extensions.</Description>
   <Description xml:lang="fr">Ce script parcourt tous les fichiers sur tous les disques locaux et supprime tous les fichiers temporaires ou fichier journaux. Ce type de nettoyage peut libérer une quantité considérable d'espace disque surtout s'il n'a jamais été exécuté.
 Types de fichiers concernés :
-- Fichiers journaux (*.log; *.etl; *.lck)
-- Fichiers temporaires (*.tmp; *.temp)
-- Fichiers de vidage mémoire d'erreurs système (*.dmp)
+  - Fichiers journaux (*.log; *.etl; *.lck)
+  - Fichiers temporaires (*.tmp; *.temp)
+  - Fichiers de vidage mémoire d'erreurs système (*.dmp)
 Attention : ce script pourrait supprimer des fichiers utiles portant ces extensions.</Description>
   <Category>Maintenance</Category>
   <SafetyLevel>Limited</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Versions>>=6.1.7600</Versions>
   <Code>
-    <Execute Host="PowerShell">
-$extensions = @('*.log','*.etl','*.lck','*.tmp','*.temp','*.dmp')
+    <Execute Host="PowerShell">$extensions = @('*.log','*.etl','*.lck','*.tmp','*.temp','*.dmp')
 $drives = Get-PSDrive -PSProvider FileSystem
 foreach ($drive in $drives) {
   Write-Host "Deleting files in $($drive.Name):"

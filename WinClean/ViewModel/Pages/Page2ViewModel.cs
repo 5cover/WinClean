@@ -34,7 +34,7 @@ public sealed class Page2ViewModel : WizardPageViewModel
         });
         Stop = new RelayCommand(() =>
         {
-            if (PageFactory.Confirm(PageFactory.MakeConfirmAbortOperation))
+            if (DialogFactory.ShowConfirmation(DialogFactory.MakeConfirmAbortOperation))
             {
                 Start.Cancel();
             }
@@ -42,7 +42,7 @@ public sealed class Page2ViewModel : WizardPageViewModel
 
         AbortScript = new RelayCommand(() =>
         {
-            if (PageFactory.Confirm(PageFactory.MakeConfirmAbortOperation))
+            if (DialogFactory.ShowConfirmation(DialogFactory.MakeConfirmAbortOperation))
             {
                 ExecutingExecutionInfo.NotNull().Abort();
             }

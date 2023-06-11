@@ -7,8 +7,6 @@ namespace Scover.WinClean.Model.Scripts;
 
 public abstract class ScriptRepository : IReadOnlyCollection<Script>
 {
-    private bool _loaded;
-
     protected ScriptRepository(IScriptSerializer serializer, ScriptType type) => (Serializer, Type) = (serializer, type);
 
     public abstract int Count { get; }
@@ -17,18 +15,16 @@ public abstract class ScriptRepository : IReadOnlyCollection<Script>
 
     public abstract IEnumerator<Script> GetEnumerator();
 
-    /// <summary>Loads the script from the persistent storage.</summary>
-    /// <remarks>This collection will be empty before this method is called.</remarks>
-    public void Load()
+    /// <summary>Reloads the script from the persistent storage.</summary>
+    public void Reload()
     {
-        if (!_loaded)
-        {
-            LoadScripts();
-            _loaded = true;
-        }
+        Clear();
+        Load();
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    protected abstract void LoadScripts();
+    protected abstract void Clear();
+
+    protected abstract void Load();
 }

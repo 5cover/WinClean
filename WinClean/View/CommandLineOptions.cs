@@ -81,9 +81,9 @@ Script and capability names are case sensitive and follow ordinal string compari
 
     private void ExecuteRunScripts(IEnumerable<Script> scripts)
     {
-        var executionInfos = (RunScripts.StrictPartitionOrDefault(2) ?? throw new ConsoleArgumentException("Not every capability matches with a script.", nameof(RunScripts))).Select(e =>
+        var executionInfos = (RunScripts.Count() % 2 == 0 ? RunScripts.Chunk(2) : throw new ConsoleArgumentException("Not every capability matches with a script.", nameof(RunScripts))).Select(e =>
         {
-            var (capabilityInvariantName, scriptInvariantName) = (e.ElementAt(0), e.ElementAt(1));
+            var (capabilityInvariantName, scriptInvariantName) = (e[0], e[1]);
 
             var capability = Capability.FromResourceNameOrDefault(capabilityInvariantName)
                 ?? throw new ConsoleArgumentException($"No capability found for invariant name '{capabilityInvariantName}'.", nameof(RunScripts));

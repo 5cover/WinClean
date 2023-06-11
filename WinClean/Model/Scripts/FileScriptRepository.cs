@@ -22,21 +22,6 @@ public sealed class FileScriptRepository : MutableScriptRepository
 
     public override int Count => _scripts.Count;
 
-    public override void Add(Script script)
-    {
-        string savingPath = Path.Join(_directory, script.InvariantName.ToFilename() + _scriptFileExtension);
-        try
-        {
-            _scripts.Add(savingPath, script);
-        }
-        catch (ArgumentException e)
-        {
-            throw new ScriptAlreadyExistsException(script, e);
-        }
-        using Stream file = File.Create(_scripts.Inverse[script]);
-        Serializer.Serialize(script, file);
-    }
-
     public override Script Add(string source)
     {
         try
@@ -44,7 +29,7 @@ public sealed class FileScriptRepository : MutableScriptRepository
             using Stream file = File.OpenRead(source);
 
             var newScript = Serializer.Deserialize(Type, file);
-            Add(newScript);
+            Add(Path.GetFileName(source), newScript);
             return newScript;
         }
         catch (Exception e) when (e.IsFileSystemExogenous())
@@ -78,7 +63,9 @@ public sealed class FileScriptRepository : MutableScriptRepository
         return _scripts.Remove(source);
     }
 
-    protected override void LoadScripts()
+    protected override void Clear() => _scripts.Clear();
+
+    protected override void Load()
     {
         foreach (var scriptFile in Directory.EnumerateFiles(_directory, '*' + _scriptFileExtension, SearchOption.AllDirectories))
         {
@@ -105,6 +92,21 @@ public sealed class FileScriptRepository : MutableScriptRepository
                 }
             } while (retry);
         }
+    }
+
+    private void Add(string sourceFilename, Script script)
+    {
+        string savingPath = Path.Join(_directory, Path.ChangeExtension(sourceFilename, _scriptFileExtension));
+        try
+        {
+            _scripts.Add(savingPath, script);
+        }
+        catch (ArgumentException e)
+        {
+            throw new ScriptAlreadyExistsException(script, e);
+        }
+        using Stream file = File.Create(savingPath);
+        Serializer.Serialize(script, file);
     }
 
     private Script Load(string source)
