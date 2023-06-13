@@ -142,7 +142,6 @@ public sealed partial class MainViewModel : ObservableObject
     public static string ApplicationName => ServiceProvider.Get<IApplicationInfo>().Name;
     public static double Height { get => Settings.Height; set => Settings.Height = value; }
     public static double Left { get => Settings.Left; set => Settings.Left = value; }
-    public static TypedEnumerableDictionary Metadatas => ServiceProvider.Get<IMetadatasProvider>().Metadatas;
     public static double Top { get => Settings.Top; set => Settings.Top = value; }
     public static double Width { get => Settings.Width; set => Settings.Width = value; }
 

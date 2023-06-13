@@ -68,5 +68,14 @@ namespace Scover.WinClean.Resources.UI {
                 return ResourceManager.GetString("IncompatibleScript", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Invalid version range. Expected syntax: &quot;SemVer 2.0.0 standard range&quot;..
+        /// </summary>
+        public static string InvalidVersionRange {
+            get {
+                return ResourceManager.GetString("InvalidVersionRange", resourceCulture);
+            }
+        }
     }
 }

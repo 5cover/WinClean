@@ -8,7 +8,10 @@
     xmlns:metadatas="clr-namespace:Scover.WinClean.Model.Metadatas"
     xmlns:res="clr-namespace:Scover.WinClean.Resources"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:view="clr-namespace:Scover.WinClean.View"
     xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
+    xmlns:converters="clr-namespace:Scover.WinClean.View.Converters"
+    xmlns:validation="clr-namespace:Scover.WinClean.View.Validation"
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
     x:Name="scriptViewUserControl"
     mc:Ignorable="d">
@@ -49,7 +52,7 @@
                         Margin="3"
                         VerticalAlignment="Center"
                         DockPanel.Dock="Left"
-                        Source="{Binding WarningIcon, ElementName=scriptViewUserControl}"
+                        Source="{x:Static view:StandardIcons.Warning}"
                         Style="{StaticResource Icon}" />
                     <TextBlock
                         Margin="3"
@@ -66,24 +69,14 @@
                     </DockPanel.Style>
                 </DockPanel>
 
-                <DockPanel
+                <xctk:WatermarkTextBox
                     Grid.Row="1"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
-                    Margin="0,0,0,6">
-                    <xctk:WatermarkTextBox
-                        Padding="6,0"
-                        DockPanel.Dock="Right"
-                        IsReadOnly="True"
-                        MaxLines="1"
-                        Text="{Binding Versions, Mode=OneWay}"
-                        Watermark="{x:Static res:Script.Versions}" />
-                    <xctk:WatermarkTextBox
-                        Margin="0,0,6,0"
-                        MaxLines="1"
-                        Text="{Binding Name, Mode=TwoWay}"
-                        Watermark="{x:Static res:Script.Name}" />
-                </DockPanel>
+                    Margin="0,0,0,6"
+                    MaxLines="1"
+                    Text="{Binding Name, Mode=TwoWay}"
+                    Watermark="{x:Static res:Script.Name}" />
 
                 <xctk:WatermarkTextBox
                     Grid.Row="2"
@@ -100,7 +93,7 @@
                     Grid.Row="3"
                     Grid.Column="0"
                     Margin="0,0,3,6"
-                    ItemsSource="{Binding Metadatas, ElementName=scriptViewUserControl, ConverterParameter={x:Type metadatas:Category}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
+                    ItemsSource="{Binding Source={x:Type metadatas:Category}, Converter={StaticResource GetMetadatas}}"
                     SelectedItem="{Binding Category, Mode=TwoWay}"
                     SelectionChanged="ComboBoxCategorySelectionChanged"
                     Watermark="{x:Static res:Script.Category}" />
@@ -109,7 +102,7 @@
                     Grid.Row="3"
                     Grid.Column="1"
                     Margin="3,0,0,6"
-                    ItemsSource="{Binding Metadatas, ElementName=scriptViewUserControl, ConverterParameter={x:Type metadatas:SafetyLevel}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
+                    ItemsSource="{Binding Source={x:Type metadatas:SafetyLevel}, Converter={StaticResource GetMetadatas}}"
                     SelectedItem="{Binding SafetyLevel, Mode=TwoWay}"
                     Watermark="{x:Static res:Script.SafetyLevel}">
                     <ComboBox.ItemContainerStyle>
@@ -119,11 +112,52 @@
                     </ComboBox.ItemContainerStyle>
                 </xctk:WatermarkComboBox>
 
+                <DockPanel
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="0,0,3,6"
+                    ToolTip="{Binding ElementName=textBoxVersions, Path=(Validation.Errors)/ErrorContent}"
+                    UseLayoutRounding="True">
+                    <Image
+                        Margin="3,0,0,0"
+                        DockPanel.Dock="Right"
+                        Source="{x:Static view:StandardIcons.Error}">
+                        <Image.Style>
+                            <Style BasedOn="{StaticResource Icon}" TargetType="Image">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=textBoxVersions}" Value="False">
+                                        <Setter Property="Visibility" Value="Hidden" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <xctk:WatermarkTextBox
+                        x:Name="textBoxVersions"
+                        MaxLength="2048"
+                        MaxLines="1"
+                        TextChanged="TextBoxVersionsTextChanged"
+                        Watermark="{x:Static res:Script.Versions}">
+                        <TextBox.Text>
+                            <Binding
+                                Mode="TwoWay"
+                                Path="Versions"
+                                UpdateSourceTrigger="LostFocus">
+                                <Binding.ValidationRules>
+                                    <validation:SemVersionRangeValidationRule />
+                                </Binding.ValidationRules>
+                                <Binding.Converter>
+                                    <converters:SemVersionRangeConverter />
+                                </Binding.Converter>
+                            </Binding>
+                        </TextBox.Text>
+                    </xctk:WatermarkTextBox>
+                </DockPanel>
                 <xctk:WatermarkComboBox
                     Grid.Row="4"
                     Grid.Column="1"
                     Margin="3,0,0,6"
-                    ItemsSource="{Binding Metadatas, ElementName=scriptViewUserControl, ConverterParameter={x:Type metadatas:Impact}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
+                    ItemsSource="{Binding Source={x:Type metadatas:Impact}, Converter={StaticResource GetMetadatas}}"
                     SelectedItem="{Binding Impact, Mode=TwoWay}"
                     Watermark="{x:Static res:Script.Impact}" />
 

@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace Scover.WinClean.View.Converters;
 
-public sealed class EqualsConverter : IMultiValueConverter
+public sealed class ItemsEqualConverter : IMultiValueConverter
 {
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture) => values.Distinct().Count() == 1;
 

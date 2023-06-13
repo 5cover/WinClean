@@ -8,6 +8,7 @@
     xmlns:metadatas="clr-namespace:Scover.WinClean.Model.Metadatas"
     xmlns:res="clr-namespace:Scover.WinClean.Resources"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:view="clr-namespace:Scover.WinClean.View"
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
     x:Name="scriptCodeViewUserControl"
     mc:Ignorable="d">
@@ -32,7 +33,7 @@
                                 Margin="0,0,0,3"
                                 DockPanel.Dock="Top"
                                 IsEnabled="{Binding IsReadOnly, ElementName=scriptCodeViewUserControl, Converter={StaticResource BooleanInvert}}"
-                                ItemsSource="{Binding Metadatas, ElementName=scriptCodeViewUserControl, ConverterParameter={x:Type metadatas:Host}, Converter={StaticResource TypedEnumerableDictionaryLookup}}"
+                                ItemsSource="{Binding Source={x:Type metadatas:Host}, Converter={StaticResource GetMetadatas}}"
                                 SelectedItem="{Binding Value.Host}"
                                 Watermark="{x:Static res:Script.Host}">
                                 <ComboBox.ItemTemplate>
@@ -48,7 +49,7 @@
                                             <Image
                                                 Margin="6,0,0,0"
                                                 VerticalAlignment="Center"
-                                                Source="{Binding WarningIcon, ElementName=scriptViewUserControl}"
+                                                Source="{x:Static view:StandardIcons.Warning}"
                                                 ToolTip="{x:Static ui:ScriptCodeView.IncompatibleHost}">
                                                 <Image.Style>
                                                     <Style BasedOn="{StaticResource Icon}" TargetType="Image">
@@ -87,7 +88,7 @@
                                         <Style.Triggers>
                                             <DataTrigger Value="False">
                                                 <DataTrigger.Binding>
-                                                    <MultiBinding Converter="{StaticResource Equals}">
+                                                    <MultiBinding Converter="{StaticResource ItemsEqual}">
                                                         <Binding Path="Key" />
                                                         <Binding
                                                             ElementName="scriptCodeViewUserControl"
@@ -110,7 +111,7 @@
                                         <Style.Triggers>
                                             <DataTrigger Value="False">
                                                 <DataTrigger.Binding>
-                                                    <MultiBinding Converter="{StaticResource Equals}">
+                                                    <MultiBinding Converter="{StaticResource ItemsEqual}">
                                                         <Binding Path="Key" />
                                                         <Binding ElementName="scriptCodeViewUserControl" Path="Content.Selection.DesiredCapability" />
                                                     </MultiBinding>

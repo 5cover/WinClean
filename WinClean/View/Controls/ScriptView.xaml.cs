@@ -1,14 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
-using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;
-using Scover.WinClean.Services;
 using Scover.WinClean.ViewModel;
-
-using static Vanara.PInvoke.Shell32;
 
 namespace Scover.WinClean.View.Controls;
 
@@ -28,8 +23,6 @@ public sealed partial class ScriptView : INotifyPropertyChanged
     /// <summary><see cref="Script"/> was removed.</summary>
     public event TypeEventHandler<ScriptView>? ScriptRemoved;
 
-    public static TypedEnumerableDictionary Metadatas => ServiceProvider.Get<IMetadatasProvider>().Metadatas;
-    public static ImageSource WarningIcon { get; } = SHSTOCKICONID.SIID_WARNING.ToBitmapSource(SHGSI.SHGSI_SMALLICON);
     public bool AllowEdit { get; private set; }
 
     public bool IsReadOnly
@@ -57,4 +50,8 @@ public sealed partial class ScriptView : INotifyPropertyChanged
             ScriptChangedCategory?.Invoke(this, EventArgs.Empty);
         }
     }
+
+    private void TextBoxVersionsTextChanged(object sender, TextChangedEventArgs e)
+        // Perform validation on every keystore, but don't update the binding.
+        => ((TextBox)sender).GetBindingExpression(TextBox.TextProperty).ValidateWithoutUpdate();
 }

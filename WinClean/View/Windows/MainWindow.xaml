@@ -79,11 +79,11 @@
                     DisplayMemberPath="Name"
                     Header="{x:Static ui:MainWindow.Category}"
                     ItemContainerStyle="{StaticResource ScriptMetadataMenuItemStyle}"
-                    ItemsSource="{Binding Metadatas, ConverterParameter={x:Type metadatas:Category}, Converter={StaticResource TypedEnumerableDictionaryLookup}}" />
+                    ItemsSource="{Binding Source={x:Type metadatas:Category}, Converter={StaticResource GetMetadatas}}" />
                 <MenuItem
                     DisplayMemberPath="Name"
                     Header="{x:Static ui:MainWindow.SafetyLevel}"
-                    ItemsSource="{Binding Metadatas, ConverterParameter={x:Type metadatas:SafetyLevel}, Converter={StaticResource TypedEnumerableDictionaryLookup}}">
+                    ItemsSource="{Binding Source={x:Type metadatas:SafetyLevel}, Converter={StaticResource GetMetadatas}}">
                     <MenuItem.ItemContainerStyle>
                         <Style BasedOn="{StaticResource ScriptMetadataMenuItemStyle}" TargetType="MenuItem">
                             <Setter Property="Background" Value="{Binding Color, Converter={StaticResource ColorToBrush}, ConverterParameter=0.15}" />
@@ -94,7 +94,7 @@
                     DisplayMemberPath="Name"
                     Header="{x:Static ui:MainWindow.Impact}"
                     ItemContainerStyle="{StaticResource ScriptMetadataMenuItemStyle}"
-                    ItemsSource="{Binding Metadatas, ConverterParameter={x:Type metadatas:Impact}, Converter={StaticResource TypedEnumerableDictionaryLookup}}" />
+                    ItemsSource="{Binding Source={x:Type metadatas:Impact}, Converter={StaticResource GetMetadatas}}" />
             </MenuItem>
             <MenuItem Command="{Binding ShowSettingsWindow}" Header="{x:Static ui:MainWindow.MenuSettings}" />
             <MenuItem Header="{x:Static ui:MainWindow.MenuHelp}">

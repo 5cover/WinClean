@@ -120,4 +120,7 @@
   <data name="IncompatibleScript" xml:space="preserve">
     <value>Ce script est incompatible avec cette version de Windows et risque de ne pas fonctionner correctement.</value>
   </data>
+  <data name="InvalidVersionRange" xml:space="preserve">
+    <value>Intervalle de versions invalide. Syntaxe attendue : "SemVer 2.0.0 standard range".</value>
+  </data>
 </root>

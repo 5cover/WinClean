@@ -27,10 +27,10 @@
         <converters:ColorToBrushConverter x:Key="ColorToBrush" />
         <converters:CurrentVersionSatisfiesRangeConverter x:Key="CurrentVersionSatisfiesRange" />
         <converters:DictionaryLookupConverter x:Key="DictionaryLookup" />
-        <converters:EqualsConverter x:Key="Equals" />
+        <converters:ItemsEqualConverter x:Key="ItemsEqual" />
+        <converters:GetMetadatasConverter x:Key="GetMetadatas" />
         <converters:GoldenRatioConverter x:Key="GoldenRatio" />
         <converters:IsNotNullConverter x:Key="IsNotNull" />
         <converters:SelectiveValueConverter x:Key="SelectiveValue" />
-        <converters:TypedEnumerableDictionaryLookupConverter x:Key="TypedEnumerableDictionaryLookup" />
     </Application.Resources>
 </Application>

@@ -100,4 +100,7 @@
   <data name="IncompatibleScript" xml:space="preserve">
     <value>This script is incompatible with this Windows version and may not work properly.</value>
   </data>
+  <data name="InvalidVersionRange" xml:space="preserve">
+    <value>Invalid version range. Expected syntax: "SemVer 2.0.0 standard range".</value>
+  </data>
 </root>
