@@ -8,12 +8,13 @@
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
     xmlns:view="clr-namespace:Scover.WinClean.View"
+    xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
     xmlns:pages="clr-namespace:Scover.WinClean.View.Pages"
     xmlns:windows="clr-namespace:Scover.WinClean.ViewModel.Windows"
     xmlns:xceedConverters="clr-namespace:Xceed.Wpf.Toolkit.Core.Converters;assembly=DotNetProjects.Wpf.Extended.Toolkit"
     Title="ScriptExecutionWizard"
-    Width="640"
-    Height="480"
+    Width="800"
+    Height="600"
     d:DataContext="{d:DesignInstance Type=windows:ScriptExecutionWizardViewModel}"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
@@ -22,7 +23,7 @@
         <view:WindowClosing IsEnabled="{Binding ElementName=wizard, Path=CurrentPage.CanCancel, TargetNullValue=True}" />
     </i:Interaction.Behaviors>
     <Window.Resources>
-        <ControlTemplate x:Key="PageTemplate" TargetType="xctk:WizardPage">
+        <ControlTemplate x:Key="PageTemplate" TargetType="controls:WizardPageBetter">
             <Grid Margin="19">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -48,15 +49,18 @@
                     Content="{TemplateBinding Content}"
                     ContentTemplate="{TemplateBinding ContentTemplate}"
                     ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
-                    SnapsToDevicePixels="true" />
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
             </Grid>
         </ControlTemplate>
+        <Style x:Key="PageStyle" TargetType="controls:WizardPageBetter">
+            <Setter Property="PageType" Value="Interior" />
+            <Setter Property="Template" Value="{StaticResource PageTemplate}" />
+            <Setter Property="CanSelectNextPage" Value="{Binding CanSelectNextPage}" />
+        </Style>
         <pages:Page1
             x:Key="Page1"
-            BackButtonVisibility="Collapsed"
             DataContext="{Binding Page1ViewModel}"
-            PageType="Interior"
-            Template="{StaticResource PageTemplate}">
+            Style="{StaticResource PageStyle}">
             <i:Interaction.Triggers>
                 <i:DataTrigger Binding="{Binding CreateRestorePoint}" Value="True">
                     <i:ChangePropertyAction PropertyName="NextPage" Value="{DynamicResource Page1A}" />
@@ -69,10 +73,9 @@
         <pages:Page1A
             x:Key="Page1A"
             DataContext="{Binding Page1AViewModel}"
-            PageType="Interior"
-            Template="{StaticResource PageTemplate}">
+            Style="{StaticResource PageStyle}">
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="Finished">
+                <i:EventTrigger EventName="Finished" SourceObject="{Binding}">
                     <i:ChangePropertyAction
                         PropertyName="CurrentPage"
                         TargetName="wizard"
@@ -83,10 +86,9 @@
         <pages:Page2
             x:Key="Page2"
             DataContext="{Binding Page2ViewModel}"
-            PageType="Interior"
-            Template="{StaticResource PageTemplate}">
+            Style="{StaticResource PageStyle}">
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="Finished">
+                <i:EventTrigger EventName="Finished" SourceObject="{Binding}">
                     <i:ChangePropertyAction
                         PropertyName="CurrentPage"
                         TargetName="wizard"
@@ -97,8 +99,7 @@
         <pages:Page3
             x:Key="Page3"
             DataContext="{Binding Page3ViewModel}"
-            PageType="Interior"
-            Template="{StaticResource PageTemplate}" />
+            Style="{StaticResource PageStyle}" />
     </Window.Resources>
     <xctk:Wizard
         x:Name="wizard"
@@ -132,9 +133,15 @@
                             Background="{x:Static SystemColors.ControlBrush}"
                             BorderBrush="{x:Static SystemColors.ControlLightBrush}"
                             BorderThickness="0,1,0,0">
+                            <!--
+                                for additionalContentControl & additionalButtonsControl
+                                Set DataContext so bindings inside the have the correct context.
+                                Issue: Content is updated AFTER DataContext, which causes the bindings from the previous page to fail since they tried to update with the current page's DataContext.
+                                This issue can be mitigated by using FallbackValue={x:Null} for bindings inside ButtonsArea attached property values (it will turn the errors into warnings).
+                            -->
                             <DockPanel Margin="22,14,0,14">
-                                <!--  Set DataContext so bindings inside AdditionalContent have the correct context.  -->
-                                <ContentPresenter
+
+                                <ContentControl
                                     x:Name="additionalContentControl"
                                     Margin="0,0,22,0"
                                     Content="{Binding Path=CurrentPage.(view:ButtonsArea.AdditionalContent), RelativeSource={RelativeSource TemplatedParent}}"
@@ -156,7 +163,7 @@
                                     </Button>
                                     <Button
                                         Margin="22,0,0,0"
-                                        Command="{x:Static xctk:WizardCommands.Finish}"
+                                        Command="{x:Static xctk:WizardCommands.Cancel}"
                                         Content="{TemplateBinding CancelButtonContent}">
                                         <Button.Visibility>
                                             <MultiBinding Converter="{StaticResource WizardPageButtonVisibilityConverter}">
@@ -190,7 +197,7 @@
                                     <ContentPresenter
                                         x:Name="additionalButtonsControl"
                                         Margin="7,0,0,0"
-                                        Content="{Binding Path=CurrentPage.(view:ButtonsArea.AdditionalButtons), RelativeSource={RelativeSource TemplatedParent}}"
+                                        Content="{Binding Path=CurrentPage.(view:ButtonsArea.AdditionalButtons), RelativeSource={RelativeSource TemplatedParent}, FallbackValue={x:Null}}"
                                         DataContext="{Binding CurrentPage.DataContext, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </StackPanel>
                             </DockPanel>

@@ -9,6 +9,10 @@ public sealed class ScriptExecutionWizardViewModel : ObservableObject, IDisposab
 {
     private readonly CollectionWrapper<IList<ExecutionInfoViewModel>, ExecutionInfoViewModel> _executionInfos;
 
+    /// <remarks>
+    /// <paramref name="executionInfos"/> is considered to be owned by this class and will be disposed by
+    /// it.
+    /// </remarks>
     public ScriptExecutionWizardViewModel(IList<ExecutionInfoViewModel> executionInfos)
     {
         _executionInfos = new(executionInfos);
@@ -24,7 +28,7 @@ public sealed class ScriptExecutionWizardViewModel : ObservableObject, IDisposab
 
     public void Dispose()
     {
-        foreach (var executionInfo in _executionInfos.Source)
+        foreach (var executionInfo in _executionInfos)
         {
             executionInfo.Dispose();
         }

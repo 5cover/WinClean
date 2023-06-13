@@ -32,13 +32,7 @@ public sealed class Page2ViewModel : WizardPageViewModel
                 // Make sure this doesn't go unhandled if a View isn't there to swallow the exception.
             }
         });
-        Stop = new RelayCommand(() =>
-        {
-            if (DialogFactory.ShowConfirmation(DialogFactory.MakeConfirmAbortOperation))
-            {
-                Start.Cancel();
-            }
-        });
+        Stop = new RelayCommand(Start.Cancel);
 
         AbortScript = new RelayCommand(() =>
         {

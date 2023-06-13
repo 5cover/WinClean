@@ -14,82 +14,75 @@ public sealed record ProcessOutput(ProcessOutputKind Kind, string? Text);
 /// <summary>Information about a script's execution.</summary>
 public sealed class ExecutionInfo : IDisposable
 {
-    private readonly Process _hostProcess;
-    private readonly HostStartInfo _hostStartInfo;
+    private readonly Lazy<Process> _hostProcess;
+    private readonly Lazy<HostStartInfo> _hostStartInfo;
     private readonly Stopwatch _stopwatch = new();
+    private bool _disposed;
 
     public ExecutionInfo(ScriptAction action, ISynchronizeInvoke? synchronizingObject = null)
     {
-        _hostStartInfo = action.CreateHostStartInfo();
-        _hostProcess = new()
+        _hostStartInfo = new(action.CreateHostStartInfo);
+        _hostProcess = new(() => new Process()
         {
             EnableRaisingEvents = true,
             SynchronizingObject = synchronizingObject,
             StartInfo = new()
             {
-                FileName = _hostStartInfo.Filename,
-                Arguments = _hostStartInfo.Arguments,
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true,
+                FileName = _hostStartInfo.Value.Filename,
+                Arguments = _hostStartInfo.Value.Arguments,
             }
-        };
+        });
     }
 
-    private event TypeEventHandler<ExecutionInfo>? _executionFinished;
+    private Process HostProcess => _hostProcess.Value;
+    private bool IsExecuting => _hostProcess.IsValueCreated && HostProcess.IsRunning();
 
     public void Abort()
     {
-        if (!_hostProcess.IsRunning())
-        {
-            throw new InvalidOperationException("Host process is not executing. Execution is not underway.");
-        }
-        _hostProcess.Kill(true);
+        DenyIfDisposed();
+        DenyIfNotExecuting();
+
+        HostProcess.Kill(true);
     }
 
     public void Dispose()
     {
-        if (!_hostProcess.IsRunning())
-        {
-            _hostProcess.Dispose();
-            _hostStartInfo.Dispose();
-        }
-        else
-        {
-            _executionFinished = (s, e) =>
-            {
-                _hostProcess.Dispose();
-                _hostStartInfo.Dispose();
-            };
-        }
+        _hostStartInfo.DisposeIfCreated();
+        _hostProcess.DisposeIfCreated();
+        _disposed = true;
     }
 
     public ExecutionResult Execute()
     {
+        DenyIfDisposed();
         DenyIfExecuting();
 
-        _ = _hostProcess.Start();
+        _ = HostProcess.Start();
         _stopwatch.Restart();
-        _hostProcess.WaitForExit();
+        HostProcess.WaitForExit();
         _stopwatch.Stop();
 
-        return new(_hostProcess.ExitCode, _stopwatch.Elapsed);
+        return new(HostProcess.ExitCode, _stopwatch.Elapsed);
     }
 
     /// <summary>Executes the script asynchronously.</summary>
     public async Task<ExecutionResult> ExecuteAsync(IProgress<ProcessOutput> progress, CancellationToken cancellationToken = default)
     {
+        DenyIfDisposed();
         DenyIfExecuting();
 
-        _hostProcess.OutputDataReceived += OnOutputDataReceived;
-        _hostProcess.ErrorDataReceived += OnErrorDataReceived;
+        HostProcess.OutputDataReceived += OnOutputDataReceived;
+        HostProcess.ErrorDataReceived += OnErrorDataReceived;
 
         try
         {
-            _ = _hostProcess.Start();
-            _hostProcess.BeginOutputReadLine();
-            _hostProcess.BeginErrorReadLine();
+            _ = HostProcess.Start();
+            HostProcess.BeginOutputReadLine();
+            HostProcess.BeginErrorReadLine();
 
             _stopwatch.Restart();
 
@@ -97,21 +90,21 @@ public sealed class ExecutionInfo : IDisposable
             // Note: Win32Exceptions for Access denied errors will be thrown by the Process class. They are
             // handled internally, so it's not a problem, but they're still visible by the debugger. This is
             // because the Process class enumerates all system processes to build the process tree, but
-            // doesn't have permission to open all of them.
-            using var reg = cancellationToken.Register(() => _hostProcess.Kill(true));
+            // doesn't have permission to open all of them. We could use GetProcessTree() for this but the
+            // "official" .NET method is preferable in terms of safety and correctness.
+            using var reg = cancellationToken.Register(() => HostProcess.Kill(true));
 
-            await _hostProcess.WaitForExitAsync(cancellationToken);
+            await HostProcess.WaitForExitAsync(cancellationToken);
         }
         finally
         {
             _stopwatch.Stop();
-            _hostProcess.OutputDataReceived -= OnOutputDataReceived;
-            _hostProcess.ErrorDataReceived -= OnErrorDataReceived;
+            HostProcess.OutputDataReceived -= OnOutputDataReceived;
+            HostProcess.ErrorDataReceived -= OnErrorDataReceived;
         }
 
-        ExecutionResult result = new(_hostProcess.ExitCode, _stopwatch.Elapsed);
+        ExecutionResult result = new(HostProcess.ExitCode, _stopwatch.Elapsed);
 
-        _executionFinished?.Invoke(this, EventArgs.Empty);
         return result;
 
         void OnErrorDataReceived(object s, DataReceivedEventArgs e) => progress.Report(new(ProcessOutputKind.Error, e.Data));
@@ -120,7 +113,9 @@ public sealed class ExecutionInfo : IDisposable
 
     public void Pause()
     {
-        foreach (var p in _hostProcess.GetProcessTree())
+        DenyIfDisposed();
+        DenyIfNotExecuting();
+        foreach (var p in HostProcess.GetProcessTree())
         {
             p.Suspend();
         }
@@ -128,17 +123,35 @@ public sealed class ExecutionInfo : IDisposable
 
     public void Resume()
     {
-        foreach (var p in _hostProcess.GetProcessTree())
+        DenyIfDisposed();
+        DenyIfNotExecuting();
+        foreach (var p in HostProcess.GetProcessTree())
         {
             p.Resume();
         }
     }
 
+    private void DenyIfDisposed()
+    {
+        if (_disposed)
+        {
+            throw new ObjectDisposedException(ToString());
+        }
+    }
+
     private void DenyIfExecuting()
     {
-        if (_hostProcess.IsRunning())
+        if (IsExecuting)
         {
             throw new InvalidOperationException("Host process is already executing. Execution may already be underway.");
+        }
+    }
+
+    private void DenyIfNotExecuting()
+    {
+        if (!IsExecuting)
+        {
+            throw new InvalidOperationException("Host process is not executing. Execution is not underway.");
         }
     }
 }

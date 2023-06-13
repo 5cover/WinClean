@@ -48,4 +48,12 @@ public abstract class MutableScriptRepository : ScriptRepository
     /// repository.
     /// </returns>
     public abstract bool Remove(Script script);
+
+    /// <summary>Updates a script in a repository.</summary>
+    /// <param name="script">The script to update.</param>
+    /// <exception cref="InvalidOperationException">
+    /// <paramref name="script"/> is not present in the repository.
+    /// </exception>
+    /// <exception cref="FileSystemException">A filesystem exception occured.</exception>
+    public abstract void Update(Script script);
 }

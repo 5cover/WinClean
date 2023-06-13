@@ -101,7 +101,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Scripts\Run advanced disk cleanup.xml" />
     <EmbeddedResource Include="Scripts\Show file extensions.xml" />
-    <EmbeddedResource Include="Scripts\Show folder merge conflicts.xml" />
     <EmbeddedResource Include="Scripts\Clear event logs.xml" />
     <EmbeddedResource Include="Scripts\Clear File Explorer history.xml" />
     <EmbeddedResource Include="Scripts\Delete all system restore points.xml" />

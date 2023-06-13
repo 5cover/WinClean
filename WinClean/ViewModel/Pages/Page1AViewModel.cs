@@ -11,12 +11,11 @@ public sealed class Page1AViewModel : WizardPageViewModel
     public Page1AViewModel()
     {
         Start = new AsyncRelayCommand(CreateRestorePoint);
-        Cancel = new RelayCommand(Start.Cancel);
+        Stop = new RelayCommand(Start.Cancel);
     }
 
-    public IRelayCommand Cancel { get; }
-
     public IAsyncRelayCommand Start { get; }
+    public IRelayCommand Stop { get; }
 
     private async Task CreateRestorePoint(CancellationToken cancellationToken)
     {

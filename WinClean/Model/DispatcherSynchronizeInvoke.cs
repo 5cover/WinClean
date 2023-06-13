@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿// https://stackoverflow.com/a/50175680/11718061
+
+using System.ComponentModel;
 using System.Windows.Threading;
 
 namespace Scover.WinClean.Model;
@@ -13,8 +15,7 @@ public sealed class DispatcherSynchronizeInvoke : ISynchronizeInvoke
 
     public IAsyncResult BeginInvoke(Delegate method, object?[]? args) =>
            // Obtaining a DispatcherOperation instance and wrapping it with our proxy class
-           new DispatcherAsyncResult(
-           _dispatcher.BeginInvoke(method, DispatcherPriority.Normal, args));
+           new DispatcherAsyncResult(_dispatcher.BeginInvoke(method, DispatcherPriority.Normal, args));
 
     public object EndInvoke(IAsyncResult result)
     {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
@@ -27,35 +28,61 @@ namespace Scover.WinClean.ViewModel.Windows;
 
 public sealed partial class MainViewModel : ObservableObject
 {
+    private readonly IEnumerable<ScriptViewModel> _orginalScripts;
     private readonly Lazy<PropertyInfo[]> _scriptProperties = new(typeof(Script).GetProperties(BindingFlags.Public | BindingFlags.Instance));
     private ScriptViewModel? _selectedScript;
 
     public MainViewModel()
     {
-        Scripts = new(ServiceProvider.Get<IScriptStorage>().Scripts.Select(s =>
+        _orginalScripts = ServiceProvider.Get<IScriptStorage>().Scripts.Select(s =>
         {
             ScriptViewModel svm = new(s);
             svm.PropertyChanged += (s, e) =>
             {
-                if (ScriptGroups.NotNull().GroupDescriptions.OfType<PropertyGroupDescription>().Any(g => g.PropertyName == e.PropertyName))
+                if (Scripts.NotNull().View.GroupDescriptions.OfType<PropertyGroupDescription>().Any(g => g.PropertyName == e.PropertyName))
                 {
-                    ScriptGroups.View.Refresh();
+                    Scripts.View.Refresh();
                 }
             };
             return svm;
-        }));
+        });
 
-        Scripts.CollectionChanged += ScriptsCollectionChanged;
-
-        ScriptGroups = new CollectionViewSource()
+        Scripts = new(new CollectionViewSource()
         {
-            Source = Scripts,
+            Source = new ObservableCollection<ScriptViewModel>(_orginalScripts),
             GroupDescriptions =
             {
-                new PropertyGroupDescription(nameof(ScriptViewModel.Category)),
-                new PropertyGroupDescription(nameof(ScriptViewModel.Usages)),
+                new PropertyGroupDescription(nameof(ScriptViewModel.Category))
+                {
+                    SortDescriptions =
+                    {
+                        new SortDescription(nameof(Category.Name), ListSortDirection.Ascending),
+                    }
+                },
+                new PropertyGroupDescription(nameof(ScriptViewModel.Usages))
+                {
+                    SortDescriptions =
+                    {
+                        new SortDescription(nameof(Usage.Name), ListSortDirection.Ascending),
+                    }
+                },
+            },
+        });
+
+        ApplyChangesToScriptStorage = new RelayCommand(() =>
+        {
+            var mutableScripts = Scripts.Source.Where(s => s.Type.IsMutable);
+
+            foreach (var removedScript in _orginalScripts.Where(s => s.Type.IsMutable).Except(mutableScripts))
+            {
+                _ = removedScript.RemoveFromStorage();
             }
-        };
+            // Added scripts are hanlded immediately in TryAddNewScript
+            foreach (var script in mutableScripts)
+            {
+                script.UpdateInStorage();
+            }
+        });
 
         CheckScriptsByProperty = new RelayCommand<object>(expectedPropertyValue => SelectScripts(s
             => expectedPropertyValue.NotNull().Equals(
@@ -75,7 +102,7 @@ public sealed partial class MainViewModel : ObservableObject
                 var script = TryAddNewScript(path);
                 script.MatchSome(s =>
                 {
-                    Scripts.Add(s);
+                    Scripts.Source.Add(s);
                     lastAddedScript = s.Some();
                 });
             }
@@ -87,7 +114,7 @@ public sealed partial class MainViewModel : ObservableObject
         {
             if (DialogFactory.ShowConfirmation(DialogFactory.MakeConfirmScriptDeletion))
             {
-                Debug.Assert(Scripts.Remove(SelectedScript.NotNull()));
+                Debug.Assert(Scripts.Source.Remove(SelectedScript.NotNull()));
             }
         });
 
@@ -113,16 +140,10 @@ public sealed partial class MainViewModel : ObservableObject
     }
 
     public static string ApplicationName => ServiceProvider.Get<IApplicationInfo>().Name;
-
     public static double Height { get => Settings.Height; set => Settings.Height = value; }
-
     public static double Left { get => Settings.Left; set => Settings.Left = value; }
-
     public static TypedEnumerableDictionary Metadatas => ServiceProvider.Get<IMetadatasProvider>().Metadatas;
-    public static int ScriptCount => ServiceProvider.Get<IScriptStorage>().ScriptCount;
-
     public static double Top { get => Settings.Top; set => Settings.Top = value; }
-
     public static double Width { get => Settings.Width; set => Settings.Width = value; }
 
     public static WindowState WindowState
@@ -132,6 +153,7 @@ public sealed partial class MainViewModel : ObservableObject
     }
 
     public IRelayCommand AddScripts { get; }
+    public IRelayCommand ApplyChangesToScriptStorage { get; }
     public IRelayCommand CheckAllScripts { get; }
     public IRelayCommand<object> CheckScriptsByProperty { get; }
     public IAsyncRelayCommand ClearLogs { get; } = new AsyncRelayCommand(App.CurrentApp.Logger.ClearLogsAsync);
@@ -140,8 +162,7 @@ public sealed partial class MainViewModel : ObservableObject
     public IRelayCommand OpenLogsDir { get; } = new RelayCommand(AppDirectory.Logs.Open);
     public IAsyncRelayCommand OpenOnlineWiki { get; } = new AsyncRelayCommand(async () => (await SourceControlClient.Instance).WikiUrl.Open());
     public IRelayCommand RemoveCurrentScript { get; }
-    public CollectionViewSource ScriptGroups { get; }
-    public ObservableCollection<ScriptViewModel> Scripts { get; }
+    public CollectionWrapper<ObservableCollection<ScriptViewModel>, ScriptViewModel> Scripts { get; }
 
     public ScriptViewModel? SelectedScript
     {
@@ -197,18 +218,6 @@ public sealed partial class MainViewModel : ObservableObject
             }
         } while (retry);
         return Option.None<ScriptViewModel>();
-    }
-
-    private void ScriptsCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    {
-        if (e.OldItems is not null)
-        {
-            foreach (var removedScript in e.OldItems.Cast<ScriptViewModel>())
-            {
-                Debug.Assert(removedScript.RemoveFromStorage());
-            }
-        }
-        // Added items are already added to storage in TryAddNewScript()
     }
 
     private void SelectScripts(Predicate<ScriptViewModel> check)

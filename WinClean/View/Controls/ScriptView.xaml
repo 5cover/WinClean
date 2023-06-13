@@ -58,7 +58,7 @@
                     <DockPanel.Style>
                         <Style TargetType="DockPanel">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Versions, Converter={StaticResource CurrentVersionSatisfiesRange}}" Value="True">
+                                <DataTrigger Binding="{Binding Versions, Converter={StaticResource CurrentVersionSatisfiesRange}, TargetNullValue=True}" Value="True">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -127,24 +127,23 @@
                     SelectedItem="{Binding Impact, Mode=TwoWay}"
                     Watermark="{x:Static res:Script.Impact}" />
 
-                <!--  {Binding} for content doesn't update properly  -->
                 <controls:ScriptCodeView
                     Grid.Row="5"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
-                    Content="{Binding Content, ElementName=scriptViewUserControl}"
+                    Content="{Binding}"
                     IsReadOnly="{Binding AllowEdit, ElementName=scriptViewUserControl, Converter={StaticResource BooleanInvert}}" />
 
                 <Button
                     Grid.Row="6"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"
-                    Padding="15,3,15,3"
+                    Margin="0,6,0,0"
                     HorizontalAlignment="Right"
                     Click="ButtonDelete_Click"
                     Content="{x:Static ui:Buttons.Delete}">
                     <Button.Style>
-                        <Style TargetType="Button">
+                        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
                             <Setter Property="Visibility" Value="{Binding AllowEdit, ElementName=scriptViewUserControl, Converter={StaticResource BooleanToVisibility}}" />
                         </Style>
                     </Button.Style>

@@ -45,6 +45,9 @@ public sealed class ExtensionsTests
 
     [TestCase("<Test>value</Test>", "", "value")]
     [TestCase("<Test xml:lang=\"fr\">valueFr</Test>", "fr", "valueFr")]
+    [TestCase("<TestElement/>", "", "")]
+    [TestCase("<TestElement xml:lang=\"fr\"/>", "fr", "")]
+    [TestCase("<TestElement xml:lang=\"en-US\"/>", "en-US", "")]
     public void TestSetFromXml(string xml, string cultureName, string value)
     {
         XmlDocument doc = new();

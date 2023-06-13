@@ -63,6 +63,24 @@ public sealed class FileScriptRepository : MutableScriptRepository
         return _scripts.Remove(source);
     }
 
+    public override void Update(Script script)
+    {
+        if (!Contains(script))
+        {
+            throw new InvalidOperationException("The script is not present in the repository");
+        }
+        var source = _scripts.Inverse[script];
+        try
+        {
+            using Stream file = File.Open(source, FileMode.Create, FileAccess.Write);
+            Serializer.Serialize(script, file);
+        }
+        catch (Exception e) when (e.IsFileSystemExogenous())
+        {
+            throw new FileSystemException(e, FSVerb.Access, source);
+        }
+    }
+
     protected override void Clear() => _scripts.Clear();
 
     protected override void Load()

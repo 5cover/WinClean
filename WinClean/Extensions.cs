@@ -27,12 +27,18 @@ namespace Scover.WinClean;
 
 public static class Extensions
 {
-    private static readonly char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
-
     public static bool CanExecute(this IRelayCommand relayCommand) => relayCommand.CanExecute(null);
 
+    public static void DisposeIfCreated<T>(this Lazy<T> lazy) where T : IDisposable
+    {
+        if (lazy.IsValueCreated)
+        {
+            lazy.Value.Dispose();
+        }
+    }
+
     public static string FormatToSeconds(this TimeSpan t)
-           => Convert.ToInt32(t.TotalSeconds).Seconds().ToString("g");
+        => Convert.ToInt32(t.TotalSeconds).Seconds().ToString("g");
 
     public static LocalizedString GetLocalizedString(this XmlDocument doc, string name)
     {
@@ -172,7 +178,7 @@ public static class Extensions
     }
 
     public static void SetFromXml(this LocalizedString str, XmlNode node)
-               => str[node.Attributes?["xml:lang"]?.Value is { } cultureName ? new(cultureName) : CultureInfo.InvariantCulture] = node.InnerText;
+               => str[CultureInfo.GetCultureInfo(node.Attributes?["xml:lang"]?.Value ?? "")] = node.InnerText;
 
     public static void SetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dic, TKey key, TValue value) where TKey : notnull
     {

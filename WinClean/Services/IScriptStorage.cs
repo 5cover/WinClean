@@ -32,4 +32,11 @@ public interface IScriptStorage
     /// No mutable repository was found for this type of script.
     /// </exception>
     bool Remove(Script script);
+
+    /// <summary>Updates a script in the storage.</summary>
+    /// <inheritdoc cref="MutableScriptRepository.Update(Script)"/>
+    /// <exception cref="ArgumentException">
+    /// No mutable repository was found for this type of script.
+    /// </exception>
+    void Update(Script script);
 }

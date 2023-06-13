@@ -37,6 +37,8 @@ public sealed class ScriptStorage : IScriptStorage
 
     public bool Remove(Script script) => GetMutableRepository(script.Type).Remove(script);
 
+    public void Update(Script script) => GetMutableRepository(script.Type).Update(script);
+
     private void AddRepo(ScriptRepository repo) => _repos.Add(repo.Type, repo);
 
     private MutableScriptRepository GetMutableRepository(ScriptType type)

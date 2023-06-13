@@ -104,6 +104,8 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
 
     private static ISettings Settings => ServiceProvider.Get<ISettings>();
 
+    private static IScriptStorage Storage => ServiceProvider.Get<IScriptStorage>();
+
     public override bool Equals(object? obj) => Equals(obj as ScriptViewModel);
 
     public bool Equals(ScriptViewModel? other) => other is not null && _model.Equals(other._model);
@@ -112,11 +114,13 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
 
     public override int GetHashCode() => _model.GetHashCode();
 
-    public bool RemoveFromStorage() => ServiceProvider.Get<IScriptStorage>().Remove(_model);
+    public bool RemoveFromStorage() => Storage.Remove(_model);
 
     public Option<ExecutionInfoViewModel> TryCreateExecutionInfo() =>
         Selection.DesiredCapability is { } desiredCapability && // A capability has be choosen
         Code.TryGetValue(desiredCapability, out var action) && // The capability exists
         !desiredCapability.Equals(Code.EffectiveCapability) // The capability is different from the effective capability.
         ? new ExecutionInfoViewModel(this, desiredCapability, action).Some() : Option.None<ExecutionInfoViewModel>();
+
+    public void UpdateInStorage() => Storage.Update(_model);
 }

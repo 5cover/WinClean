@@ -1,4 +1,4 @@
-﻿<xctk:WizardPage
+﻿<controls:WizardPageBetter
     x:Class="Scover.WinClean.View.Pages.Page3"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -32,4 +32,4 @@
     <xctk:WizardPage.Content>
         <controls:ExecutionInfosView Content="{Binding ExecutionInfos.View}" />
     </xctk:WizardPage.Content>
-</xctk:WizardPage>
+</controls:WizardPageBetter>
