@@ -66,7 +66,15 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
 
     public string InvariantName => _model.InvariantName;
 
-    public string Name { get => _model.Name; set => _model.Name = value; }
+    public string Name
+    {
+        get => _model.Name;
+        set
+        {
+            _model.Name = value;
+            OnPropertyChanged();
+        }
+    }
 
     public SafetyLevel SafetyLevel
     {

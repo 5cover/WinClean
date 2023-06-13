@@ -18,7 +18,7 @@ public sealed class Settings : ISettings
             .ToDictionary(kv => kv.Key, kv => TimeSpan.ParseExact(kv.Value, ScriptExecutionTimesFormatString, CultureInfo.InvariantCulture));
 
         PersistentSettings.SettingsSaving += (s, e) => PersistentSettings.ScriptExecutionTimes = ToMockStringDic(ScriptExecutionTimes, ScriptExecutionTimesSeparator);
-        SetComputedAppSettings();
+        SetComputedSettings();
     }
 
     public SemVersionRange DefaultHostVersions { get; private set; }
@@ -43,7 +43,7 @@ public sealed class Settings : ISettings
     public void Reset()
     {
         AppSettings.Reset();
-        SetComputedAppSettings();
+        SetComputedSettings();
     }
 
     public void Save()
@@ -87,7 +87,7 @@ public sealed class Settings : ISettings
     }
 
     [MemberNotNull(nameof(DefaultScriptVersions), nameof(DefaultHostVersions))]
-    private void SetComputedAppSettings()
+    private void SetComputedSettings()
     {
         DefaultScriptVersions = SemVersionRange.Parse(AppSettings.DefaultScriptVersions);
         DefaultHostVersions = SemVersionRange.Parse(AppSettings.DefaultHostVersions);

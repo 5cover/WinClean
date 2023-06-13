@@ -58,7 +58,6 @@ namespace Scover.WinClean.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("436")]
         public double Height {
             get {
                 return ((double)(this["Height"]));
@@ -70,7 +69,6 @@ namespace Scover.WinClean.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public double Width {
             get {
                 return ((double)(this["Width"]));
@@ -128,27 +126,21 @@ namespace Scover.WinClean.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("*-*")]
         public string DefaultHostVersions {
             get {
                 return ((string)(this["DefaultHostVersions"]));
             }
-            set {
-                this["DefaultHostVersions"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("*-*")]
         public string DefaultScriptVersions {
             get {
                 return ((string)(this["DefaultScriptVersions"]));
-            }
-            set {
-                this["DefaultScriptVersions"] = value;
             }
         }
     }
