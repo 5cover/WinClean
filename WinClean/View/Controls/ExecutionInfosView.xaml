@@ -1,12 +1,12 @@
 ﻿<UserControl
     x:Class="Scover.WinClean.View.Controls.ExecutionInfosView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:res="clr-namespace:Scover.WinClean.Resources"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
     mc:Ignorable="d">
     <UserControl.ContentTemplate>
