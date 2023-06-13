@@ -10,19 +10,19 @@ public sealed class Page1AViewModel : WizardPageViewModel
 {
     public Page1AViewModel()
     {
-        Start = new AsyncRelayCommand(CreateRestorePoint);
-        Stop = new RelayCommand(Start.Cancel);
+        OnEnter = new AsyncRelayCommand(CreateRestorePoint);
+        OnLeave = new RelayCommand(OnEnter.Cancel);
     }
 
-    public IAsyncRelayCommand Start { get; }
-    public IRelayCommand Stop { get; }
+    public IAsyncRelayCommand OnEnter { get; }
+    public IRelayCommand OnLeave { get; }
 
     private async Task CreateRestorePoint(CancellationToken cancellationToken)
     {
         await Task.Run(()
             => ServiceProvider.Get<IOperatingSystem>().CreateRestorePoint(ServiceProvider.Get<IApplicationInfo>().Name,
-                                                                          RestorePointEventType.BeginSystemChange,
-                                                                              RestorePointType.ModifySettings), cancellationToken);
+                                                                          RestorePointType.ModifySettings,
+                                                                          RestorePointEventType.BeginSystemChange), cancellationToken);
         Logs.RestorePointCreated.Log(LogLevel.Info);
         OnFinished();
     }

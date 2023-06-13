@@ -25,12 +25,12 @@ public sealed class OperatingSystem : IOperatingSystem
         }
     }
 
-    public void CreateRestorePoint(string description, RestorePointEventType eventType, RestorePointType type)
+    public void CreateRestorePoint(string description, RestorePointType type, RestorePointEventType eventType)
     {
         using ManagementClass systemRestore = new(@"\\localhost\root\default", "SystemRestore", new());
         try
         {
-            _ = systemRestore.InvokeMethod("CreateRestorePoint", new object[] { description, eventType, type });
+            _ = systemRestore.InvokeMethod("CreateRestorePoint", new object[] { description, type, eventType });
         }
         catch (COMException e) when (e.HResult == unchecked((int)0x80070422)) // system restore is disabled
         {
@@ -41,13 +41,13 @@ public sealed class OperatingSystem : IOperatingSystem
     public void DisableSystemRestore(DriveInfo drive)
     {
         using ManagementClass systemRestore = new(@"\\localhost\root\default", "SystemRestore", new());
-        _ = systemRestore.InvokeMethod("Enable", new[] { drive.Name });
+        _ = systemRestore.InvokeMethod("Disable", new[] { drive.Name });
     }
 
     public void EnableSystemRestore(DriveInfo drive)
     {
         using ManagementClass systemRestore = new(@"\\localhost\root\default", "SystemRestore", new());
-        _ = systemRestore.InvokeMethod("Disable", new[] { drive.Name });
+        _ = systemRestore.InvokeMethod("Enable", new[] { drive.Name });
     }
 
     public void RestartForOSReconfig(bool force)

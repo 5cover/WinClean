@@ -141,4 +141,7 @@
   <data name="Reset" xml:space="preserve">
     <value>Réinitialiser</value>
   </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Arrêter</value>
+  </data>
 </root>

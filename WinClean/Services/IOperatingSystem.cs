@@ -7,7 +7,7 @@ public interface IOperatingSystem
 
     /// <summary>Creates a restore point on the local system.</summary>
     /// <exception cref="InvalidOperationException">System restore is disabled.</exception>
-    void CreateRestorePoint(string description, RestorePointEventType eventType, RestorePointType type);
+    void CreateRestorePoint(string description, RestorePointType type, RestorePointEventType eventType);
 
     public void DisableSystemRestore(DriveInfo drive);
 

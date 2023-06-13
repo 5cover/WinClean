@@ -11,8 +11,9 @@
     Title="{x:Static ui:Page2.Title}"
     d:DataContext="{d:DesignInstance Type=pages:Page2ViewModel}"
     BackButtonVisibility="Collapsed"
-    EnterCommand="{Binding Start}"
-    LeaveCommand="{Binding Stop}"
+    CancelButtonVisibility="Collapsed"
+    EnterCommand="{Binding OnEnter}"
+    LeaveCommand="{Binding OnLeave}"
     NextButtonVisibility="Collapsed"
     mc:Ignorable="d">
     <view:ButtonsArea.AdditionalContent>
@@ -21,6 +22,9 @@
             Content="{x:Static ui:Page2.RestartWhenFinished}"
             IsChecked="{Binding RestartWhenFinished, FallbackValue={x:Null}}" />
     </view:ButtonsArea.AdditionalContent>
+    <view:ButtonsArea.AdditionalButtons>
+        <Button Command="{Binding Stop, FallbackValue={x:Null}}" Content="{x:Static ui:Buttons.Stop}" />
+    </view:ButtonsArea.AdditionalButtons>
     <DockPanel Margin="10">
         <ProgressBar
             Height="23"

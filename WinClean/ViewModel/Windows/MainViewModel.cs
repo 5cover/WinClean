@@ -22,14 +22,13 @@ using Scover.WinClean.ViewModel.Logging;
 
 using Button = Scover.Dialogs.Button;
 using Page = Scover.Dialogs.Page;
-using Script = Scover.WinClean.Resources.Script;
 
 namespace Scover.WinClean.ViewModel.Windows;
 
 public sealed partial class MainViewModel : ObservableObject
 {
     private readonly IEnumerable<ScriptViewModel> _orginalScripts;
-    private readonly Lazy<PropertyInfo[]> _scriptProperties = new(typeof(Script).GetProperties(BindingFlags.Public | BindingFlags.Instance));
+    private readonly Lazy<PropertyInfo[]> _scriptProperties = new(typeof(ScriptViewModel).GetProperties(BindingFlags.Public | BindingFlags.Instance));
     private ScriptViewModel? _selectedScript;
 
     public MainViewModel()

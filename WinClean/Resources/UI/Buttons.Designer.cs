@@ -131,5 +131,14 @@ namespace Scover.WinClean.Resources.UI {
                 return ResourceManager.GetString("Reset", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Stop.
+        /// </summary>
+        public static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
     }
 }

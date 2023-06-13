@@ -20,7 +20,7 @@ public sealed class Page2ViewModel : WizardPageViewModel
     public Page2ViewModel(CollectionWrapper<IList<ExecutionInfoViewModel>, ExecutionInfoViewModel> executionInfos)
     {
         ExecutionInfos = executionInfos;
-        Start = new AsyncRelayCommand(async ct =>
+        OnEnter = new AsyncRelayCommand(async ct =>
         {
             try
             {
@@ -32,7 +32,15 @@ public sealed class Page2ViewModel : WizardPageViewModel
                 // Make sure this doesn't go unhandled if a View isn't there to swallow the exception.
             }
         });
-        Stop = new RelayCommand(Start.Cancel);
+        OnLeave = new RelayCommand(OnEnter.Cancel);
+
+        Stop = new RelayCommand(() =>
+        {
+            if (DialogFactory.ShowConfirmation(DialogFactory.MakeConfirmAbortOperation))
+            {
+                OnFinished();
+            }
+        });
 
         AbortScript = new RelayCommand(() =>
         {
@@ -71,6 +79,8 @@ public sealed class Page2ViewModel : WizardPageViewModel
     }
 
     public string FormattedTimeRemaining => TimeRemaining.Match(t => t.Humanize(precision: 3, minUnit: TimeUnit.Second), () => Script.TimeSpanUnknown);
+    public IAsyncRelayCommand OnEnter { get; }
+    public IRelayCommand OnLeave { get; }
     public IRelayCommand Pause { get; }
 
     public bool RestartWhenFinished
@@ -102,7 +112,6 @@ public sealed class Page2ViewModel : WizardPageViewModel
     }
 
     public int ScriptsRemaining => ExecutionInfos.Source.Count - ScriptIndex;
-    public IAsyncRelayCommand Start { get; }
     public IRelayCommand Stop { get; }
     private static TimeSpan TimerInterval => 1.Seconds();
 

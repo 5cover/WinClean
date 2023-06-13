@@ -58,6 +58,7 @@ namespace Scover.WinClean.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
         public double Height {
             get {
                 return ((double)(this["Height"]));
@@ -69,6 +70,7 @@ namespace Scover.WinClean.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
         public double Width {
             get {
                 return ((double)(this["Width"]));

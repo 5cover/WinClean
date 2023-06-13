@@ -99,7 +99,6 @@
                         Header="{x:Static ui:MainWindow.SafetyLevel}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
-                        Width="*"
                         Binding="{Binding Impact.Name}"
                         Header="{x:Static ui:MainWindow.Impact}"
                         IsReadOnly="True" />

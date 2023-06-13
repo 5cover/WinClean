@@ -12,10 +12,10 @@
       <Value Profile="(Default)">NaN</Value>
     </Setting>
     <Setting Name="Height" Type="System.Double" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">NaN</Value>
     </Setting>
     <Setting Name="Width" Type="System.Double" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">NaN</Value>
     </Setting>
     <Setting Name="IsMaximized" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

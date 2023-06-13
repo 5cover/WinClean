@@ -16,7 +16,7 @@
     Width="{Binding Width, Mode=TwoWay}"
     Height="{Binding Height, Mode=TwoWay}"
     MinWidth="{Binding MinHeight, ElementName=window, Converter={StaticResource GoldenRatio}}"
-    MinHeight="436"
+    MinHeight="380"
     d:DataContext="{d:DesignInstance Type=windows:MainViewModel}"
     Background="{x:Static SystemColors.ControlBrush}"
     Left="{Binding Left, Mode=TwoWay}"

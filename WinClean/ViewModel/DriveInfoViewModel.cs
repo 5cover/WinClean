@@ -10,7 +10,11 @@ public sealed class DriveInfoViewModel : ObservableObject
 {
     private bool _isSelected;
 
-    public DriveInfoViewModel(DriveInfo driveInfo) => Drive = driveInfo;
+    public DriveInfoViewModel(DriveInfo drive)
+    {
+        Drive = drive;
+        IsSelected = false;
+    }
 
     public DriveInfo Drive { get; }
 
@@ -19,19 +23,20 @@ public sealed class DriveInfoViewModel : ObservableObject
         get => _isSelected;
         set
         {
-            var systemRestore = ServiceProvider.Get<IOperatingSystem>();
             if (value)
             {
-                systemRestore.EnableSystemRestore(Drive);
+                OperatingSystem.EnableSystemRestore(Drive);
                 Logs.SystemRestoreEnabledForDrive.FormatWith(Drive).Log(LogLevel.Info);
             }
             else
             {
-                systemRestore.DisableSystemRestore(Drive);
+                OperatingSystem.DisableSystemRestore(Drive);
                 Logs.SystemRestoreDisabledForDrive.FormatWith(Drive).Log(LogLevel.Info);
             }
             _isSelected = value;
             OnPropertyChanged();
         }
     }
+
+    private static IOperatingSystem OperatingSystem => ServiceProvider.Get<IOperatingSystem>();
 }

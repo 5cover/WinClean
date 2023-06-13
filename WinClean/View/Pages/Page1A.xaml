@@ -12,9 +12,12 @@
     BackButtonVisibility="Collapsed"
     CanCancel="False"
     Description="{x:Static ui:Page1A.Description}"
-    EnterCommand="{Binding Start}"
-    LeaveCommand="{Binding Stop}"
+    EnterCommand="{Binding OnEnter}"
+    LeaveCommand="{Binding OnLeave}"
     NextButtonVisibility="Collapsed"
     mc:Ignorable="d">
-    <ProgressBar IsIndeterminate="True" />
+    <ProgressBar
+        Height="20"
+        VerticalAlignment="Top"
+        IsIndeterminate="True" />
 </controls:WizardPageBetter>
