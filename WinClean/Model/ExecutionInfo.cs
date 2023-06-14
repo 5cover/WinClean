@@ -15,13 +15,13 @@ public sealed record ProcessOutput(ProcessOutputKind Kind, string? Text);
 public sealed class ExecutionInfo : IDisposable
 {
     private readonly Lazy<Process> _hostProcess;
-    private readonly Lazy<HostStartInfo> _hostStartInfo;
+    private readonly HostStartInfo _hostStartInfo;
     private readonly Stopwatch _stopwatch = new();
     private bool _disposed;
 
     public ExecutionInfo(ScriptAction action, ISynchronizeInvoke? synchronizingObject = null)
     {
-        _hostStartInfo = new(action.CreateHostStartInfo);
+        _hostStartInfo = action.CreateHostStartInfo();
         _hostProcess = new(() => new Process()
         {
             EnableRaisingEvents = true,
@@ -32,8 +32,8 @@ public sealed class ExecutionInfo : IDisposable
                 CreateNoWindow = true,
                 RedirectStandardError = true,
                 RedirectStandardOutput = true,
-                FileName = _hostStartInfo.Value.Filename,
-                Arguments = _hostStartInfo.Value.Arguments,
+                FileName = _hostStartInfo.Filename,
+                Arguments = _hostStartInfo.Arguments,
             }
         });
     }
@@ -51,7 +51,7 @@ public sealed class ExecutionInfo : IDisposable
 
     public void Dispose()
     {
-        _hostStartInfo.DisposeIfCreated();
+        _hostStartInfo.Dispose();
         _hostProcess.DisposeIfCreated();
         _disposed = true;
     }

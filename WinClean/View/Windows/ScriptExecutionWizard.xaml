@@ -58,6 +58,8 @@
             <Setter Property="PageType" Value="Interior" />
             <Setter Property="Template" Value="{StaticResource PageTemplate}" />
             <Setter Property="CanSelectNextPage" Value="{Binding CanSelectNextPage}" />
+            <Setter Property="EnterCommand" Value="{Binding EnterCommand}" />
+            <Setter Property="LeaveCommand" Value="{Binding LeaveCommand}" />
         </Style>
         <pages:Page1
             x:Key="Page1"

@@ -9,7 +9,7 @@ public sealed class HostTempFileStartInfo : HostStartInfo, IDisposable
     public HostTempFileStartInfo(string filename, string incompleteArguments, string tempFileContents, string tempFileExtension) : base(filename, "")
     {
         (_incompleteArguments, _tempFileContents, _tempFileExtension) = (incompleteArguments, tempFileContents, tempFileExtension);
-        _tempFile = new(() => TempFile.Create(_tempFileExtension, _tempFileContents));
+        _tempFile = new(() => TempFile.Create("Script_{0}", _tempFileExtension, _tempFileContents));
     }
 
     public override string Arguments => _incompleteArguments.FormatWith(_tempFile.Value.Filename);

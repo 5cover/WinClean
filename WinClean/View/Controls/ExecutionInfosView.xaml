@@ -45,8 +45,8 @@
                             </GridViewColumn>
                             <GridViewColumn DisplayMemberBinding="{Binding Script.Name}" Header="{x:Static res:Script.Name}" />
                             <GridViewColumn DisplayMemberBinding="{Binding Capability.Name}" Header="{x:Static ui:ExecutionInfosView.Action}" />
-                            <GridViewColumn DisplayMemberBinding="{Binding FormattedOriginalEstimatedExecutionTime}" Header="{x:Static res:ExecutionResult.EstimatedExecutionTime}" />
                             <GridViewColumn DisplayMemberBinding="{Binding Result.FormattedExecutionTime}" Header="{x:Static res:ExecutionResult.MeasuredExecutionTime}" />
+                            <GridViewColumn DisplayMemberBinding="{Binding FormattedOriginalEstimatedExecutionTime}" Header="{x:Static res:ExecutionResult.EstimatedExecutionTime}" />
                             <GridViewColumn DisplayMemberBinding="{Binding Result.ExitCode}" Header="{x:Static res:ExecutionResult.ExitCode}" />
                         </GridView>
                     </ListView.View>

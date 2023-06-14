@@ -125,10 +125,10 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
     public bool RemoveFromStorage() => Storage.Remove(_model);
 
     public Option<ExecutionInfoViewModel> TryCreateExecutionInfo() =>
-        Selection.DesiredCapability is { } desiredCapability && // A capability has be choosen
-        Code.TryGetValue(desiredCapability, out var action) && // The capability exists
-        !desiredCapability.Equals(Code.EffectiveCapability) // The capability is different from the effective capability.
-        ? new ExecutionInfoViewModel(this, desiredCapability, action).Some() : Option.None<ExecutionInfoViewModel>();
+        Selection.DesiredCapability is { } desiredCapability // A capability has be choosen
+        && Code.TryGetValue(desiredCapability, out var action) // The capability exists
+        ? new ExecutionInfoViewModel(this, desiredCapability, action).Some()
+        : Option.None<ExecutionInfoViewModel>();
 
     public void UpdateInStorage() => Storage.Update(_model);
 }

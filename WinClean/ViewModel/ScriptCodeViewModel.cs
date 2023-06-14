@@ -11,21 +11,22 @@ namespace Scover.WinClean.ViewModel;
 
 public sealed class ScriptCodeViewModel : ObservableObject, IDictionary<Capability, ScriptAction>
 {
-    private readonly Lazy<Capability?> _effectiveCapability;
     private readonly ScriptCode _model;
 
     public ScriptCodeViewModel(ScriptCode model)
     {
         _model = model;
-        _effectiveCapability = new(() => model.DetectCapability(ServiceProvider.Get<ISettings>().ScriptDetectionTimeout));
+        EffectiveCapability = new(() => _model.DetectCapability(ServiceProvider.Get<ISettings>().ScriptDetectionTimeout), ct => _model.DetectCapabilityAsync(ct));
     }
 
     public int Count => _model.Count;
 
     /// <remarks>Use IsAsync=true when binding to this property.</remarks>
-    public Capability? EffectiveCapability => _effectiveCapability.Value;
+    /// <summary>Executes detection synchronously once.</summary>
+    public BiLazy<Capability?> EffectiveCapability { get; }
 
     public bool IsReadOnly => ((ICollection<KeyValuePair<Capability, ScriptAction>>)_model).IsReadOnly;
+
     public ICollection<Capability> Keys => _model.Keys;
 
     public ICollection<ScriptAction> Values => _model.Values;
@@ -35,6 +36,14 @@ public sealed class ScriptCodeViewModel : ObservableObject, IDictionary<Capabili
     public void Add(Capability key, ScriptAction value) => _model.Add(key, value);
 
     public bool ContainsKey(Capability key) => _model.ContainsKey(key);
+
+    public async Task<Capability?> DetectCapabilityAsync(CancellationToken cancellationToken)
+    {
+        CancellationTokenSource cts = new();
+        using var reg = cancellationToken.Register(cts.Cancel);
+        cts.CancelAfter(ServiceProvider.Get<ISettings>().ScriptDetectionTimeout);
+        return await _model.DetectCapabilityAsync(cts.Token);
+    }
 
     public IEnumerator<KeyValuePair<Capability, ScriptAction>> GetEnumerator() => _model.GetEnumerator();
 

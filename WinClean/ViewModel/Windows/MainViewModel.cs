@@ -29,6 +29,8 @@ public sealed partial class MainViewModel : ObservableObject
 {
     private readonly IEnumerable<ScriptViewModel> _orginalScripts;
     private readonly Lazy<PropertyInfo[]> _scriptProperties = new(typeof(ScriptViewModel).GetProperties(BindingFlags.Public | BindingFlags.Instance));
+
+    [ObservableProperty]
     private ScriptViewModel? _selectedScript;
 
     public MainViewModel()
@@ -119,7 +121,9 @@ public sealed partial class MainViewModel : ObservableObject
 
         ExecuteScripts = new RelayCommand(() =>
         {
-            if (Scripts.Where(s => s.Selection.IsSelected).Select(s => s.TryCreateExecutionInfo()).WhereSome().ToList() is { Count: > 0 } executionInfos)
+            if (Scripts.Where(s => s.Selection.IsSelected)
+                .Select(s => s.TryCreateExecutionInfo())
+                .WhereSome().ToList() is { Count: > 0 } executionInfos)
             {
                 using ScriptExecutionWizardViewModel viewModel = new(executionInfos);
                 _ = ServiceProvider.Get<IDialogCreator>().ShowDialog(viewModel);
@@ -161,16 +165,6 @@ public sealed partial class MainViewModel : ObservableObject
     public IAsyncRelayCommand OpenOnlineWiki { get; } = new AsyncRelayCommand(async () => (await SourceControlClient.Instance).WikiUrl.Open());
     public IRelayCommand RemoveCurrentScript { get; }
     public CollectionWrapper<ObservableCollection<ScriptViewModel>, ScriptViewModel> Scripts { get; }
-
-    public ScriptViewModel? SelectedScript
-    {
-        get => _selectedScript;
-        set
-        {
-            _selectedScript = value;
-            OnPropertyChanged();
-        }
-    }
 
     public IRelayCommand ShowAboutWindow { get; } = new RelayCommand(() => _ = ServiceProvider.Get<IDialogCreator>().ShowDialog(new AboutViewModel()));
     public IRelayCommand ShowSettingsWindow { get; } = new RelayCommand(() => _ = ServiceProvider.Get<IDialogCreator>().ShowDialog(new SettingsViewModel()));

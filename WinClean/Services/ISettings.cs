@@ -18,7 +18,7 @@ public interface ISettings
     bool IsMaximized { get; set; }
     double Left { get; set; }
 
-    TimeSpan ScriptDetectionTimeout { get; set; }
+    TimeSpan ScriptDetectionTimeout { get; }
 
     /// <summary>
     /// Gets the script execution times dictionary, keyed by <see cref="IScript.InvariantName"/>.

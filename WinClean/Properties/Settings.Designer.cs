@@ -116,15 +116,12 @@ namespace Scover.WinClean.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("00:00:10")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00:01:00")]
         public global::System.TimeSpan ScriptDetectionTimeout {
             get {
                 return ((global::System.TimeSpan)(this["ScriptDetectionTimeout"]));
-            }
-            set {
-                this["ScriptDetectionTimeout"] = value;
             }
         }
         

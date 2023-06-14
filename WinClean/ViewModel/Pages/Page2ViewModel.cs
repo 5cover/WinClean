@@ -20,7 +20,7 @@ public sealed class Page2ViewModel : WizardPageViewModel
     public Page2ViewModel(CollectionWrapper<IList<ExecutionInfoViewModel>, ExecutionInfoViewModel> executionInfos)
     {
         ExecutionInfos = executionInfos;
-        OnEnter = new AsyncRelayCommand(async ct =>
+        AsyncRelayCommand start = new(async ct =>
         {
             try
             {
@@ -32,7 +32,8 @@ public sealed class Page2ViewModel : WizardPageViewModel
                 // Make sure this doesn't go unhandled if a View isn't there to swallow the exception.
             }
         });
-        OnLeave = new RelayCommand(OnEnter.Cancel);
+        EnterCommand = start;
+        LeaveCommand = new RelayCommand(start.Cancel);
 
         Stop = new RelayCommand(() =>
         {
@@ -79,8 +80,6 @@ public sealed class Page2ViewModel : WizardPageViewModel
     }
 
     public string FormattedTimeRemaining => TimeRemaining.Match(t => t.Humanize(precision: 3, minUnit: TimeUnit.Second), () => Script.TimeSpanUnknown);
-    public IAsyncRelayCommand OnEnter { get; }
-    public IRelayCommand OnLeave { get; }
     public IRelayCommand Pause { get; }
 
     public bool RestartWhenFinished
@@ -135,8 +134,12 @@ public sealed class Page2ViewModel : WizardPageViewModel
 
         foreach (var executionInfo in ExecutionInfos.Source)
         {
-            executionInfo.Result = await executionInfo.ExecuteAsync(cancellationToken);
-            executionInfo.Script.ExecutionTime = executionInfo.Result.ExecutionTime.Some();
+            if (await executionInfo.GetExecutionNeededAsync(cancellationToken))
+            {
+                executionInfo.Result = await executionInfo.ExecuteAsync(cancellationToken);
+                executionInfo.Script.ExecutionTime = executionInfo.Result.ExecutionTime.Some();
+            }
+
             ++ScriptIndex;
         }
         if (RestartWhenFinished)

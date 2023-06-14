@@ -17,7 +17,7 @@
                 BorderThickness="1"
                 CornerRadius="1">
                 <DockPanel Margin="10">
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                    <WrapPanel DockPanel.Dock="Top" Orientation="Horizontal">
                         <CheckBox
                             x:Name="stdOutCheckBox"
                             Margin="0,0,20,0"
@@ -28,7 +28,7 @@
                             Margin="0,0,20,0"
                             Content="{x:Static ui:ExecutionInfoView.StandardError}" />
                         <CheckBox x:Name="wordWrapCheckBox" Content="{x:Static ui:ExecutionInfoView.WordWrap}" />
-                    </StackPanel>
+                    </WrapPanel>
                     <avalonEdit:TextEditor
                         x:Name="textEditor"
                         FontFamily="Consolas"

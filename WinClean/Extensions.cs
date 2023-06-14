@@ -29,6 +29,8 @@ public static class Extensions
 {
     public static bool CanExecute(this IRelayCommand relayCommand) => relayCommand.CanExecute(null);
 
+    public static ISynchronizeInvoke CreateSynchronizationObject(this DispatcherObject dispatcherObject) => new DispatcherSynchronizeInvoke(dispatcherObject.Dispatcher);
+
     public static void DisposeIfCreated<T>(this Lazy<T> lazy) where T : IDisposable
     {
         if (lazy.IsValueCreated)
@@ -112,8 +114,6 @@ public static class Extensions
             ? throw new XmlException($"'{parent.Name}' has {elements.Count} childs named '{name}' but only one was expected.")
             : elements[0]?.InnerText;
     }
-
-    public static ISynchronizeInvoke GetSynchronizationObject(this DispatcherObject dispatcherObject) => new DispatcherSynchronizeInvoke(dispatcherObject.Dispatcher);
 
     /// <summary>
     /// Checks if an exception is exogenous and could have been thrown by the filesystem API.

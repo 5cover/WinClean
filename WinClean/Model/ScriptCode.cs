@@ -24,18 +24,21 @@ public sealed class ScriptCode : IDictionary<Capability, ScriptAction>
 
     public Capability? DetectCapability(TimeSpan timeout)
     {
-        if (TryGetValue(Capability.Detect, out var detect))
+        if (!TryGetValue(Capability.Detect, out ScriptAction? detect))
         {
-            var (_, hostProcess) = StartHostProcess(detect);
-
-            if (hostProcess.WaitForExit(Convert.ToInt32(timeout.TotalMilliseconds)))
-            {
-                return Capability.FromInteger(hostProcess.ExitCode);
-            }
-            // Detection took too long : kill process.
-            hostProcess.Kill(true);
+            return null;
         }
 
+        using HostStartInfo startInfo = detect.CreateHostStartInfo();
+        using Process process = StartProcess(startInfo);
+
+        if (process.WaitForExit(Convert.ToInt32(timeout.TotalMilliseconds)))
+        {
+            return Capability.FromInteger(process.ExitCode);
+        }
+
+        // Detection took too long : kill process.
+        process.Kill(true);
         return null;
     }
 
@@ -46,10 +49,14 @@ public sealed class ScriptCode : IDictionary<Capability, ScriptAction>
             return null;
         }
 
-        var (_, hostProcess) = StartHostProcess(detect);
-        await hostProcess.WaitForExitAsync(cancellationToken);
+        using HostStartInfo startInfo = detect.CreateHostStartInfo();
+        using var process = StartProcess(startInfo);
 
-        return Capability.FromInteger(hostProcess.ExitCode);
+        using var reg = cancellationToken.Register(() => process.Kill(true));
+
+        await process.WaitForExitAsync(cancellationToken);
+
+        return Capability.FromInteger(process.ExitCode);
     }
 
     public IEnumerator<KeyValuePair<Capability, ScriptAction>> GetEnumerator() => ((IEnumerable<KeyValuePair<Capability, ScriptAction>>)_actions).GetEnumerator();
@@ -70,14 +77,10 @@ public sealed class ScriptCode : IDictionary<Capability, ScriptAction>
 
     bool ICollection<KeyValuePair<Capability, ScriptAction>>.Remove(KeyValuePair<Capability, ScriptAction> item) => ((ICollection<KeyValuePair<Capability, ScriptAction>>)_actions).Remove(item);
 
-    private static (HostStartInfo startInfo, Process hostProcess) StartHostProcess(ScriptAction detect)
+    private static Process StartProcess(HostStartInfo startInfo) => Process.Start(new ProcessStartInfo()
     {
-        HostStartInfo startInfo = detect.CreateHostStartInfo();
-        return (startInfo, Process.Start(new ProcessStartInfo()
-        {
-            FileName = startInfo.Filename,
-            Arguments = startInfo.Arguments,
-            CreateNoWindow = true,
-        }).NotNull());
-    }
+        FileName = startInfo.Filename,
+        Arguments = startInfo.Arguments,
+        CreateNoWindow = true,
+    }).NotNull();
 }

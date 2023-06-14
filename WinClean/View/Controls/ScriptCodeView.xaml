@@ -93,7 +93,7 @@
                                                         <Binding
                                                             ElementName="scriptCodeViewUserControl"
                                                             IsAsync="True"
-                                                            Path="Content.Code.EffectiveCapability" />
+                                                            Path="Content.Code.EffectiveCapability.Value" />
                                                     </MultiBinding>
                                                 </DataTrigger.Binding>
                                                 <Setter Property="Visibility" Value="Collapsed" />

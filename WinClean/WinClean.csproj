@@ -103,7 +103,7 @@
     <EmbeddedResource Include="Scripts\Show file extensions.xml" />
     <EmbeddedResource Include="Scripts\Clear event logs.xml" />
     <EmbeddedResource Include="Scripts\Clear File Explorer history.xml" />
-    <EmbeddedResource Include="Scripts\Delete all system restore points.xml" />
+    <EmbeddedResource Include="Scripts\Delete all system restore points, except the most recent.xml" />
     <EmbeddedResource Include="Scripts\Delete junk files.xml" />
     <EmbeddedResource Include="Scripts\Show ads and suggestions.xml" />
     <EmbeddedResource Include="Scripts\Disable delivery optimization.xml" />
@@ -118,7 +118,7 @@
     <EmbeddedResource Include="Scripts\Keep thumbnail cache after reboot.xml" />
     <EmbeddedResource Include="Scripts\Remove Cortana.xml" />
     <EmbeddedResource Include="Scripts\Remove Internet Explorer 11.xml" />
-    <EmbeddedResource Include="Scripts\Remove Microsoft Windows Malware Removal Tool.xml" />
+    <EmbeddedResource Include="Scripts\Remove the Microsoft Windows Malware Removal Tool.xml" />
     <EmbeddedResource Include="Scripts\Remove PowerShell ISE.xml" />
     <EmbeddedResource Include="Scripts\Remove useless apps.xml" />
     <EmbeddedResource Include="Scripts\Remove scheduled tasks.xml" />

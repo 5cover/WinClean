@@ -12,8 +12,6 @@
     d:DataContext="{d:DesignInstance Type=pages:Page2ViewModel}"
     BackButtonVisibility="Collapsed"
     CancelButtonVisibility="Collapsed"
-    EnterCommand="{Binding OnEnter}"
-    LeaveCommand="{Binding OnLeave}"
     NextButtonVisibility="Collapsed"
     mc:Ignorable="d">
     <view:ButtonsArea.AdditionalContent>
@@ -26,12 +24,6 @@
         <Button Command="{Binding Stop, FallbackValue={x:Null}}" Content="{x:Static ui:Buttons.Stop}" />
     </view:ButtonsArea.AdditionalButtons>
     <DockPanel Margin="10">
-        <ProgressBar
-            Height="23"
-            Margin="0,0,0,10"
-            DockPanel.Dock="Top"
-            Maximum="{Binding ExecutionInfos.Source.Count, Mode=OneTime}"
-            Value="{Binding ScriptIndex, Mode=OneWay}" />
         <TextBlock Margin="0,0,0,10" DockPanel.Dock="Top">
             <TextBlock.Text>
                 <MultiBinding StringFormat="{x:Static ui:Page2.ProgressFormat}">
@@ -43,6 +35,12 @@
                 </MultiBinding>
             </TextBlock.Text>
         </TextBlock>
+        <ProgressBar
+            Height="23"
+            Margin="0,0,0,10"
+            DockPanel.Dock="Top"
+            Maximum="{Binding ExecutionInfos.Source.Count, Mode=OneTime}"
+            Value="{Binding ScriptIndex, Mode=OneWay}" />
         <StackPanel
             Margin="0,0,0,10"
             DockPanel.Dock="Top"

@@ -10,12 +10,10 @@ public sealed class Page1AViewModel : WizardPageViewModel
 {
     public Page1AViewModel()
     {
-        OnEnter = new AsyncRelayCommand(CreateRestorePoint);
-        OnLeave = new RelayCommand(OnEnter.Cancel);
+        AsyncRelayCommand start = new(CreateRestorePoint);
+        EnterCommand = start;
+        LeaveCommand = new RelayCommand(start.Cancel);
     }
-
-    public IAsyncRelayCommand OnEnter { get; }
-    public IRelayCommand OnLeave { get; }
 
     private async Task CreateRestorePoint(CancellationToken cancellationToken)
     {

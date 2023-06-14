@@ -12,8 +12,6 @@
     BackButtonVisibility="Collapsed"
     CanCancel="False"
     Description="{x:Static ui:Page1A.Description}"
-    EnterCommand="{Binding OnEnter}"
-    LeaveCommand="{Binding OnLeave}"
     NextButtonVisibility="Collapsed"
     mc:Ignorable="d">
     <ProgressBar

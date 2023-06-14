@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -13,6 +14,7 @@ namespace Scover.WinClean.ViewModel;
 
 public sealed class ExecutionInfoViewModel : ObservableObject
 {
+    private static readonly Lazy<ISynchronizeInvoke> synchronizationObject = new(Application.Current.CreateSynchronizationObject);
     private readonly ExecutionInfo _model;
     private ExecutionResultViewModel? _result;
     private bool _userIsNotScrolling = true;
@@ -21,15 +23,17 @@ public sealed class ExecutionInfoViewModel : ObservableObject
     {
         Script = script;
         Capability = capabilityToExecute;
-        _model = new(actionToExecute, Application.Current.GetSynchronizationObject());
+        _model = new(actionToExecute, synchronizationObject.Value);
         NotifyScroll = new RelayCommand<ScrollEventArgs>(e => UserIsNotScrolling = e.NotNull().ScrollEventType is ScrollEventType.EndScroll);
         FormattedOriginalEstimatedExecutionTime = script.ExecutionTime.Match(t => t.FormatToSeconds(), () => Resources.Script.TimeSpanUnknown);
     }
 
     public Capability Capability { get; }
+
     public string FormattedOriginalEstimatedExecutionTime { get; }
 
     public IRelayCommand<ScrollEventArgs> NotifyScroll { get; }
+
     public ExecutionProgressViewModel Progress { get; } = new();
 
     public ExecutionResultViewModel? Result
@@ -69,6 +73,9 @@ public sealed class ExecutionInfoViewModel : ObservableObject
         Logs.ScriptExecutionCompleted.FormatWith(Script.InvariantName, Capability.InvariantName, result.ExitCode, result.Succeeded).Log();
         return new(result);
     }
+
+    public async Task<bool> GetExecutionNeededAsync(CancellationToken cancellationToken)
+        => !Capability.Equals(await Script.Code.EffectiveCapability.GetValueAsync(cancellationToken));
 
     public void Pause()
     {

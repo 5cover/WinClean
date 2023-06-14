@@ -27,7 +27,7 @@ public sealed class Settings : ISettings
     public bool IsLoggingEnabled { get => AppSettings.IsLoggingEnabled; set => AppSettings.IsLoggingEnabled = value; }
     public bool IsMaximized { get => AppSettings.IsMaximized; set => AppSettings.IsMaximized = value; }
     public double Left { get => AppSettings.Left; set => AppSettings.Left = value; }
-    public TimeSpan ScriptDetectionTimeout { get => AppSettings.ScriptDetectionTimeout; set => AppSettings.ScriptDetectionTimeout = value; }
+    public TimeSpan ScriptDetectionTimeout => AppSettings.ScriptDetectionTimeout;
     public IDictionary<string, TimeSpan> ScriptExecutionTimes { get; private set; }
     public string ScriptFileExtension => AppSettings.ScriptFileExtension;
     public bool ShowUpdateDialog { get => AppSettings.ShowUpdateDialog; set => AppSettings.ShowUpdateDialog = value; }
