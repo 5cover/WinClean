@@ -101,7 +101,7 @@ Script and capability names are case sensitive and follow ordinal string compari
         foreach ((var script, var capability) in executionInfos)
         {
             Console.WriteLine(ConsoleMode.ExecutingScript.FormatWith(script.Name, capability.Name));
-            var result = new ExecutionInfo(script.Code[capability]).Execute(); // chaud: log result
+            var result = new ExecutionInfo(script.Code[capability]).Execute();
             Console.WriteLine(ConsoleMode.ScriptExecuted.FormatWith(script.Name,
                                                                     result.ExitCode,
                                                                     result.ExecutionTime.FormatToSeconds(),

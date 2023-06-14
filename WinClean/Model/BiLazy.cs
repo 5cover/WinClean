@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace Scover.WinClean.Model;
+﻿namespace Scover.WinClean.Model;
 
 /// <summary>A lazily-initialized value that can be retrieved synchronously or asynchronously.</summary>
 public sealed class BiLazy<T>
@@ -17,21 +15,7 @@ public sealed class BiLazy<T>
     /// <remarks>
     /// WPF: Use <c>IsAsync=True</c> when binding to this property. This property is thread-safe.
     /// </remarks>
-    public T Value
-    {
-        get
-        {
-            if (_value.IsValueCreated)
-            {
-                Debug.WriteLine("Value: returning cached value");
-            }
-            else
-            {
-                Debug.WriteLine("Value: creating value");
-            }
-            return _value.Value;
-        }
-    }
+    public T Value => _value.Value;
 
     /// <summary>Retrieves the value asynchronously.</summary>
     /// <remarks>This method is not thread-safe.</remarks>
@@ -39,10 +23,9 @@ public sealed class BiLazy<T>
     {
         if (_value.IsValueCreated)
         {
-            Debug.WriteLine("GetValueAsync: returning cached value");
             return Value;
         }
-        Debug.WriteLine("GetValueAsync: creating value");
+
         T value = await _createValueAsync(cancellationToken);
         _value = new(value);
         return value;
