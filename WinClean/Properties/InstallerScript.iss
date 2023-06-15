@@ -111,13 +111,13 @@ var
 
 procedure InitializeWizard();
 begin
-    g_dotNetInstallerPath := ExpandConstant('{tmp}\NetDesktopRuntime6.0.14_Installer.exe');
+    g_dotNetInstallerPath := ExpandConstant('{tmp}\NetDesktopRuntime6.0.18_Installer.exe');
     g_dotNetMissing := not IsDotNetInstalled('Microsoft.WindowsDesktop.App 6.0.14');
     
     if g_dotNetMissing then begin
         case '{#_Arch}' of
-            'win-x86': idpAddFile('https://download.visualstudio.microsoft.com/download/pr/e66c97f8-3ca5-4cbc-aaf8-77079b21f41f/3ce8574df28f49d85091b1af758eccb7/windowsdesktop-runtime-6.0.14-win-x86.exe', g_dotNetInstallerPath);
-            'win-x64': idpAddFile('https://download.visualstudio.microsoft.com/download/pr/035efed3-6386-4e1d-bcbc-384a20ebf47e/abfbea2303e0ce9cb15d430314e5858f/windowsdesktop-runtime-6.0.14-win-x64.exe', g_dotNetInstallerPath);
+            'win-x86': idpAddFile('https://download.visualstudio.microsoft.com/download/pr/68574b0b-3242-46f1-a406-9ef9aeeec3e5/d45d732e846f306889f41579104b1a33/windowsdesktop-runtime-6.0.18-win-x86.exe', g_dotNetInstallerPath);
+            'win-x64': idpAddFile('https://download.visualstudio.microsoft.com/download/pr/f76bace5-6cf4-41d8-ab54-fb7a3766b673/1cbc047d4547dfa9ecd59d5a71402186/windowsdesktop-runtime-6.0.18-win-x64.exe', g_dotNetInstallerPath);
         end
         idpDownloadAfter(wpReady);
     end
