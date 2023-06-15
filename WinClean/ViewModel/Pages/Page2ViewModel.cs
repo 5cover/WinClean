@@ -138,6 +138,7 @@ public sealed class Page2ViewModel : WizardPageViewModel
             {
                 executionInfo.Result = await executionInfo.ExecuteAsync(cancellationToken);
                 executionInfo.Script.ExecutionTime = executionInfo.Result.ExecutionTime.Some();
+                executionInfo.Script.Code.EffectiveCapability.InvalidateValue();
             }
 
             ++ScriptIndex;
