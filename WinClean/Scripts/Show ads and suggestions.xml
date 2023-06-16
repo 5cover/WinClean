@@ -9,7 +9,7 @@ https://winaero.com/how-to-disable-ads-in-windows-11/
   <Name xml:lang="fr">Afficher les publicités et les sugestions</Name>
   <Description>This script disables ads and app suggestions. This setting affects the current user.</Description>
   <Description xml:lang="fr">Ce script désactive les publicités et les suggestions d'applications. Ce paramètre affecte l'utilisateur actuel.</Description>
-  <Category>Debloat</Category>
+  <Category>Debloating</Category>
   <SafetyLevel>Safe</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Versions>>=10.0.0</Versions>

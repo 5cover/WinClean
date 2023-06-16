@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
@@ -53,20 +52,8 @@ public sealed partial class MainViewModel : ObservableObject
             Source = new ObservableCollection<ScriptViewModel>(_orginalScripts),
             GroupDescriptions =
             {
-                new PropertyGroupDescription(nameof(ScriptViewModel.Category))
-                {
-                    SortDescriptions =
-                    {
-                        new SortDescription(nameof(Category.Name), ListSortDirection.Ascending),
-                    }
-                },
-                new PropertyGroupDescription(nameof(ScriptViewModel.Usages))
-                {
-                    SortDescriptions =
-                    {
-                        new SortDescription(nameof(Usage.Name), ListSortDirection.Ascending),
-                    }
-                },
+                new PropertyGroupDescription(nameof(ScriptViewModel.Category)).SortedBy(nameof(CollectionViewGroup.Name)),
+                new PropertyGroupDescription(nameof(ScriptViewModel.Usages)).SortedBy(nameof(CollectionViewGroup.Name)),
             },
         });
 
@@ -96,7 +83,13 @@ public sealed partial class MainViewModel : ObservableObject
         {
             var lastAddedScript = Option.None<ScriptViewModel>();
 
-            var paths = ServiceProvider.Get<IDialogCreator>().ShowOpenFileDialog(new(Settings.ScriptFileExtension), Settings.ScriptFileExtension, true, true);
+            IFilterBuilder builder = ServiceProvider.Get<IFilterBuilder>();
+
+            var filter = builder.Combine(builder.Make(
+                new ExtensionGroup(Settings.ScriptFileExtension)),
+                builder.Make(Resources.UI.MainWindow.AllFiles, ".*"));
+
+            var paths = ServiceProvider.Get<IDialogCreator>().ShowOpenFileDialog(filter, Settings.ScriptFileExtension, true, true);
 
             foreach (var path in paths)
             {

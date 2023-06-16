@@ -177,6 +177,10 @@
     <value>Name</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order</value>
+    <comment>@Invariant</comment>
+  </data>
   <data name="ProgramHost" xml:space="preserve">
     <value>Program</value>
     <comment>@Invariant</comment>

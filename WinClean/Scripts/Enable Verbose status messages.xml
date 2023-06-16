@@ -5,7 +5,7 @@
   <Name xml:lang="fr">Activer les messages d'état détaillés</Name>
   <Description>If verbose logging isn't enabled, you'll still receive normal status messages such as "Applying your personal settings..." or "Applying computer settings..." when you start up, shut down, log on, or log off from the computer. However, if verbose logging is enabled, you'll receive additional information, such as "RPCSS is starting" or "Waiting for machine group policies to finish....".</Description>
   <Description xml:lang="fr">Si la journalisation détaillée n'est pas activée, vous recevrez toujours des messages d'état normaux tels que « Appliquer vos paramètres personnels... » ou « Application des paramètres de l'ordinateur... » lorsque vous démarrez, arrêtez, ouvrez une session ou déconnectez-vous de l'ordinateur. Toutefois, si la journalisation détaillée est activée, vous recevrez des informations supplémentaires, telles que « RPCSS démarre » ou « En attente de la fin des stratégies de groupe d'ordinateurs... ».</Description>
-  <Category>Debloat</Category>
+  <Category>Debloating</Category>
   <SafetyLevel>Safe</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>

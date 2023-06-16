@@ -22,15 +22,14 @@ public sealed class MetadatasProvider : IMetadatasProvider
         };
     });
 
+    public StringComparison Comparison => StringComparison.OrdinalIgnoreCase;
     public TypedEnumerableDictionary Metadatas => _metadatas.Value;
 
-    public T GetMetadata<T>(string invariantName) where T : ScriptLocalizedStringMetadata
-        => Metadatas.Get<T>().Single(m => CompareMetadatas(invariantName, m));
+    public T GetMetadata<T>(string invariantName) where T : Metadata
+        => Metadatas.Get<T>().Single(m => m.InvariantName.Equals(invariantName, Comparison));
 
-    public T? GetMetadataOrDefault<T>(string invariantName) where T : ScriptLocalizedStringMetadata
-        => Metadatas.Get<T>().SingleOrDefault(m => CompareMetadatas(invariantName, m));
-
-    private static bool CompareMetadatas(string invariantName, ScriptLocalizedStringMetadata m) => m.InvariantName.Equals(invariantName, StringComparison.OrdinalIgnoreCase);
+    public T? GetMetadataOrDefault<T>(string invariantName) where T : Metadata
+        => Metadatas.Get<T>().SingleOrDefault(m => m.InvariantName.Equals(invariantName, Comparison));
 
     private static Stream ReadContentFile(string filename)
         => ServiceProvider.Get<IApplicationInfo>().Assembly.GetManifestResourceStream($"{MetadataContentFilesNamespace}.{filename}").NotNull();

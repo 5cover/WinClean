@@ -4,7 +4,7 @@
   <Name xml:lang="fr">Supprimer WordPad</Name>
   <Description>WordPad can be deleted if you don't use it.</Description>
   <Description xml:lang="fr">WordPad peut être supprimé si vous ne l'utilisez pas.</Description>
-  <Category>Debloat</Category>
+  <Category>Debloating</Category>
   <SafetyLevel>Limited</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Versions>>=4.0.950</Versions>

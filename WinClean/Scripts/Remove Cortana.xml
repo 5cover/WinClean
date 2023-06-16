@@ -4,7 +4,7 @@
   <Name xml:lang="fr">Supprimer Cortana</Name>
   <Description>This scripts removes Cortana, the start menu assistant.</Description>
   <Description xml:lang="fr">Ce script supprime Cortana, l'assistant du menu démarrer.</Description>
-  <Category>Debloat</Category>
+  <Category>Debloating</Category>
   <SafetyLevel>Limited</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Versions>>=10.0.0</Versions>

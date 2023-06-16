@@ -120,6 +120,9 @@
   <data name="AddScripts" xml:space="preserve">
     <value>Add scripts</value>
   </data>
+  <data name="AllFiles" xml:space="preserve">
+    <value>All files</value>
+  </data>
   <data name="Category" xml:space="preserve">
     <value>_Category</value>
   </data>

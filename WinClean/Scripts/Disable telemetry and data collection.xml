@@ -4,7 +4,7 @@
   <Name xml:lang="fr">Désactiver la télémétrie et la collecte des données</Name>
   <Description>Windows collects diagnostic data and analyzes user activity. This script prevents Windows from collecting your personal data.</Description>
   <Description xml:lang="fr">Windows collecte des données de diagnostic et analyse l'activité utilisateur. Ce script empêche Windows de collecter vos données personnelles.</Description>
-  <Category>Debloat</Category>
+  <Category>Debloating</Category>
   <SafetyLevel>Safe</SafetyLevel>
   <Impact>Privacy</Impact>
   <Versions>>=10.0.0</Versions>

@@ -4,9 +4,10 @@ using Vanara.PInvoke;
 
 namespace Scover.WinClean.Model.Metadatas;
 
-public sealed record ShellHost : Host
+public sealed class ShellHost : Host
 {
     private readonly string _commandLine;
+
     public ShellHost(LocalizedString name, LocalizedString description, SemVersionRange versions, (string filename, int index)? icon, string commandLine) : base(name, description, versions, icon) => _commandLine = commandLine;
 
     public override HostStartInfo CreateHostStartInfo(string code)

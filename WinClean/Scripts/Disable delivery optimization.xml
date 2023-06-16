@@ -4,7 +4,7 @@
   <Name xml:lang="fr">Désactiver l'optimisation de la distribution</Name>
   <Description>By default, Windows downloads updates from other PCs on the network. Disabling this feature allows updates to be downloaded only from Microsoft servers.</Description>
   <Description xml:lang="fr">Par défaut, Windows télécharge les mises à jour depuis d'autres PC sur le réseau. Désactiver cette fonctionnalité permet de télécharger les mises à jour uniquement depuis les serveurs Microsoft.</Description>
-  <Category>Debloat</Category>
+  <Category>Debloating</Category>
   <SafetyLevel>Safe</SafetyLevel>
   <Impact>Privacy</Impact>
   <Versions>>=10.0.0</Versions>

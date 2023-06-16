@@ -37,6 +37,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\None.png" />
     <None Remove="Scripts\Enable Verbose status messages.xml" />
   </ItemGroup>
   
@@ -93,6 +94,7 @@
   <ItemGroup>
     <Resource Include="Resources\Images\Cross.ico" />
     <Resource Include="Resources\Images\Gear.png" />
+    <Resource Include="Resources\Images\None.png" />
     <Resource Include="Resources\Images\Pause.png" />
     <Resource Include="Resources\Images\Play.png" />
     <Resource Include="Resources\Images\WinClean.png" />

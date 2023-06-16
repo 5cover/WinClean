@@ -15,7 +15,7 @@ public sealed partial class ScriptXmlSerializerTests : SerializationTests
 {
     private const string ScriptResourceNamespace = $"{nameof(Scover)}.{nameof(Scover.WinClean)}.Scripts.";
 
-    private static readonly TestScript script1 = TestScript.Create("Debloat", "Free storage space", "Limited",
+    private static readonly TestScript script1 = TestScript.Create("Debloating", "Free storage space", "Limited",
         Localize("Remove WordPad", "Supprimer WordPad"),
         Localize("WordPad can be deleted if you don't use it.", "WordPad peut être supprimé si vous ne l'utilisez pas."),
         new(new()

@@ -16,21 +16,15 @@ public sealed class DialogCreator : IDialogCreator
         return view.ShowDialog();
     }
 
-    public IReadOnlyList<string> ShowOpenFileDialog(ExtensionGroup? extensions = null, string defaultExtension = "", bool multiselect = false, bool readonlyChecked = false)
+    public IReadOnlyList<string> ShowOpenFileDialog(string filter, string defaultExtension = "", bool multiselect = false, bool readonlyChecked = false)
     {
         OpenFileDialog ofd = new()
         {
-            Filter = extensions is null ? "" : MakeFilter(extensions),
+            Filter = filter,
             DefaultExt = defaultExtension,
             Multiselect = multiselect,
             ReadOnlyChecked = readonlyChecked
         };
         return !ofd.ShowDialog(ActiveWindow) ?? true ? Array.Empty<string>() : ofd.FileNames;
-    }
-
-    private static string MakeFilter(ExtensionGroup group)
-    {
-        string extensions = string.Join(";", group.Select(ext => $"*{ext}"));
-        return $"{group.Name} ({extensions})|{extensions}";
     }
 }

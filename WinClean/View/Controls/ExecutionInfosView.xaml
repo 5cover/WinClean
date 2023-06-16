@@ -19,7 +19,7 @@
                 </Grid.ColumnDefinitions>
                 <ListView IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}">
                     <ListView.View>
-                        <GridView AllowsColumnReorder="False">
+                        <GridView>
                             <GridViewColumn>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate DataType="viewModel:ExecutionInfoViewModel">
@@ -27,8 +27,8 @@
                                             <Image.Style>
                                                 <Style BasedOn="{StaticResource Icon}" TargetType="Image">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Result.Succeeded}" Value="{x:Null}">
-                                                            <Setter Property="Source" Value="{x:Null}" />
+                                                        <DataTrigger Binding="{Binding Result.Succeeded, FallbackValue={x:Null}}" Value="{x:Null}">
+                                                            <Setter Property="Source" Value="{StaticResource None}" />
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding Result.Succeeded}" Value="False">
                                                             <Setter Property="Source" Value="{StaticResource Cross}" />
@@ -45,9 +45,10 @@
                             </GridViewColumn>
                             <GridViewColumn DisplayMemberBinding="{Binding Script.Name}" Header="{x:Static res:Script.Name}" />
                             <GridViewColumn DisplayMemberBinding="{Binding Capability.Name}" Header="{x:Static ui:ExecutionInfosView.Action}" />
-                            <GridViewColumn DisplayMemberBinding="{Binding Result.FormattedExecutionTime}" Header="{x:Static res:ExecutionResult.MeasuredExecutionTime}" />
+                            <!--  TargetNullValue doesn't work at all here for some reason  -->
+                            <GridViewColumn DisplayMemberBinding="{Binding Result.FormattedExecutionTime, FallbackValue=-}" Header="{x:Static res:ExecutionResult.MeasuredExecutionTime}" />
                             <GridViewColumn DisplayMemberBinding="{Binding FormattedOriginalEstimatedExecutionTime}" Header="{x:Static res:ExecutionResult.EstimatedExecutionTime}" />
-                            <GridViewColumn DisplayMemberBinding="{Binding Result.ExitCode}" Header="{x:Static res:ExecutionResult.ExitCode}" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Result.ExitCode, FallbackValue=-}" Header="{x:Static res:ExecutionResult.ExitCode}" />
                         </GridView>
                     </ListView.View>
                 </ListView>

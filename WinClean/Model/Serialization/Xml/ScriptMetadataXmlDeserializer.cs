@@ -14,7 +14,7 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
 {
     public IEnumerable<Category> GetCategories(Stream stream)
         => from category in GetLocalizable(stream, ElementFor.Category)
-           select new Category(category.name, category.description);
+           select new Category(category.name, category.description, GetOrder(category.element));
 
     public IEnumerable<Host> GetHosts(Stream stream)
         => from host in GetLocalizable(stream, ElementFor.Host)
@@ -45,7 +45,7 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
 
     public IEnumerable<SafetyLevel> GetSafetyLevels(Stream stream)
         => from safetyLevel in GetLocalizable(stream, ElementFor.SafetyLevel)
-           select new SafetyLevel(safetyLevel.name, safetyLevel.description, (Color)ColorConverter.ConvertFromString(safetyLevel.element.GetAttribute(ElementFor.Color)));
+           select new SafetyLevel(safetyLevel.name, safetyLevel.description, GetOrder(safetyLevel.element), (Color)ColorConverter.ConvertFromString(safetyLevel.element.GetAttribute(ElementFor.Color)));
 
     private static IEnumerable<XmlElement> GetElements(Stream s, string name)
     {
@@ -72,4 +72,6 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
             yield return (element, name, description);
         }
     }
+
+    private static int GetOrder(XmlElement element) => int.Parse(element.GetAttribute(ElementFor.Order));
 }

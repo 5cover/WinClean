@@ -2,7 +2,7 @@
 
 namespace Scover.WinClean.Model.Metadatas;
 
-public sealed record ProgramHost : Host
+public sealed class ProgramHost : Host
 {
     private readonly string _arguments, _executable, _extension;
 

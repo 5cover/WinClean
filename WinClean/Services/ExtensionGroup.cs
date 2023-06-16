@@ -4,7 +4,7 @@ using Microsoft.Win32;
 
 namespace Scover.WinClean.Services;
 
-/// <summary>A group of related extensions</summary>
+/// <summary>A group of related extensions.</summary>
 public sealed class ExtensionGroup : IEnumerable<string>
 {
     private readonly IEnumerable<string> _extensions;
@@ -17,6 +17,7 @@ public sealed class ExtensionGroup : IEnumerable<string>
     {
     }
 
+    /// <summary>Gets an user-friendly name for this extension group from HKEY_CLASSES_ROOT.</summary>
     public string Name
         => (Registry.ClassesRoot.OpenSubKey(_extensions.First())?.GetValue(null) is string name
             ? Registry.ClassesRoot.OpenSubKey(name)?.GetValue(null) as string

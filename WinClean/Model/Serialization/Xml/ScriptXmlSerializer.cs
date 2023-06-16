@@ -124,13 +124,17 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
     /// <summary>Deserializes a script in the pre 1.3.0 format.</summary>
     private static Script DeserializePre130(ScriptType type, XmlDocument d)
         => new(Metadatas.GetMetadata<Category>(d.GetSingleChildText(ElementFor.Category)),
-               Metadatas.GetMetadata<Impact>(d.GetSingleChildText(ElementFor.Impact)),
+               Metadatas.GetMetadata<Impact>(d.GetSingleChildText(ElementFor.Impact) switch
+               {
+                   var s when s.Equals("Debloat", Metadatas.Comparison) => "Debloating",
+                   var s => s
+               }),
                DefaultScriptVersions,
                Metadatas.GetMetadata<SafetyLevel>(d.GetSingleChildText("Recommended") switch
                {
-                   "Yes" => "Safe",
-                   "No" => "Dangerous",
-                   _ => d.GetSingleChildText("Recommended")
+                   var s when s.Equals("Yes", Metadatas.Comparison) => "Safe",
+                   var s when s.Equals("No", Metadatas.Comparison) => "Dangerous",
+                   var s => s,
                }),
                d.GetLocalizedString(ElementFor.Description),
                d.GetLocalizedString(ElementFor.Name),

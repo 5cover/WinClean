@@ -19,6 +19,8 @@ public sealed partial class ScriptMetadataXmlDeserializerTests : SerializationTe
         Name = "Name",
         NameFr = "NameFr";
 
+    private const int Order = 420;
+
     private static readonly TestProgramHost host1 = new(
         Localize("Host1Name", "Host1OtherName"),
         Localize("Host1Description", "Host1OtherDescription"),
@@ -58,12 +60,12 @@ public sealed partial class ScriptMetadataXmlDeserializerTests : SerializationTe
         get
         {
             yield return new($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-<Category>
+<Category Order=""{Order}"">
   <Name>{Name}</Name>
   <Name xml:lang=""fr"">{NameFr}</Name>
   <Description>{Desc}</Description>
   <Description xml:lang=""fr"">{DescFr}</Description>
-</Category>", new Category(Localize(Name, NameFr), Localize(Desc, DescFr)));
+</Category>", new Category(Localize(Name, NameFr), Localize(Desc, DescFr), Order));
         }
     }
 
@@ -99,12 +101,12 @@ public sealed partial class ScriptMetadataXmlDeserializerTests : SerializationTe
         get
         {
             yield return new TestCaseData($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-<SafetyLevel Color=""{Color}"">
+<SafetyLevel Order=""{Order}"" Color=""{Color}"">
   <Name>{Name}</Name>
   <Name xml:lang=""fr"">{NameFr}</Name>
   <Description>{Desc}</Description>
   <Description xml:lang=""fr"">{DescFr}</Description>
-</SafetyLevel>", new SafetyLevel(Localize(Name, NameFr), Localize(Desc, DescFr), (Color)ColorConverter.ConvertFromString(Color)));
+</SafetyLevel>", new SafetyLevel(Localize(Name, NameFr), Localize(Desc, DescFr), Order, (Color)ColorConverter.ConvertFromString(Color)));
         }
     }
 

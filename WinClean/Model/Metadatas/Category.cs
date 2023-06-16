@@ -1,8 +1,11 @@
 ﻿namespace Scover.WinClean.Model.Metadatas;
 
-public sealed record Category : ScriptLocalizedStringMetadata
+public sealed class Category : Metadata
 {
-    public Category(LocalizedString name, LocalizedString description) : base(name, description)
-    {
-    }
+    private readonly int _order;
+
+    public Category(LocalizedString name, LocalizedString description, int order) : base(new LocalizedStringTextProvider(name, description))
+        => _order = order;
+
+    public override int CompareTo(Metadata? other) => _order.CompareTo((other as Category)?._order);
 }

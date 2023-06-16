@@ -4,7 +4,7 @@
   <Name xml:lang="fr">Supprimer Microsoft Print to PDF</Name>
   <Description>Microsoft Print to PDF can be deleted if you don't use it.</Description>
   <Description xml:lang="fr">Microsoft Print to PDF peut être supprimé si vous ne l'utilisez pas.</Description>
-  <Category>Debloat</Category>
+  <Category>Debloating</Category>
   <SafetyLevel>Limited</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>

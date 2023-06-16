@@ -2,16 +2,17 @@
 
 namespace Scover.WinClean.Model.Metadatas;
 
-public sealed class Capability : ScriptResourceMetadata
+public sealed class Capability : Metadata
 {
-    private Capability(string resourceName) : base(Capabilities.ResourceManager, resourceName, resourceName + "Description")
-    { }
+    private Capability(string resourceName) : base(new ResourceTextProvider(Capabilities.ResourceManager, resourceName))
+        => ResourceName = resourceName;
 
     public static Capability Detect { get; } = new(nameof(Detect));
     public static Capability Disable { get; } = new(nameof(Disable));
     public static Capability Enable { get; } = new(nameof(Enable));
     public static Capability Execute { get; } = new(nameof(Execute));
     public static IReadOnlyCollection<Capability> Instances => Multiton<Capability, Capability>.Instances;
+    public string ResourceName { get; }
 
     public static Capability? FromInteger(int number) => number switch
     {

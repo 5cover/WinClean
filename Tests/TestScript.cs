@@ -36,12 +36,16 @@ public sealed partial class ScriptXmlSerializerTests
   <Name xml:lang=""{OtherCulture.Name}"">{Value.LocalizedName[OtherCulture]}</Name>
   <Description>{Value.LocalizedDescription[InvariantCulture]}</Description>
   <Description xml:lang=""{OtherCulture.Name}"">{Value.LocalizedDescription[OtherCulture]}</Description>
-  <Category>{Value.Category.InvariantName}</Category>
+  <Category>{Value.Category.InvariantName switch
+                     {
+                         "Debloating" => "Debloat",
+                         var s => s,
+                     }}</Category>
   <Recommended>{Value.SafetyLevel.InvariantName switch
                      {
                          "Safe" => "Yes",
                          "Dangerous" => "No",
-                         _ => Value.SafetyLevel.InvariantName
+                         var s => s,
                      }}</Recommended>
   <Host>{Value.Code[Capability.Execute].Host.InvariantName}</Host>
   <Impact>{Value.Impact.InvariantName}</Impact>

@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -186,6 +187,12 @@ public static class Extensions
         {
             dic[key] = value;
         }
+    }
+
+    public static PropertyGroupDescription SortedBy(this PropertyGroupDescription propertyGroupDescription, string propertyName)
+    {
+        propertyGroupDescription.SortDescriptions.Add(new SortDescription(propertyName, ListSortDirection.Ascending));
+        return propertyGroupDescription;
     }
 
     /// <summary>

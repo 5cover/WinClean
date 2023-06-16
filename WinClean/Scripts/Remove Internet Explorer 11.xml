@@ -4,7 +4,7 @@
   <Name xml:lang="fr">Supprimer Internet Explorer 11</Name>
   <Description>Internet Explorer 11 can be deleted if you don't use it. You won't be able to access the web anymore if you don't have another browser.</Description>
   <Description xml:lang="fr">Internet Explorer 11 peut être supprimé si vous ne l'utilisez pas. Vous ne pourrez plus accéder au Web si vous n'avez pas d'autre navigateur.</Description>
-  <Category>Debloat</Category>
+  <Category>Debloating</Category>
   <SafetyLevel>Limited</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Code>

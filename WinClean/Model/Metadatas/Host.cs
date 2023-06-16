@@ -6,16 +6,14 @@ using Vanara.PInvoke;
 
 namespace Scover.WinClean.Model.Metadatas;
 
-public abstract record Host : ScriptLocalizedStringMetadata
+public abstract class Host : Metadata
 {
     private readonly (string filename, int index)? _icon;
-    protected Host(LocalizedString name, LocalizedString description, SemVersionRange versions, (string filename, int index)? icon) : base(name, description)
+
+    protected Host(LocalizedString name, LocalizedString description, SemVersionRange versions, (string filename, int index)? icon)
+        : base(new LocalizedStringTextProvider(name, description))
         => (Versions, _icon) = (versions, icon);
 
-    public abstract HostStartInfo CreateHostStartInfo(string code);
-
-    /// <summary>The windows versions this host supports.</summary>
-    public SemVersionRange Versions { get; }
     /// <summary>Fetches the icon.</summary>
     /// <value>
     /// The icon of this host, or <see langword="null"/> if no icon is defined or if it couldn't be fetched.
@@ -32,4 +30,9 @@ public abstract record Host : ScriptLocalizedStringMetadata
             return smallIcon[0].IsInvalid ? null : ((HICON)smallIcon[0]).ToBitmapSource();
         }
     }
+
+    /// <summary>The windows versions this host supports.</summary>
+    public SemVersionRange Versions { get; }
+
+    public abstract HostStartInfo CreateHostStartInfo(string code);
 }

@@ -4,7 +4,7 @@
   <Name xml:lang="fr">Désactiver les tâches planifiées</Name>
   <Description>Several scheduled tasks run regularly by default. Disabling them improves privacy and decreases the system's memory footprint.</Description>
   <Description xml:lang="fr">Plusieurs tâches planifiées s'exécutent régulièrement par défaut. Les désactiver améliore la confidentialité et diminue l'empreinte mémoire du système.</Description>
-  <Category>Debloat</Category>
+  <Category>Debloating</Category>
   <SafetyLevel>Safe</SafetyLevel>
   <Impact>Privacy</Impact>
   <Code>

@@ -10,6 +10,7 @@
     xmlns:view="clr-namespace:Scover.WinClean.View"
     xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
     xmlns:windows="clr-namespace:Scover.WinClean.ViewModel.Windows"
+    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
     xmlns:interopServices="clr-namespace:System.Runtime.InteropServices;assembly=System.Runtime.InteropServices.RuntimeInformation"
     x:Name="window"
     Title="{Binding ApplicationName}"
@@ -138,7 +139,11 @@
                                             <!--  Can't define this in DataTemplate.Resources because of Binding (governing FrameworkElement or FrameworkContent element cannot be found).  -->
                                             <CollectionViewSource x:Key="TheseScriptsGroupedByType" Source="{Binding Items}">
                                                 <CollectionViewSource.GroupDescriptions>
-                                                    <PropertyGroupDescription PropertyName="Type" />
+                                                    <PropertyGroupDescription PropertyName="Type">
+                                                        <PropertyGroupDescription.SortDescriptions>
+                                                            <componentModel:SortDescription Direction="Ascending" PropertyName="Name" />
+                                                        </PropertyGroupDescription.SortDescriptions>
+                                                    </PropertyGroupDescription>
                                                 </CollectionViewSource.GroupDescriptions>
                                             </CollectionViewSource>
                                         </controls:ScriptListView.Resources>

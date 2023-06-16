@@ -2,12 +2,16 @@
 
 namespace Scover.WinClean.Model.Metadatas;
 
-public sealed class ScriptType : ScriptResourceMetadata
+public sealed class ScriptType : Metadata
 {
-    private ScriptType(string resourceName, bool isMutable) : base(ScriptTypes.ResourceManager, resourceName, resourceName + "Description")
-            => IsMutable = isMutable;
+    private readonly int _order;
 
-    public static ScriptType Custom { get; } = new(nameof(ScriptTypes.Custom), true);
-    public static ScriptType Default { get; } = new(nameof(ScriptTypes.Default), false);
+    private ScriptType(int order, string resourceName, bool isMutable) : base(new ResourceTextProvider(ScriptTypes.ResourceManager, resourceName))
+        => (_order, IsMutable) = (order, isMutable);
+
+    public static ScriptType Custom { get; } = new(1, nameof(ScriptTypes.Custom), true);
+    public static ScriptType Default { get; } = new(0, nameof(ScriptTypes.Default), false);
     public bool IsMutable { get; }
+
+    public override int CompareTo(Metadata? other) => _order.CompareTo((other as ScriptType)?._order);
 }

@@ -5,9 +5,10 @@ namespace Scover.WinClean.Services;
 
 public interface IMetadatasProvider
 {
+    StringComparison Comparison { get; }
     TypedEnumerableDictionary Metadatas { get; }
 
-    T GetMetadata<T>(string invariantName) where T : ScriptLocalizedStringMetadata;
+    T GetMetadata<T>(string invariantName) where T : Metadata;
 
-    T? GetMetadataOrDefault<T>(string invariantName) where T : ScriptLocalizedStringMetadata;
+    T? GetMetadataOrDefault<T>(string invariantName) where T : Metadata;
 }
