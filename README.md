@@ -16,20 +16,20 @@
 
 ---
 
-WinClean allows the average user as well as system administrators to improve Windows performance in a few clicks, as Windows becomes more and more resource-intensive and unoptimized.
+WinClean allows the average user as well as system administrators to turn Windows into a safe, reliable and performant operating system in a few clicks.
 
-![Screenshot](https://raw.githubusercontent.com/wiki/5cover/WinClean/img/MainWindow.png)
+![Screenshot of WinClean's main window](https://raw.githubusercontent.com/wiki/5cover/WinClean/img/MainWindow.png)
 
 ## ~~Yet Another PC Optimizer Scam~~
 
 ## Features
-- Run 52 *Batch*, *PowerShell*, and *Registry Editor* scripts directly from the GUI.
+- Run 37 *Batch*, *PowerShell*, and *Registry Editor* scripts directly from the GUI.
 - Add custom scripts to further clean the system.
 
 ## Specs
 - .NET 6
 - WPF
-- Created with Visual Studio 2022
+- MVVM architecture
 
 ## Contributing
 Feel free to request new features and report bugs.

@@ -27,14 +27,15 @@ Add any other context or screenshots about the script.
   <Name xml:lang="fr">FrenchName</Name>
   <Description>EnglishDescription</Description>
   <Description xml:lang="fr">FrenchDescription</Description>
-  <!-- Choose one -->
-  <Category>Maintenance/Debloat/Customization</Category>
-  <!-- Choose one -->
-  <Recommended>Yes/No/Limited</Recommended>
-  <!-- Choose one -->
-  <Host>Cmd/PowerShell/Regedit</Host>
-  <!-- Choose one -->
-  <Impact>Ergonomics/FreeStorageSpace/MemoryUsage/NetworkUsage/Privacy/Performance/ShutdownTime/StartupTime/StorageSpeed/Visuals</Impact>
-  <Code>Code</Code>
+  <Category>Maintenance/Debloating/Customization</Category>
+  <Recommended>Safe/Dangerous/Limited</Recommended>
+  <Impact>Ergonomics/Free storage space/Memory usage/Network usage/Privacy/Performance/Shutdown time/Startup time/Storage speed/Visuals</Impact>
+  <Versions>>=10.0.0</Versions> <!-- Supported Windows version range in SemVer 2.0.0 standard range syntax (optional). If unspecified, the script considered to support all Windows versions. -->
+  <Code>
+    <Execute Host="Cmd/PowerShell/Regedit">code</Execute> <!-- (optional) -->
+    <Enable Host="Cmd/PowerShell/Regedit">code</Enable> <!-- (optional) -->
+    <Disable Host="Cmd/PowerShell/Regedit">code</Disable> <!-- (optional) -->
+    <Detect Host="Cmd/PowerShell/Regedit">code</Detect> <!-- (optional) -->
+  </Code>
 </Script>
 ```

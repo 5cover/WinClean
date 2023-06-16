@@ -1,12 +1,17 @@
 # Contributing
 
-## Translation
+## Scripts
 
-- [x] **DO** Translate RESX resource files.
-- [x] **DO** Create an issue for globalization problems (i.e. text doesn't fit).
-- [x] **DO** Create a pull request for the translation.
-- [x] **DO** Translate the ``Messages`` and ``CustomMessages`` section in ``InstallerScript.iss``.
+Don't hesitate to submit new scripts to embed into WinClean by creating an issue with the provided template.
 
-- [ ] **DO NOT** Translate RESX resources marked as ``@Invariant`` in the comment.
-- [ ] **DO NOT** Translate string literals.
-- [ ] **DO NOT** Translate HREFs in links.
+## Localization roadmap
+
+- [x] Localize RESX resource files.
+- [x] Create issues for globalization problems (i.e. text doesn't fit).
+- [x] Create a pull request for the translation.
+- [x] Localize the ``Messages`` and ``CustomMessages`` section in ``InstallerScript.iss``.
+
+- [ ] Localize RESX resources marked as ``@Invariant`` in the comment.
+- [ ] Localize string literals.
+- [ ] Localize HREFs in links.
+
