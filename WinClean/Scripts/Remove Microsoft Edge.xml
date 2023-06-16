@@ -4,18 +4,18 @@
   <Name xml:lang="fr">Supprimer Microsoft Edge</Name>
   <Description>Microsoft Edge comes pre-installed with Windows and cannot be fully uninstalled by conventional means. This script removes Microsoft Edge and frees up disk space. </Description>
   <Description xml:lang="fr">Microsoft Edge est préinstallé avec Windows et impossible à désinstaller complètement par des moyens conventionnels. Ce script supprime Microsoft Edge et libère de l'espace disque.</Description>
-  <Category>Debloat</Category>
-  <Recommended>Limited</Recommended>
-  <Host>Cmd</Host>
+  <Category>Debloating</Category>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Versions>>=10.0.19042</Versions>
-  <Code>:: Modified version of Shadow Whisperer's Remove-Edge-Chromium script. See https://github.com/ShadowWhisperer/Remove-Edge-Chromium
+  <Code>
+    <Execute Host="Cmd">:: Modified version of Shadow Whisperer's Remove-Edge-Chromium script. See https://github.com/ShadowWhisperer/Remove-Edge-Chromium
 
 :: Stop Edge Task
 taskkill /im "msedge.exe" /f  >nul 2>&amp;1
 
 ::Do not install Edge from Windows Updates (Does not appear to work anymore)
-reg add HKLM\SOFTWARE\Microsoft\EdgeUpdate /t REGDWORD /v DoNotUpdateToEdgeWithChromium /d 1 /f >nul 2>&amp;1
+reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\EdgeUpdate /t REGDWORD /v DoNotUpdateToEdgeWithChromium /d 1 /f >nul 2>&amp;1
 
 :: Uninstall - 32Bit
 if exist "C:\Program Files (x86)\Microsoft\Edge\Application\" (
@@ -43,5 +43,6 @@ timeout /t 3 &amp; exit
 for /f "delims=" %%a in ('dir /b "C:\Users"') do (
 del /S /Q "C:\Users\%%a\Desktop\edge.lnk" >nul 2>&amp;1
 del /S /Q "C:\Users\%%a\Desktop\Microsoft Edge.lnk" >nul 2>&amp;1
-)</Code>
+)</Execute>
+  </Code>
 </Script>

@@ -100,15 +100,6 @@
   <data name="EnableLogging" xml:space="preserve">
     <value>_Enable logging</value>
   </data>
-  <data name="ScriptTimeout" xml:space="preserve">
-    <value>Script _timeout</value>
-  </data>
-  <data name="ShowDetailsCompleted" xml:space="preserve">
-    <value>_Show details when script execution is completed</value>
-  </data>
-  <data name="ShowDetailsDuring" xml:space="preserve">
-    <value>Show _details during script execution</value>
-  </data>
   <data name="ShowUpdateDialog" xml:space="preserve">
     <value>Show _update warning</value>
   </data>

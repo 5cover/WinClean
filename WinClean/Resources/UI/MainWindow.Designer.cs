@@ -61,7 +61,25 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Cate_gory.
+        ///   Recherche une chaîne localisée semblable à Add scripts.
+        /// </summary>
+        public static string AddScripts {
+            get {
+                return ResourceManager.GetString("AddScripts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à All files.
+        /// </summary>
+        public static string AllFiles {
+            get {
+                return ResourceManager.GetString("AllFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à _Category.
         /// </summary>
         public static string Category {
             get {
@@ -70,11 +88,11 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à _Host.
+        ///   Recherche une chaîne localisée semblable à Execute scripts....
         /// </summary>
-        public static string Host {
+        public static string ExecuteScripts {
             get {
-                return ResourceManager.GetString("Host", resourceCulture);
+                return ResourceManager.GetString("ExecuteScripts", resourceCulture);
             }
         }
         
@@ -196,11 +214,11 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à _Recommended.
+        ///   Recherche une chaîne localisée semblable à S_afety.
         /// </summary>
-        public static string RecommendationLevel {
+        public static string SafetyLevel {
             get {
-                return ResourceManager.GetString("RecommendationLevel", resourceCulture);
+                return ResourceManager.GetString("SafetyLevel", resourceCulture);
             }
         }
         

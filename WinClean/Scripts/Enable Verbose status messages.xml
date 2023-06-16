@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  https://learn.microsoft.com/en-us/troubleshoot/windows-server/performance/enable-verbose-startup-shutdown-logon-logoff-status-messages  -->
+<Script>
+  <Name>Enable Verbose status messages</Name>
+  <Name xml:lang="fr">Activer les messages d'état détaillés</Name>
+  <Description>If verbose logging isn't enabled, you'll still receive normal status messages such as "Applying your personal settings..." or "Applying computer settings..." when you start up, shut down, log on, or log off from the computer. However, if verbose logging is enabled, you'll receive additional information, such as "RPCSS is starting" or "Waiting for machine group policies to finish....".</Description>
+  <Description xml:lang="fr">Si la journalisation détaillée n'est pas activée, vous recevrez toujours des messages d'état normaux tels que « Appliquer vos paramètres personnels... » ou « Application des paramètres de l'ordinateur... » lorsque vous démarrez, arrêtez, ouvrez une session ou déconnectez-vous de l'ordinateur. Toutefois, si la journalisation détaillée est activée, vous recevrez des informations supplémentaires, telles que « RPCSS démarre » ou « En attente de la fin des stratégies de groupe d'ordinateurs... ».</Description>
+  <Category>Debloating</Category>
+  <SafetyLevel>Safe</SafetyLevel>
+  <Impact>Ergonomics</Impact>
+  <Code>
+    <Enable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+"verbosestatus"=dword:1
+"DisableStatusMessages"=-</Enable>
+    <Disable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+"verbosestatus"=dword:0</Disable>
+    <Detect Host="PowerShell">if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "DisableStatusMessages") -eq 1)
+{
+  exit 0
+}
+Switch (Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "verbosestatus")
+{
+  0 {exit 0}
+  1 {exit 1}
+  default {exit -1}
+}</Detect>
+  </Code>
+</Script>

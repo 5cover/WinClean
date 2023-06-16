@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+https://www.askvg.com/registry-tweaks-to-disable-ads-suggestions-and-tips-in-windows-10/
+https://winaero.com/how-to-disable-ads-in-windows-11/
+-->
+
+<Script>
+  <Name>Show ads and suggestions</Name>
+  <Name xml:lang="fr">Afficher les publicités et les sugestions</Name>
+  <Description>This script disables ads and app suggestions. This setting affects the current user.</Description>
+  <Description xml:lang="fr">Ce script désactive les publicités et les suggestions d'applications. Ce paramètre affecte l'utilisateur actuel.</Description>
+  <Category>Debloating</Category>
+  <SafetyLevel>Safe</SafetyLevel>
+  <Impact>Ergonomics</Impact>
+  <Versions>>=10.0.0</Versions>
+  <Code>
+    <Enable Host="Regedit">Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
+"FeatureManagementEnabled"=dword:1
+"OemPreInstalledAppsEnabled"=dword:1
+"PreInstalledAppsEnabled"=dword:1
+"PreInstalledAppsEverEnabled"=dword:1
+"RotatingLockScreenEnabled"=dword:1
+"RotatingLockScreenOverlayEnabled"=dword:1
+"SilentInstalledAppsEnabled"=dword:1
+"SoftLandingEnabled"=dword:1
+"SubscribedContent-310093Enabled"=dword:1
+"SubscribedContent-338387Enabled"=dword:1
+"SubscribedContent-338388Enabled"=dword:1
+"SubscribedContent-338389Enabled"=dword:1
+"SubscribedContent-338393Enabled"=dword:1
+"SubscribedContent-353694Enabled"=dword:1
+"SubscribedContent-353696Enabled"=dword:1
+"SystemPaneSuggestionsEnabled"=dword:1
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"ShowSyncProviderNotifications"=dword:1
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo]
+"Enabled"=dword:1</Enable>
+    <Disable Host="Regedit">Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager]
+"FeatureManagementEnabled"=dword:0
+"OemPreInstalledAppsEnabled"=dword:0
+"PreInstalledAppsEnabled"=dword:0
+"PreInstalledAppsEverEnabled"=dword:0
+"RotatingLockScreenEnabled"=dword:0
+"RotatingLockScreenOverlayEnabled"=dword:0
+"SilentInstalledAppsEnabled"=dword:0
+"SoftLandingEnabled"=dword:0
+"SubscribedContent-310093Enabled"=dword:0
+"SubscribedContent-338387Enabled"=dword:0
+"SubscribedContent-338388Enabled"=dword:0
+"SubscribedContent-338389Enabled"=dword:0
+"SubscribedContent-338393Enabled"=dword:0
+"SubscribedContent-353694Enabled"=dword:0
+"SubscribedContent-353696Enabled"=dword:0
+"SystemPaneSuggestionsEnabled"=dword:0
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"ShowSyncProviderNotifications"=dword:0
+
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo]
+"Enabled"=dword:0</Disable>
+    <Detect Host="PowerShell">$currentValues = Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name (
+"FeatureManagementEnabled",
+"OemPreInstalledAppsEnabled",
+"PreInstalledAppsEnabled",
+"PreInstalledAppsEverEnabled",
+"RotatingLockScreenEnabled",
+"RotatingLockScreenOverlayEnabled",
+"SilentInstalledAppsEnabled",
+"SoftLandingEnabled",
+"SubscribedContent-310093Enabled",
+"SubscribedContent-338387Enabled",
+"SubscribedContent-338388Enabled",
+"SubscribedContent-338389Enabled",
+"SubscribedContent-338393Enabled",
+"SubscribedContent-353694Enabled",
+"SubscribedContent-353696Enabled",
+"SystemPaneSuggestionsEnabled")
+
+$currentValues += Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name (
+    "ShowSyncProviderNotifications")
+
+$currentValues += Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo" -Name (
+    "Enabled")
+
+if (($currentValues -eq 1).Count -eq $currentValues.Count) { exit 1 }
+elseif (($currentValues -eq 0).Count -eq $currentValues.Count) { exit 0 }
+else { exit -1 }</Detect>
+  </Code>
+</Script>

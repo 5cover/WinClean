@@ -1,97 +1,128 @@
-using System.Globalization;
 using System.Text;
 using System.Windows.Media;
 
-using Scover.WinClean.BusinessLogic;
-using Scover.WinClean.BusinessLogic.Xml;
-using Scover.WinClean.DataAccess;
+using Scover.WinClean.Model.Metadatas;
+using Scover.WinClean.Model.Serialization.Xml;
+using Scover.WinClean.Services;
+
+using Semver;
 
 namespace Tests;
 
 [TestFixture(TestOf = typeof(ScriptMetadataXmlDeserializerTests))]
-public sealed class ScriptMetadataXmlDeserializerTests
+public sealed partial class ScriptMetadataXmlDeserializerTests : SerializationTests
 {
     private const string
-        Name = "Name",
-        NameEn = "NameEn",
-        NameFr = "NameFr",
+        Color = "Red",
         Desc = "Desc",
         DescFr = "DescFr",
-        Executable = "Executable.exe",
-        Arguments = "arguments {0}",
-        Extension = ".txt",
-        Color = "Red";
+        Name = "Name",
+        NameFr = "NameFr";
 
-    private static readonly CultureInfo cultureEn = new("en");
-    private static readonly CultureInfo cultureFr = new("fr");
+    private const int Order = 420;
+
+    private static readonly TestProgramHost host1 = new(
+        Localize("Host1Name", "Host1OtherName"),
+        Localize("Host1Description", "Host1OtherDescription"),
+        SemVersionRange.Parse(">=6.1.0"),
+        (@"%SYSTEMROOT%\System32\shell32.dll", -25),
+        "Executable.exe",
+        "arguments {0}",
+        ".txt");
+
+    private static readonly TestProgramHost host2 = new(
+        Localize("Host2Name", "Host2OtherName"),
+        Localize("Host2Description", "Host2OtherDescription"),
+        DefaultVersions,
+        null,
+        "Executable.exe",
+        "arguments {0}",
+        ".txt");
+
+    private static readonly TestShellHost host3 = new(
+        Localize("Host3Name", "Host3OtherName"),
+        Localize("Host3Description", "Host3OtherDescription"),
+        SemVersionRange.Parse(">=6.1.0"),
+        (@"%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\powershell.exe", 0),
+        "{0}");
+
+    private static readonly TestShellHost host4 = new(
+        Localize("Host4Name", "Host4OtherName"),
+        Localize("Host4Description", "Host4OtherDescription"),
+        DefaultVersions,
+        null,
+        "run box command line arguments {0}");
+
     private readonly ScriptMetadataXmlDeserializer _deserializer = new();
 
-    [TestCase($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-<Categories>
-  <Category>
-    <Name>{Name}</Name>
-    <Name xml:lang=""fr"">{NameFr}</Name>
-    <Description>{Desc}</Description>
-    <Description xml:lang=""fr"">{DescFr}</Description>
-  </Category>
-</Categories>")]
-    public void TestMakeCategories(string xml)
-        => Assert.That(_deserializer.GetCategories(ToStream(xml)).Single(), Is.EqualTo(new Category(Loc(Name, NameFr), Loc(Desc, DescFr))));
-
-    [TestCase($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-<Hosts>
-  <Host>
-    <Name>{Name}</Name>
-    <Name xml:lang=""en"">{NameEn}</Name>
-    <Name xml:lang=""fr"">{NameFr}</Name>
-    <Description>{Desc}</Description>
-    <Description xml:lang=""fr"">{DescFr}</Description>
-    <Executable>{Executable}</Executable>
-    <Arguments>{Arguments}</Arguments>
-    <Extension>{Extension}</Extension>
-  </Host>
-</Hosts>")]
-    public void TestMakeHosts(string xml)
-        => Assert.That(_deserializer.GetHosts(ToStream(xml)).Single(), Is.EqualTo(new Host(Loc(Name, NameFr, NameEn), Loc(Desc, DescFr), Executable, Arguments, Extension)));
-
-    [TestCase($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-<Impacts>
-  <Impact>
-    <Name>{Name}</Name>
-    <Name xml:lang=""fr"">{NameFr}</Name>
-    <Description>{Desc}</Description>
-    <Description xml:lang=""fr"">{DescFr}</Description>
-  </Impact>
-</Impacts>")]
-    public void TestMakeImpacts(string xml)
-        => Assert.That(_deserializer.GetImpacts(ToStream(xml)).Single(), Is.EqualTo(new Impact(Loc(Name, NameFr), Loc(Desc, DescFr))));
-
-    [TestCase($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-<RecommendationLevels>
-  <RecommendationLevel Color=""{Color}"">
-    <Name>{Name}</Name>
-    <Name xml:lang=""fr"">{NameFr}</Name>
-    <Description>{Desc}</Description>
-    <Description xml:lang=""fr"">{DescFr}</Description>
-  </RecommendationLevel>
-</RecommendationLevels>")]
-    public void TestMakeRecommendationLevels(string xml)
-        => Assert.That(_deserializer.GetRecommendationLevels(ToStream(xml)).Single(), Is.EqualTo(new RecommendationLevel(Loc(Name, NameFr), Loc(Desc, DescFr), (Color)ColorConverter.ConvertFromString(Color))));
-
-    private static LocalizedString Loc(string invariant, string fr)
+    private static IEnumerable<TestCaseData> CategoryCases
     {
-        LocalizedString ls = new();
-        ls.Set(CultureInfo.InvariantCulture, invariant);
-        ls.Set(cultureFr, fr);
-        return ls;
+        get
+        {
+            yield return new($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
+<Category Order=""{Order}"">
+  <Name>{Name}</Name>
+  <Name xml:lang=""fr"">{NameFr}</Name>
+  <Description>{Desc}</Description>
+  <Description xml:lang=""fr"">{DescFr}</Description>
+</Category>", new Category(Localize(Name, NameFr), Localize(Desc, DescFr), Order));
+        }
     }
 
-    private static LocalizedString Loc(string invariant, string fr, string en)
+    private static SemVersionRange DefaultVersions => ServiceProvider.Get<ISettings>().DefaultHostVersions;
+
+    private static IEnumerable<TestCaseData> HostCases
     {
-        LocalizedString ls = Loc(invariant, fr);
-        ls.Set(cultureEn, en);
-        return ls;
+        get
+        {
+            yield return new(host1.Xml, host1.Value);
+            yield return new(host2.Xml, host2.Value);
+            yield return new(host3.Xml, host3.Value);
+            yield return new(host4.Xml, host4.Value);
+        }
     }
 
-    private static Stream ToStream(string value) => new MemoryStream(Encoding.UTF8.GetBytes(value));
+    private static IEnumerable<TestCaseData> ImpactCases
+    {
+        get
+        {
+            yield return new($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
+<Impact>
+  <Name>{Name}</Name>
+  <Name xml:lang=""fr"">{NameFr}</Name>
+  <Description>{Desc}</Description>
+  <Description xml:lang=""fr"">{DescFr}</Description>
+</Impact>", new Impact(Localize(Name, NameFr), Localize(Desc, DescFr)));
+        }
+    }
+
+    private static IEnumerable<TestCaseData> SafetyLevelCases
+    {
+        get
+        {
+            yield return new TestCaseData($@"<?xml version=""1.0"" encoding=""utf-8"" ?>
+<SafetyLevel Order=""{Order}"" Color=""{Color}"">
+  <Name>{Name}</Name>
+  <Name xml:lang=""fr"">{NameFr}</Name>
+  <Description>{Desc}</Description>
+  <Description xml:lang=""fr"">{DescFr}</Description>
+</SafetyLevel>", new SafetyLevel(Localize(Name, NameFr), Localize(Desc, DescFr), Order, (Color)ColorConverter.ConvertFromString(Color)));
+        }
+    }
+
+    [TestCaseSource(nameof(CategoryCases))]
+    public void TestMakeCategories(string xml, Category value)
+        => Assert.That(_deserializer.GetCategories(xml.ToStream()).Single(), Is.EqualTo(value));
+
+    [TestCaseSource(nameof(HostCases))]
+    public void TestMakeHosts(StringBuilder xml, Host value)
+        => Assert.That(_deserializer.GetHosts(xml.ToString().ToStream()).Single(), Is.EqualTo(value));
+
+    [TestCaseSource(nameof(ImpactCases))]
+    public void TestMakeImpacts(string xml, Impact value)
+        => Assert.That(_deserializer.GetImpacts(xml.ToStream()).Single(), Is.EqualTo(value));
+
+    [TestCaseSource(nameof(SafetyLevelCases))]
+    public void TestMakeSafetyLevels(string xml, SafetyLevel value)
+        => Assert.That(_deserializer.GetSafetyLevels(xml.ToStream()).Single(), Is.EqualTo(value));
 }

@@ -1,0 +1,92 @@
+﻿<controls:WizardPageBetter
+    x:Class="Scover.WinClean.View.Pages.Page2"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:view="clr-namespace:Scover.WinClean.View"
+    xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
+    xmlns:pages="clr-namespace:Scover.WinClean.ViewModel.Pages"
+    Title="{x:Static ui:Page2.Title}"
+    d:DataContext="{d:DesignInstance Type=pages:Page2ViewModel}"
+    BackButtonVisibility="Collapsed"
+    CancelButtonVisibility="Collapsed"
+    NextButtonVisibility="Collapsed"
+    mc:Ignorable="d">
+    <view:ButtonsArea.AdditionalContent>
+        <CheckBox
+            VerticalAlignment="Center"
+            Content="{x:Static ui:Page2.RestartWhenFinished}"
+            IsChecked="{Binding RestartWhenFinished, FallbackValue={x:Null}}" />
+    </view:ButtonsArea.AdditionalContent>
+    <view:ButtonsArea.AdditionalButtons>
+        <Button Command="{Binding Stop, FallbackValue={x:Null}}" Content="{x:Static ui:Buttons.Stop}" />
+    </view:ButtonsArea.AdditionalButtons>
+    <DockPanel Margin="10">
+        <TextBlock Margin="0,0,0,10" DockPanel.Dock="Top">
+            <TextBlock.Text>
+                <MultiBinding StringFormat="{x:Static ui:Page2.ProgressFormat}">
+                    <Binding Path="ScriptIndex" UpdateSourceTrigger="PropertyChanged" />
+                    <Binding Path="ExecutionInfos.Source.Count" UpdateSourceTrigger="PropertyChanged" />
+                    <Binding Path="ScriptsRemaining" UpdateSourceTrigger="PropertyChanged" />
+                    <Binding Path="ExecutingExecutionInfo.Script.Name" UpdateSourceTrigger="PropertyChanged" />
+                    <Binding Path="FormattedTimeRemaining" UpdateSourceTrigger="PropertyChanged" />
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
+        <ProgressBar
+            Height="23"
+            Margin="0,0,0,10"
+            DockPanel.Dock="Top"
+            Maximum="{Binding ExecutionInfos.Source.Count, Mode=OneTime}"
+            Value="{Binding ScriptIndex, Mode=OneWay}" />
+        <StackPanel
+            Margin="0,0,0,10"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+            <Button
+                Margin="0,0,10,0"
+                Padding="3,3"
+                Command="{Binding AbortScript}"
+                ToolTip="{x:Static ui:Page2.AbortScriptDescription}">
+                <StackPanel Orientation="Horizontal">
+                    <Image
+                        Margin="0,0,3,0"
+                        Source="{StaticResource Cross}"
+                        Style="{StaticResource Icon}" />
+                    <TextBlock Text="{x:Static ui:Page2.AbortScript}" />
+                </StackPanel>
+            </Button>
+            <Button
+                Margin="0,0,10,0"
+                Padding="3,3"
+                Command="{Binding Resume}"
+                ToolTip="{x:Static ui:Page2.ResumeDescription}"
+                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibility}}">
+                <StackPanel Orientation="Horizontal">
+                    <Image
+                        Margin="0,0,3,0"
+                        Source="{StaticResource Play}"
+                        Style="{StaticResource Icon}" />
+                    <TextBlock Text="{x:Static ui:Page2.Resume}" />
+                </StackPanel>
+            </Button>
+            <Button
+                Margin="0,0,10,0"
+                Padding="3,3"
+                Command="{Binding Pause}"
+                ToolTip="{x:Static ui:Page2.PauseDescription}"
+                Visibility="{Binding IsEnabled, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibility}}">
+                <StackPanel Orientation="Horizontal">
+                    <Image
+                        Margin="0,0,3,0"
+                        Source="{StaticResource Pause}"
+                        Style="{StaticResource Icon}" />
+                    <TextBlock Text="{x:Static ui:Page2.Pause}" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        <controls:ExecutionInfosView Margin="0,0,0,10" Content="{Binding ExecutionInfos.View}" />
+    </DockPanel>
+</controls:WizardPageBetter>

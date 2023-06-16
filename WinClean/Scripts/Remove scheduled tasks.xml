@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Disable scheduled tasks</Name>
+  <Name xml:lang="fr">Désactiver les tâches planifiées</Name>
+  <Description>Several scheduled tasks run regularly by default. Disabling them improves privacy and decreases the system's memory footprint.</Description>
+  <Description xml:lang="fr">Plusieurs tâches planifiées s'exécutent régulièrement par défaut. Les désactiver améliore la confidentialité et diminue l'empreinte mémoire du système.</Description>
+  <Category>Debloating</Category>
+  <SafetyLevel>Safe</SafetyLevel>
+  <Impact>Privacy</Impact>
+  <Code>
+    <Execute Host="PowerShell">Import-Module ScheduledTasks
+Get-ScheduledTask XblGameSaveTaskLogon | Disable-ScheduledTask
+Get-ScheduledTask XblGameSaveTask | Disable-ScheduledTask
+Get-ScheduledTask Consolidator | Disable-ScheduledTask
+Get-ScheduledTask UsbCeip | Disable-ScheduledTask
+Get-ScheduledTask DmClient | Disable-ScheduledTask
+Get-ScheduledTask DmClientOnScenarioDownload | Disable-ScheduledTask</Execute>
+  </Code>
+</Script>

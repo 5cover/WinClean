@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Show file extensions</Name>
+  <Name xml:lang="fr">Afficher les extensions de fichier</Name>
+  <Description>By default, known file extensions are hidden.</Description>
+  <Description xml:lang="fr">Par défaut, les extensions de fichier connues sont masquées.</Description>
+  <Category>Customization</Category>
+  <SafetyLevel>Limited</SafetyLevel>
+  <Impact>Ergonomics</Impact>
+  <Code>
+    <Enable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"HideFileExt"=dword:0</Enable>
+    <Disable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"HideFileExt"=dword:1</Disable>
+    <Detect Host="PowerShell">Switch (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideFileExt")
+{
+  0 {exit 1}
+  1 {exit 0}
+  default {exit -1}
+}</Detect>
+  </Code>
+</Script>

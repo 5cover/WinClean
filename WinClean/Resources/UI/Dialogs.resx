@@ -139,17 +139,17 @@
   <data name="FSErrorLoadingCustomScriptMainInstruction" xml:space="preserve">
     <value>Cannot load custom script</value>
   </data>
-  <data name="InvalidCustomScriptDataContent" xml:space="preserve">
-    <value>Custom script "{0}" has missing or invalid data. &lt;A&gt;Edit the script...&lt;/A&gt;</value>
-  </data>
-  <data name="InvalidCustomScriptDataMainInstruction" xml:space="preserve">
-    <value>Cannot load custom script</value>
-  </data>
   <data name="NoScriptsSelectedContent" xml:space="preserve">
     <value>To select scripts, check their associated check box.</value>
   </data>
   <data name="NoScriptsSelectedMainInstruction" xml:space="preserve">
     <value>Can't execute scripts because no scripts are selected</value>
+  </data>
+  <data name="ScriptLoadErrorContent" xml:space="preserve">
+    <value>Script "{0}" has missing or invalid data. &lt;A&gt;Edit the script...&lt;/A&gt;</value>
+  </data>
+  <data name="ScriptLoadErrorMainInstruction" xml:space="preserve">
+    <value>Cannot load script</value>
   </data>
   <data name="UnhandledExceptionContent" xml:space="preserve">
 	  <value>An unhandled exception occured: {0}

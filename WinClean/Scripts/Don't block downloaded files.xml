@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://www.tenforums.com/tutorials/85418-how-disable-downloaded-files-being-blocked-windows.html -->
+<Script>
+  <Name>Don't block downloaded files</Name>
+  <Name xml:lang="fr">Ne pas bloquer les fichiers téléchargés</Name>
+  <Description>By default, a warning is disaplayed when the user opens a downloaded file. This setting affects all users.</Description>
+  <Description xml:lang="fr">Par défaut, un avertissement est affiché lorsque l'utilisateur ouvre un fichier téléchargé. Ce paramètre affecte tous les utilisateurs.</Description>
+  <Category>Customization</Category>
+  <SafetyLevel>Limited</SafetyLevel>
+  <Impact>Ergonomics</Impact>
+  <Versions>>=5.1.2600</Versions>
+  <Code>
+    <Enable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments]
+"SaveZoneInformation"=dword:2</Enable>
+    <Disable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments]
+"SaveZoneInformation"=dword:1</Disable>
+    <Detect Host="PowerShell">switch (Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments" -Name "SaveZoneInformation")
+{
+    2 {exit 1}
+    1 {exit 0}
+    default {exit -1}
+}
+    </Detect>
+  </Code>
+</Script>

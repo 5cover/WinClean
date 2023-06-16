@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Wait 5 seconds</Name>
+  <Description>Waits 5 seconds and exits.</Description>
+  <Category>Maintenance</Category>
+  <SafetyLevel>Safe</SafetyLevel>
+  <Impact>Ergonomics</Impact>
+  <Code>
+    <Execute Host="PowerShell">Start-Sleep 5</Execute>
+  </Code>
+</Script>

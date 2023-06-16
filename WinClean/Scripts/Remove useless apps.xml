@@ -4,12 +4,12 @@
   <Name xml:lang="fr">Supprimer les applications inutiles</Name>
   <Description>Dozens of useless application packages are installed by default. Removing them frees up disk space.</Description>
   <Description xml:lang="fr">Plusieurs dizaines de packages d'application inutiles sont installés par défaut. Les supprimer libère de l'epace disque.</Description>
-  <Category>Debloat</Category>
-  <Recommended>Yes</Recommended>
-  <Host>PowerShell</Host>
+  <Category>Debloating</Category>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Versions>>=6.2.9200</Versions>
-  <Code># Based on https://github.com/Sycnex/Windows10Debloater/blob/master/Individual%20Scripts/Debloat%20Windows
+  <Code>
+    <Execute Host="PowerShell"># Based on https://github.com/Sycnex/Windows10Debloater/blob/master/Individual%20Scripts/Debloat%20Windows
 Import-Module Microsoft.PowerShell.Core
 Import-Module Appx
 Import-Module DISM
@@ -68,5 +68,6 @@ Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like $App | Remov
 [regex]$WhitelistedApps = 'Microsoft.Paint3D|Microsoft.WindowsCalculator|Microsoft.WindowsStore|Microsoft.Windows.Photos|CanonicalGroupLimited.UbuntuonWindows|Microsoft.XboxGameCallableUI|Microsoft.XboxGamingOverlay|Microsoft.Xbox.TCUI|Microsoft.XboxGamingOverlay|Microsoft.XboxIdentityProvider|Microsoft.MicrosoftStickyNotes|Microsoft.MSPaint*'
 Get-AppxPackage -AllUsers | Where-Object {$_.Name -NotMatch $WhitelistedApps} | Remove-AppxPackage
 Get-AppxPackage | Where-Object {$_.Name -NotMatch $WhitelistedApps} | Remove-AppxPackage
-Get-AppxProvisionedPackage -Online | Where-Object {$_.PackageName -NotMatch $WhitelistedApps} | Remove-AppxProvisionedPackage -Online</Code>
+Get-AppxProvisionedPackage -Online | Where-Object {$_.PackageName -NotMatch $WhitelistedApps} | Remove-AppxProvisionedPackage -Online</Execute>
+  </Code>
 </Script>

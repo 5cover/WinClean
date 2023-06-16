@@ -1,0 +1,193 @@
+﻿<Window
+    x:Class="Scover.WinClean.View.Windows.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:metadatas="clr-namespace:Scover.WinClean.Model.Metadatas"
+    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:view="clr-namespace:Scover.WinClean.View"
+    xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
+    xmlns:windows="clr-namespace:Scover.WinClean.ViewModel.Windows"
+    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    xmlns:interopServices="clr-namespace:System.Runtime.InteropServices;assembly=System.Runtime.InteropServices.RuntimeInformation"
+    x:Name="window"
+    Title="{Binding ApplicationName}"
+    Width="{Binding Width, Mode=TwoWay}"
+    Height="{Binding Height, Mode=TwoWay}"
+    MinWidth="{Binding MinHeight, ElementName=window, Converter={StaticResource GoldenRatio}}"
+    MinHeight="380"
+    d:DataContext="{d:DesignInstance Type=windows:MainViewModel}"
+    Background="{x:Static SystemColors.ControlBrush}"
+    Left="{Binding Left, Mode=TwoWay}"
+    Top="{Binding Top, Mode=TwoWay}"
+    WindowState="{Binding WindowState, Mode=TwoWay}"
+    mc:Ignorable="d">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing" SourceName="window">
+            <i:InvokeCommandAction Command="{Binding ApplyChangesToScriptStorage}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/View/ResourceDictionaries/FixBindingErrors.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style
+                x:Key="MetadataStyle"
+                BasedOn="{StaticResource TabControlFix}"
+                TargetType="TabItem">
+                <Setter Property="Header" Value="{Binding Name.Name}" />
+                <Setter Property="ToolTip" Value="{Binding Name.Description}" />
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    <DockPanel>
+        <StatusBar Background="{x:Static SystemColors.ControlLightBrush}" DockPanel.Dock="Bottom">
+            <TextBlock Text="{x:Static interopServices:RuntimeInformation.OSDescription}" />
+            <Separator />
+            <TextBlock Text="{Binding Scripts.Source.Count, StringFormat={x:Static ui:MainWindow.ScriptCount}}" />
+        </StatusBar>
+        <Menu
+            VerticalAlignment="Center"
+            Background="{x:Static SystemColors.ControlLightBrush}"
+            DockPanel.Dock="Top">
+            <MenuItem Header="{x:Static ui:MainWindow.MenuFile}">
+                <MenuItem Command="{Binding OpenCustomScriptsDir}" Header="{x:Static ui:MainWindow.MenuOpenCustomScriptsDir}" />
+                <MenuItem Command="{Binding OpenLogsDir}" Header="{x:Static ui:MainWindow.MenuOpenLogsDir}" />
+                <MenuItem Command="{Binding ClearLogs}" Header="{x:Static ui:MainWindow.MenuClearLogs}" />
+
+                <MenuItem Header="{x:Static ui:Buttons.Exit}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:CallMethodAction MethodName="Close" TargetObject="{Binding ElementName=window}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="{x:Static ui:MainWindow.MenuSelectScripts}">
+                <MenuItem.Resources>
+                    <Style x:Key="ScriptMetadataMenuItemStyle" TargetType="MenuItem">
+                        <Setter Property="Command" Value="{Binding DataContext.CheckScriptsByProperty, ElementName=window}" />
+                        <Setter Property="CommandParameter" Value="{Binding}" />
+                        <Setter Property="ToolTip" Value="{Binding Description}" />
+                    </Style>
+                </MenuItem.Resources>
+                <MenuItem Command="{Binding CheckAllScripts}" Header="{x:Static ui:MainWindow.MenuAll}" />
+                <MenuItem Command="{Binding UncheckAllScripts}" Header="{x:Static ui:MainWindow.MenuNone}" />
+                <MenuItem
+                    DisplayMemberPath="Name"
+                    Header="{x:Static ui:MainWindow.Category}"
+                    ItemContainerStyle="{StaticResource ScriptMetadataMenuItemStyle}"
+                    ItemsSource="{Binding Source={x:Type metadatas:Category}, Converter={StaticResource GetMetadatas}}" />
+                <MenuItem
+                    DisplayMemberPath="Name"
+                    Header="{x:Static ui:MainWindow.SafetyLevel}"
+                    ItemsSource="{Binding Source={x:Type metadatas:SafetyLevel}, Converter={StaticResource GetMetadatas}}">
+                    <MenuItem.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource ScriptMetadataMenuItemStyle}" TargetType="MenuItem">
+                            <Setter Property="Background" Value="{Binding Color, Converter={StaticResource ColorToBrush}, ConverterParameter=0.15}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+                <MenuItem
+                    DisplayMemberPath="Name"
+                    Header="{x:Static ui:MainWindow.Impact}"
+                    ItemContainerStyle="{StaticResource ScriptMetadataMenuItemStyle}"
+                    ItemsSource="{Binding Source={x:Type metadatas:Impact}, Converter={StaticResource GetMetadatas}}" />
+            </MenuItem>
+            <MenuItem Command="{Binding ShowSettingsWindow}" Header="{x:Static ui:MainWindow.MenuSettings}" />
+            <MenuItem Header="{x:Static ui:MainWindow.MenuHelp}">
+                <MenuItem Command="{Binding OpenOnlineWiki}" Header="{x:Static ui:MainWindow.MenuOnlineWiki}" />
+                <MenuItem Command="{Binding ShowAboutWindow}">
+                    <MenuItem.Header>
+                        <!--  HeaderStringFormat does not work with access keys  -->
+                        <AccessText Text="{Binding ApplicationName, StringFormat={x:Static ui:MainWindow.MenuAbout}}" />
+                    </MenuItem.Header>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <Grid Margin="12">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="24" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <TabControl
+                Grid.Row="0"
+                Margin="0,0,0,12"
+                view:TabContent.IsCached="True"
+                ItemContainerStyle="{StaticResource MetadataStyle}"
+                ItemsSource="{Binding Scripts.View.Groups}"
+                SelectedIndex="0">
+                <view:TabContent.Template>
+                    <DataTemplate DataType="{x:Type CollectionViewGroup}">
+                        <TabControl
+                            view:TabContent.IsCached="True"
+                            ItemContainerStyle="{StaticResource MetadataStyle}"
+                            ItemsSource="{Binding Items}">
+                            <view:TabContent.Template>
+                                <DataTemplate DataType="{x:Type CollectionViewGroup}">
+                                    <controls:ScriptListView SelectedScript="{Binding DataContext.SelectedScript, ElementName=window, Mode=TwoWay}" Usage="{Binding Name}">
+                                        <controls:ScriptListView.Resources>
+                                            <!--  Can't define this in DataTemplate.Resources because of Binding (governing FrameworkElement or FrameworkContent element cannot be found).  -->
+                                            <CollectionViewSource x:Key="TheseScriptsGroupedByType" Source="{Binding Items}">
+                                                <CollectionViewSource.GroupDescriptions>
+                                                    <PropertyGroupDescription PropertyName="Type">
+                                                        <PropertyGroupDescription.SortDescriptions>
+                                                            <componentModel:SortDescription Direction="Ascending" PropertyName="Name" />
+                                                        </PropertyGroupDescription.SortDescriptions>
+                                                    </PropertyGroupDescription>
+                                                </CollectionViewSource.GroupDescriptions>
+                                            </CollectionViewSource>
+                                        </controls:ScriptListView.Resources>
+                                        <controls:ScriptListView.Content>
+                                            <Binding Source="{StaticResource TheseScriptsGroupedByType}" />
+                                        </controls:ScriptListView.Content>
+                                    </controls:ScriptListView>
+                                </DataTemplate>
+                            </view:TabContent.Template>
+                        </TabControl>
+                    </DataTemplate>
+                </view:TabContent.Template>
+            </TabControl>
+
+            <GridSplitter
+                Grid.RowSpan="3"
+                Grid.Column="1"
+                Margin="8,-13"
+                HorizontalAlignment="Stretch"
+                Background="{x:Static SystemColors.ControlLightBrush}" />
+
+            <controls:ScriptView
+                x:Name="scriptView"
+                Grid.Row="0"
+                Grid.Column="2"
+                Margin="0,0,0,12"
+                Content="{Binding SelectedScript}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="ScriptRemoved" SourceName="scriptView">
+                        <i:InvokeCommandAction Command="{Binding RemoveCurrentScript}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </controls:ScriptView>
+            <Button
+                Grid.Row="1"
+                HorizontalAlignment="Center"
+                Command="{Binding AddScripts}"
+                Content="{x:Static ui:MainWindow.AddScripts}" />
+            <Button
+                Grid.Row="1"
+                Grid.Column="2"
+                HorizontalAlignment="Center"
+                Command="{Binding ExecuteScripts}"
+                Content="{x:Static ui:MainWindow.ExecuteScripts}" />
+        </Grid>
+    </DockPanel>
+</Window>

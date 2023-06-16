@@ -5,14 +5,16 @@
   <Description>The disk check and repair utility is provided by Microsoft. Executing this script will plan a disk check and repair for all local disks on next reboot.</Description>
   <Description xml:lang="fr">L'utilitaire de vérification et de réparation des disques est fourni par Microsoft. Exécuter ce script planifiera la vérification et la réparation de tous les disques locaux au prochain redémarrage.</Description>
   <Category>Maintenance</Category>
-  <Recommended>Yes</Recommended>
-  <Host>PowerShell</Host>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Storage speed</Impact>
   <Versions>>=6.1.7600</Versions>
-  <Code>Get-WmiObject -Class Win32_Volume | Where-Object {$_.DriveType -eq 3} | ForEach-Object {
-  if ($_.DriveLetter) {
-    fsutil dirty set $_.DriveLetter
-  }
-}
+  <Code>
+    <Execute Host="PowerShell">Get-WmiObject -Class Win32_Volume | ForEach-Object
+{
+    if ($_.DriveType -eq 3 -and $_.DriveLetter)
+    {
+      fsutil dirty set $_.DriveLetter
+    }
+}</Execute>
   </Code>
 </Script>

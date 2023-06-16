@@ -4,17 +4,17 @@
   <Name xml:lang="fr">Supprimer Cortana</Name>
   <Description>This scripts removes Cortana, the start menu assistant.</Description>
   <Description xml:lang="fr">Ce script supprime Cortana, l'assistant du menu démarrer.</Description>
-  <Category>Debloat</Category>
-  <Recommended>Limited</Recommended>
-  <Host>PowerShell</Host>
+  <Category>Debloating</Category>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Ergonomics</Impact>
-  <Versions>>=10.0.10240</Versions>
-  <Code>Import-Module Microsoft.PowerShell.Management
+  <Versions>>=10.0.0</Versions>
+  <Code>
+    <Execute Host="PowerShell">Import-Module Microsoft.PowerShell.Management
 Import-Module Appx
 
-$Cortana1 = "HKCU:\SOFTWARE\Microsoft\Personalization\Settings"
-$Cortana2 = "HKCU:\SOFTWARE\Microsoft\InputPersonalization"
-$Cortana3 = "HKCU:\SOFTWARE\Microsoft\InputPersonalization\TrainedDataStore"
+$Cortana1 = "HKEY_CURRENT_USER:\SOFTWARE\Microsoft\Personalization\Settings"
+$Cortana2 = "HKEY_CURRENT_USER:\SOFTWARE\Microsoft\InputPersonalization"
+$Cortana3 = "HKEY_CURRENT_USER:\SOFTWARE\Microsoft\InputPersonalization\TrainedDataStore"
 If (!(Test-Path $Cortana1)) {
     New-Item $Cortana1
 }
@@ -28,5 +28,6 @@ If (!(Test-Path $Cortana3)) {
     New-Item $Cortana3
 }
 Set-ItemProperty $Cortana3 HarvestContacts -Value 0
-Get-AppxPackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</Code>
+Get-AppxPackage -allusers Microsoft.549981C3F5F10 | Remove-AppxPackage</Execute>
+  </Code>
 </Script>

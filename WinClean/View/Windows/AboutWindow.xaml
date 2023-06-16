@@ -1,0 +1,69 @@
+﻿<Window
+    x:Class="Scover.WinClean.View.Windows.AboutWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:windows="clr-namespace:Scover.WinClean.ViewModel.Windows"
+    x:Name="aboutWindow"
+    Title="{Binding ApplicationName, StringFormat={x:Static ui:AboutWindow.Title}}"
+    Height="220"
+    d:DataContext="{d:DesignInstance Type=windows:AboutViewModel}"
+    ResizeMode="NoResize"
+    SizeToContent="Width"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+    <Grid Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Image
+            Grid.RowSpan="3"
+            Margin="0,0,12,0"
+            Source="{StaticResource WinClean}" />
+
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="1"
+            Text="{Binding ApplicationName}" />
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="1"
+            Text="{Binding ApplicationVersion, StringFormat={x:Static ui:AboutWindow.Version}}" />
+        <TextBlock Grid.Row="2" Grid.Column="1">
+            <Hyperlink Command="{Binding OpenRepository}">
+                GitHub
+            </Hyperlink>
+        </TextBlock>
+
+        <Button
+            Grid.Row="3"
+            Grid.Column="1"
+            Content="{x:Static ui:Buttons.Close}"
+            IsCancel="True"
+            IsDefault="True">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <i:CallMethodAction MethodName="Close" TargetObject="{Binding ElementName=aboutWindow}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+    </Grid>
+</Window>

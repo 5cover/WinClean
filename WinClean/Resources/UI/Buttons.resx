@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddScripts" xml:space="preserve">
-    <value>Add scripts</value>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -132,23 +132,14 @@
   <data name="DeleteScript" xml:space="preserve">
     <value>Delete script</value>
   </data>
-  <data name="EndTask" xml:space="preserve">
-    <value>End task</value>
-  </data>
-  <data name="Execute" xml:space="preserve">
-    <value>Execute</value>
-  </data>
-  <data name="ExecuteScripts" xml:space="preserve">
-    <value>Execute scripts...</value>
-  </data>
   <data name="Exit" xml:space="preserve">
     <value>Exit</value>
   </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
-  </data>
-  <data name="Restart" xml:space="preserve">
-    <value>Restart</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>

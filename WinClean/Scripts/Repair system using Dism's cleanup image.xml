@@ -5,9 +5,10 @@
   <Description>This script runs the Dism utility and tasks it to deploy a cleanup image to repair the system.</Description>
   <Description xml:lang="fr">Ce script exécute l'utilitaire Dism et le charge de déployer une image de nettoyage pour réparer le système.</Description>
   <Category>Maintenance</Category>
-  <Recommended>Yes</Recommended>
-  <Host>Cmd</Host>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Stability</Impact>
   <Versions>>=6.1.7600</Versions>
-  <Code>dism /Online /Cleanup-image /Restorehealth</Code>
+  <Code>
+    <Execute Host="Cmd">dism /Online /Cleanup-image /Restorehealth</Execute>
+  </Code>
 </Script>

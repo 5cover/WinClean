@@ -120,7 +120,13 @@
   <data name="Custom" xml:space="preserve">
     <value>Personnalisé</value>
   </data>
+  <data name="CustomDescription" xml:space="preserve">
+    <value>Scripts ajoutés par l'utilisateur. Ils peuvent être modifés.</value>
+  </data>
   <data name="Default" xml:space="preserve">
     <value>Par défaut</value>
+  </data>
+  <data name="DefaultDescription" xml:space="preserve">
+    <value>Scripts intégrés dans l'application. Ils ne peuvent pas être modifiés.</value>
   </data>
 </root>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Script>
+  <Name>Run tree command</Name>
+  <Description>Run the cmd "tree" command on the local disk root directory and exits.</Description>
+  <Category>Maintenance</Category>
+  <SafetyLevel>Safe</SafetyLevel>
+  <Impact>Ergonomics</Impact>
+  <Code>
+    <Execute Host="Cmd">cd\
+tree</Execute>
+  </Code>
+</Script>
