@@ -5,7 +5,7 @@ namespace Scover.WinClean.Services;
 [ServiceProvider]
 [Singleton(typeof(IDialogCreator), typeof(DialogCreator))]
 [Singleton(typeof(IApplicationInfo), typeof(ApplicationInfo))]
-[Singleton(typeof(IViewResolver), typeof(ViewResolver))]
+[Singleton(typeof(IViewFactory), typeof(ViewFactory))]
 [Singleton(typeof(IOperatingSystem), typeof(OperatingSystem))]
 [Singleton(typeof(ISettings), typeof(Settings))]
 [Singleton(typeof(IThemeProvider), typeof(ThemeProvider))]

@@ -16,7 +16,8 @@ public static class Multiton<TEnum, TInstance>
     {
         public static Lazy<List<TInstance>> Instances = new(()
             => typeof(TEnum).GetProperties(BindingFlags.Public | BindingFlags.Static)
-                // Check type before querying value to prevent useless evaluations.
+                // Check type before querying value to prevent useless evaluations. Also prevents infinite
+                // recursion when TEnum has a property that calls Instances.
                 .Where(p => typeof(TInstance).IsAssignableFrom(p.PropertyType))
                 .Select(prop => (TInstance?)prop.GetValue(null))
                 .WithoutNull().ToList(),

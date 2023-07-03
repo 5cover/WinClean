@@ -1,7 +1,9 @@
 ﻿namespace Scover.WinClean.Model;
 
-/// <summary>A lazily-initialized value that can be retrieved synchronously or asynchronously.</summary>
-public sealed class BiLazy<T>
+/// <summary>
+/// A cached, laziliy-initialized value that can be retrieved synchronously or asynchronously.
+/// </summary>
+public sealed class Cached<T>
 {
     private readonly Func<T> _createValue;
     private readonly Func<CancellationToken, Task<T>> _createValueAsync;
@@ -9,7 +11,7 @@ public sealed class BiLazy<T>
 
     /// <param name="createValue">The function that creates the value synchronously.</param>
     /// <param name="createValueAsync">The function that creates the value asynchronously.</param>
-    public BiLazy(Func<T> createValue, Func<CancellationToken, Task<T>> createValueAsync)
+    public Cached(Func<T> createValue, Func<CancellationToken, Task<T>> createValueAsync)
         => (_createValue, _createValueAsync, _value) = (createValue, createValueAsync, new(createValue));
 
     /// <summary>Retrieves the value synchronously.</summary>

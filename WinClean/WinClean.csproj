@@ -16,6 +16,7 @@
     <EnableWindowsTargeting>True</EnableWindowsTargeting>
     <RepositoryUrl>https://github.com/5cover/WinClean</RepositoryUrl>
     <RootNamespace>Scover.WinClean</RootNamespace>
+    <LangVersion>latest</LangVersion>
     <SignAssembly>True</SignAssembly>
     <StartupObject>Scover.WinClean.View.App</StartupObject>
     <TargetFramework>net6.0-windows7.0</TargetFramework>

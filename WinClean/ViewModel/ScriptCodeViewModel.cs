@@ -23,7 +23,7 @@ public sealed class ScriptCodeViewModel : ObservableObject, IDictionary<Capabili
 
     /// <remarks>Use IsAsync=true when binding to this property.</remarks>
     /// <summary>Executes detection synchronously once.</summary>
-    public BiLazy<Capability?> EffectiveCapability { get; }
+    public Cached<Capability?> EffectiveCapability { get; }
 
     public bool IsReadOnly => ((ICollection<KeyValuePair<Capability, ScriptAction>>)_model).IsReadOnly;
 

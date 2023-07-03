@@ -10,7 +10,7 @@ public sealed class DialogCreator : IDialogCreator
 
     public bool? ShowDialog<TViewModel>(TViewModel viewModel)
     {
-        var view = (Window)ServiceProvider.Get<IViewResolver>().GetView(viewModel);
+        var view = (Window)ServiceProvider.Get<IViewFactory>().MakeView(viewModel);
         view.Owner = ActiveWindow;
         view.DataContext = viewModel;
         return view.ShowDialog();

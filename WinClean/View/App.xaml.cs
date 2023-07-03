@@ -7,10 +7,8 @@ using CommandLine;
 using Scover.WinClean.Model;
 using Scover.WinClean.Resources;
 using Scover.WinClean.Services;
-using Scover.WinClean.View.Pages;
 using Scover.WinClean.View.Windows;
 using Scover.WinClean.ViewModel.Logging;
-using Scover.WinClean.ViewModel.Pages;
 using Scover.WinClean.ViewModel.Windows;
 
 using Vanara.PInvoke;
@@ -48,16 +46,12 @@ public sealed partial class App
         TextOptions.TextFormattingModeProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata(TextFormattingMode.Display,
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-        var viewResolver = ServiceProvider.Get<IViewResolver>();
-
-        viewResolver.Register<AboutViewModel, AboutWindow>();
-        viewResolver.Register<SettingsViewModel, SettingsWindow>();
-        viewResolver.Register<ScriptExecutionWizardViewModel, ScriptExecutionWizard>();
-
-        viewResolver.Register<Page1ViewModel, Page1>();
-        viewResolver.Register<Page1AViewModel, Page1A>();
-        viewResolver.Register<Page2ViewModel, Page2>();
-        viewResolver.Register<Page3ViewModel, Page3>();
+        {
+            var viewFactory = ServiceProvider.Get<IViewFactory>();
+            viewFactory.Register<AboutViewModel, AboutWindow>();
+            viewFactory.Register<SettingsViewModel, SettingsWindow>();
+            viewFactory.Register<ScriptExecutionWizardViewModel, ScriptExecutionWizard>();
+        }
 
         DispatcherUnhandledException += (s, e) => e.Handled = callbacks.WarnOnUnhandledException(e.Exception);
 
