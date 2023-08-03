@@ -1,6 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Text;
 
-using ICSharpCode.AvalonEdit.Document;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 using Scover.WinClean.Model;
 
@@ -8,33 +8,24 @@ namespace Scover.WinClean.ViewModel;
 
 public sealed class ExecutionProgressViewModel : ObservableObject, IProgress<ProcessOutput>
 {
-    public TextDocument FullOutput { get; } = CreateDocument();
-    public TextDocument StandardError { get; } = CreateDocument();
-    public TextDocument StandardOutput { get; } = CreateDocument();
+    public string FullOutput => _fullOutput.ToString();
+    public string StandardError => _standardError.ToString();
+    public string StandardOutput => _standardOutput.ToString();
+
+    private readonly StringBuilder _fullOutput = new(), _standardError = new(), _standardOutput = new();
 
     public void Report(ProcessOutput value)
     {
-        AppendLine(FullOutput, value.Text);
+        _ = _fullOutput.AppendLine(value.Text);
         OnPropertyChanged(nameof(FullOutput));
 
-        (var document, var propName) = value.Kind switch
+        (var builder, var propName) = value.Kind switch
         {
-            ProcessOutputKind.Error => (StandardError, nameof(StandardError)),
-            ProcessOutputKind.Standard => (StandardOutput, nameof(StandardOutput)),
+            ProcessOutputKind.Error => (_standardError, nameof(StandardError)),
+            ProcessOutputKind.Standard => (_standardOutput, nameof(StandardOutput)),
             _ => throw value.Kind.NewInvalidEnumArgumentException()
         };
-        AppendLine(document, value.Text);
+        _ = builder.AppendLine(value.Text);
         OnPropertyChanged(propName);
     }
-
-    private static void AppendLine(TextDocument document, string? text)
-    {
-        if (text is not null)
-        {
-            document.Insert(document.TextLength, text);
-            document.Insert(document.TextLength, Environment.NewLine);
-        }
-    }
-
-    private static TextDocument CreateDocument() => new() { UndoStack = { SizeLimit = 0 } };
 }

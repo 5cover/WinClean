@@ -8,8 +8,8 @@
   <SafetyLevel>Safe</SafetyLevel>
   <Impact>Storage speed</Impact>
   <Code>
-    <Enable Host="Cmd">fsutil 8dot3name set 1</Enable>
-    <Disable Host="Cmd">fsutil 8dot3name set 2</Disable>
+    <Enable Host="Execute">fsutil 8dot3name set 1</Enable>
+    <Disable Host="Execute">fsutil 8dot3name set 2</Disable>
     <Detect Host="PowerShell">$r = (fsutil 8dot3name query)
 if ($r.Contains('1')) { exit 1 }
 elif ($r.Contains('2')) { exit 0 }

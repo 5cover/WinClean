@@ -1,9 +1,8 @@
 ﻿<UserControl
     x:Class="Scover.WinClean.View.Controls.ExecutionInfoView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
@@ -16,7 +15,10 @@
                 BorderThickness="1"
                 CornerRadius="1">
                 <DockPanel Margin="10">
-                    <WrapPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                    <WrapPanel
+                        Margin="0,0,0,10"
+                        DockPanel.Dock="Top"
+                        Orientation="Horizontal">
                         <CheckBox
                             x:Name="stdOutCheckBox"
                             Margin="0,0,20,0"
@@ -28,15 +30,13 @@
                             Content="{x:Static ui:ExecutionInfoView.StandardError}" />
                         <CheckBox x:Name="wordWrapCheckBox" Content="{x:Static ui:ExecutionInfoView.WordWrap}" />
                     </WrapPanel>
-                    <avalonEdit:TextEditor
+                    <TextBox
                         x:Name="textEditor"
                         FontFamily="Consolas"
                         HorizontalScrollBarVisibility="Auto"
                         IsReadOnly="True"
                         ScrollBar.Scroll="TextEditor_Scroll"
-                        ShowLineNumbers="True"
-                        VerticalScrollBarVisibility="Auto"
-                        WordWrap="{Binding IsChecked, ElementName=wordWrapCheckBox}">
+                        VerticalScrollBarVisibility="Auto">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="TextChanged" SourceName="textEditor">
                                 <i:CallMethodAction
@@ -45,39 +45,37 @@
                                     TargetObject="{Binding ElementName=textEditor}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                        <avalonEdit:TextEditor.Resources>
-                            <Style TargetType="avalonEdit:TextView">
-                                <Setter Property="Margin" Value="10,0,0,0" />
-                            </Style>
-                        </avalonEdit:TextEditor.Resources>
-                        <avalonEdit:TextEditor.Style>
-                            <Style TargetType="avalonEdit:TextEditor">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
                                 <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsChecked, ElementName=wordWrapCheckBox}" Value="True">
+                                        <Setter Property="TextWrapping" Value="Wrap" />
+                                    </DataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
                                             <Condition Binding="{Binding IsChecked, ElementName=stdOutCheckBox}" Value="False" />
                                             <Condition Binding="{Binding IsChecked, ElementName=stdErrCheckBox}" Value="True" />
                                         </MultiDataTrigger.Conditions>
-                                        <Setter Property="Document" Value="{Binding Progress.StandardError}" />
+                                        <Setter Property="Text" Value="{Binding Progress.StandardError, Mode=OneWay, IsAsync=True}" />
                                     </MultiDataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
                                             <Condition Binding="{Binding IsChecked, ElementName=stdOutCheckBox}" Value="True" />
                                             <Condition Binding="{Binding IsChecked, ElementName=stdErrCheckBox}" Value="False" />
                                         </MultiDataTrigger.Conditions>
-                                        <Setter Property="Document" Value="{Binding Progress.StandardOutput}" />
+                                        <Setter Property="Text" Value="{Binding Progress.StandardOutput, Mode=OneWay, IsAsync=True}" />
                                     </MultiDataTrigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
                                             <Condition Binding="{Binding IsChecked, ElementName=stdOutCheckBox}" Value="True" />
                                             <Condition Binding="{Binding IsChecked, ElementName=stdErrCheckBox}" Value="True" />
                                         </MultiDataTrigger.Conditions>
-                                        <Setter Property="Document" Value="{Binding Progress.FullOutput}" />
+                                        <Setter Property="Text" Value="{Binding Progress.FullOutput, Mode=OneWay, IsAsync=True}" />
                                     </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </avalonEdit:TextEditor.Style>
-                    </avalonEdit:TextEditor>
+                        </TextBox.Style>
+                    </TextBox>
                 </DockPanel>
             </Border>
         </DataTemplate>

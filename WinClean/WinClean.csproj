@@ -108,7 +108,7 @@
     <EmbeddedResource Include="Scripts\Clear File Explorer history.xml" />
     <EmbeddedResource Include="Scripts\Delete all system restore points, except the most recent.xml" />
     <EmbeddedResource Include="Scripts\Delete junk files.xml" />
-    <EmbeddedResource Include="Scripts\Show ads and suggestions.xml" />
+    <EmbeddedResource Include="Scripts\Hide ads and suggestions.xml" />
     <EmbeddedResource Include="Scripts\Disable delivery optimization.xml" />
     <EmbeddedResource Include="Scripts\Don%27t block downloaded files.xml" />
     <EmbeddedResource Include="Scripts\Disable Explorer online help.xml" />

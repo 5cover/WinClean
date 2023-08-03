@@ -9,6 +9,6 @@
   <Impact>Stability</Impact>
   <Versions>>=6.1.7600</Versions>
   <Code>
-    <Execute Host="Cmd">dism /Online /Cleanup-image /Restorehealth</Execute>
+    <Execute Host="Execute">dism /Online /Cleanup-image /Restorehealth</Execute>
   </Code>
 </Script>

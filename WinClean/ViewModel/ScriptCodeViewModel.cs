@@ -16,7 +16,7 @@ public sealed class ScriptCodeViewModel : ObservableObject, IDictionary<Capabili
     public ScriptCodeViewModel(ScriptCode model)
     {
         _model = model;
-        EffectiveCapability = new(() => _model.DetectCapability(ServiceProvider.Get<ISettings>().ScriptDetectionTimeout), ct => _model.DetectCapabilityAsync(ct));
+        EffectiveCapability = new(() => _model.DetectCapability(ServiceProvider.Get<ISettings>().ScriptDetectionTimeout), _model.DetectCapabilityAsync);
     }
 
     public int Count => _model.Count;

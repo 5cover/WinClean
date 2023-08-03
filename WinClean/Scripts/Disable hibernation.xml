@@ -9,7 +9,7 @@
   <Impact>Free storage space</Impact>
   <Versions>>=5.1.2600</Versions>
   <Code>
-    <Enable Host="Cmd">powercfg -h off</Enable>
-    <Disable Host="Cmd">powercfg -h on</Disable>
+    <Enable Host="Execute">powercfg -h off</Enable>
+    <Disable Host="Execute">powercfg -h on</Disable>
   </Code>
 </Script>

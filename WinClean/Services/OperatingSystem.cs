@@ -14,7 +14,7 @@ public sealed class OperatingSystem : IOperatingSystem
     {
         get
         {
-            using ManagementObjectSearcher searcher = new(@"\\.\root\CIMV2", "SELECT Dependent FROM Win32_ShadowVolumeSupport");
+            using ManagementObjectSearcher searcher = new(@"SELECT Dependent FROM Win32_ShadowVolumeSupport");
 
             foreach (var driveLetter in searcher.Get().Cast<ManagementObject>()
                 .Select(shadowVolumeSupport => (string)new ManagementObject((string)shadowVolumeSupport["Dependent"])["DriveLetter"])

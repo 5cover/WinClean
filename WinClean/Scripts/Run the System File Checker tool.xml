@@ -9,6 +9,6 @@
   <Impact>Stability</Impact>
   <Versions>>=5.1.2600</Versions>
   <Code>
-    <Execute Host="Cmd">sfc /scannow</Execute>
+    <Execute Host="Execute">sfc /scannow</Execute>
   </Code>
 </Script>
