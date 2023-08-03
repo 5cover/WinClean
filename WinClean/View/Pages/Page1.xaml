@@ -1,27 +1,22 @@
 ﻿<controls:WizardPageBetter
     x:Class="Scover.WinClean.View.Pages.Page1"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
     xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
-    xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:pages="clr-namespace:Scover.WinClean.ViewModel.Pages"
+    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
     Title="{x:Static ui:Page1.Title}"
     d:DataContext="{d:DesignInstance Type=pages:Page1ViewModel}"
     CanSelectNextPage="True"
     Description="{x:Static ui:Page1.Description}"
     mc:Ignorable="d">
     <StackPanel>
-        <TextBlock FontSize="12" Text="{x:Static ui:Page1.DrivesToBackup}" />
-        <ItemsControl Margin="0,10,0,0" ItemsSource="{Binding SystemRestoreEligibleDrives}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type viewModel:DriveInfoViewModel}">
-                    <CheckBox Content="{Binding Drive}" IsChecked="{Binding IsSelected}" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <TextBlock Margin="0,10,0,0" Text="{x:Static ui:Page1.SystemRestoreWillBeEnabled}" />
+        <Button
+            HorizontalAlignment="Left"
+            Command="{x:Static pages:Page1ViewModel.OpenSystemProtectionSettings}"
+            Content="{x:Static ui:Page1.OpenSystemProtectionSettings}" />
     </StackPanel>
 </controls:WizardPageBetter>

@@ -120,12 +120,8 @@
   <data name="Description" xml:space="preserve">
     <value>Créer un point de restauration vous permettra d'annuler les changements sur le point d'être apportés au système.</value>
   </data>
-  <data name="DrivesToBackup" xml:space="preserve">
-    <value>Sélectionnez les lecteurs que vous souhaitez sauvegarder :</value>
-  </data>
-  <data name="SystemRestoreWillBeEnabled" xml:space="preserve">
-    <value>La protection du système sera activée pour chaque lecteur sélectionné.
-Si vous ne sélectionnez aucun lecteur, aucun point de restauration ne sera créé.</value>
+  <data name="OpenSystemProtectionSettings" xml:space="preserve">
+    <value>Gérer les paramètres de la protection du système...</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Créer un point de restauration</value>

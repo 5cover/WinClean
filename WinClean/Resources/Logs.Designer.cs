@@ -88,15 +88,6 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Restore point created..
-        /// </summary>
-        public static string RestorePointCreated {
-            get {
-                return ResourceManager.GetString("RestorePointCreated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Script at &apos;{0}&apos; added as &apos;{1}&apos;..
         /// </summary>
         public static string ScriptAdded {
@@ -219,24 +210,6 @@ namespace Scover.WinClean.Resources {
         public static string SystemRestartInitiated {
             get {
                 return ResourceManager.GetString("SystemRestartInitiated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à System restore disabled for drive &apos;{0}&apos;..
-        /// </summary>
-        public static string SystemRestoreDisabledForDrive {
-            get {
-                return ResourceManager.GetString("SystemRestoreDisabledForDrive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à System restore enabled for drive &apos;{0}&apos;..
-        /// </summary>
-        public static string SystemRestoreEnabledForDrive {
-            get {
-                return ResourceManager.GetString("SystemRestoreEnabledForDrive", resourceCulture);
             }
         }
         

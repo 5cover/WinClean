@@ -70,21 +70,11 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Select the drives you want to backup:.
+        ///   Recherche une chaîne localisée semblable à Manage system protection settings....
         /// </summary>
-        public static string DrivesToBackup {
+        public static string OpenSystemProtectionSettings {
             get {
-                return ResourceManager.GetString("DrivesToBackup", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à System restore will be enabled for each selected drive.
-        ///If you don&apos;t select any drives, no restore point will be created..
-        /// </summary>
-        public static string SystemRestoreWillBeEnabled {
-            get {
-                return ResourceManager.GetString("SystemRestoreWillBeEnabled", resourceCulture);
+                return ResourceManager.GetString("OpenSystemProtectionSettings", resourceCulture);
             }
         }
         

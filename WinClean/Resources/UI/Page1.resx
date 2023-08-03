@@ -100,12 +100,8 @@
   <data name="Description" xml:space="preserve">
     <value>Creating a restore point will allow you to undo the changes that are about to be made to the system.</value>
   </data>
-  <data name="DrivesToBackup" xml:space="preserve">
-    <value>Select the drives you want to backup:</value>
-  </data>
-  <data name="SystemRestoreWillBeEnabled" xml:space="preserve">
-    <value>System restore will be enabled for each selected drive.
-If you don't select any drives, no restore point will be created.</value>
+  <data name="OpenSystemProtectionSettings" xml:space="preserve">
+    <value>Manage system protection settings...</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Create a restore point</value>

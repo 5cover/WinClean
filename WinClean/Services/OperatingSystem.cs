@@ -1,5 +1,4 @@
-﻿using System.Management;
-using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
 
 using Vanara.PInvoke;
 
@@ -10,45 +9,12 @@ namespace Scover.WinClean.Services;
 
 public sealed class OperatingSystem : IOperatingSystem
 {
-    public IEnumerable<DriveInfo> SystemRestoreEligibleDrives
-    {
-        get
+    public void OpenSytemPropertiesProtection()
+        => Process.Start(new ProcessStartInfo()
         {
-            using ManagementObjectSearcher searcher = new(@"SELECT Dependent FROM Win32_ShadowVolumeSupport");
-
-            foreach (var driveLetter in searcher.Get().Cast<ManagementObject>()
-                .Select(shadowVolumeSupport => (string)new ManagementObject((string)shadowVolumeSupport["Dependent"])["DriveLetter"])
-                .Where(driveLetter => !string.IsNullOrEmpty(driveLetter)))
-            {
-                yield return new(driveLetter);
-            }
-        }
-    }
-
-    public void CreateRestorePoint(string description, RestorePointType type, RestorePointEventType eventType)
-    {
-        using ManagementClass systemRestore = new(@"\\localhost\root\default", "SystemRestore", new());
-        try
-        {
-            _ = systemRestore.InvokeMethod("CreateRestorePoint", new object[] { description, type, eventType });
-        }
-        catch (COMException e) when (e.HResult == unchecked((int)0x80070422)) // system restore is disabled
-        {
-            throw new InvalidOperationException("Cannot create system restore point because system restore is disabled.", e);
-        }
-    }
-
-    public void DisableSystemRestore(DriveInfo drive)
-    {
-        using ManagementClass systemRestore = new(@"\\localhost\root\default", "SystemRestore", new());
-        _ = systemRestore.InvokeMethod("Disable", new[] { drive.Name });
-    }
-
-    public void EnableSystemRestore(DriveInfo drive)
-    {
-        using ManagementClass systemRestore = new(@"\\localhost\root\default", "SystemRestore", new());
-        _ = systemRestore.InvokeMethod("Enable", new[] { drive.Name });
-    }
+            FileName = Environment.ExpandEnvironmentVariables("%SYSTEMROOT%\\System32\\SystemPropertiesProtection.exe"),
+            UseShellExecute = true, // This will show an UAC prompt if administrative privileges are required instead of throwing an exception
+        });
 
     public void RestartForOSReconfig(bool force)
         => Win32Error.ThrowLastErrorIfFalse(InitiateSystemShutdownEx(null, null, 0, force, true,

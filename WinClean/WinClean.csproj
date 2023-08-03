@@ -215,11 +215,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Page1.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\UI\Page1A.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Page1A.resx</DependentUpon>
-    </Compile>
     <Compile Update="Resources\UI\Page2.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -341,10 +336,6 @@
     <EmbeddedResource Update="Resources\UI\Page1.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Page1.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\UI\Page1A.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Page1A.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\Page2.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

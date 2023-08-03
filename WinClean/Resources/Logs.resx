@@ -130,10 +130,6 @@
     <comment>0 : filename
 1 : exception@Invariant</comment>
   </data>
-  <data name="RestorePointCreated" xml:space="preserve">
-    <value>Restore point created.</value>
-    <comment>@Invariant</comment>
-  </data>
   <data name="ScriptAdded" xml:space="preserve">
     <value>Script at '{0}' added as '{1}'.</value>
     <comment>0 : script filename
@@ -200,14 +196,6 @@
   <data name="SystemRestartInitiated" xml:space="preserve">
     <value>System restart initiated.</value>
     <comment>@Invariant</comment>
-  </data>
-  <data name="SystemRestoreDisabledForDrive" xml:space="preserve">
-    <value>System restore disabled for drive '{0}'.</value>
-    <comment>0 : drive@Invariant</comment>
-  </data>
-  <data name="SystemRestoreEnabledForDrive" xml:space="preserve">
-    <value>System restore enabled for drive '{0}'.</value>
-    <comment>0 : drive@Invariant</comment>
   </data>
   <data name="UnhandledException" xml:space="preserve">
     <value>An unhandled exception occured: {0}</value>

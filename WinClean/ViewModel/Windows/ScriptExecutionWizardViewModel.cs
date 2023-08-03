@@ -21,7 +21,6 @@ public sealed class ScriptExecutionWizardViewModel : ObservableObject, IDisposab
     }
 
     public static TextStyle MainInstruction => ServiceProvider.Get<IThemeProvider>().MainInstruction;
-    public Page1AViewModel Page1AViewModel { get; } = new();
     public Page1ViewModel Page1ViewModel { get; } = new();
     public Page2ViewModel Page2ViewModel { get; }
     public Page3ViewModel Page3ViewModel { get; }

@@ -65,28 +65,7 @@
             x:Key="Page1"
             DataContext="{Binding Page1ViewModel}"
             Style="{StaticResource PageStyle}">
-            <i:Interaction.Triggers>
-                <i:DataTrigger Binding="{Binding CreateRestorePoint}" Value="True">
-                    <i:ChangePropertyAction PropertyName="NextPage" Value="{DynamicResource Page1A}" />
-                </i:DataTrigger>
-                <i:DataTrigger Binding="{Binding CreateRestorePoint}" Value="False">
-                    <i:ChangePropertyAction PropertyName="NextPage" Value="{DynamicResource Page2}" />
-                </i:DataTrigger>
-            </i:Interaction.Triggers>
         </pages:Page1>
-        <pages:Page1A
-            x:Key="Page1A"
-            DataContext="{Binding Page1AViewModel}"
-            Style="{StaticResource PageStyle}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="Finished" SourceObject="{Binding}">
-                    <i:ChangePropertyAction
-                        PropertyName="CurrentPage"
-                        TargetName="wizard"
-                        Value="{DynamicResource Page2}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </pages:Page1A>
         <pages:Page2
             x:Key="Page2"
             DataContext="{Binding Page2ViewModel}"
@@ -211,7 +190,6 @@
             </ControlTemplate>
         </xctk:Wizard.Template>
         <StaticResource ResourceKey="Page1" />
-        <StaticResource ResourceKey="Page1A" />
         <StaticResource ResourceKey="Page2" />
         <StaticResource ResourceKey="Page3" />
     </xctk:Wizard>
