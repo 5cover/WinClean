@@ -106,15 +106,6 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Couldn&apos;t add script at &apos;{0}&apos; as deserialization failed..
-        /// </summary>
-        public static string ScriptDeserializationFailedCannotAdd {
-            get {
-                return ResourceManager.GetString("ScriptDeserializationFailedCannotAdd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Execution &apos;{0}&apos; (&apos;{1}&apos;) aborted..
         /// </summary>
         public static string ScriptExecutionAborted {

@@ -140,10 +140,6 @@
     <comment>0 : script filename
 1 : script InvariantName@Invariant</comment>
   </data>
-  <data name="ScriptDeserializationFailedCannotAdd" xml:space="preserve">
-    <value>Couldn't add script at '{0}' as deserialization failed.</value>
-    <comment>0 : script filename@Invariant</comment>
-  </data>
   <data name="ScriptExecutionAborted" xml:space="preserve">
     <value>Execution '{0}' ('{1}') aborted.</value>
     <comment>0 : script InvariantName

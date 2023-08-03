@@ -70,6 +70,8 @@ public sealed partial class MainViewModel : ObservableObject
             {
                 script.UpdateInStorage();
             }
+
+            Logs.ScriptsSaved.Log();
         });
 
         CheckScriptsByProperty = new RelayCommand<object>(expectedPropertyValue => SelectScripts(s
@@ -97,6 +99,7 @@ public sealed partial class MainViewModel : ObservableObject
                 script.MatchSome(s =>
                 {
                     Scripts.Source.Add(s);
+                    Logs.ScriptAdded.FormatWith(path, s.InvariantName).Log();
                     lastAddedScript = s.Some();
                 });
             }
@@ -188,6 +191,7 @@ public sealed partial class MainViewModel : ObservableObject
             }
             catch (ScriptAlreadyExistsException e)
             {
+                Logs.ScriptAlreadyExistsCannotAdd.FormatWith(path, e.ExistingScript.InvariantName).Log();
                 retry = DialogFactory.ShowConfirmation(() => new Page()
                 {
                     WindowTitle = ServiceProvider.Get<IApplicationInfo>().Name,
