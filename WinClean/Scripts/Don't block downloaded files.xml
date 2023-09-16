@@ -21,7 +21,6 @@
     2 {exit 1}
     1 {exit 0}
     default {exit -1}
-}
-    </Detect>
+}</Detect>
   </Code>
 </Script>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://www.tenforums.com/tutorials/3577-user-account-control-uac-change-settings-windows-10-a.html -->
+<Script>
+  <Name>Disable UAC prompt desktop dimming</Name>
+  <Name xml:lang="fr">Désactiver l'estompage du bureau de l'invite UAC</Name>
+  <Description>By default, User Account Control prompts are shown on a dimmed desktop. Desktop dimming can take up to several seconds on low-end machines. This script changes the User Account Control notification settings to "Notify me only when apps try to make changes to my computer (do not dim my desktop)". Disabling this script reverts the notificaton settings to the default ("Notify me only when apps try to make changes to my computer").
+Note that in some rare cases, disabling desktop dimming might cause problems, as it allows rogue programs cluttering the desktop to hide the UAC window.</Description>
+  <Description xml:lang="fr">Par défaut, les invites du contrôle de compte d'utilisateur s'affichent sur un bureau estompé. L'estompage du Bureau peut prendre jusqu'à plusieurs secondes sur les machines bas de gamme. Ce script modifie les paramètres de notification du contrôle de compte d'utilisateur en « M'avertir uniquement quand des applications tentent d'apporter des modifications à mon ordinateur (ne pas estomper mon Bureau) ». La désactivation de ce script rétablit les paramètres de notification par défaut (« M'avertir uniquement quand des applications tentent d'apporter des modifications à mon ordinateur »).
+Notez que dans de rares cas, la désactivation de l'atténuation du bureau peut entraîner des problèmes, car cela permet à des programmes malveillants encombrant le bureau de masquer la fenêtre UAC.</Description>
+  <Category>Debloating</Category>
+  <SafetyLevel>Safe</SafetyLevel>
+  <Impact>Stability</Impact>
+  <Versions>>=6.0.6000</Versions>
+  <Code>
+    <Enable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+"PromptOnSecureDesktop"=dword:0</Enable>
+    <Disable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+"PromptOnSecureDesktop"=dword:1</Disable>
+    <Detect Host="PowerShell">switch (Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "PromptOnSecureDesktop")
+{
+    0 {exit 1}
+    1 {exit 0}
+    default {exit -1}
+}</Detect>
+  </Code>
+</Script>

@@ -36,10 +36,6 @@
     <DefineConstants>$(DefineConstants)</DefineConstants>
     <Optimize>True</Optimize>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Scripts\Disable Recent search history.xml" />
-  </ItemGroup>
   
   <ItemGroup>
     <EmbeddedResource Include="Categories.xml">
@@ -55,6 +51,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Scripts\Disable Recent search history.xml" />
+    <EmbeddedResource Include="Scripts\Disable UAC prompt desktop dimming.xml" />
     <EmbeddedResource Include="Scripts\Optimize drives.xml" />
     <EmbeddedResource Include="Scripts\Enable Verbose status messages.xml" />
   </ItemGroup>
@@ -106,7 +103,7 @@
     <EmbeddedResource Include="Scripts\Delete junk files.xml" />
     <EmbeddedResource Include="Scripts\Hide ads and suggestions.xml" />
     <EmbeddedResource Include="Scripts\Disable delivery optimization.xml" />
-    <EmbeddedResource Include="Scripts\Don%27t block downloaded files.xml" />
+    <EmbeddedResource Include="Scripts\Don't block downloaded files.xml" />
     <EmbeddedResource Include="Scripts\Disable Explorer online help.xml" />
     <EmbeddedResource Include="Scripts\Disable hibernation.xml" />
     <EmbeddedResource Include="Scripts\Remove shortcut sufffix.xml" />
