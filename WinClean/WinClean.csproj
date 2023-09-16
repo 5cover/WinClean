@@ -50,10 +50,6 @@
     <EmbeddedResource Include="Hosts.xml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Scripts\Disable Recent search history.xml" />
-    <EmbeddedResource Include="Scripts\Disable UAC prompt desktop dimming.xml" />
-    <EmbeddedResource Include="Scripts\Optimize drives.xml" />
-    <EmbeddedResource Include="Scripts\Enable Verbose status messages.xml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -95,41 +91,45 @@
   </ItemGroup>
   
   <ItemGroup>
-    <EmbeddedResource Include="Scripts\Run advanced disk cleanup.xml" />
-    <EmbeddedResource Include="Scripts\Show file extensions.xml" />
     <EmbeddedResource Include="Scripts\Clear event logs.xml" />
     <EmbeddedResource Include="Scripts\Clear File Explorer history.xml" />
     <EmbeddedResource Include="Scripts\Delete all system restore points, except the most recent.xml" />
     <EmbeddedResource Include="Scripts\Delete junk files.xml" />
-    <EmbeddedResource Include="Scripts\Hide ads and suggestions.xml" />
     <EmbeddedResource Include="Scripts\Disable delivery optimization.xml" />
-    <EmbeddedResource Include="Scripts\Don't block downloaded files.xml" />
     <EmbeddedResource Include="Scripts\Disable Explorer online help.xml" />
     <EmbeddedResource Include="Scripts\Disable hibernation.xml" />
-    <EmbeddedResource Include="Scripts\Remove shortcut sufffix.xml" />
+    <EmbeddedResource Include="Scripts\Disable Recent search history.xml" />
     <EmbeddedResource Include="Scripts\Disable Start menu web search.xml" />
     <EmbeddedResource Include="Scripts\Disable systematic short filename creation.xml" />
     <EmbeddedResource Include="Scripts\Disable telemetry and data collection.xml" />
     <EmbeddedResource Include="Scripts\Disable Timeline.xml" />
+    <EmbeddedResource Include="Scripts\Disable UAC prompt desktop dimming.xml" />
+    <EmbeddedResource Include="Scripts\Don't block downloaded files.xml" />
+    <EmbeddedResource Include="Scripts\Enable Verbose status messages.xml" />
+    <EmbeddedResource Include="Scripts\Hide ads and suggestions.xml" />
     <EmbeddedResource Include="Scripts\Keep thumbnail cache after reboot.xml" />
+    <EmbeddedResource Include="Scripts\Optimize drives.xml" />
     <EmbeddedResource Include="Scripts\Remove Cortana.xml" />
     <EmbeddedResource Include="Scripts\Remove Internet Explorer 11.xml" />
-    <EmbeddedResource Include="Scripts\Remove the Microsoft Windows Malware Removal Tool.xml" />
+    <EmbeddedResource Include="Scripts\Remove Microsoft Edge.xml" />
+    <EmbeddedResource Include="Scripts\Remove One Drive.xml" />
     <EmbeddedResource Include="Scripts\Remove PowerShell ISE.xml" />
-    <EmbeddedResource Include="Scripts\Remove useless apps.xml" />
     <EmbeddedResource Include="Scripts\Remove scheduled tasks.xml" />
+    <EmbeddedResource Include="Scripts\Remove shortcut sufffix.xml" />
+    <EmbeddedResource Include="Scripts\Remove the Microsoft Windows Malware Removal Tool.xml" />
+    <EmbeddedResource Include="Scripts\Remove useless apps.xml" />
     <EmbeddedResource Include="Scripts\Remove WordPad.xml" />
     <EmbeddedResource Include="Scripts\Repair system using Dism's cleanup image.xml" />
-    <EmbeddedResource Include="Scripts\Schedule Check Disk utility.xml" />
+    <EmbeddedResource Include="Scripts\Run advanced disk cleanup.xml" />
     <EmbeddedResource Include="Scripts\Run Component Store cleanup.xml" />
     <EmbeddedResource Include="Scripts\Run Disk Cleanup tool.xml" />
     <EmbeddedResource Include="Scripts\Run the System File Checker tool.xml" />
+    <EmbeddedResource Include="Scripts\Schedule Check Disk utility.xml" />
     <EmbeddedResource Include="Scripts\Show checkboxes near files and folders.xml" />
+    <EmbeddedResource Include="Scripts\Show file extensions.xml" />
     <EmbeddedResource Include="Scripts\Show full path in Explorer title bar.xml" />
     <EmbeddedResource Include="Scripts\Show seconds in taskbar clock.xml" />
     <EmbeddedResource Include="Scripts\Stop apps from running in the background.xml" />
-    <EmbeddedResource Include="Scripts\Remove Microsoft Edge.xml" />
-    <EmbeddedResource Include="Scripts\Remove One Drive.xml" />
   </ItemGroup>
 
   <ItemGroup>
