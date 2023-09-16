@@ -105,6 +105,7 @@
     <EmbeddedResource Include="Scripts\Disable Timeline.xml" />
     <EmbeddedResource Include="Scripts\Disable UAC prompt desktop dimming.xml" />
     <EmbeddedResource Include="Scripts\Don't block downloaded files.xml" />
+    <EmbeddedResource Include="Scripts\Restore Classic Windows Photo Viewer.xml" />
     <EmbeddedResource Include="Scripts\Enable Verbose status messages.xml" />
     <EmbeddedResource Include="Scripts\Hide ads and suggestions.xml" />
     <EmbeddedResource Include="Scripts\Keep thumbnail cache after reboot.xml" />
