@@ -28,6 +28,9 @@ namespace Scover.WinClean;
 
 public static class Extensions
 {
+    public static Option<TAccumulate> AggregateOrNone<TSource, TAccumulate>(this IEnumerable<Option<TSource>> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> func)
+        => source.Aggregate(seed.Some(), (intermediate, next) => intermediate.FlatMap(intermediateValue => next.Map(newValue => func(intermediateValue, newValue))));
+
     public static bool CanExecute(this IRelayCommand relayCommand) => relayCommand.CanExecute(null);
 
     public static ISynchronizeInvoke CreateSynchronizationObject(this DispatcherObject dispatcherObject) => new DispatcherSynchronizeInvoke(dispatcherObject.Dispatcher);

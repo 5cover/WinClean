@@ -125,8 +125,8 @@ public sealed class Page2ViewModel : WizardPageViewModel
         }
     }
 
-    private static Option<TimeSpan> GetCumulatedExecutionTime(IEnumerable<ScriptViewModel> scripts) => scripts.Aggregate(TimeSpan.Zero.Some(), (sumSoFar, next)
-        => sumSoFar.FlatMap(t => next.ExecutionTime.Map(et => et + t)));
+    private static Option<TimeSpan> GetCumulatedExecutionTime(IEnumerable<ScriptViewModel> scripts)
+        => scripts.Select(s => s.ExecutionTime).AggregateOrNone(TimeSpan.Zero, (sumSoFar, t) => sumSoFar + t);
 
     private async Task ExecuteScripts(CancellationToken cancellationToken)
     {
