@@ -61,11 +61,11 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Estimated execution time.
+        ///   Recherche une chaîne localisée semblable à Estimated time.
         /// </summary>
-        public static string EstimatedExecutionTime {
+        public static string EstimatedTime {
             get {
-                return ResourceManager.GetString("EstimatedExecutionTime", resourceCulture);
+                return ResourceManager.GetString("EstimatedTime", resourceCulture);
             }
         }
         
@@ -79,11 +79,11 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Measured execution time.
+        ///   Recherche une chaîne localisée semblable à Measured time.
         /// </summary>
-        public static string MeasuredExecutionTime {
+        public static string MeasuredTime {
             get {
-                return ResourceManager.GetString("MeasuredExecutionTime", resourceCulture);
+                return ResourceManager.GetString("MeasuredTime", resourceCulture);
             }
         }
     }

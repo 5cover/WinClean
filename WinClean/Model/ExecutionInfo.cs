@@ -34,7 +34,7 @@ public sealed class ExecutionInfo : IDisposable
                 RedirectStandardOutput = true,
                 FileName = _hostStartInfo.Filename,
                 Arguments = _hostStartInfo.Arguments,
-            }
+            },
         });
     }
 
@@ -61,7 +61,7 @@ public sealed class ExecutionInfo : IDisposable
         DenyIfDisposed();
         DenyIfExecuting();
 
-        _ = HostProcess.Start();
+        StartHostProcess();
         _stopwatch.Restart();
         HostProcess.WaitForExit();
         _stopwatch.Stop();
@@ -80,7 +80,7 @@ public sealed class ExecutionInfo : IDisposable
 
         try
         {
-            _ = HostProcess.Start();
+            StartHostProcess();
             HostProcess.BeginOutputReadLine();
             HostProcess.BeginErrorReadLine();
 
@@ -152,5 +152,11 @@ public sealed class ExecutionInfo : IDisposable
         {
             throw new InvalidOperationException("Host process is not executing. Execution is not underway.");
         }
+    }
+
+    private void StartHostProcess()
+    {
+        _ = HostProcess.Start();
+        HostProcess.PriorityClass = ProcessPriorityClass.High;
     }
 }

@@ -2,7 +2,9 @@
 
 <img src="https://repository-images.githubusercontent.com/511304031/b457c648-65b6-438d-9375-094c647f2066" alt="WinClean logo" width="300" align="left"/>
 <div id="user-content-toc" align="center">
-    <h1 style="display: inline-block;">WinClean</h1>
+  <ul>
+    <summary><h1 style="display: inline-block;">WinClean</h1></summary>
+  </ul>
 </div>
 <p align="center">Utilitaire d'optimisation et de nettoyage Windows.</p>
 <p align="center">

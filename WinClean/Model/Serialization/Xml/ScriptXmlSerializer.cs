@@ -37,15 +37,15 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
 
         Dictionary<string, Exception> deserializerExceptions = new();
 
-        foreach (var deserializer in deserializers)
+        foreach ((var name, var deserializer) in deserializers)
         {
             try
             {
-                return deserializer.Value(type, d);
+                return deserializer(type, d);
             }
             catch (Exception e) when (e is InvalidOperationException or XmlException or KeyNotFoundException or FormatException or InvalidDataException)
             {
-                deserializerExceptions[deserializer.Key] = e;
+                deserializerExceptions[name] = e;
             }
         }
 

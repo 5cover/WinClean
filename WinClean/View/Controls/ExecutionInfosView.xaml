@@ -51,9 +51,9 @@
                             </GridViewColumn>
                             <GridViewColumn DisplayMemberBinding="{Binding Script.Name}" Header="{x:Static res:Script.Name}" />
                             <GridViewColumn DisplayMemberBinding="{Binding Capability.Name}" Header="{x:Static ui:ExecutionInfosView.Action}" />
-                            <GridViewColumn DisplayMemberBinding="{Binding FormattedOriginalEstimatedExecutionTime}" Header="{x:Static res:ExecutionResult.EstimatedExecutionTime}" />
+                            <GridViewColumn DisplayMemberBinding="{Binding FormattedOriginalEstimatedExecutionTime}" Header="{x:Static res:ExecutionResult.EstimatedTime}" />
                             <!--  TargetNullValue doesn't work at all here for some reason  -->
-                            <GridViewColumn DisplayMemberBinding="{Binding Result.FormattedExecutionTime, FallbackValue=-}" Header="{x:Static res:ExecutionResult.MeasuredExecutionTime}" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Result.FormattedExecutionTime, FallbackValue=-}" Header="{x:Static res:ExecutionResult.MeasuredTime}" />
                             <GridViewColumn DisplayMemberBinding="{Binding Result.ExitCode, FallbackValue=-}" Header="{x:Static res:ExecutionResult.ExitCode}" />
                         </GridView>
                     </ListView.View>

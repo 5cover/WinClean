@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  https://www.elevenforum.com/t/enable-or-disable-recent-search-history-in-windows-11.5395/  -->
+<Script>
+  <Name>Disable Recent search history</Name>
+  <Name xml:lang="fr">Désactiver l'historique des recherches récentes</Name>
+  <Description>Windows Search saves your recent search history by default. This can be a privacy concern.</Description>
+  <Description xml:lang="fr">Windows Search enregistre par défaut votre historique de recherche récent. Cela peut poser un problème de confidentialité.</Description>
+  <Category>Debloating</Category>
+  <SafetyLevel>Limited</SafetyLevel>
+  <Impact>Privacy</Impact>
+  <Versions>>=10.0.0</Versions>
+  <Code>
+    <Enable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\SearchSettings]
+"IsDeviceSearchHistoryEnabled"=dword:0</Enable>
+    <Disable Host="Regedit">Windows Registry Editor Version 5.00
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\SearchSettings]
+"IsDeviceSearchHistoryEnabled"=dword:1</Disable>
+    <Detect Host="PowerShell">Switch (Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\SearchSettings" -Name "IsDeviceSearchHistoryEnabled")
+{
+  0 {exit 1}
+  1 {exit 0}
+  default {exit -1}
+}</Detect>
+  </Code>
+</Script>
