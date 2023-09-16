@@ -62,6 +62,7 @@ public static class Extensions
     /// The process tree for this process, starting from the deepest descendants to the children.
     /// </returns>
     /// <remarks>The returned collection includes <paramref name="process"/> as the last element.</remarks>
+    /// <inheritdoc cref="Process.Id" path="/exception"/>
     public static IEnumerable<Process> GetProcessTree(this Process process)
         => new ManagementObjectSearcher($"Select ProcessID From Win32_Process Where ParentProcessID={process.Id}")
         .Get().Cast<ManagementObject>()
@@ -153,6 +154,22 @@ public static class Extensions
     /// IEnumerable{TSource})"/>, the order of the elements isn't taken into account.
     /// </remarks>
     public static bool ItemsEqual<T>(this IEnumerable<T> e1, IEnumerable<T> e2) => !e1.Except(e2).Any();
+
+    /// <inheritdoc cref="Process.Kill(bool)" path="/summary"/>
+    public static void KillTree(this Process process)
+    {
+        if (process.IsRunning())
+        {
+            // Not using process.Kill(true) because: It throws Win32Exceptions for "Access denied" errors
+            // internally. They are handled by the Process class, so it's not a problem, but they're still
+            // visible by the debugger. This is because this method enumerates all system processes to build
+            // the process tree, but doesn't have permission to open all of them.
+            foreach (var p in process.GetProcessTree())
+            {
+                p.Kill();
+            }
+        }
+    }
 
     public static InvalidEnumArgumentException NewInvalidEnumArgumentException<TEnum>(this TEnum value, [CallerArgumentExpression(nameof(value))] string argumentName = "") where TEnum : struct, Enum
         => new(argumentName, Convert.ToInt32(value, CultureInfo.InvariantCulture), typeof(TEnum));

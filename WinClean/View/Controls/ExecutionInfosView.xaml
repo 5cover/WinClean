@@ -1,12 +1,12 @@
 ﻿<UserControl
     x:Class="Scover.WinClean.View.Controls.ExecutionInfosView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:res="clr-namespace:Scover.WinClean.Resources"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
-    xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
     mc:Ignorable="d">
     <UserControl.ContentTemplate>
@@ -27,13 +27,19 @@
                                             <Image.Style>
                                                 <Style BasedOn="{StaticResource Icon}" TargetType="Image">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Result.Succeeded, FallbackValue={x:Null}}" Value="{x:Null}">
-                                                            <Setter Property="Source" Value="{StaticResource None}" />
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static viewModel:ScriptExecutionState.Pending}">
+                                                            <Setter Property="Source" Value="{x:Null}" />
                                                         </DataTrigger>
-                                                        <DataTrigger Binding="{Binding Result.Succeeded}" Value="False">
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static viewModel:ScriptExecutionState.Running}">
+                                                            <Setter Property="Source" Value="{StaticResource Gear}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static viewModel:ScriptExecutionState.Paused}">
+                                                            <Setter Property="Source" Value="{StaticResource Pause}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Result.Succeeded, FallbackValue={x:Null}}" Value="False">
                                                             <Setter Property="Source" Value="{StaticResource Cross}" />
                                                         </DataTrigger>
-                                                        <DataTrigger Binding="{Binding Result.Succeeded}" Value="True">
+                                                        <DataTrigger Binding="{Binding Result.Succeeded, FallbackValue={x:Null}}" Value="True">
                                                             <Setter Property="Source" Value="{StaticResource Checkmark}" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
@@ -45,9 +51,9 @@
                             </GridViewColumn>
                             <GridViewColumn DisplayMemberBinding="{Binding Script.Name}" Header="{x:Static res:Script.Name}" />
                             <GridViewColumn DisplayMemberBinding="{Binding Capability.Name}" Header="{x:Static ui:ExecutionInfosView.Action}" />
+                            <GridViewColumn DisplayMemberBinding="{Binding FormattedOriginalEstimatedExecutionTime}" Header="{x:Static res:ExecutionResult.EstimatedExecutionTime}" />
                             <!--  TargetNullValue doesn't work at all here for some reason  -->
                             <GridViewColumn DisplayMemberBinding="{Binding Result.FormattedExecutionTime, FallbackValue=-}" Header="{x:Static res:ExecutionResult.MeasuredExecutionTime}" />
-                            <GridViewColumn DisplayMemberBinding="{Binding FormattedOriginalEstimatedExecutionTime}" Header="{x:Static res:ExecutionResult.EstimatedExecutionTime}" />
                             <GridViewColumn DisplayMemberBinding="{Binding Result.ExitCode, FallbackValue=-}" Header="{x:Static res:ExecutionResult.ExitCode}" />
                         </GridView>
                     </ListView.View>

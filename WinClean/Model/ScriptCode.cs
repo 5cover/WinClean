@@ -38,7 +38,7 @@ public sealed class ScriptCode : IDictionary<Capability, ScriptAction>
         }
 
         // Detection took too long : kill process.
-        process.Kill(true);
+        process.KillTree();
         return null;
     }
 
@@ -52,7 +52,7 @@ public sealed class ScriptCode : IDictionary<Capability, ScriptAction>
         using HostStartInfo startInfo = detect.CreateHostStartInfo();
         using var process = StartProcess(startInfo);
 
-        using var reg = cancellationToken.Register(() => process.Kill(true));
+        using var reg = cancellationToken.Register(process.KillTree);
 
         await process.WaitForExitAsync(cancellationToken);
 

@@ -137,7 +137,12 @@ public sealed class Page2ViewModel : WizardPageViewModel
             if (await executionInfo.GetExecutionNeededAsync(cancellationToken))
             {
                 executionInfo.Result = await executionInfo.ExecuteAsync(cancellationToken);
-                executionInfo.Script.ExecutionTime = executionInfo.Result.ExecutionTime.Some();
+                if (executionInfo.Result.Succeeded)
+                {
+                    executionInfo.Script.ExecutionTime = executionInfo.Result.ExecutionTime.Some();
+                }
+                // For aborted scripts, they might have changed system configuration before being aborted,
+                // that's why we still invalidate the cache.
                 executionInfo.Script.Code.EffectiveCapability.InvalidateValue();
             }
 

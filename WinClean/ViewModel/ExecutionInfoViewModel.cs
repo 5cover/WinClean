@@ -12,11 +12,20 @@ using Scover.WinClean.ViewModel.Logging;
 
 namespace Scover.WinClean.ViewModel;
 
+public enum ScriptExecutionState
+{
+    Pending,
+    Running,
+    Paused,
+    Finished,
+}
+
 public sealed class ExecutionInfoViewModel : ObservableObject
 {
     private static readonly Lazy<ISynchronizeInvoke> synchronizationObject = new(Application.Current.CreateSynchronizationObject);
     private readonly ExecutionInfo _model;
     private ExecutionResultViewModel? _result;
+    private ScriptExecutionState _state = ScriptExecutionState.Pending;
     private bool _userIsNotScrolling = true;
 
     public ExecutionInfoViewModel(ScriptViewModel script, Capability capabilityToExecute, ScriptAction actionToExecute)
@@ -48,6 +57,16 @@ public sealed class ExecutionInfoViewModel : ObservableObject
 
     public ScriptViewModel Script { get; }
 
+    public ScriptExecutionState State
+    {
+        get => _state;
+        private set
+        {
+            _state = value;
+            OnPropertyChanged();
+        }
+    }
+
     public bool UserIsNotScrolling
     {
         get => _userIsNotScrolling;
@@ -68,8 +87,10 @@ public sealed class ExecutionInfoViewModel : ObservableObject
 
     public async Task<ExecutionResultViewModel> ExecuteAsync(CancellationToken cancellationToken = default)
     {
+        State = ScriptExecutionState.Running;
         var result = await _model.ExecuteAsync(Progress, cancellationToken);
         Logs.ScriptExecutionCompleted.FormatWith(Script.InvariantName, Capability.InvariantName, result.ExitCode, result.Succeeded).Log();
+        State = ScriptExecutionState.Finished;
         return new(result);
     }
 
@@ -80,12 +101,14 @@ public sealed class ExecutionInfoViewModel : ObservableObject
     {
         _model.Pause();
         Format(Logs.ScriptExecutionPaused).Log();
+        State = ScriptExecutionState.Paused;
     }
 
     public void Resume()
     {
         _model.Resume();
         Format(Logs.ScriptExecutionResumed).Log();
+        State = ScriptExecutionState.Running;
     }
 
     private string Format(string message) => message.FormatWith(Script.InvariantName, Capability.InvariantName);

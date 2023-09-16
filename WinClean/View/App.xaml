@@ -20,7 +20,6 @@
         <BitmapImage x:Key="Checkmark" UriSource="/Resources/Images/Checkmark.ico" />
         <BitmapImage x:Key="Cross" UriSource="/Resources/Images/Cross.ico" />
         <BitmapImage x:Key="Gear" UriSource="/Resources/Images/Gear.png" />
-        <BitmapImage x:Key="None" UriSource="/Resources/Images/None.png" />
         <BitmapImage x:Key="Pause" UriSource="/Resources/Images/Pause.png" />
         <BitmapImage x:Key="Play" UriSource="/Resources/Images/Play.png" />
         <BitmapImage x:Key="WinClean" UriSource="/Resources/Images/WinClean.png" />

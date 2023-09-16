@@ -46,7 +46,7 @@ public sealed class ExecutionInfo : IDisposable
         DenyIfDisposed();
         DenyIfNotExecuting();
 
-        HostProcess.Kill(true);
+        HostProcess.KillTree();
     }
 
     public void Dispose()
@@ -87,12 +87,7 @@ public sealed class ExecutionInfo : IDisposable
             _stopwatch.Restart();
 
             // Register after starting in case of cancellation before starting
-            // Note: Win32Exceptions for Access denied errors will be thrown by the Process class. They are
-            // handled internally, so it's not a problem, but they're still visible by the debugger. This is
-            // because the Process class enumerates all system processes to build the process tree, but
-            // doesn't have permission to open all of them. We could use GetProcessTree() for this but the
-            // "official" .NET method is preferable in terms of safety and correctness.
-            using var reg = cancellationToken.Register(() => HostProcess.Kill(true));
+            using var reg = cancellationToken.Register(HostProcess.KillTree);
 
             await HostProcess.WaitForExitAsync(cancellationToken);
         }
