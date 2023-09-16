@@ -115,16 +115,20 @@ public sealed class ExecutionInfo : IDisposable
     {
         DenyIfDisposed();
         DenyIfNotExecuting();
+
         foreach (var p in HostProcess.GetProcessTree())
         {
             p.Suspend();
         }
+        _stopwatch.Stop();
     }
 
     public void Resume()
     {
         DenyIfDisposed();
         DenyIfNotExecuting();
+
+        _stopwatch.Start();
         foreach (var p in HostProcess.GetProcessTree())
         {
             p.Resume();
