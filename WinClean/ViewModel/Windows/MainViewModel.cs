@@ -26,7 +26,6 @@ namespace Scover.WinClean.ViewModel.Windows;
 
 public sealed partial class MainViewModel : ObservableObject
 {
-    private readonly IEnumerable<ScriptViewModel> _orginalScripts;
     private readonly Lazy<PropertyInfo[]> _scriptProperties = new(typeof(ScriptViewModel).GetProperties(BindingFlags.Public | BindingFlags.Instance));
 
     [ObservableProperty]
@@ -34,7 +33,7 @@ public sealed partial class MainViewModel : ObservableObject
 
     public MainViewModel()
     {
-        _orginalScripts = ServiceProvider.Get<IScriptStorage>().Scripts.Select(s =>
+        IEnumerable<ScriptViewModel> orginalScripts = ServiceProvider.Get<IScriptStorage>().Scripts.Select(s =>
         {
             ScriptViewModel svm = new(s);
             svm.PropertyChanged += (s, e) =>
@@ -49,7 +48,7 @@ public sealed partial class MainViewModel : ObservableObject
 
         Scripts = new(new CollectionViewSource()
         {
-            Source = new ObservableCollection<ScriptViewModel>(_orginalScripts),
+            Source = new ObservableCollection<ScriptViewModel>(orginalScripts),
             GroupDescriptions =
             {
                 new PropertyGroupDescription(nameof(ScriptViewModel.Category)).SortedBy(nameof(CollectionViewGroup.Name)),
@@ -61,7 +60,7 @@ public sealed partial class MainViewModel : ObservableObject
         {
             var mutableScripts = Scripts.Source.Where(s => s.Type.IsMutable);
 
-            foreach (var removedScript in _orginalScripts.Where(s => s.Type.IsMutable).Except(mutableScripts))
+            foreach (var removedScript in orginalScripts.Where(s => s.Type.IsMutable).Except(mutableScripts))
             {
                 _ = removedScript.RemoveFromStorage();
             }
@@ -91,7 +90,8 @@ public sealed partial class MainViewModel : ObservableObject
                 new ExtensionGroup(Settings.ScriptFileExtension)),
                 builder.Make(Resources.UI.MainWindow.AllFiles, ".*"));
 
-            var paths = ServiceProvider.Get<IDialogCreator>().ShowOpenFileDialog(filter, Settings.ScriptFileExtension, true, true);
+            var paths = ServiceProvider.Get<IDialogCreator>().ShowOpenFileDialog(filter, Settings.ScriptFileExtension,
+                                                                                 multiselect: true, readonlyChecked: true);
 
             foreach (var path in paths)
             {
@@ -167,7 +167,15 @@ public sealed partial class MainViewModel : ObservableObject
     public IRelayCommand UncheckAllScripts { get; }
     private static ISettings Settings => ServiceProvider.Get<ISettings>();
 
-    private static Option<ScriptViewModel> TryAddNewScript(string path)
+    private void SelectScripts(Predicate<ScriptViewModel> check)
+    {
+        foreach (var script in Scripts)
+        {
+            script.Selection.IsSelected = check(script);
+        }
+    }
+
+    private Option<ScriptViewModel> TryAddNewScript(string path)
     {
         bool retry;
         do
@@ -203,17 +211,11 @@ public sealed partial class MainViewModel : ObservableObject
                 {
                     Debug.Assert(ServiceProvider.Get<IScriptStorage>().Remove(e.ExistingScript));
                     Logs.ScriptOverwritten.FormatWith(path, e.ExistingScript.InvariantName).Log(LogLevel.Info);
+                    ScriptViewModel existingScriptClone = new(e.ExistingScript);
+                    Debug.Assert(Scripts.Source.Remove(existingScriptClone));
                 }
             }
         } while (retry);
         return Option.None<ScriptViewModel>();
-    }
-
-    private void SelectScripts(Predicate<ScriptViewModel> check)
-    {
-        foreach (var script in Scripts)
-        {
-            script.Selection.IsSelected = check(script);
-        }
     }
 }
