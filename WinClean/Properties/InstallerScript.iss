@@ -3,9 +3,9 @@
 #include <idp.iss>
 #include <idplang\French.iss>
 
-#define Name WinClean
+#define Name "WinClean"
 #define ExeName Name + ".exe"
-#define SetupName Name + "-" + Version + "-" + _Arch
+#define SetupName Name + "-" + _Version + "-" + _Arch
 
 [Setup]
 AppComments={#_Description}

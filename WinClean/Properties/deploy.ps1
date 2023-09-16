@@ -15,7 +15,7 @@ $win64 = '..\bin\publish\win-x64'
 $win86 = '..\bin\publish\win-x86'
 
 # Get app info
-$csprojXml = [Xml] (Get-Content '..\..\WinClean.csproj')
+$csprojXml = [Xml] (Get-Content '..\WinClean.csproj')
 $version = $csprojXml.Project.PropertyGroup.Version
 $description = $csprojXml.Project.PropertyGroup.Description
 $repoUrl = $csprojXml.Project.PropertyGroup.RepositoryUrl
