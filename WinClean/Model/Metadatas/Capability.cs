@@ -23,9 +23,10 @@ public sealed class Capability : Metadata
         _ => null
     };
 
-    /// <exception cref="InvalidOperationException"/>
+    /// <exception cref="InvalidOperationException">
+    /// No capabaility exists with the specified resource name.
+    /// </exception>
     public static Capability FromResourceName(string resourceName) => Multiton<Capability, Capability>.GetInstance(i => i.ResourceName == resourceName);
 
-    /// <exception cref="InvalidOperationException"/>
     public static Capability? FromResourceNameOrDefault(string resourceName) => Multiton<Capability, Capability>.GetInstanceOrDefault(i => i.ResourceName == resourceName);
 }

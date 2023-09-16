@@ -28,7 +28,7 @@ public sealed class Script : IEquatable<Script?>
     public SafetyLevel SafetyLevel { get; set; }
     public ScriptType Type { get; }
 
-    /// <summary>Supported Windows versions range in SemVer 2.0.0 standard version range syntax.</summary>
+    /// <summary>Supported Windows versions range.</summary>
     public SemVersionRange Versions { get; set; }
 
     public override bool Equals(object? obj) => Equals(obj as Script);

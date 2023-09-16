@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0"?>
 <Script>
   <Name>Create or delete file</Name>
-  <Description>Creates a file when enabled and deletes it when disabled.</Description>
+  <Description>Creates a file in the current directory when enabled and deletes it when disabled.</Description>
   <Category>Maintenance</Category>
-  <SafetyLevel>Limited</SafetyLevel>
+  <SafetyLevel>Safe</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>
     <Enable Host="Cmd">echo This is the file created by the "Create or delete file" script. > CreateOrDeleteFile.txt

@@ -8,11 +8,10 @@ namespace Scover.WinClean.ViewModel;
 
 public sealed class ExecutionProgressViewModel : ObservableObject, IProgress<ProcessOutput>
 {
+    private readonly StringBuilder _fullOutput = new(), _standardError = new(), _standardOutput = new();
     public string FullOutput => _fullOutput.ToString();
     public string StandardError => _standardError.ToString();
     public string StandardOutput => _standardOutput.ToString();
-
-    private readonly StringBuilder _fullOutput = new(), _standardError = new(), _standardOutput = new();
 
     public void Report(ProcessOutput value)
     {

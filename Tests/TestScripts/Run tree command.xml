@@ -6,7 +6,6 @@
   <SafetyLevel>Safe</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>
-    <Execute Host="Cmd">cd\
-tree</Execute>
+    <Execute Host="Execute">"%systemroot%\System32\tree.com"</Execute>
   </Code>
 </Script>

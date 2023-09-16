@@ -1,26 +1,23 @@
-// _Arch, _Path, _Output : emulated #define using the /D command line compiler option.
+// _Arch, _Path, _Output, _Version, _Description, _RepoUrl, _Publisher, _Copyright : emulated defines using the /D command line compiler option.
 
 #include <idp.iss>
 #include <idplang\French.iss>
 
-#define Name "WinClean"
-#define Version "1.3.0"
-#define RepoUrl "https://github.com/5cover/WinClean"
-#define ExeName "WinClean.exe"
-#define Description "Windows optimization and debloating utility."
+#define Name WinClean
+#define ExeName Name + ".exe"
 #define SetupName Name + "-" + Version + "-" + _Arch
 
 [Setup]
-AppComments={#Description}
-AppCopyright=© 2022 Scover
+AppComments={#_Description}
+AppCopyright={#_Copyright}
 AppId={{F7168958-5DC1-4316-B05E-A5D6E7851C84}
 AppName={#Name}
-AppPublisher=Scover
-AppReadmeFile={#RepoUrl}#readme
-AppSupportURL={#RepoUrl}
-AppUpdatesURL={#RepoUrl}/releases
-AppVerName={#Name} {#Version}
-AppVersion={#Version}
+AppPublisher={#_Publisher}
+AppReadmeFile={#_RepoUrl}#readme
+AppSupportURL={#_RepoUrl}
+AppUpdatesURL={#_RepoUrl}/releases
+AppVerName={#Name} {#_Version}
+AppVersion={#_Version}
 DefaultDirName={autopf}\{#Name}
 DisableProgramGroupPage=yes
 LicenseFile=..\..\LICENSE
@@ -32,9 +29,9 @@ SignTool=signtool
 SolidCompression=yes
 Uninstallable=yes
 UninstallDisplayIcon={app}\{#ExeName}
-VersionInfoDescription={#Description}
+VersionInfoDescription={#_Description}
 VersionInfoOriginalFileName={#SetupName}.exe
-VersionInfoVersion={#Version}
+VersionInfoVersion={#_Version}
 
 [CustomMessages]
 CreateStartMenuIcon=Create a &Start menu icon

@@ -35,5 +35,17 @@
     <Setting Name="DefaultScriptVersions" Type="System.String" Scope="Application">
       <Value Profile="(Default)">*-*</Value>
     </Setting>
+    <Setting Name="LatestVersionUrl" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://github.com/5cover/WinClean/releases/latest</Value>
+    </Setting>
+    <Setting Name="WikiUrl" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://github.com/5cover/WinClean/wiki/</Value>
+    </Setting>
+    <Setting Name="NewIssueUrl" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://github.com/5cover/WinClean/issues/new</Value>
+    </Setting>
+    <Setting Name="RepositoryId" Type="System.Int64" Scope="Application">
+      <Value Profile="(Default)">511304031</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

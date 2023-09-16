@@ -16,7 +16,7 @@ public sealed class ExtensionGroup : IEnumerable<string>
     public ExtensionGroup(params string[] extensions) : this((IEnumerable<string>)extensions)
     {
     }
-    
+
     /// <summary>Gets an user-friendly name for this extension group from HKEY_CLASSES_ROOT.</summary>
     public string Name
         => (Registry.ClassesRoot.OpenSubKey(_extensions.First())?.GetValue(null) is string name

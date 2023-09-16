@@ -65,7 +65,7 @@ public sealed partial class MainViewModel : ObservableObject
             {
                 _ = removedScript.RemoveFromStorage();
             }
-            // Added scripts are hanlded immediately in TryAddNewScript
+            // Added scripts are handled immediately in TryAddNewScript
             foreach (var script in mutableScripts)
             {
                 script.UpdateInStorage();
@@ -158,7 +158,7 @@ public sealed partial class MainViewModel : ObservableObject
     public IRelayCommand ExecuteScripts { get; }
     public IRelayCommand OpenCustomScriptsDir { get; } = new RelayCommand(AppDirectory.Scripts.Open);
     public IRelayCommand OpenLogsDir { get; } = new RelayCommand(AppDirectory.Logs.Open);
-    public IAsyncRelayCommand OpenOnlineWiki { get; } = new AsyncRelayCommand(async () => (await SourceControlClient.Instance).WikiUrl.Open());
+    public IRelayCommand OpenOnlineWiki { get; } = new RelayCommand(Settings.WikiUrl.Open);
     public IRelayCommand RemoveCurrentScript { get; }
     public CollectionWrapper<ObservableCollection<ScriptViewModel>, ScriptViewModel> Scripts { get; }
 

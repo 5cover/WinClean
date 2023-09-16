@@ -6,11 +6,13 @@ namespace Scover.WinClean.Services;
 public interface ISettings
 {
     #region Readonly
-
     public SemVersionRange DefaultHostVersions { get; }
     public SemVersionRange DefaultScriptVersions { get; }
+    public string LatestVersionUrl { get; }
+    public string NewIssueUrl { get; }
+    public long RepositoryId { get; }
     string ScriptFileExtension { get; }
-
+    public string WikiUrl { get; }
     #endregion Readonly
 
     double Height { get; set; }

@@ -26,7 +26,10 @@ public sealed class Settings : ISettings
     public double Height { get => AppSettings.Height; set => AppSettings.Height = value; }
     public bool IsLoggingEnabled { get => AppSettings.IsLoggingEnabled; set => AppSettings.IsLoggingEnabled = value; }
     public bool IsMaximized { get => AppSettings.IsMaximized; set => AppSettings.IsMaximized = value; }
+    public string LatestVersionUrl => AppSettings.LatestVersionUrl;
     public double Left { get => AppSettings.Left; set => AppSettings.Left = value; }
+    public string NewIssueUrl => AppSettings.NewIssueUrl;
+    public long RepositoryId => AppSettings.RepositoryId;
     public TimeSpan ScriptDetectionTimeout => AppSettings.ScriptDetectionTimeout;
     public IDictionary<string, TimeSpan> ScriptExecutionTimes { get; private set; }
     public string ScriptFileExtension => AppSettings.ScriptFileExtension;
@@ -34,6 +37,7 @@ public sealed class Settings : ISettings
     public double Top { get => AppSettings.Top; set => AppSettings.Top = value; }
     public double Width { get => AppSettings.Width; set => AppSettings.Width = value; }
 
+    public string WikiUrl => AppSettings.WikiUrl;
     private static string ScriptExecutionTimesSeparator => Environment.NewLine;
 
     private Properties.Settings AppSettings { get; } = new();

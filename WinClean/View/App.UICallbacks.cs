@@ -26,7 +26,7 @@ public partial class App
                 Content = Update.Content.FormatWith(scc.LatestVersionName),
                 Verification  = new(Update.Verification),
             };
-            update.HyperlinkClicked += (_, _) => scc.LatestVersionUrl.Open();
+            update.HyperlinkClicked += (_, _) => ServiceProvider.Get<ISettings>().LatestVersionUrl.Open();
             update.Verification.Checked += (_, _) => ServiceProvider.Get<ISettings>().ShowUpdateDialog ^= true;
             _ = new Dialog(update).Show();
         },
@@ -69,7 +69,7 @@ public partial class App
                 Expander = new(ex.ToString()),
                 Buttons = { Button.Ignore, Buttons.Exit },
             };
-            unhandledException.HyperlinkClicked += async (s, e) =>
+            unhandledException.HyperlinkClicked += (s, e) =>
             {
                 switch (e.Href)
                 {
@@ -78,7 +78,7 @@ public partial class App
                         break;
 
                     case "ReportIssue":
-                        (await SourceControlClient.Instance).NewIssueUrl.Open();
+                        ServiceProvider.Get<ISettings>().NewIssueUrl.Open();
                         break;
                 }
             };

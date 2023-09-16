@@ -142,5 +142,44 @@ namespace Scover.WinClean.Properties {
                 return ((string)(this["DefaultScriptVersions"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/5cover/WinClean/releases/latest")]
+        public string LatestVersionUrl {
+            get {
+                return ((string)(this["LatestVersionUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/5cover/WinClean/wiki/")]
+        public string WikiUrl {
+            get {
+                return ((string)(this["WikiUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/5cover/WinClean/issues/new")]
+        public string NewIssueUrl {
+            get {
+                return ((string)(this["NewIssueUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("511304031")]
+        public long RepositoryId {
+            get {
+                return ((long)(this["RepositoryId"]));
+            }
+        }
     }
 }

@@ -11,7 +11,7 @@ public partial class App
         NotifyUpdateAvailable: async () =>
         {
             var scc = await SourceControlClient.Instance;
-            Console.WriteLine(ConsoleMode.UpdateMessage.FormatWith(scc.LatestVersionName, ServiceProvider.Get<IApplicationInfo>().Version, scc.LatestVersionUrl));
+            Console.WriteLine(ConsoleMode.UpdateMessage.FormatWith(scc.LatestVersionName, ServiceProvider.Get<IApplicationInfo>().Version, ServiceProvider.Get<ISettings>().LatestVersionUrl));
         },
         ScriptLoadError: (e, path) =>
         {

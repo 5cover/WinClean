@@ -64,8 +64,7 @@
         <pages:Page1
             x:Key="Page1"
             DataContext="{Binding Page1ViewModel}"
-            Style="{StaticResource PageStyle}">
-        </pages:Page1>
+            Style="{StaticResource PageStyle}" />
         <pages:Page2
             x:Key="Page2"
             DataContext="{Binding Page2ViewModel}"

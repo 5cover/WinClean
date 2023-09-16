@@ -1,0 +1,11 @@
+﻿<?xml version="1.0"?>
+<Script>
+  <Name>Hello world</Name>
+  <Description>Writes "Hello World" to standard output.</Description>
+  <Category>Maintenance</Category>
+  <SafetyLevel>Safe</SafetyLevel>
+  <Impact>Ergonomics</Impact>
+  <Code>
+    <Execute Host="PowerShell">echo Hello World</Execute>
+  </Code>
+</Script>

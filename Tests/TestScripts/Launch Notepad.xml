@@ -6,6 +6,6 @@
   <SafetyLevel>Safe</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>
-    <Execute Host="Cmd">%windir%\System32\notepad.exe</Execute>
+    <Execute Host="Execute">"%systemroot%\System32\notepad.exe"</Execute>
   </Code>
 </Script>

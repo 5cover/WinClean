@@ -66,7 +66,6 @@ public sealed class ExecutionInfoViewModel : ObservableObject
 
     public void Dispose() => _model.Dispose();
 
-    /// <inheritdoc cref="ExecutionInfo.ExecuteAsync(IProgress{ProcessOutput}, CancellationToken)"/>
     public async Task<ExecutionResultViewModel> ExecuteAsync(CancellationToken cancellationToken = default)
     {
         var result = await _model.ExecuteAsync(Progress, cancellationToken);

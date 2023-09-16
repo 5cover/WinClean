@@ -14,7 +14,7 @@ public abstract class Host : Metadata
         : base(new LocalizedStringTextProvider(name, description))
         => (Versions, _icon) = (versions, icon);
 
-    /// <summary>Fetches the icon.</summary>
+    /// <summary>Gets the icon.</summary>
     /// <value>
     /// The icon of this host, or <see langword="null"/> if no icon is defined or if it couldn't be fetched.
     /// </value>
@@ -31,7 +31,7 @@ public abstract class Host : Metadata
         }
     }
 
-    /// <summary>The windows versions this host supports.</summary>
+    /// <summary>The Windows versions this host supports.</summary>
     public SemVersionRange Versions { get; }
 
     public abstract HostStartInfo CreateHostStartInfo(string code);

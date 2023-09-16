@@ -3,13 +3,10 @@ Param
 	[Parameter(Mandatory=$false)]
     [Switch]
 	$SkipBuild = $false
-
 )
 
 $thumbprint = '1069E1903B197B71ADFCF6D2151BAF5920706A21'
-
 $name = 'WinClean'
-
 $outputDir = '..\bin\setup'
 
 $portableWin64 = '..\bin\publish\portable-win-x64'
@@ -17,6 +14,13 @@ $portableWin86 = '..\bin\publish\portable-win-x86'
 $win64 = '..\bin\publish\win-x64'
 $win86 = '..\bin\publish\win-x86'
 
+# Get app info
+$csprojXml = [Xml] (Get-Content '..\..\WinClean.csproj')
+$version = $csprojXml.Project.PropertyGroup.Version
+$description = $csprojXml.Project.PropertyGroup.Description
+$repoUrl = $csprojXml.Project.PropertyGroup.RepositoryUrl
+$authors = $csprojXml.Project.PropertyGroup.Authors
+$copyright = $csprojXml.Project.PropertyGroup.Copyright
 
 # Publish
 if (-Not $SkipBuild)
@@ -54,8 +58,10 @@ else
 
 $ISCC = 'D:\Programmes\Inno Setup 6\ISCC.exe'
 
-& $ISCC @("/Ssigntool=$signExe $signArgs `$f", "/D_Output=$outputDir", '/D_Arch=win-x64', "/D_Path=$win64", 'InstallerScript.iss')
-& $ISCC @("/Ssigntool=$signExe $signArgs `$f", "/D_Output=$outputDir", '/D_Arch=win-x86', "/D_Path=$win86", 'InstallerScript.iss')
+& $ISCC @("/Ssigntool=$signExe $signArgs `$f", "/D_Output=$outputDir", '/D_Arch=win-x64', "/D_Path=$win64", "/D_Version=$version",
+          "/D_Description=$description", "/D_RepoUrl=$repoUrl", "/D_Publisher=$author", "/D_Copyright=$copyright", 'InstallerScript.iss')
+& $ISCC @("/Ssigntool=$signExe $signArgs `$f", "/D_Output=$outputDir", '/D_Arch=win-x86', "/D_Path=$win86", "/D_Version=$version",
+          "/D_Description=$description", "/D_RepoUrl=$repoUrl", "/D_Publisher=$author", "/D_Copyright=$copyright", 'InstallerScript.iss')
 
 # Copy portable binaries
 
