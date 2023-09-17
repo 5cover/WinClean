@@ -20,8 +20,6 @@ public sealed class FileScriptRepository : MutableScriptRepository
         => (_directory, _scriptFileExtension, _scriptLoadError, _fsErrorReloadElseIgnore)
             = (directory, scriptFileExtension, scriptLoadError, fsErrorReloadElseIgnore);
 
-    public override int Count => _scripts.Count;
-
     public override Script Add(string source)
     {
         try
@@ -38,36 +36,11 @@ public sealed class FileScriptRepository : MutableScriptRepository
         }
     }
 
-    public override bool Contains(Script script) => _scripts.ContainsValue(script);
-
-    public override bool Contains(string source) => _scripts.ContainsKey(source);
-
-    public override IEnumerator<Script> GetEnumerator() => _scripts.Values.GetEnumerator();
-
-    public override bool Remove(Script script)
+    public override void Commit(Script script)
     {
-        try
+        if (!_scripts.ContainsValue(script))
         {
-            File.Delete(_scripts.Inverse[script]);
-            return _scripts.Inverse.Remove(script);
-        }
-        catch (Exception e) when (e.IsFileSystemExogenous())
-        {
-            return false;
-        }
-    }
-
-    public override bool Remove(string source)
-    {
-        File.Delete(source);
-        return _scripts.Remove(source);
-    }
-
-    public override void Update(Script script)
-    {
-        if (!Contains(script))
-        {
-            throw new InvalidOperationException("The script is not present in the repository");
+            throw new InvalidOperationException("The script is not present in the repository.");
         }
         var source = _scripts.Inverse[script];
         try
@@ -81,9 +54,24 @@ public sealed class FileScriptRepository : MutableScriptRepository
         }
     }
 
-    protected override void Clear() => _scripts.Clear();
+    public override Script GetScript(string source)
+    {
+        try
+        {
+            using var stream = File.OpenRead(source);
+            return Serializer.Deserialize(Type, stream);
+        }
+        catch (Exception e) when (e is FileNotFoundException or DirectoryNotFoundException)
+        {
+            throw new ArgumentException($"Script at {source} could not be found", nameof(source), e);
+        }
+        catch (Exception e) when (e.IsFileSystemExogenous())
+        {
+            throw new FileSystemException(e, FSVerb.Access, source);
+        }
+    }
 
-    protected override void Load()
+    public override async Task LoadAsync()
     {
         foreach (var scriptFile in Directory.EnumerateFiles(_directory, '*' + _scriptFileExtension, SearchOption.AllDirectories))
         {
@@ -92,7 +80,7 @@ public sealed class FileScriptRepository : MutableScriptRepository
             {
                 try
                 {
-                    _ = Load(scriptFile);
+                    await LoadAsync(scriptFile);
                     retry = false;
                 }
                 catch (FileSystemException e)
@@ -112,29 +100,54 @@ public sealed class FileScriptRepository : MutableScriptRepository
         }
     }
 
+    public override bool Remove(Script script)
+    {
+        try
+        {
+            File.Delete(_scripts.Inverse[script]);
+        }
+        catch (Exception e) when (e.IsFileSystemExogenous())
+        {
+            return false;
+        }
+        _ = RemoveItem(script);
+        return _scripts.Inverse.Remove(script);
+    }
+
+    public override bool Remove(string source)
+    {
+        File.Delete(source);
+        _ = RemoveItem(_scripts[source]);
+        return _scripts.Remove(source);
+    }
+
     private void Add(string sourceFilename, Script script)
     {
         string savingPath = Path.Join(_directory, Path.ChangeExtension(sourceFilename, _scriptFileExtension));
         try
         {
             _scripts.Add(savingPath, script);
+            using Stream file = File.Create(savingPath);
+            Serializer.Serialize(script, file);
         }
         catch (ArgumentException e)
         {
             throw new ScriptAlreadyExistsException(script, e);
         }
-        using Stream file = File.Create(savingPath);
-        Serializer.Serialize(script, file);
+        catch (Exception e) when (e.IsFileSystemExogenous())
+        {
+            throw new FileSystemException(e, FSVerb.Access, savingPath);
+        }
+        AddItem(script);
     }
 
-    private Script Load(string source)
+    private async Task LoadAsync(string source)
     {
         try
         {
-            using Stream file = File.OpenRead(source);
-            var script = Serializer.Deserialize(Type, file);
+            var script = Serializer.Deserialize(Type, await File.ReadAllTextAsync(source));
             _scripts.Add(source, script);
-            return script;
+            AddItem(script);
         }
         catch (Exception e) when (e.IsFileSystemExogenous())
         {

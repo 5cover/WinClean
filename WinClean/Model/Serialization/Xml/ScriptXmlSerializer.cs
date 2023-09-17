@@ -15,7 +15,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
 {
     private static readonly Dictionary<string, Func<ScriptType, XmlDocument, Script>> deserializers = new()
     {
-        ["Normal"] = Deserialize,
+        ["Normal"] = DeserializeCurrent,
         ["Pre 1.3.0"] = DeserializePre130,
     };
 
@@ -35,21 +35,21 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             throw new DeserializationException(nameof(Script), innerException: e);
         }
 
-        Dictionary<string, Exception> deserializerExceptions = new();
+        return DeserializeImpl(type, d);
+    }
 
-        foreach ((var name, var deserializer) in deserializers)
+    public Script Deserialize(ScriptType type, string data)
+    {
+        XmlDocument d = new();
+        try
         {
-            try
-            {
-                return deserializer(type, d);
-            }
-            catch (Exception e) when (e is InvalidOperationException or XmlException or KeyNotFoundException or FormatException or InvalidDataException)
-            {
-                deserializerExceptions[name] = e;
-            }
+            d.LoadXml(data);
         }
-
-        throw new DeserializationChainException(nameof(Script), d.OuterXml, deserializerExceptions);
+        catch (XmlException e)
+        {
+            throw new DeserializationException(nameof(Script), innerException: e);
+        }
+        return DeserializeImpl(type, d);
     }
 
     public void Serialize(Script script, Stream stream)
@@ -103,7 +103,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             => Append(element, name, innerText, new() { ["xml:lang"] = xmlLang });
 
     /// <summary>Deserializes a script in the current format.</summary>
-    private static Script Deserialize(ScriptType type, XmlDocument d)
+    private static Script DeserializeCurrent(ScriptType type, XmlDocument d)
         => new(Metadatas.GetMetadata<Category>(d.GetSingleChildText(ElementFor.Category)),
                Metadatas.GetMetadata<Impact>(d.GetSingleChildText(ElementFor.Impact)),
                DeserializeVersions(d),
@@ -160,5 +160,24 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
         {
             Append(e, capability.ResourceName, code.Code, new() { [ElementFor.Host] = code.Host.InvariantName });
         }
+    }
+
+    private Script DeserializeImpl(ScriptType type, XmlDocument loadedDocument)
+    {
+        Dictionary<string, Exception> deserializerExceptions = new();
+
+        foreach ((var name, var deserializer) in deserializers)
+        {
+            try
+            {
+                return deserializer(type, loadedDocument);
+            }
+            catch (Exception e) when (e is InvalidOperationException or XmlException or KeyNotFoundException or FormatException or InvalidDataException)
+            {
+                deserializerExceptions[name] = e;
+            }
+        }
+
+        throw new DeserializationChainException(nameof(Script), loadedDocument.OuterXml, deserializerExceptions);
     }
 }

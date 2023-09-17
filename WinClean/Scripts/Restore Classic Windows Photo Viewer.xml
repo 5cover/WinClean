@@ -6,7 +6,7 @@
   <Description>Restores Classic Windows Photo Viewer from Windows 7.</Description>
   <Description xml:lang="fr">Restaure la Visionneuse de Photos Windows héritée de Windows 7.</Description>
   <Category>Customization</Category>
-  <Recommended>Limited</Recommended>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Version>>=10.0.16299</Version>
   <Code>
@@ -206,7 +206,7 @@
     
 [HKEY_LOCAL_MACHINE\SOFTWARE\Classes\PhotoViewer.FileAssoc.WDP\shell\open\DropTarget] 
 "CLSID"="{FFE2A43C-56B9-4bf5-9A79-CC6D4285608A}"</Enable>
-    <Disable>
+    <Disable Host="Regedit">
 Windows Registry Editor Version 5.00
 
 [HKEY_CLASSES_ROOT\jpegfile\shell\open\DropTarget]
@@ -228,7 +228,7 @@ Windows Registry Editor Version 5.00
 [-HKEY_CLASSES_ROOT\PhotoViewer.FileAssoc.WDP]
 
 [-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations]</Disable>
-    <Detect>if (Test-Path "HKLM:\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations")
+    <Detect Host="PowerShell">if (Test-Path "HKLM:\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations")
 {
     exit 1
 }

@@ -85,6 +85,6 @@ public static class DialogFactory
     {
         using Page page = pageFactory();
         Debug.Assert(page.Buttons.ItemsEqual(new[] { Button.Yes, Button.No }));
-        return Button.Yes.Equals(new Dialog(page).Show());
+        return Button.Yes.Equals(new Dialog(page).ShowDialog());
     }
 }

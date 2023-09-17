@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -13,11 +15,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
 
+using CommandLine;
+
 using CommunityToolkit.Mvvm.Input;
 
 using Optional;
 using Optional.Unsafe;
 
+using Scover.Dialogs;
 using Scover.WinClean.Model;
 
 using Vanara.PInvoke;
@@ -28,8 +33,10 @@ namespace Scover.WinClean;
 
 public static class Extensions
 {
+    private static readonly Stack<object> handlingCollections = new();
+
     public static Option<TAccumulate> AggregateOrNone<TSource, TAccumulate>(this IEnumerable<Option<TSource>> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> func)
-        => source.Aggregate(seed.Some(), (intermediate, next) => intermediate.FlatMap(intermediateValue => next.Map(newValue => func(intermediateValue, newValue))));
+           => source.Aggregate(seed.Some(), (intermediate, next) => intermediate.FlatMap(intermediateValue => next.Map(newValue => func(intermediateValue, newValue))));
 
     public static bool CanExecute(this IRelayCommand relayCommand) => relayCommand.CanExecute(null);
 
@@ -44,7 +51,7 @@ public static class Extensions
     }
 
     public static string FormatToSeconds(this TimeSpan t)
-        => Convert.ToInt32(t.TotalSeconds).Seconds().ToString("g");
+           => Convert.ToInt32(t.TotalSeconds).Seconds().ToString("g");
 
     public static LocalizedString GetLocalizedString(this XmlDocument doc, string name)
     {
@@ -172,7 +179,7 @@ public static class Extensions
     }
 
     public static InvalidEnumArgumentException NewInvalidEnumArgumentException<TEnum>(this TEnum value, [CallerArgumentExpression(nameof(value))] string argumentName = "") where TEnum : struct, Enum
-        => new(argumentName, Convert.ToInt32(value, CultureInfo.InvariantCulture), typeof(TEnum));
+           => new(argumentName, Convert.ToInt32(value, CultureInfo.InvariantCulture), typeof(TEnum));
 
     /// <summary>Asserts that <paramref name="t"/> isn't <see langword="null"/>.</summary>
     /// <remarks>This is a safer replacement for the null-forgiving operator ( <c>!</c>).</remarks>
@@ -198,8 +205,45 @@ public static class Extensions
         Win32Error.ThrowLastError();
     }
 
+    public static void SendUpdatesTo<TSourceItem, TTargetItem>(this ObservableCollection<TSourceItem> source, ICollection<TTargetItem> collection, Func<TSourceItem, TTargetItem>? converter = null, Func<TSourceItem, bool>? filter = null)
+           => SendUpdatesTo((INotifyCollectionChanged)source, collection, converter, filter);
+
+    public static void SendUpdatesTo<TSourceItem, TTargetItem>(this ReadOnlyObservableCollection<TSourceItem> source, ICollection<TTargetItem> collection, Func<TSourceItem, TTargetItem>? converter = null, Func<TSourceItem, bool>? filter = null)
+           => SendUpdatesTo((INotifyCollectionChanged)source, collection, converter, filter);
+
+    public static void SendUpdatesTo<TSourceItem, TTargetItem>(this INotifyCollectionChanged source, ICollection<TTargetItem> collection, Func<TSourceItem, TTargetItem>? converter = null, Func<TSourceItem, bool>? filter = null)
+           => source.CollectionChanged += (_, e) =>
+           {
+               if (handlingCollections.TryPeek(out var top) && top == collection)
+               {
+                   return;
+               }
+
+               converter ??= i => i.Cast<TTargetItem>();
+               filter ??= i => true;
+
+               handlingCollections.Push(source);
+
+               if (e.NewItems is not null)
+               {
+                   foreach (var item in e.NewItems.Cast<TSourceItem>().Where(filter).Select(converter))
+                   {
+                       collection.Add(item);
+                   }
+               }
+               if (e.OldItems is not null)
+               {
+                   foreach (var item in e.OldItems.Cast<TSourceItem>().Where(filter).Select(converter))
+                   {
+                       _ = collection.Remove(item);
+                   }
+               }
+
+               _ = handlingCollections.Pop();
+           };
+
     public static void SetFromXml(this LocalizedString str, XmlNode node)
-               => str[CultureInfo.GetCultureInfo(node.Attributes?["xml:lang"]?.Value ?? "")] = node.InnerText;
+                  => str[CultureInfo.GetCultureInfo(node.Attributes?["xml:lang"]?.Value ?? "")] = node.InnerText;
 
     public static void SetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dic, TKey key, TValue value) where TKey : notnull
     {
@@ -207,6 +251,13 @@ public static class Extensions
         {
             dic[key] = value;
         }
+    }
+
+    /// <summary>Shows a dialog modally. This is the default for interface consistency.</summary>
+    public static ButtonBase? ShowDialog(this Dialog dialog)
+    {
+        dialog.StartupLocation = WindowLocation.CenterParent;
+        return dialog.Show(ParentWindow.Active);
     }
 
     public static PropertyGroupDescription SortedBy(this PropertyGroupDescription propertyGroupDescription, string propertyName)

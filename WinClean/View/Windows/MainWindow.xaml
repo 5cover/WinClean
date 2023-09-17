@@ -24,11 +24,6 @@
     Top="{Binding Top, Mode=TwoWay}"
     WindowState="{Binding WindowState, Mode=TwoWay}"
     mc:Ignorable="d">
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Closing" SourceName="window">
-            <i:InvokeCommandAction Command="{Binding ApplyChangesToScriptStorage}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

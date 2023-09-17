@@ -21,6 +21,22 @@ public sealed partial class App
     public static App CurrentApp => (App)Current;
     public Logger Logger { get; private set; } = new MockLogger();
 
+    private static async Task CheckForUpdates(Callbacks callbacks)
+    {
+        if (ServiceProvider.Get<ISettings>().ShowUpdateDialog)
+        {
+            var latestVersion = (await SourceControlClient.Instance).LatestVersionName;
+            var currentVersion = ServiceProvider.Get<IApplicationInfo>().Version;
+            if (latestVersion != currentVersion)
+            {
+                Logs.UpdateAvailable.FormatWith(latestVersion, currentVersion).Log(LogLevel.Info);
+                callbacks.NotifyUpdateAvailable(latestVersion);
+            }
+        }
+    }
+
+    private static Task LoadScripts(Callbacks callbacks) => ServiceProvider.Get<IScriptStorage>().LoadAsync(callbacks.ScriptLoadError, callbacks.FSErrorReloadElseIgnore);
+
     private void ApplicationExit(object? sender, ExitEventArgs? e) => Logs.Exiting.Log();
 
     private async void ApplicationStartup(object? sender, StartupEventArgs? e)
@@ -36,34 +52,20 @@ public sealed partial class App
             ServiceProvider.Get<ISettings>().Save();
             Logs.SettingsSaved.Log();
         }
-
-        Shutdown();
     }
 
-    private async Task Initialize(Callbacks callbacks)
+    private void Initialize(Callbacks callbacks)
     {
         // WPF trick thant makes text rendering slightly better on desktop platforms
         TextOptions.TextFormattingModeProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata(TextFormattingMode.Display,
             FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.Inherits));
 
-        {
-            var viewFactory = ServiceProvider.Get<IViewFactory>();
-            viewFactory.Register<AboutViewModel, AboutWindow>();
-            viewFactory.Register<SettingsViewModel, SettingsWindow>();
-            viewFactory.Register<ScriptExecutionWizardViewModel, ScriptExecutionWizard>();
-        }
+        var viewFactory = ServiceProvider.Get<IViewFactory>();
+        viewFactory.Register<AboutViewModel, AboutWindow>();
+        viewFactory.Register<SettingsViewModel, SettingsWindow>();
+        viewFactory.Register<ScriptExecutionWizardViewModel, ScriptExecutionWizard>();
 
         DispatcherUnhandledException += (s, e) => e.Handled = callbacks.WarnOnUnhandledException(e.Exception);
-
-        ServiceProvider.Get<IScriptStorage>().Load(callbacks.ScriptLoadError, callbacks.FSErrorReloadElseIgnore);
-
-        var latestVersion = (await SourceControlClient.Instance).LatestVersionName;
-        var currentVersion = ServiceProvider.Get<IApplicationInfo>().Version;
-        if (ServiceProvider.Get<ISettings>().ShowUpdateDialog && latestVersion != currentVersion)
-        {
-            Logs.UpdateAvailable.FormatWith(latestVersion, currentVersion).Log(LogLevel.Info);
-            await callbacks.NotifyUpdateAvailable();
-        }
     }
 
     private async Task StartConsole(IEnumerable<string> args)
@@ -82,7 +84,9 @@ public sealed partial class App
 
         Logger = new ConsoleLogger();
 
-        await Initialize(consoleCallbacks);
+        Initialize(consoleCallbacks);
+        await CheckForUpdates(consoleCallbacks);
+        await LoadScripts(consoleCallbacks);
 
         Environment.ExitCode = new Parser(s =>
         {
@@ -94,15 +98,18 @@ public sealed partial class App
             .MapResult(options => options.Execute(ServiceProvider.Get<IScriptStorage>().Scripts), _ => 1);
     }
 
-    private async Task StartGui()
+    private Task StartGui()
     {
         Logger = new CsvLogger();
-        await Initialize(uiCallbacks);
-        _ = new MainWindow() { DataContext = new MainViewModel() }.ShowDialog();
+        Initialize(uiCallbacks);
+        MainWindow mainWindow = new() { DataContext = new MainViewModel(ServiceProvider.Get<IScriptStorage>().Scripts) };
+        mainWindow.Show();
+        _ = CheckForUpdates(uiCallbacks);
+        return LoadScripts(uiCallbacks);
     }
 
     private sealed record Callbacks(
-        Func<Task> NotifyUpdateAvailable,
+        Action<string> NotifyUpdateAvailable,
         ScriptDeserializationErrorCallback ScriptLoadError,
         FSErrorCallback FSErrorReloadElseIgnore,
         UnhandledExceptionCallback WarnOnUnhandledException);

@@ -8,10 +8,9 @@ namespace Scover.WinClean.View;
 public partial class App
 {
     private static readonly Callbacks consoleCallbacks = new(
-        NotifyUpdateAvailable: async () =>
+        NotifyUpdateAvailable: latestVersioName =>
         {
-            var scc = await SourceControlClient.Instance;
-            Console.WriteLine(ConsoleMode.UpdateMessage.FormatWith(scc.LatestVersionName, ServiceProvider.Get<IApplicationInfo>().Version, ServiceProvider.Get<ISettings>().LatestVersionUrl));
+            Console.WriteLine(ConsoleMode.UpdateMessage.FormatWith(latestVersioName, ServiceProvider.Get<IApplicationInfo>().Version, ServiceProvider.Get<ISettings>().LatestVersionUrl));
         },
         ScriptLoadError: (e, path) =>
         {

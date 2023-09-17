@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:Scover.WinClean.View.Converters"
     Exit="ApplicationExit"
-    ShutdownMode="OnExplicitShutdown"
+    ShutdownMode="OnLastWindowClose"
     Startup="ApplicationStartup">
     <Application.Resources>
         <Style TargetType="Button">

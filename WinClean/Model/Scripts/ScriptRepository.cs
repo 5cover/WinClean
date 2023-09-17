@@ -1,30 +1,29 @@
-﻿using System.Collections;
+﻿using System.Collections.ObjectModel;
 
 using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Model.Serialization;
 
 namespace Scover.WinClean.Model.Scripts;
 
-public abstract class ScriptRepository : IReadOnlyCollection<Script>
+public abstract class ScriptRepository
 {
-    protected ScriptRepository(IScriptSerializer serializer, ScriptType type) => (Serializer, Type) = (serializer, type);
+    private readonly ObservableCollection<Script> _items = new();
 
-    public abstract int Count { get; }
+    protected ScriptRepository(IScriptSerializer serializer, ScriptType type)
+    {
+        Scripts = new(_items);
+        (Serializer, Type) = (serializer, type);
+    }
+
+    public ReadOnlyObservableCollection<Script> Scripts { get; }
     public ScriptType Type { get; }
     protected IScriptSerializer Serializer { get; }
 
-    public abstract IEnumerator<Script> GetEnumerator();
+    public abstract Script GetScript(string source);
 
-    /// <summary>Reloads the script from the persistent storage.</summary>
-    public void Reload()
-    {
-        Clear();
-        Load();
-    }
+    public abstract Task LoadAsync();
 
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    protected void AddItem(Script script) => _items.Add(script);
 
-    protected abstract void Clear();
-
-    protected abstract void Load();
+    protected bool RemoveItem(Script script) => _items.Remove(script);
 }

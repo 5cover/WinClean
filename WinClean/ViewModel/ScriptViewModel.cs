@@ -15,22 +15,21 @@ namespace Scover.WinClean.ViewModel;
 
 public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, IEquatable<Script?>
 {
-    private readonly Script _model;
     private KeyValuePair<Capability, ScriptAction> _selectedCode;
 
     public ScriptViewModel(Script model)
     {
-        _model = model;
+        Model = model;
         Code = new(model.Code);
         SelectedCode = model.Code.First();
     }
 
     public Category Category
     {
-        get => _model.Category;
+        get => Model.Category;
         set
         {
-            _model.Category = value;
+            Model.Category = value;
             OnPropertyChanged();
         }
     }
@@ -39,8 +38,8 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
 
     public string Description
     {
-        get => _model.LocalizedDescription[CurrentUICulture];
-        set => _model.LocalizedDescription[CurrentUICulture] = value;
+        get => Model.LocalizedDescription[CurrentUICulture];
+        set => Model.LocalizedDescription[CurrentUICulture] = value;
     }
 
     public Option<TimeSpan> ExecutionTime
@@ -56,32 +55,32 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
 
     public Impact Impact
     {
-        get => _model.Impact;
+        get => Model.Impact;
         set
         {
-            _model.Impact = value;
+            Model.Impact = value;
             OnPropertyChanged();
         }
     }
 
-    public string InvariantName => _model.InvariantName;
+    public string InvariantName => Model.InvariantName;
 
     public string Name
     {
-        get => _model.Name;
+        get => Model.Name;
         set
         {
-            _model.Name = value;
+            Model.Name = value;
             OnPropertyChanged();
         }
     }
 
     public SafetyLevel SafetyLevel
     {
-        get => _model.SafetyLevel;
+        get => Model.SafetyLevel;
         set
         {
-            _model.SafetyLevel = value;
+            Model.SafetyLevel = value;
             OnPropertyChanged();
         }
     }
@@ -97,38 +96,33 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
     }
 
     public ScriptSelection Selection { get; } = new();
-    public ScriptType Type => _model.Type;
-    public IReadOnlyCollection<Usage> Usages => Usage.GetUsages(_model).ToList();
+    public ScriptType Type => Model.Type;
+    public IReadOnlyCollection<Usage> Usages => Usage.GetUsages(Model).ToList();
 
     public SemVersionRange Versions
     {
-        get => _model.Versions;
+        get => Model.Versions;
         set
         {
-            _model.Versions = value;
+            Model.Versions = value;
             OnPropertyChanged();
         }
     }
 
+    internal Script Model { get; }
     private static ISettings Settings => ServiceProvider.Get<ISettings>();
-
-    private static IScriptStorage Storage => ServiceProvider.Get<IScriptStorage>();
 
     public override bool Equals(object? obj) => Equals(obj as ScriptViewModel);
 
-    public bool Equals(ScriptViewModel? other) => other is not null && _model.Equals(other._model);
+    public bool Equals(ScriptViewModel? other) => other is not null && Model.Equals(other.Model);
 
-    public bool Equals(Script? other) => _model.Equals(other);
+    public bool Equals(Script? other) => Model.Equals(other);
 
-    public override int GetHashCode() => _model.GetHashCode();
-
-    public bool RemoveFromStorage() => Storage.Remove(_model);
+    public override int GetHashCode() => Model.GetHashCode();
 
     public Option<ExecutionInfoViewModel> TryCreateExecutionInfo() =>
         Selection.DesiredCapability is { } desiredCapability // A capability has be choosen
         && Code.TryGetValue(desiredCapability, out var action) // The capability exists
         ? new ExecutionInfoViewModel(this, desiredCapability, action).Some()
         : Option.None<ExecutionInfoViewModel>();
-
-    public void UpdateInStorage() => Storage.Update(_model);
 }

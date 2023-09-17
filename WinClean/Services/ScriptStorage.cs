@@ -1,4 +1,6 @@
-﻿using Scover.WinClean.Model;
+﻿using System.Collections.ObjectModel;
+
+using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Model.Scripts;
 using Scover.WinClean.Model.Serialization;
@@ -12,38 +14,40 @@ public sealed class ScriptStorage : IScriptStorage
     private const string DefaultScriptsResourceNamespace = $"{nameof(Scover)}.{nameof(WinClean)}.Scripts";
     private readonly Dictionary<ScriptType, ScriptRepository> _repos = new();
     private bool _loaded;
-    public int ScriptCount => _repos.Values.Sum(r => r.Count);
-    public IEnumerable<Script> Scripts => _repos.Values.SelectMany(repo => repo);
+    public ObservableCollection<Script> Scripts { get; } = new();
     public IScriptSerializer Serializer => new ScriptXmlSerializer();
-    private sealed record StoredScript(Uri Source, Script script, bool IsMutable, bool IsOpenable);
 
-    public Script Add(ScriptType type, string source) => GetMutableRepository(type).Add(source);
+    public void Commit(Script script) => GetMutableRepository(script.Type).Commit(script);
 
-    public void Load(ScriptDeserializationErrorCallback scriptLoadError, FSErrorCallback fsErrorReloadElseIgnore)
+    public Script GetScript(ScriptType type, string source) => _repos[type].GetScript(source);
+
+    public async Task LoadAsync(ScriptDeserializationErrorCallback scriptLoadError, FSErrorCallback fsErrorReloadElseIgnore)
     {
         if (_loaded)
         {
             return;
         }
+
         AddRepo(new EmbeddedScriptRepository(DefaultScriptsResourceNamespace, Serializer, ScriptType.Default));
         AddRepo(new FileScriptRepository(AppDirectory.Scripts, ServiceProvider.Get<ISettings>().ScriptFileExtension, scriptLoadError, fsErrorReloadElseIgnore, Serializer, ScriptType.Custom));
 
         foreach (var repo in _repos.Values)
         {
-            repo.Reload();
+            await repo.LoadAsync();
         }
         _loaded = true;
     }
 
-    public bool Remove(Script script) => GetMutableRepository(script.Type).Remove(script);
-
-    public void Update(Script script) => GetMutableRepository(script.Type).Update(script);
-
-    private void AddRepo(ScriptRepository repo) => _repos.Add(repo.Type, repo);
+    private void AddRepo(ScriptRepository repo)
+    {
+        _repos.Add(repo.Type, repo);
+        repo.Scripts.SendUpdatesTo(Scripts, filter: s => true);
+        Scripts.SendUpdatesTo(repo.Scripts, filter: script => script.Type == repo.Type);
+    }
 
     private MutableScriptRepository GetMutableRepository(ScriptType type)
-        => !_repos.TryGetValue(type, out var repo)
-            ? throw new ArgumentException($"No repository found for script type '{type.InvariantName}'")
-            : repo as MutableScriptRepository
-            ?? throw new ArgumentException($"Repository for script type '{type.InvariantName}' is not mutable");
+    => !_repos.TryGetValue(type, out var repo)
+        ? throw new ArgumentException($"No repository found for script type '{type.InvariantName}'")
+        : repo as MutableScriptRepository
+        ?? throw new ArgumentException($"Repository for script type '{type.InvariantName}' is not mutable");
 }

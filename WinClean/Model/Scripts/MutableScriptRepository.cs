@@ -14,23 +14,17 @@ public abstract class MutableScriptRepository : ScriptRepository
     /// <exception cref="FileSystemException">A filesystem exception occured.</exception>
     /// <exception cref="DeserializationException">Script deserialization failed.</exception>
     /// <exception cref="ScriptAlreadyExistsException">
-    /// <paramref name="script"/> already exists in the repository.
+    /// The script already exists in the repository.
     /// </exception>
     public abstract Script Add(string source);
 
-    /// <summary>Returns whether a source exists within a repository.</summary>
-    /// <returns>
-    /// <see langword="true"/> if <paramref name="source"/> exists in this repository, else <see
-    /// langword="false"/>.
-    /// </returns>
-    public abstract bool Contains(string source);
-
-    /// <summary>Returns whether a script exists within a repository.</summary>
-    /// <returns>
-    /// <see langword="true"/> if <paramref name="script"/> exists in this repository, else <see
-    /// langword="false"/>.
-    /// </returns>
-    public abstract bool Contains(Script script);
+    /// <summary>Updates a script in a repository.</summary>
+    /// <param name="script">The script to update.</param>
+    /// <exception cref="InvalidOperationException">
+    /// <paramref name="script"/> is not present in the repository.
+    /// </exception>
+    /// <exception cref="FileSystemException">A filesystem exception occured.</exception>
+    public abstract void Commit(Script script);
 
     /// <summary>Removes a script from a repository at a specified source.</summary>
     /// <param name="source">The source of the script to remove.</param>
@@ -48,12 +42,4 @@ public abstract class MutableScriptRepository : ScriptRepository
     /// repository.
     /// </returns>
     public abstract bool Remove(Script script);
-
-    /// <summary>Updates a script in a repository.</summary>
-    /// <param name="script">The script to update.</param>
-    /// <exception cref="InvalidOperationException">
-    /// <paramref name="script"/> is not present in the repository.
-    /// </exception>
-    /// <exception cref="FileSystemException">A filesystem exception occured.</exception>
-    public abstract void Update(Script script);
 }

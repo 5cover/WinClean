@@ -7,27 +7,24 @@ namespace Scover.WinClean.Model.Scripts;
 public class EmbeddedScriptRepository : ScriptRepository
 {
     private readonly string _namespace;
-    private readonly List<Script> _scripts = new();
 
     /// <param name="namespace">The namespace of each manifest resource.</param>
     public EmbeddedScriptRepository(string @namespace, IScriptSerializer serializer, ScriptType type) : base(serializer, type) =>
         // Add a dot to only load resources inside the namespace.
         _namespace = @namespace + '.';
 
-    public override int Count => _scripts.Count;
-
-    public override IEnumerator<Script> GetEnumerator() => _scripts.GetEnumerator();
-
-    protected override void Clear() => _scripts.Clear();
-
-    protected override void Load()
+    public override Script GetScript(string source)
     {
-        var assembly = ServiceProvider.Get<IApplicationInfo>().Assembly;
-        foreach (var resName in assembly.GetManifestResourceNames().Where(name => name.StartsWith(_namespace, StringComparison.Ordinal)))
-        {
-            using Stream stream = assembly.GetManifestResourceStream(resName).NotNull();
+        using Stream? stream  = ServiceProvider.Get<IApplicationInfo>().Assembly.GetManifestResourceStream(source);
+        return Serializer.Deserialize(Type, stream ?? throw new ArgumentException($"The script at {source} could not be found.", nameof(source)));
+    }
 
-            _scripts.Add(Serializer.Deserialize(Type, stream));
+    public override Task LoadAsync()
+    {
+        foreach (var resName in ServiceProvider.Get<IApplicationInfo>().Assembly.GetManifestResourceNames().Where(name => name.StartsWith(_namespace, StringComparison.Ordinal)))
+        {
+            AddItem(GetScript(resName));
         }
+        return Task.CompletedTask;
     }
 }

@@ -31,47 +31,41 @@ public sealed partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private ScriptViewModel? _selectedScript;
 
-    public MainViewModel()
+    public MainViewModel(ObservableCollection<Model.Scripts.Script> scriptsSource)
     {
-        IEnumerable<ScriptViewModel> orginalScripts = ServiceProvider.Get<IScriptStorage>().Scripts.Select(s =>
         {
-            ScriptViewModel svm = new(s);
-            svm.PropertyChanged += (s, e) =>
+            ObservableCollection<ScriptViewModel> scripts = new(scriptsSource.Select(s => new ScriptViewModel(s)));
+
+            scriptsSource.SendUpdatesTo(scripts, converter: script =>
             {
-                if (Scripts.NotNull().View.GroupDescriptions.OfType<PropertyGroupDescription>().Any(g => g.PropertyName == e.PropertyName))
+                ScriptViewModel scriptViewModel = new(script);
+                scriptViewModel.PropertyChanged += (s, e) =>
                 {
-                    Scripts.View.Refresh();
-                }
-            };
-            return svm;
-        });
+                    bool aGroupingCriteriaChanged = Scripts.NotNull().View.GroupDescriptions.OfType<PropertyGroupDescription>().Any(g => g.PropertyName == e.PropertyName);
+                    if (aGroupingCriteriaChanged)
+                    {
+                        Scripts.View.Refresh();
+                    }
+                };
+                return scriptViewModel;
+            });
+            scripts.SendUpdatesTo(scriptsSource, converter: s => s.Model);
 
-        Scripts = new(new CollectionViewSource()
-        {
-            Source = new ObservableCollection<ScriptViewModel>(orginalScripts),
-            GroupDescriptions =
+            foreach (ScriptViewModel script in scripts)
             {
-                new PropertyGroupDescription(nameof(ScriptViewModel.Category)).SortedBy(nameof(CollectionViewGroup.Name)),
-                new PropertyGroupDescription(nameof(ScriptViewModel.Usages)).SortedBy(nameof(CollectionViewGroup.Name)),
-            },
-        });
-
-        ApplyChangesToScriptStorage = new RelayCommand(() =>
-        {
-            var mutableScripts = Scripts.Source.Where(s => s.Type.IsMutable);
-
-            foreach (var removedScript in orginalScripts.Where(s => s.Type.IsMutable).Except(mutableScripts))
-            {
-                _ = removedScript.RemoveFromStorage();
-            }
-            // Added scripts are handled immediately in TryAddNewScript
-            foreach (var script in mutableScripts)
-            {
-                script.UpdateInStorage();
+                script.PropertyChanged += (s, e) => ServiceProvider.Get<IScriptStorage>().Commit(script.Model);
             }
 
-            Logs.ScriptsSaved.Log();
-        });
+            Scripts = new(new CollectionViewSource()
+            {
+                Source = scripts,
+                GroupDescriptions =
+                {
+                    new PropertyGroupDescription(nameof(ScriptViewModel.Category)).SortedBy(nameof(CollectionViewGroup.Name)),
+                    new PropertyGroupDescription(nameof(ScriptViewModel.Usages)).SortedBy(nameof(CollectionViewGroup.Name)),
+                },
+            });
+        }
 
         CheckScriptsByProperty = new RelayCommand<object>(expectedPropertyValue => SelectScripts(s
             => expectedPropertyValue.NotNull().Equals(
@@ -134,7 +128,7 @@ public sealed partial class MainViewModel : ObservableObject
                 MainInstruction = Resources.UI.Dialogs.NoScriptsSelectedMainInstruction,
                 Content = Resources.UI.Dialogs.NoScriptsSelectedContent,
             };
-            _ = new Dialog(noScriptsSelected).Show();
+            _ = new Dialog(noScriptsSelected).ShowDialog();
         });
     }
 
@@ -151,7 +145,6 @@ public sealed partial class MainViewModel : ObservableObject
     }
 
     public IRelayCommand AddScripts { get; }
-    public IRelayCommand ApplyChangesToScriptStorage { get; }
     public IRelayCommand CheckAllScripts { get; }
     public IRelayCommand<object> CheckScriptsByProperty { get; }
     public IAsyncRelayCommand ClearLogs { get; } = new AsyncRelayCommand(App.CurrentApp.Logger.ClearLogsAsync);
@@ -182,20 +175,20 @@ public sealed partial class MainViewModel : ObservableObject
         {
             try
             {
-                return new ScriptViewModel(ServiceProvider.Get<IScriptStorage>().Add(ScriptType.Custom, path)).Some();
+                return new ScriptViewModel(ServiceProvider.Get<IScriptStorage>().GetScript(ScriptType.Custom, path)).Some();
             }
             catch (DeserializationException e)
             {
                 Logs.ScriptLoadError.FormatWith(path, e).Log(LogLevel.Error);
                 using Page page = DialogFactory.MakeScriptLoadError(e, path, new() { Button.TryAgain, Button.Ignore });
-                retry = Button.TryAgain.Equals(new Dialog(page).Show());
+                retry = Button.TryAgain.Equals(new Dialog(page).ShowDialog());
             }
             catch (FileSystemException e)
             {
                 Logs.ScriptLoadError.FormatWith(path, e).Log(LogLevel.Error);
                 using Page fsErrorPage = DialogFactory.MakeFSError(e, new() { Button.TryAgain, Button.Ignore });
                 fsErrorPage.MainInstruction = Resources.UI.Dialogs.FSErrorAddingCustomScriptMainInstruction;
-                retry = Button.TryAgain.Equals(new Dialog(fsErrorPage).Show());
+                retry = Button.TryAgain.Equals(new Dialog(fsErrorPage).ShowDialog());
             }
             catch (ScriptAlreadyExistsException e)
             {
@@ -209,10 +202,8 @@ public sealed partial class MainViewModel : ObservableObject
                 });
                 if (retry)
                 {
-                    Debug.Assert(ServiceProvider.Get<IScriptStorage>().Remove(e.ExistingScript));
                     Logs.ScriptOverwritten.FormatWith(path, e.ExistingScript.InvariantName).Log(LogLevel.Info);
-                    ScriptViewModel existingScriptClone = new(e.ExistingScript);
-                    Debug.Assert(Scripts.Source.Remove(existingScriptClone));
+                    _ = Scripts.Source.Remove(Scripts.Source.Single(s => s.Model.Equals(e.ExistingScript)));
                 }
             }
         } while (retry);

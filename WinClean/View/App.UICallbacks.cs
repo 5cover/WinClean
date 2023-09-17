@@ -13,9 +13,8 @@ namespace Scover.WinClean.View;
 public partial class App
 {
     private static readonly Callbacks uiCallbacks = new(
-        NotifyUpdateAvailable: async () =>
+        NotifyUpdateAvailable: latestVersionName =>
         {
-            var scc = await SourceControlClient.Instance;
             using Page update = new()
             {
                 AllowHyperlinks = true,
@@ -23,12 +22,12 @@ public partial class App
                 MainInstruction = Update.MainInstruction,
                 Sizing = Sizing.Content,
                 Icon = DialogIcon.Information,
-                Content = Update.Content.FormatWith(scc.LatestVersionName),
+                Content = Update.Content.FormatWith(latestVersionName),
                 Verification  = new(Update.Verification),
             };
             update.HyperlinkClicked += (_, _) => ServiceProvider.Get<ISettings>().LatestVersionUrl.Open();
             update.Verification.Checked += (_, _) => ServiceProvider.Get<ISettings>().ShowUpdateDialog ^= true;
-            _ = new Dialog(update).Show();
+            _ = new Dialog(update).ShowDialog();
         },
         ScriptLoadError: (e, path) =>
         {
@@ -40,7 +39,7 @@ public partial class App
             using Page invalidScriptDataPage = DialogFactory.MakeScriptLoadError(e, path, new(defaultItem: Button.TryAgain){ deleteScriptButton, Button.TryAgain, Button.Ignore });
 
             Dialog invalidScriptData = new(invalidScriptDataPage);
-            var clicked = invalidScriptData.Show();
+            var clicked = invalidScriptData.ShowDialog();
 
             if (deleteScriptButton.Equals(clicked))
             {
@@ -54,7 +53,7 @@ public partial class App
         {
             using Page fsError = DialogFactory.MakeFSError(e, new(){ Button.TryAgain, Button.Ignore });
             fsError.MainInstruction = WinClean.Resources.UI.Dialogs.FSErrorLoadingCustomScriptMainInstruction;
-            return Button.TryAgain.Equals(new Dialog(fsError).Show());
+            return Button.TryAgain.Equals(new Dialog(fsError).ShowDialog());
         },
         WarnOnUnhandledException: ex =>
         {
@@ -83,6 +82,6 @@ public partial class App
                 }
             };
 
-            return Button.Ignore.Equals(new Dialog(unhandledException).Show());
+            return Button.Ignore.Equals(new Dialog(unhandledException).ShowDialog());
         });
 }
