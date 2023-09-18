@@ -24,6 +24,7 @@ using Optional.Unsafe;
 
 using Scover.Dialogs;
 using Scover.WinClean.Model;
+using Scover.WinClean.Resources;
 
 using Vanara.PInvoke;
 
@@ -79,15 +80,15 @@ public static class Extensions
     /// <inheritdoc cref="GetSingleChildOrDefault(XmlElement, string)"/>
     /// <returns>The single child element.</returns>
     public static XmlElement GetSingleChild(this XmlElement parent, string name)
-        => parent.GetSingleChildOrDefault(name) ?? throw new XmlException($"'{parent.Name}' has no child element named '{name}'.");
+        => parent.GetSingleChildOrDefault(name) ?? throw new XmlException(ExceptionMessages.ElementHasNoChild.FormatWith(parent.Name, name));
 
     /// <inheritdoc cref="GetSingleChild(XmlElement, string)"/>
     public static XmlElement GetSingleChild(this XmlDocument parent, string name)
-        => (parent.DocumentElement ?? throw new XmlException("No root exists in document.")).GetSingleChild(name);
+        => (parent.DocumentElement ?? throw new XmlException(ExceptionMessages.NoRootExists)).GetSingleChild(name);
 
     /// <inheritdoc cref="GetSingleChildOrDefault(XmlElement, string)"/>
     public static XmlElement? GetSingleChildOrDefault(this XmlDocument parent, string name)
-        => (parent.DocumentElement ?? throw new XmlException("No root exists in document.")).GetSingleChildOrDefault(name);
+        => (parent.DocumentElement ?? throw new XmlException(ExceptionMessages.NoRootExists)).GetSingleChildOrDefault(name);
 
     /// <summary>Gets the single child element with the specified name.</summary>
     /// <param name="parent">The parent element.</param>
@@ -98,7 +99,7 @@ public static class Extensions
     {
         var elements = parent.GetElementsByTagName(name).OfType<XmlElement>();
         return elements.Count() > 1
-            ? throw new XmlException($"'{parent.Name}' has {elements.Count()} child elements named '{name}' but only one was expected.")
+            ? throw new XmlException(ExceptionMessages.ElementHasMultipleNamedChilds.FormatWith(parent.Name, name, elements.Count()))
             : elements.SingleOrDefault();
     }
 
@@ -123,7 +124,7 @@ public static class Extensions
     {
         var elements = parent.GetElementsByTagName(name);
         return elements.Count > 1
-            ? throw new XmlException($"'{parent.Name}' has {elements.Count} childs named '{name}' but only one was expected.")
+            ? throw new XmlException(ExceptionMessages.ElementHasMultipleNamedChilds.FormatWith(parent.Name, name, elements.Count))
             : elements[0]?.InnerText;
     }
 
@@ -167,7 +168,7 @@ public static class Extensions
     {
         if (process.IsRunning())
         {
-            // Not using process.Kill(true) because: It throws Win32Exceptions for "Access denied" errors
+            // Not using process.Kill(true) because: It throws Win32Exceptions for 'Access denied' errors
             // internally. They are handled by the Process class, so it's not a problem, but they're still
             // visible by the debugger. This is because this method enumerates all system processes to build
             // the process tree, but doesn't have permission to open all of them.

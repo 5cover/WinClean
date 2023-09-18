@@ -97,31 +97,97 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Category" xml:space="preserve">
-    <value>Category</value>
+  <data name="CapabilityNotFound" xml:space="preserve">
+    <value>No capability found for invariant name '{0}'.</value>
+    <comment>0 : capability InvariantName@Invariant</comment>
   </data>
-  <data name="Code" xml:space="preserve">
-    <value>Code</value>
+  <data name="CapabilityScriptMismatch" xml:space="preserve">
+    <value>Not every capability matches with a script.</value>
+    <comment>@Invariant</comment>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
+  <data name="DataContainsSeparator" xml:space="preserve">
+    <value>The formatted key or value '{0}' contains the separator ('{1}').</value>
+    <comment>0 : the data
+1 : the separator@Invariant</comment>
   </data>
-  <data name="Host" xml:space="preserve">
-    <value>Host</value>
+  <data name="DeserializationFailed" xml:space="preserve">
+    <value>The data could not be deserialized to a {0} because it is invalid or incomplete.</value>
+    <comment>0 : target object designation@Invariant</comment>
   </data>
-  <data name="Impact" xml:space="preserve">
-    <value>Impact</value>
+  <data name="ElementHasMultipleNamedChilds" xml:space="preserve">
+    <value>Element '{0}' has {2} child elements named '{1}' but only one was expected.</value>
+    <comment>0 : parent element name
+1 : children elements name
+2 : actual child element count@Invariant</comment>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
+  <data name="ElementHasNoChild" xml:space="preserve">
+    <value>Element '{0}' has no child element.</value>
+    <comment>0 : parent element name@Invariant</comment>
   </data>
-  <data name="SafetyLevel" xml:space="preserve">
-    <value>Safety</value>
+  <data name="ElementHasNoNamedChild" xml:space="preserve">
+    <value>Element '{0}' has no child element named '{1}'.</value>
+    <comment>0 : parent element name
+1 : children elements name@Invariant</comment>
   </data>
-  <data name="TimeSpanUnknown" xml:space="preserve">
-    <value>unknown</value>
+  <data name="EmptyString" xml:space="preserve">
+    <value>The string is empty.</value>
+    <comment>@Invariant</comment>
   </data>
-  <data name="Versions" xml:space="preserve">
-    <value>Versions</value>
+  <data name="FileSystemException" xml:space="preserve">
+    <value>A filesystem exception occurred.</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="HostProcessIsExecuting" xml:space="preserve">
+    <value>Host process is already executing. Execution may already be underway.</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="HostProcessIsNotExecuting" xml:space="preserve">
+    <value>Host process is not executing. Execution is not underway.</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="InvalidScriptCommandLine" xml:space="preserve">
+    <value>Script command line '{0}' is invalid.</value>
+    <comment>0 : script command line@Invariant</comment>
+  </data>
+  <data name="NoRootExists" xml:space="preserve">
+    <value>No root exists in document.</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="NoStringFoundForCultureTree" xml:space="preserve">
+    <value>No string was found for culture '{0}' or any of its parents.</value>
+    <comment>0 : culture key@Invariant</comment>
+  </data>
+  <data name="RepoNotFound" xml:space="preserve">
+    <value>No repository found for script type '{0}'.</value>
+    <comment>0 : script type InvariantName@Invariant</comment>
+  </data>
+  <data name="RepoNotMutable" xml:space="preserve">
+    <value>Repository for script type '{0}' is not mutable.</value>
+    <comment>1 : script type InvariantName@Invariant</comment>
+  </data>
+  <data name="ScriptAlreadyExists" xml:space="preserve">
+    <value>The script '{0}' already exists.</value>
+    <comment>0 : existing script InvariantName@Invariant</comment>
+  </data>
+  <data name="ScriptDoesNotHaveCapability" xml:space="preserve">
+    <value>Script '{0}' doesn't contain capability '{1}'.</value>
+    <comment>0 : script InvariantName
+1 : capability InvariantName@Invariant</comment>
+  </data>
+  <data name="ScriptNotFound" xml:space="preserve">
+    <value>No script found for invariant name '{0}'.</value>
+    <comment>0 : script InvariantName@Invariant</comment>
+  </data>
+  <data name="ScriptNotFoundAtSource" xml:space="preserve">
+    <value>The script at '{source}' could not be found.</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ScriptNotInRepo" xml:space="preserve">
+    <value>The script is not present in the repository.</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="UnknownHostType" xml:space="preserve">
+    <value>Unknwon host type '{0}'.</value>
+    <comment>0 : host type designation@Invariant</comment>
   </data>
 </root>

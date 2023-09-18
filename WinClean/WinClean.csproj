@@ -159,6 +159,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ElementFor.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\ExceptionMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ExceptionMessages.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\ExecutionResult.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -229,10 +234,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ScriptView.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Script.Designer.cs">
+    <Compile Update="Resources\ScriptProperties.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Script.resx</DependentUpon>
+      <DependentUpon>ScriptProperties.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\UI\SettingsWindow.Designer.cs">
       <DependentUpon>SettingsWindow.resx</DependentUpon>
@@ -280,6 +285,10 @@
     <EmbeddedResource Update="Resources\ElementFor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ElementFor.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ExceptionMessages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\ExecutionResult.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -347,9 +356,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ScriptView.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Script.resx">
+    <EmbeddedResource Update="Resources\ScriptProperties.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Script.Designer.cs</LastGenOutput>
+      <LastGenOutput>ScriptProperties.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\SettingsWindow.resx">
       <LastGenOutput>SettingsWindow.Designer.cs</LastGenOutput>

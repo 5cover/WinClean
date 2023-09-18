@@ -138,9 +138,6 @@
   <data name="SafetyLevel" xml:space="preserve">
     <value>Sûreté</value>
   </data>
-  <data name="TimeSpanUnknown" xml:space="preserve">
-    <value>inconnu</value>
-  </data>
   <data name="Versions" xml:space="preserve">
     <value>Versions</value>
   </data>

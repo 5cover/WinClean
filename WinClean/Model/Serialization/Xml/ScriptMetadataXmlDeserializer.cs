@@ -36,7 +36,7 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
                    host.element.GetSingleChildText(ElementFor.Extension)),
                _ when type == ElementFor.ShellHost => new ShellHost(host.name, host.description, versions, icon,
                    host.element.GetSingleChildText(ElementFor.CommandLine)),
-               _ => throw new DeserializationException("Host", null, new InvalidDataException($"Unknwon host type '{type}'")),
+               _ => throw new DeserializationException("Host", null, new InvalidDataException(ExceptionMessages.UnknownHostType.FormatWith(type))),
            };
 
     public IEnumerable<Impact> GetImpacts(Stream stream)

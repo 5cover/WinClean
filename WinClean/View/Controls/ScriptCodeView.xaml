@@ -35,7 +35,7 @@
                                 IsEnabled="{Binding IsReadOnly, ElementName=scriptCodeViewUserControl, Converter={StaticResource BooleanInvert}}"
                                 ItemsSource="{Binding Source={x:Type metadatas:Host}, Converter={StaticResource GetMetadatas}}"
                                 SelectedItem="{Binding Value.Host}"
-                                Watermark="{x:Static res:Script.Host}">
+                                Watermark="{x:Static res:ScriptProperties.Host}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate DataType="metadatas:Host">
                                         <StackPanel Orientation="Horizontal" ToolTip="{Binding Description}">
@@ -72,7 +72,7 @@
                                 IsReadOnly="{Binding IsReadOnly, ElementName=scriptCodeViewUserControl}"
                                 Text="{Binding Value.Code}"
                                 VerticalScrollBarVisibility="Auto"
-                                Watermark="{x:Static res:Script.Code}" />
+                                Watermark="{x:Static res:ScriptProperties.Code}" />
                         </DockPanel>
                     </DataTemplate>
                 </TabControl.ContentTemplate>

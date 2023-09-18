@@ -119,7 +119,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             elementSelector: e => new ScriptAction(Metadatas.GetMetadata<Host>(e.GetAttribute(ElementFor.Host)), e.InnerText))
         is { Count: > 0 } codeElements
             ? new ScriptCode(codeElements)
-            : throw new InvalidDataException("Script code element doesn't contain any child elements.");
+            : throw new InvalidDataException(ExceptionMessages.ElementHasNoChild.FormatWith(ElementFor.Code));
 
     /// <summary>Deserializes a script in the pre 1.3.0 format.</summary>
     private static Script DeserializePre130(ScriptType type, XmlDocument d)

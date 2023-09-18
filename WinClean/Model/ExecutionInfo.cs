@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 
+using Scover.WinClean.Resources;
+
 namespace Scover.WinClean.Model;
 
 public enum ProcessOutputKind
@@ -142,7 +144,7 @@ public sealed class ExecutionInfo : IDisposable
     {
         if (IsExecuting)
         {
-            throw new InvalidOperationException("Host process is already executing. Execution may already be underway.");
+            throw new InvalidOperationException(ExceptionMessages.HostProcessIsExecuting);
         }
     }
 
@@ -150,7 +152,7 @@ public sealed class ExecutionInfo : IDisposable
     {
         if (!IsExecuting)
         {
-            throw new InvalidOperationException("Host process is not executing. Execution is not underway.");
+            throw new InvalidOperationException(ExceptionMessages.HostProcessIsNotExecuting);
         }
     }
 

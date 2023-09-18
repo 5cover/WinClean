@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Resources;
+using Scover.WinClean.Resources.UI;
 using Scover.WinClean.ViewModel.Logging;
 
 namespace Scover.WinClean.ViewModel;
@@ -34,7 +35,7 @@ public sealed class ExecutionInfoViewModel : ObservableObject
         Capability = capabilityToExecute;
         _model = new(actionToExecute, synchronizationObject.Value);
         NotifyScroll = new RelayCommand<ScrollEventArgs>(e => UserIsNotScrolling = e.NotNull().ScrollEventType is ScrollEventType.EndScroll);
-        FormattedOriginalEstimatedExecutionTime = script.ExecutionTime.Match(t => t.FormatToSeconds(), () => Resources.Script.TimeSpanUnknown);
+        FormattedOriginalEstimatedExecutionTime = script.ExecutionTime.Match(t => t.FormatToSeconds(), () => ExecutionInfosView.TimeSpanUnknown);
     }
 
     public Capability Capability { get; }

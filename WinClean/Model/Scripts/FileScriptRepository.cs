@@ -1,5 +1,6 @@
 ﻿using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Model.Serialization;
+using Scover.WinClean.Resources;
 
 namespace Scover.WinClean.Model.Scripts;
 
@@ -40,7 +41,7 @@ public sealed class FileScriptRepository : MutableScriptRepository
     {
         if (!_scripts.ContainsValue(script))
         {
-            throw new InvalidOperationException("The script is not present in the repository.");
+            throw new InvalidOperationException(ExceptionMessages.ScriptNotInRepo);
         }
         var source = _scripts.Inverse[script];
         try
@@ -63,7 +64,7 @@ public sealed class FileScriptRepository : MutableScriptRepository
         }
         catch (Exception e) when (e is FileNotFoundException or DirectoryNotFoundException)
         {
-            throw new ArgumentException($"Script at {source} could not be found", nameof(source), e);
+            throw new ArgumentException(ExceptionMessages.ScriptNotFoundAtSource.FormatWith(source), nameof(source), e);
         }
         catch (Exception e) when (e.IsFileSystemExogenous())
         {

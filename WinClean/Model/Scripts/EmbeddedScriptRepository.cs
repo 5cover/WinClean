@@ -1,5 +1,6 @@
 ﻿using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Model.Serialization;
+using Scover.WinClean.Resources;
 using Scover.WinClean.Services;
 
 namespace Scover.WinClean.Model.Scripts;
@@ -16,7 +17,7 @@ public class EmbeddedScriptRepository : ScriptRepository
     public override Script GetScript(string source)
     {
         using Stream? stream  = ServiceProvider.Get<IApplicationInfo>().Assembly.GetManifestResourceStream(source);
-        return Serializer.Deserialize(Type, stream ?? throw new ArgumentException($"The script at {source} could not be found.", nameof(source)));
+        return Serializer.Deserialize(Type, stream ?? throw new ArgumentException(ExceptionMessages.ScriptNotFoundAtSource.FormatWith(source), nameof(source)));
     }
 
     public override Task LoadAsync()

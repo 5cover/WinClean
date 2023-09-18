@@ -76,7 +76,7 @@
                     Margin="0,0,0,6"
                     MaxLines="1"
                     Text="{Binding Name, Mode=TwoWay}"
-                    Watermark="{x:Static res:Script.Name}" />
+                    Watermark="{x:Static res:ScriptProperties.Name}" />
 
                 <xctk:WatermarkTextBox
                     Grid.Row="2"
@@ -87,7 +87,7 @@
                     Text="{Binding Description, Mode=TwoWay}"
                     TextWrapping="Wrap"
                     VerticalScrollBarVisibility="Auto"
-                    Watermark="{x:Static res:Script.Description}" />
+                    Watermark="{x:Static res:ScriptProperties.Description}" />
 
                 <xctk:WatermarkComboBox
                     Grid.Row="3"
@@ -95,7 +95,7 @@
                     Margin="0,0,3,6"
                     ItemsSource="{Binding Source={x:Type metadatas:Category}, Converter={StaticResource GetMetadatas}}"
                     SelectedItem="{Binding Category, Mode=TwoWay}"
-                    Watermark="{x:Static res:Script.Category}" />
+                    Watermark="{x:Static res:ScriptProperties.Category}" />
 
                 <xctk:WatermarkComboBox
                     Grid.Row="3"
@@ -103,7 +103,7 @@
                     Margin="3,0,0,6"
                     ItemsSource="{Binding Source={x:Type metadatas:SafetyLevel}, Converter={StaticResource GetMetadatas}}"
                     SelectedItem="{Binding SafetyLevel, Mode=TwoWay}"
-                    Watermark="{x:Static res:Script.SafetyLevel}">
+                    Watermark="{x:Static res:ScriptProperties.SafetyLevel}">
                     <ComboBox.ItemContainerStyle>
                         <Style BasedOn="{StaticResource {x:Type ComboBoxItem}}" TargetType="ComboBoxItem">
                             <Setter Property="Background" Value="{Binding Color, Converter={StaticResource ColorToBrush}, ConverterParameter=0.15}" />
@@ -136,7 +136,7 @@
                         MaxLength="2048"
                         MaxLines="1"
                         TextChanged="TextBoxVersionsTextChanged"
-                        Watermark="{x:Static res:Script.Versions}">
+                        Watermark="{x:Static res:ScriptProperties.Versions}">
                         <TextBox.Text>
                             <Binding
                                 Mode="TwoWay"
@@ -158,7 +158,7 @@
                     Margin="3,0,0,6"
                     ItemsSource="{Binding Source={x:Type metadatas:Impact}, Converter={StaticResource GetMetadatas}}"
                     SelectedItem="{Binding Impact, Mode=TwoWay}"
-                    Watermark="{x:Static res:Script.Impact}" />
+                    Watermark="{x:Static res:ScriptProperties.Impact}" />
 
                 <controls:ScriptCodeView
                     Grid.Row="5"

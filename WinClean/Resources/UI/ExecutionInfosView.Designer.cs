@@ -68,5 +68,14 @@ namespace Scover.WinClean.Resources.UI {
                 return ResourceManager.GetString("Action", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à unknown.
+        /// </summary>
+        public static string TimeSpanUnknown {
+            get {
+                return ResourceManager.GetString("TimeSpanUnknown", resourceCulture);
+            }
+        }
     }
 }

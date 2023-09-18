@@ -2,6 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
+using Scover.WinClean.Resources;
+
 namespace Scover.WinClean.Model;
 
 /// <summary>A string available in multiple languages.</summary>
@@ -34,7 +36,7 @@ public sealed class LocalizedString : IDictionary<CultureInfo, string>, IEquatab
                 culture = culture.Parent)
             {
             }
-            return localized ?? throw new KeyNotFoundException($"No string was found for this culture ('{key}') or any of its parents.");
+            return localized ?? throw new KeyNotFoundException(ExceptionMessages.NoStringFoundForCultureTree.FormatWith(key));
         }
         set => _values[key] = value;
     }

@@ -5,6 +5,7 @@ using Humanizer.Localisation;
 using Optional;
 
 using Scover.WinClean.Resources;
+using Scover.WinClean.Resources.UI;
 using Scover.WinClean.Services;
 using Scover.WinClean.ViewModel.Logging;
 
@@ -79,7 +80,7 @@ public sealed class Page2ViewModel : WizardPageViewModel
         }
     }
 
-    public string FormattedTimeRemaining => TimeRemaining.Match(t => t.Humanize(precision: 3, minUnit: TimeUnit.Second), () => Script.TimeSpanUnknown);
+    public string FormattedTimeRemaining => TimeRemaining.Match(t => t.Humanize(precision: 3, minUnit: TimeUnit.Second), () => ExecutionInfosView.TimeSpanUnknown);
     public IRelayCommand Pause { get; }
 
     public bool RestartWhenFinished

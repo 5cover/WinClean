@@ -81,19 +81,19 @@ Script and capability names are case sensitive and follow ordinal string compari
 
     private void ExecuteRunScripts(IEnumerable<Script> scripts)
     {
-        var executionInfos = (RunScripts.Count() % 2 == 0 ? RunScripts.Chunk(2) : throw new ConsoleArgumentException("Not every capability matches with a script.", nameof(RunScripts))).Select(e =>
+        var executionInfos = (RunScripts.Count() % 2 == 0 ? RunScripts.Chunk(2) : throw new ConsoleArgumentException(ExceptionMessages.CapabilityScriptMismatch, nameof(RunScripts))).Select(e =>
         {
             var (capabilityInvariantName, scriptInvariantName) = (e[0], e[1]);
 
             var capability = Capability.FromResourceNameOrDefault(capabilityInvariantName)
-                ?? throw new ConsoleArgumentException($"No capability found for invariant name '{capabilityInvariantName}'.", nameof(RunScripts));
+                ?? throw new ConsoleArgumentException(ExceptionMessages.CapabilityNotFound.FormatWith(capabilityInvariantName), nameof(RunScripts));
 
             var script = scripts.FirstOrDefault(s => s.InvariantName == scriptInvariantName)
-                ?? throw new ConsoleArgumentException($"No script found for invariant name '{scriptInvariantName}'.", nameof(RunScripts));
+                ?? throw new ConsoleArgumentException(ExceptionMessages.ScriptNotFound.FormatWith(scriptInvariantName), nameof(RunScripts));
 
             return script.Code.ContainsKey(capability)
                 ? (script, capability)
-                : throw new ConsoleArgumentException($"Script '{script.InvariantName}' doesn't contain capability '{capability.InvariantName}'.", nameof(RunScripts));
+                : throw new ConsoleArgumentException(ExceptionMessages.ScriptDoesNotHaveCapability.FormatWith(scriptInvariantName, capabilityInvariantName), nameof(RunScripts));
         }).ToList();
 
         Console.WriteLine(ConsoleMode.StartingExecution.FormatWith(executionInfos.Count));

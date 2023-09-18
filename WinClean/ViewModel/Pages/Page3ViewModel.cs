@@ -3,6 +3,7 @@
 using Humanizer.Localisation;
 
 using Scover.WinClean.Resources;
+using Scover.WinClean.Resources.UI;
 using Scover.WinClean.Services;
 using Scover.WinClean.ViewModel.Logging;
 
@@ -29,7 +30,7 @@ public sealed class Page3ViewModel : WizardPageViewModel
 
     public string FormattedElapsedTime
         => ExecutionInfos.Source.Select(s => s.Script.ExecutionTime).AggregateOrNone(TimeSpan.Zero, (sumSoFar, t) => sumSoFar + t)
-        .Match(elapsedTime => elapsedTime.Humanize(precision: 3, minUnit: TimeUnit.Second), () => Script.TimeSpanUnknown);
+        .Match(elapsedTime => elapsedTime.Humanize(precision: 3, minUnit: TimeUnit.Second), () => ExecutionInfosView.TimeSpanUnknown);
 
     public IRelayCommand Restart { get; } = new RelayCommand(() =>
     {

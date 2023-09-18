@@ -5,6 +5,7 @@ using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Model.Scripts;
 using Scover.WinClean.Model.Serialization;
 using Scover.WinClean.Model.Serialization.Xml;
+using Scover.WinClean.Resources;
 
 namespace Scover.WinClean.Services;
 
@@ -47,7 +48,7 @@ public sealed class ScriptStorage : IScriptStorage
 
     private MutableScriptRepository GetMutableRepository(ScriptType type)
     => !_repos.TryGetValue(type, out var repo)
-        ? throw new ArgumentException($"No repository found for script type '{type.InvariantName}'")
+        ? throw new ArgumentException(ExceptionMessages.RepoNotFound.FormatWith(type.InvariantName), nameof(type))
         : repo as MutableScriptRepository
-        ?? throw new ArgumentException($"Repository for script type '{type.InvariantName}' is not mutable");
+        ?? throw new ArgumentException(ExceptionMessages.RepoNotMutable.FormatWith(type.InvariantName), nameof(type));
 }

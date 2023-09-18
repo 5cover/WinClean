@@ -6,6 +6,7 @@ using Humanizer;
 
 using Scover.WinClean;
 using Scover.WinClean.Model;
+using Scover.WinClean.Resources;
 
 namespace Tests;
 
@@ -28,14 +29,19 @@ public sealed class ExtensionsTests
         Assert.That(doc.GetSingleChildText(name), Is.EqualTo(innerText));
     }
 
-    [TestCase("<Tests/>", "'Tests' has no child element named 'Test'.")]
-    [TestCase("<Tests><Test/><Test/></Tests>", "'Tests' has 2 child elements named 'Test' but only one was expected.")]
-    public void TestGetSingleNodeException(string xml, string exceptionMessage)
+    private static readonly TestCaseData[] getSingleNodeExceptionCases =
+    {
+        new("<Tests/>", "Test", ExceptionMessages.ElementHasNoNamedChild.FormatWith("Tests", "Test")),
+        new("<Tests><Test/><Test/></Tests>", "Test", ExceptionMessages.ElementHasMultipleNamedChilds.FormatWith("Tests", "Test", 2)),
+    };
+
+    [TestCaseSource(nameof(getSingleNodeExceptionCases))]
+    public void TestGetSingleNodeException(string xml, string elementName, string exceptionMessage)
     {
         XmlDocument doc = new();
         doc.LoadXml(xml);
 
-        var e = Assert.Throws<XmlException>(() => doc.GetSingleChildText("Test"));
+        var e = Assert.Throws<XmlException>(() => doc.GetSingleChildText(elementName));
         Assert.That(e!.Message, Is.EqualTo(exceptionMessage));
     }
 

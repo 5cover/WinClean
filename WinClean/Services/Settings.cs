@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Text;
 
 using Scover.WinClean.Properties;
+using Scover.WinClean.Resources;
 
 using Semver;
 
@@ -73,15 +74,15 @@ public sealed class Settings : ISettings
     private static string ToMockStringDic<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> kvps, string separator, Func<TKey, string>? keyFormatter = null, Func<TValue, string>? valueFormatter = null)
     {
         return separator == ""
-            ? throw new ArgumentException("Separator is empty", nameof(separator))
+            ? throw new ArgumentException(ExceptionMessages.EmptyString, nameof(separator))
             : new StringBuilder().AppendJoin(separator, kvps.SelectMany(kv => Zip(Format(kv.Key, keyFormatter), Format(kv.Value, valueFormatter)))).ToString();
 
         string? Format<T>(T t, Func<T, string>? formatter)
         {
-            var tstr = formatter?.Invoke(t) ?? t?.ToString();
-            return tstr?.Contains(separator) ?? false
-                ? throw new ArgumentException("One of formatted keys or values contain the separator", nameof(kvps))
-                : tstr;
+            var formatted = formatter?.Invoke(t) ?? t?.ToString();
+            return formatted?.Contains(separator) ?? false
+                ? throw new ArgumentException(ExceptionMessages.DataContainsSeparator.FormatWith(formatted, separator), nameof(kvps))
+                : formatted;
         }
         static IEnumerable<string?> Zip(string? s1, string? s2)
         {

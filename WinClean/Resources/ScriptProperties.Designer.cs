@@ -22,14 +22,14 @@ namespace Scover.WinClean.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Script {
+    public class ScriptProperties {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Script() {
+        internal ScriptProperties() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Scover.WinClean.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scover.WinClean.Resources.Script", typeof(Script).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scover.WinClean.Resources.ScriptProperties", typeof(ScriptProperties).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -120,15 +120,6 @@ namespace Scover.WinClean.Resources {
         public static string SafetyLevel {
             get {
                 return ResourceManager.GetString("SafetyLevel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à unknown.
-        /// </summary>
-        public static string TimeSpanUnknown {
-            get {
-                return ResourceManager.GetString("TimeSpanUnknown", resourceCulture);
             }
         }
         

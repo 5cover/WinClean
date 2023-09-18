@@ -1,4 +1,6 @@
-﻿using Semver;
+﻿using Scover.WinClean.Resources;
+
+using Semver;
 
 using Vanara.PInvoke;
 
@@ -13,7 +15,7 @@ public sealed class ShellHost : Host
     public override HostStartInfo CreateHostStartInfo(string code)
     {
         string commandLine = _commandLine.FormatWith(code);
-        var args = Win32Error.ThrowLastErrorIf(Shell32.CommandLineToArgvW(Environment.ExpandEnvironmentVariables(commandLine)), args => !args.Any(), $"Script command line ({commandLine}) is invalid");
+        var args = Win32Error.ThrowLastErrorIf(Shell32.CommandLineToArgvW(Environment.ExpandEnvironmentVariables(commandLine)), args => !args.Any(), ExceptionMessages.InvalidScriptCommandLine.FormatWith(commandLine));
         return new(args[0], args.Length > 1 ? string.Join(' ', args[1..]) : "");
     }
 }

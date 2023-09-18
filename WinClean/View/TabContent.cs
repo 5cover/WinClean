@@ -1,8 +1,10 @@
 ﻿// Source: https://www.codeproject.com/Articles/460989/WPF-TabControl-Turning-Off-Tab-Virtualization
-// License: Apache-2.0 Changes: Changed namespace Formatting & code style
+// License: Apache-2.0
+// - Changes: Changed namespace, Formatting & code style
 
-// TabContent.cs, version 1.2 The code in this file is Copyright (c) Ivan Krivyakov See
-// http://www.ikriv.com/legal.php for more information
+// TabContent.cs, version 1.2
+// - Copyright (c) Ivan Krivyakov
+// - See http://www.ikriv.com/legal.php for more information
 
 using System.ComponentModel;
 using System.Windows;
