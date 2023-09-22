@@ -24,6 +24,7 @@ using Optional.Unsafe;
 
 using Scover.Dialogs;
 using Scover.WinClean.Model;
+using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Resources;
 
 using Vanara.PInvoke;

@@ -1,4 +1,5 @@
-﻿using Scover.WinClean.Resources;
+﻿using Scover.WinClean.Model.Metadatas;
+using Scover.WinClean.Resources;
 
 namespace Scover.WinClean.Model;
 

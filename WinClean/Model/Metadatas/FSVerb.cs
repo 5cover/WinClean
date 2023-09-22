@@ -1,12 +1,12 @@
-﻿using System.Globalization;
+﻿using Scover.WinClean.Resources;
 
-using Scover.WinClean.Resources;
+namespace Scover.WinClean.Model.Metadatas;
 
-namespace Scover.WinClean.Model;
-
-public sealed class FSVerb
+public sealed class FSVerb : Metadata
 {
-    private FSVerb(string resourceName) => ResourceName = resourceName;
+    private FSVerb(string resourceName) : base(new ResourceTextProvider(FSVerbs.ResourceManager, resourceName))
+    {
+    }
 
     /// <summary>Access of a file system element.</summary>
     public static FSVerb Access { get; } = new(nameof(FSVerbs.Acess));
@@ -19,10 +19,4 @@ public sealed class FSVerb
 
     /// <summary>Move of a file system element.</summary>
     public static FSVerb Move { get; } = new(nameof(FSVerbs.Move));
-
-    public string InvariantName => FSVerbs.ResourceManager.GetString(ResourceName, CultureInfo.InvariantCulture).NotNull();
-    public string Name => FSVerbs.ResourceManager.GetString(ResourceName).NotNull();
-    public string ResourceName { get; }
-
-    public override string ToString() => InvariantName;
 }

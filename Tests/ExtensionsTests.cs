@@ -12,6 +12,12 @@ namespace Tests;
 
 public sealed class ExtensionsTests
 {
+    private static readonly TestCaseData[] getSingleNodeExceptionCases =
+    {
+        new("<Tests/>", "Test", ExceptionMessages.ElementHasNoNamedChild.FormatWith("Tests", "Test")),
+        new("<Tests><Test/><Test/></Tests>", "Test", ExceptionMessages.ElementHasMultipleNamedChilds.FormatWith("Tests", "Test", 2)),
+    };
+
     private static readonly TestCaseData[] sumCases =
     {
         new(10.Hours(), new[]{ 10.Hours() }),
@@ -28,12 +34,6 @@ public sealed class ExtensionsTests
 
         Assert.That(doc.GetSingleChildText(name), Is.EqualTo(innerText));
     }
-
-    private static readonly TestCaseData[] getSingleNodeExceptionCases =
-    {
-        new("<Tests/>", "Test", ExceptionMessages.ElementHasNoNamedChild.FormatWith("Tests", "Test")),
-        new("<Tests><Test/><Test/></Tests>", "Test", ExceptionMessages.ElementHasMultipleNamedChilds.FormatWith("Tests", "Test", 2)),
-    };
 
     [TestCaseSource(nameof(getSingleNodeExceptionCases))]
     public void TestGetSingleNodeException(string xml, string elementName, string exceptionMessage)

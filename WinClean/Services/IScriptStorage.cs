@@ -20,8 +20,8 @@ public interface IScriptStorage
     /// <exception cref="FileSystemException">A filesystem error occured.</exception>
     void Commit(Script script);
 
+    Task LoadAsync(ScriptDeserializationErrorCallback scriptLoadError, FSErrorCallback fsErrorReloadElseIgnore);
+
     /// <inheritdoc cref="ScriptRepository.RetrieveScript(string)"/>
     Script RetrieveScript(ScriptType type, string source);
-
-    Task LoadAsync(ScriptDeserializationErrorCallback scriptLoadError, FSErrorCallback fsErrorReloadElseIgnore);
 }

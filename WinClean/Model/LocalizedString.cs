@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
@@ -8,6 +9,7 @@ namespace Scover.WinClean.Model;
 
 /// <summary>A string available in multiple languages.</summary>
 /// <remarks>Contrarily to resources, localized strings are dynamic and can be modified at runtime.</remarks>
+[DebuggerDisplay($"{{{nameof(_values)}}}")]
 public sealed class LocalizedString : IDictionary<CultureInfo, string>, IEquatable<LocalizedString?>
 {
     private readonly Dictionary<CultureInfo, string> _values;

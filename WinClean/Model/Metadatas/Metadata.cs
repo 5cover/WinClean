@@ -1,7 +1,10 @@
-﻿using static System.Globalization.CultureInfo;
+﻿using System.Diagnostics;
+
+using static System.Globalization.CultureInfo;
 
 namespace Scover.WinClean.Model.Metadatas;
 
+[DebuggerDisplay($"{{{nameof(InvariantName)}}}")]
 public abstract class Metadata : IComparable, IComparable<Metadata>
 {
     private readonly ITextProvider _textProvider;

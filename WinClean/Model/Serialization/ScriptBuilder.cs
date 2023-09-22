@@ -5,6 +5,7 @@ using Scover.WinClean.Resources;
 using Semver;
 
 namespace Scover.WinClean.Model.Serialization;
+
 public sealed class ScriptBuilder
 {
     public Category? Category { get; set; }
@@ -15,6 +16,7 @@ public sealed class ScriptBuilder
     public SafetyLevel? SafetyLevel { get; set; }
 
     public SemVersionRange? Versions { get; set; }
+
     public Script Complete(ScriptType type, string source)
         => Category is null || Code is null || Impact is null || LocalizedDescription is null || LocalizedName is null || SafetyLevel is null || Versions is null
             ? throw new InvalidOperationException(ExceptionMessages.BuilderIncomplete)

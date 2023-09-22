@@ -1,4 +1,6 @@
-﻿using Scover.WinClean.Model.Metadatas;
+﻿using System.Diagnostics;
+
+using Scover.WinClean.Model.Metadatas;
 
 using Semver;
 
@@ -6,6 +8,7 @@ using static System.Globalization.CultureInfo;
 
 namespace Scover.WinClean.Model.Scripts;
 
+[DebuggerDisplay($"{{{nameof(InvariantName)}}}")]
 public sealed class Script : IEquatable<Script?>
 {
     public Script(Category category, ScriptCode code, Impact impact, LocalizedString localizedDescription, LocalizedString localizedName, SafetyLevel safetyLevel, string source, ScriptType type, SemVersionRange versions)
@@ -24,6 +27,7 @@ public sealed class Script : IEquatable<Script?>
         get => LocalizedName[CurrentUICulture];
         set => LocalizedName[CurrentUICulture] = value;
     }
+
     public SafetyLevel SafetyLevel { get; set; }
     public string Source { get; }
     public ScriptType Type { get; }

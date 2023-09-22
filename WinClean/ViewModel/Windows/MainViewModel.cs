@@ -31,8 +31,6 @@ public sealed partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private ScriptViewModel? _selectedScript;
 
-    private static IScriptStorage ScriptStorage => ServiceProvider.Get<IScriptStorage>();
-
     public MainViewModel()
     {
         {
@@ -155,19 +153,11 @@ public sealed partial class MainViewModel : ObservableObject
     public IRelayCommand OpenOnlineWiki { get; } = new RelayCommand(Settings.WikiUrl.Open);
     public IRelayCommand RemoveCurrentScript { get; }
     public CollectionWrapper<ObservableCollection<ScriptViewModel>, ScriptViewModel> Scripts { get; }
-
     public IRelayCommand ShowAboutWindow { get; } = new RelayCommand(() => _ = ServiceProvider.Get<IDialogCreator>().ShowDialog(new AboutViewModel()));
     public IRelayCommand ShowSettingsWindow { get; } = new RelayCommand(() => _ = ServiceProvider.Get<IDialogCreator>().ShowDialog(new SettingsViewModel()));
     public IRelayCommand UncheckAllScripts { get; }
+    private static IScriptStorage ScriptStorage => ServiceProvider.Get<IScriptStorage>();
     private static ISettings Settings => ServiceProvider.Get<ISettings>();
-
-    private void SelectScripts(Predicate<ScriptViewModel> check)
-    {
-        foreach (var script in Scripts)
-        {
-            script.Selection.IsSelected = check(script);
-        }
-    }
 
     private static Option<ScriptViewModel> RetrieveNewScript(string path)
     {
@@ -213,5 +203,13 @@ public sealed partial class MainViewModel : ObservableObject
             }
         } while (retry);
         return Option.None<ScriptViewModel>();
+    }
+
+    private void SelectScripts(Predicate<ScriptViewModel> check)
+    {
+        foreach (var script in Scripts)
+        {
+            script.Selection.IsSelected = check(script);
+        }
     }
 }

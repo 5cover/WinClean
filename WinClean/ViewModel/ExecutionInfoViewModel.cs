@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 
@@ -21,6 +22,7 @@ public enum ScriptExecutionState
     Finished,
 }
 
+[DebuggerDisplay($"{nameof(State)}: {{{nameof(State)}}}")]
 public sealed class ExecutionInfoViewModel : ObservableObject
 {
     private static readonly Lazy<ISynchronizeInvoke> synchronizationObject = new(Application.Current.CreateSynchronizationObject);

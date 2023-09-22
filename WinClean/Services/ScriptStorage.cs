@@ -21,8 +21,6 @@ public sealed class ScriptStorage : IScriptStorage
     /// <inheritdoc cref="MutableScriptRepository.Commit(Script)"/>
     public void Commit(Script script) => GetMutableRepository(script.Type).Commit(script);
 
-    public Script RetrieveScript(ScriptType type, string source) => _repos[type].RetrieveScript(source);
-
     public async Task LoadAsync(ScriptDeserializationErrorCallback scriptLoadError, FSErrorCallback fsErrorReloadElseIgnore)
     {
         if (_loaded)
@@ -39,6 +37,8 @@ public sealed class ScriptStorage : IScriptStorage
         }
         _loaded = true;
     }
+
+    public Script RetrieveScript(ScriptType type, string source) => _repos[type].RetrieveScript(source);
 
     private void AddRepo(ScriptRepository repo)
     {

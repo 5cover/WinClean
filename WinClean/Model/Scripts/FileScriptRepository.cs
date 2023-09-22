@@ -30,23 +30,6 @@ public sealed class FileScriptRepository : MutableScriptRepository
         WriteScriptFile(script, savingPath);
     }
 
-    public override Script RetrieveScript(string source)
-    {
-        try
-        {
-            using var stream = File.OpenRead(source);
-            return Serializer.Deserialize(stream).Complete(Type, source);
-        }
-        catch (Exception e) when (e is FileNotFoundException or DirectoryNotFoundException)
-        {
-            throw new ArgumentException(ExceptionMessages.ScriptNotFoundAtSource.FormatWith(source), nameof(source), e);
-        }
-        catch (Exception e) when (e.IsFileSystemExogenous())
-        {
-            throw new FileSystemException(e, FSVerb.Access, source);
-        }
-    }
-
     public override async Task LoadAsync()
     {
         foreach (var scriptFile in Directory.EnumerateFiles(_directory, '*' + _scriptFileExtension, SearchOption.AllDirectories))
@@ -76,9 +59,27 @@ public sealed class FileScriptRepository : MutableScriptRepository
         }
     }
 
+    public override Script RetrieveScript(string source)
+    {
+        try
+        {
+            using var stream = File.OpenRead(source);
+            return Serializer.Deserialize(stream).Complete(Type, source);
+        }
+        catch (Exception e) when (e is FileNotFoundException or DirectoryNotFoundException)
+        {
+            throw new ArgumentException(ExceptionMessages.ScriptNotFoundAtSource.FormatWith(source), nameof(source), e);
+        }
+        catch (Exception e) when (e.IsFileSystemExogenous())
+        {
+            throw new FileSystemException(e, FSVerb.Access, source);
+        }
+    }
+
     protected override void Add(Script script)
     {
-        // This is the only method where script is not supposed to already exist in the the repository, hence the transformation of script.Source which points to an external resource.
+        // This is the only method where script is not supposed to already exist in the the repository,
+        // hence the transformation of script.Source which points to an external resource.
         string savingPath = Path.Join(_directory, Path.ChangeExtension(Path.GetFileName(script.Source), _scriptFileExtension));
         if (File.Exists(savingPath))
         {
