@@ -31,29 +31,31 @@ public sealed partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private ScriptViewModel? _selectedScript;
 
-    public MainViewModel(ObservableCollection<Model.Scripts.Script> scriptsSource)
+    private static IScriptStorage ScriptStorage => ServiceProvider.Get<IScriptStorage>();
+
+    public MainViewModel()
     {
         {
-            ObservableCollection<ScriptViewModel> scripts = new(scriptsSource.Select(s => new ScriptViewModel(s)));
+            ObservableCollection<ScriptViewModel> scripts = new(ScriptStorage.Scripts.Select(s => new ScriptViewModel(s)));
 
-            scriptsSource.SendUpdatesTo(scripts, converter: script =>
+            ScriptStorage.Scripts.SendUpdatesTo(scripts, converter: script =>
             {
                 ScriptViewModel scriptViewModel = new(script);
                 scriptViewModel.PropertyChanged += (s, e) =>
                 {
-                    bool aGroupingCriteriaChanged = Scripts.NotNull().View.GroupDescriptions.OfType<PropertyGroupDescription>().Any(g => g.PropertyName == e.PropertyName);
-                    if (aGroupingCriteriaChanged)
+                    bool aGroupingCriterionChanged = Scripts.NotNull().View.GroupDescriptions.OfType<PropertyGroupDescription>().Any(g => g.PropertyName == e.PropertyName);
+                    if (aGroupingCriterionChanged)
                     {
                         Scripts.View.Refresh();
                     }
                 };
                 return scriptViewModel;
             });
-            scripts.SendUpdatesTo(scriptsSource, converter: s => s.Model);
+            scripts.SendUpdatesTo(ScriptStorage.Scripts, converter: s => s.Model);
 
             foreach (ScriptViewModel script in scripts)
             {
-                script.PropertyChanged += (s, e) => ServiceProvider.Get<IScriptStorage>().Commit(script.Model);
+                script.PropertyChanged += (s, e) => ScriptStorage.Commit(script.Model);
             }
 
             Scripts = new(new CollectionViewSource()
@@ -89,8 +91,7 @@ public sealed partial class MainViewModel : ObservableObject
 
             foreach (var path in paths)
             {
-                var script = TryAddNewScript(path);
-                script.MatchSome(s =>
+                RetrieveNewScript(path).MatchSome(s =>
                 {
                     Scripts.Source.Add(s);
                     Logs.ScriptAdded.FormatWith(path, s.InvariantName).Log();
@@ -168,14 +169,18 @@ public sealed partial class MainViewModel : ObservableObject
         }
     }
 
-    private Option<ScriptViewModel> TryAddNewScript(string path)
+    private static Option<ScriptViewModel> RetrieveNewScript(string path)
     {
         bool retry;
         do
         {
             try
             {
-                return new ScriptViewModel(ServiceProvider.Get<IScriptStorage>().GetScript(ScriptType.Custom, path)).Some();
+                var script = ScriptStorage.RetrieveScript(ScriptType.Custom, path);
+
+                return ScriptStorage.Scripts.Contains(script)
+                    ? throw new ScriptAlreadyExistsException(script)
+                    : new ScriptViewModel(script).Some();
             }
             catch (DeserializationException e)
             {
@@ -183,10 +188,10 @@ public sealed partial class MainViewModel : ObservableObject
                 using Page page = DialogFactory.MakeScriptLoadError(e, path, new() { Button.TryAgain, Button.Ignore });
                 retry = Button.TryAgain.Equals(new Dialog(page).ShowDialog());
             }
-            catch (FileSystemException e)
+            catch (Exception e) when (e is FileSystemException or ArgumentException)
             {
                 Logs.ScriptLoadError.FormatWith(path, e).Log(LogLevel.Error);
-                using Page fsErrorPage = DialogFactory.MakeFSError(e, new() { Button.TryAgain, Button.Ignore });
+                using Page fsErrorPage = DialogFactory.MakeFSError(new FileSystemException(e, FSVerb.Access, path), new() { Button.TryAgain, Button.Ignore });
                 fsErrorPage.MainInstruction = Resources.UI.Dialogs.FSErrorAddingCustomScriptMainInstruction;
                 retry = Button.TryAgain.Equals(new Dialog(fsErrorPage).ShowDialog());
             }
@@ -203,7 +208,7 @@ public sealed partial class MainViewModel : ObservableObject
                 if (retry)
                 {
                     Logs.ScriptOverwritten.FormatWith(path, e.ExistingScript.InvariantName).Log(LogLevel.Info);
-                    _ = Scripts.Source.Remove(Scripts.Source.Single(s => s.Model.Equals(e.ExistingScript)));
+                    Debug.Assert(ScriptStorage.Scripts.Remove(e.ExistingScript));
                 }
             }
         } while (retry);

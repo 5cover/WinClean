@@ -18,9 +18,10 @@ public sealed class ScriptStorage : IScriptStorage
     public ObservableCollection<Script> Scripts { get; } = new();
     public IScriptSerializer Serializer => new ScriptXmlSerializer();
 
+    /// <inheritdoc cref="MutableScriptRepository.Commit(Script)"/>
     public void Commit(Script script) => GetMutableRepository(script.Type).Commit(script);
 
-    public Script GetScript(ScriptType type, string source) => _repos[type].GetScript(source);
+    public Script RetrieveScript(ScriptType type, string source) => _repos[type].RetrieveScript(source);
 
     public async Task LoadAsync(ScriptDeserializationErrorCallback scriptLoadError, FSErrorCallback fsErrorReloadElseIgnore)
     {
@@ -42,7 +43,7 @@ public sealed class ScriptStorage : IScriptStorage
     private void AddRepo(ScriptRepository repo)
     {
         _repos.Add(repo.Type, repo);
-        repo.Scripts.SendUpdatesTo(Scripts, filter: s => true);
+        repo.Scripts.SendUpdatesTo(Scripts);
         Scripts.SendUpdatesTo(repo.Scripts, filter: script => script.Type == repo.Type);
     }
 

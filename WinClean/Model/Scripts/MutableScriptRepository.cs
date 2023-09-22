@@ -1,45 +1,66 @@
-﻿using Scover.WinClean.Model.Metadatas;
+﻿using System.Diagnostics;
+
+using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Model.Serialization;
 
 namespace Scover.WinClean.Model.Scripts;
 
 public abstract class MutableScriptRepository : ScriptRepository
 {
+    private bool _quietUpdate = false;
     protected MutableScriptRepository(IScriptSerializer serializer, ScriptType type) : base(serializer, type)
-    { }
+        => Scripts.CollectionChanged += (_, e) =>
+        {
+            if (_quietUpdate)
+            {
+                return;
+            }
 
-    /// <summary>Adds a script with the specified source.</summary>
-    /// <param name="source">The source of the script to add. It must not exist in the repository.</param>
-    /// <returns>The script that was added.</returns>
+            if (e.OldItems is not null)
+            {
+                foreach (Script s in e.OldItems)
+                {
+                    _ = Remove(s);
+                }
+            }
+            if (e.NewItems is not null)
+            {
+                foreach (Script s in e.NewItems)
+                {
+                    Add(s);
+                }
+            }
+        };
+
+    /// <summary>Adds a script to the repository.</summary>
     /// <exception cref="FileSystemException">A filesystem exception occured.</exception>
-    /// <exception cref="DeserializationException">Script deserialization failed.</exception>
     /// <exception cref="ScriptAlreadyExistsException">
     /// The script already exists in the repository.
     /// </exception>
-    public abstract Script Add(string source);
+    protected abstract void Add(Script script);
 
     /// <summary>Updates a script in a repository.</summary>
     /// <param name="script">The script to update.</param>
-    /// <exception cref="InvalidOperationException">
+    /// <exception cref="ArgumentException">
     /// <paramref name="script"/> is not present in the repository.
     /// </exception>
     /// <exception cref="FileSystemException">A filesystem exception occured.</exception>
     public abstract void Commit(Script script);
 
-    /// <summary>Removes a script from a repository at a specified source.</summary>
-    /// <param name="source">The source of the script to remove.</param>
-    /// <returns>
-    /// <see langword="true"/> if the script was successfully removed otherwise, <see langword="false"/>.
-    /// This method also returns <see langword="false"/> if script was not found in the repository.
-    /// </returns>
-    public abstract bool Remove(string source);
-
     /// <summary>Removes a script from a repository.</summary>
-    /// <param name="source">The script to remove.</param>
+    /// <param name="script">The script to remove.</param>
     /// <returns>
     /// <see langword="true"/> if <paramref name="script"/> successfully removed otherwise, <see
-    /// langword="false"/>. This method also returns <see langword="false"/> if script was not found in the
+    /// langword="false"/>. This method also returns <see langword="false"/> if <paramref name="script"/> was not found in the
     /// repository.
     /// </returns>
-    public abstract bool Remove(Script script);
+    protected abstract bool Remove(Script script);
+
+    /// <summary>Adds an item to the scripts collection without triggering the collection changed event handler.</summary>
+    protected void AddItemQuietly(Script script)
+    {
+        _quietUpdate = true;
+        Scripts.Add(script);
+        _quietUpdate = false;
+    }
 }

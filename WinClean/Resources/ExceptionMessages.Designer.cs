@@ -61,6 +61,15 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Builder has missing data and cannot build..
+        /// </summary>
+        public static string BuilderIncomplete {
+            get {
+                return ResourceManager.GetString("BuilderIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à No capability found for invariant name &apos;{0}&apos;..
         /// </summary>
         public static string CapabilityNotFound {
@@ -232,7 +241,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à The script at &apos;{source}&apos; could not be found..
+        ///   Recherche une chaîne localisée semblable à The script at &apos;{0}&apos; could not be found..
         /// </summary>
         public static string ScriptNotFoundAtSource {
             get {

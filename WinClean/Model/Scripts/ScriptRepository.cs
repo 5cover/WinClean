@@ -7,23 +7,21 @@ namespace Scover.WinClean.Model.Scripts;
 
 public abstract class ScriptRepository
 {
-    private readonly ObservableCollection<Script> _items = new();
+    protected ScriptRepository(IScriptSerializer serializer, ScriptType type) => (Serializer, Type) = (serializer, type);
 
-    protected ScriptRepository(IScriptSerializer serializer, ScriptType type)
-    {
-        Scripts = new(_items);
-        (Serializer, Type) = (serializer, type);
-    }
-
-    public ReadOnlyObservableCollection<Script> Scripts { get; }
+    public ObservableCollection<Script> Scripts { get; } = new();
     public ScriptType Type { get; }
     protected IScriptSerializer Serializer { get; }
 
-    public abstract Script GetScript(string source);
+    /// <summary>
+    /// Retrieves the script at the specified source.
+    /// </summary>
+    /// <param name="source">The source of the script to retrieve.</param>
+    /// <exception cref="DeserializationException">Script deserialization failed.</exception>
+    /// <exception cref="ArgumentException">The script at <paramref name="source"/> could not be found.</exception>
+    /// <exception cref="FileSystemException">A filesystem error occured.</exception>
+    /// <returns>A new <see cref="Script"/> object.</returns>
+    public abstract Script RetrieveScript(string source);
 
     public abstract Task LoadAsync();
-
-    protected void AddItem(Script script) => _items.Add(script);
-
-    protected bool RemoveItem(Script script) => _items.Remove(script);
 }

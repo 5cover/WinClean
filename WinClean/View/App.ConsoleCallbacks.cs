@@ -8,10 +8,8 @@ namespace Scover.WinClean.View;
 public partial class App
 {
     private static readonly Callbacks consoleCallbacks = new(
-        NotifyUpdateAvailable: latestVersioName =>
-        {
-            Console.WriteLine(ConsoleMode.UpdateMessage.FormatWith(latestVersioName, ServiceProvider.Get<IApplicationInfo>().Version, ServiceProvider.Get<ISettings>().LatestVersionUrl));
-        },
+        NotifyUpdateAvailable: latestVersionName
+            => Console.WriteLine(ConsoleMode.UpdateMessage.FormatWith(latestVersionName, ServiceProvider.Get<IApplicationInfo>().Version, ServiceProvider.Get<ISettings>().LatestVersionUrl)),
         ScriptLoadError: (e, path) =>
         {
             // Log the error, but ignore invalid scripts.

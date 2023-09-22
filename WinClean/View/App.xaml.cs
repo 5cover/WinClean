@@ -102,7 +102,7 @@ public sealed partial class App
     {
         Logger = new CsvLogger();
         Initialize(uiCallbacks);
-        MainWindow mainWindow = new() { DataContext = new MainViewModel(ServiceProvider.Get<IScriptStorage>().Scripts) };
+        MainWindow mainWindow = new() { DataContext = new MainViewModel() };
         mainWindow.Show();
         _ = CheckForUpdates(uiCallbacks);
         return LoadScripts(uiCallbacks);

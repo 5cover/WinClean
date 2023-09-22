@@ -13,7 +13,7 @@ namespace Scover.WinClean.Model.Serialization.Xml;
 
 public sealed class ScriptXmlSerializer : IScriptSerializer
 {
-    private static readonly Dictionary<string, Func<ScriptType, XmlDocument, Script>> deserializers = new()
+    private static readonly Dictionary<string, Func<XmlDocument, ScriptBuilder>> deserializers = new()
     {
         ["Normal"] = DeserializeCurrent,
         ["Pre 1.3.0"] = DeserializePre130,
@@ -22,35 +22,9 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
     private static SemVersionRange DefaultScriptVersions => ServiceProvider.Get<ISettings>().DefaultScriptVersions;
     private static IMetadatasProvider Metadatas => ServiceProvider.Get<IMetadatasProvider>();
 
-    public Script Deserialize(ScriptType type, Stream data)
-    {
-        XmlDocument d = new();
+    public ScriptBuilder Deserialize(Stream data) => DeserializeImpl(CreateDocument(d => d.Load(data)));
 
-        try
-        {
-            d.Load(data);
-        }
-        catch (XmlException e)
-        {
-            throw new DeserializationException(nameof(Script), innerException: e);
-        }
-
-        return DeserializeImpl(type, d);
-    }
-
-    public Script Deserialize(ScriptType type, string data)
-    {
-        XmlDocument d = new();
-        try
-        {
-            d.LoadXml(data);
-        }
-        catch (XmlException e)
-        {
-            throw new DeserializationException(nameof(Script), innerException: e);
-        }
-        return DeserializeImpl(type, d);
-    }
+    public ScriptBuilder Deserialize(string data) => DeserializeImpl(CreateDocument(d => d.LoadXml(data)));
 
     public void Serialize(Script script, Stream stream)
     {
@@ -102,17 +76,6 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
     private static void AppendLocalizable(XmlElement element, string name, string? innerText, string xmlLang)
             => Append(element, name, innerText, new() { ["xml:lang"] = xmlLang });
 
-    /// <summary>Deserializes a script in the current format.</summary>
-    private static Script DeserializeCurrent(ScriptType type, XmlDocument d)
-        => new(Metadatas.GetMetadata<Category>(d.GetSingleChildText(ElementFor.Category)),
-               Metadatas.GetMetadata<Impact>(d.GetSingleChildText(ElementFor.Impact)),
-               DeserializeVersions(d),
-               Metadatas.GetMetadata<SafetyLevel>(d.GetSingleChildText(ElementFor.SafetyLevel)),
-               d.GetLocalizedString(ElementFor.Description),
-               d.GetLocalizedString(ElementFor.Name),
-               type,
-               DeserializeCode(d));
-
     private static ScriptCode DeserializeCode(XmlDocument d)
         => d.GetSingleChild(ElementFor.Code).ChildNodes.OfType<XmlElement>().ToDictionary(
             keySelector: e => Capability.FromResourceName(e.Name),
@@ -121,30 +84,45 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             ? new ScriptCode(codeElements)
             : throw new InvalidDataException(ExceptionMessages.ElementHasNoChild.FormatWith(ElementFor.Code));
 
+    /// <summary>Deserializes a script in the current format.</summary>
+    private static ScriptBuilder DeserializeCurrent(XmlDocument d)
+        => new()
+        {
+            Category = Metadatas.GetMetadata<Category>(d.GetSingleChildText(ElementFor.Category)),
+            Code = DeserializeCode(d),
+            Impact = Metadatas.GetMetadata<Impact>(d.GetSingleChildText(ElementFor.Impact)),
+            LocalizedDescription = d.GetLocalizedString(ElementFor.Description),
+            LocalizedName = d.GetLocalizedString(ElementFor.Name),
+            SafetyLevel = Metadatas.GetMetadata<SafetyLevel>(d.GetSingleChildText(ElementFor.SafetyLevel)),
+            Versions = DeserializeVersions(d),
+        };
+
     /// <summary>Deserializes a script in the pre 1.3.0 format.</summary>
-    private static Script DeserializePre130(ScriptType type, XmlDocument d)
-        => new(Metadatas.GetMetadata<Category>(d.GetSingleChildText(ElementFor.Category)),
-               Metadatas.GetMetadata<Impact>(d.GetSingleChildText(ElementFor.Impact) switch
-               {
-                   var s when s.Equals("Debloat", Metadatas.Comparison) => "Debloating",
-                   var s => s
-               }),
-               DefaultScriptVersions,
-               Metadatas.GetMetadata<SafetyLevel>(d.GetSingleChildText("Recommended") switch
-               {
-                   var s when s.Equals("Yes", Metadatas.Comparison) => "Safe",
-                   var s when s.Equals("No", Metadatas.Comparison) => "Dangerous",
-                   var s => s,
-               }),
-               d.GetLocalizedString(ElementFor.Description),
-               d.GetLocalizedString(ElementFor.Name),
-               type,
-               new ScriptCode(new()
-               {
-                   [Capability.Execute] = new ScriptAction(
-                       host: Metadatas.GetMetadata<Host>(d.GetSingleChildText(ElementFor.Host)),
-                       code: d.GetSingleChildText(ElementFor.Code))
-               }));
+    private static ScriptBuilder DeserializePre130(XmlDocument d)
+        => new()
+        {
+            Category = Metadatas.GetMetadata<Category>(d.GetSingleChildText(ElementFor.Category)),
+            Code = new ScriptCode(new()
+            {
+                [Capability.Execute] = new ScriptAction(
+                    host: Metadatas.GetMetadata<Host>(d.GetSingleChildText(ElementFor.Host)),
+                        code: d.GetSingleChildText(ElementFor.Code))
+            }),
+            Impact = Metadatas.GetMetadata<Impact>(d.GetSingleChildText(ElementFor.Impact) switch
+            {
+                var s when s.Equals("Debloat", Metadatas.Comparison) => "Debloating",
+                var s => s
+            }),
+            LocalizedDescription = d.GetLocalizedString(ElementFor.Description),
+            LocalizedName = d.GetLocalizedString(ElementFor.Name),
+            SafetyLevel = Metadatas.GetMetadata<SafetyLevel>(d.GetSingleChildText("Recommended") switch
+            {
+                var s when s.Equals("Yes", Metadatas.Comparison) => "Safe",
+                var s when s.Equals("No", Metadatas.Comparison) => "Dangerous",
+                var s => s,
+            }),
+            Versions = DefaultScriptVersions,
+        };
 
     private static SemVersionRange DeserializeVersions(XmlDocument d)
         => d.GetSingleChildTextOrDefault(ElementFor.VersionRange) is { } versionsStr
@@ -162,7 +140,21 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
         }
     }
 
-    private Script DeserializeImpl(ScriptType type, XmlDocument loadedDocument)
+    private XmlDocument CreateDocument(Action<XmlDocument> load)
+    {
+        XmlDocument d = new();
+        try
+        {
+            load(d);
+        }
+        catch (XmlException e)
+        {
+            throw new DeserializationException(nameof(Script), innerException: e);
+        }
+        return d;
+    }
+
+    private ScriptBuilder DeserializeImpl(XmlDocument loadedDocument)
     {
         Dictionary<string, Exception> deserializerExceptions = new();
 
@@ -170,7 +162,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
         {
             try
             {
-                return deserializer(type, loadedDocument);
+                return deserializer(loadedDocument);
             }
             catch (Exception e) when (e is InvalidOperationException or XmlException or KeyNotFoundException or FormatException or InvalidDataException)
             {

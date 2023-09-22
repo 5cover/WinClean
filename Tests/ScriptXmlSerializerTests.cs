@@ -23,7 +23,8 @@ public sealed partial class ScriptXmlSerializerTests : SerializationTests
             [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Cmd"), "DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.WordPad~~~~0.0.1.0")
         }),
         ScriptType.Custom,
-        DefaultVersions);
+        DefaultVersions,
+        "Scover.WinClean.Scripts.RemoveWordpad.xml");
 
     private static readonly TestScript script2 = TestScript.Create("Maintenance", "Privacy", "Safe",
         Localize("Test script name", "Nom du script de test"),
@@ -35,7 +36,8 @@ public sealed partial class ScriptXmlSerializerTests : SerializationTests
             [Capability.Detect] = new(Metadatas.GetMetadata<Host>("PowerShell"), "systray.exe")
         }),
         ScriptType.Default,
-        SemVersionRange.Parse(">=10.0.1048||6.1.*"));
+        SemVersionRange.Parse(">=10.0.1048||6.1.*"),
+        @"C:\TestScript.xml");
 
     private static readonly TestScript script3 = TestScript.Create("Customization", "Ergonomics", "Limited",
         Localize("Remove shortcut suffix", "Supprimer le suffixe de raccourci"),
@@ -47,7 +49,8 @@ public sealed partial class ScriptXmlSerializerTests : SerializationTests
 ""link""=hex:1b,00,00,00")
         }),
         ScriptType.Default,
-        DefaultVersions);
+        DefaultVersions,
+        "RemoveShortcutSuffix.xml");
 
     private static readonly ScriptXmlSerializer serializer = new();
     private static SemVersionRange DefaultVersions => ServiceProvider.Get<ISettings>().DefaultScriptVersions;
@@ -88,7 +91,7 @@ public sealed partial class ScriptXmlSerializerTests : SerializationTests
         Script s;
         using (var file = File.OpenRead(Filename))
         {
-            s = serializer.Deserialize(expected.Type, file);
+            s = serializer.Deserialize(file).Complete(expected.Type, expected.Source);
         }
 
         AssertScriptsEqual(s, expected);
@@ -112,5 +115,6 @@ public sealed partial class ScriptXmlSerializerTests : SerializationTests
         Assert.That(script1.SafetyLevel, Is.EqualTo(script2.SafetyLevel));
         Assert.That(script1.Type, Is.EqualTo(script2.Type));
         Assert.That(script1.Code, Is.EquivalentTo(script2.Code));
+        Assert.That(script1.Source, Is.EquivalentTo(script2.Source));
     });
 }

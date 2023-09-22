@@ -8,9 +8,9 @@ namespace Scover.WinClean.Model.Scripts;
 
 public sealed class Script : IEquatable<Script?>
 {
-    public Script(Category category, Impact impact, SemVersionRange versions, SafetyLevel safetyLevel, LocalizedString localizedDescription, LocalizedString localizedName, ScriptType type, ScriptCode code)
-        => (Category, Impact, Versions, SafetyLevel, LocalizedDescription, LocalizedName, Type, Code)
-            = (category, impact, versions, safetyLevel, localizedDescription, localizedName, type, code);
+    public Script(Category category, ScriptCode code, Impact impact, LocalizedString localizedDescription, LocalizedString localizedName, SafetyLevel safetyLevel, string source, ScriptType type, SemVersionRange versions)
+        => (Category, Code, Impact, LocalizedDescription, LocalizedName, SafetyLevel, Source, Type, Versions)
+            = (category, code, impact, localizedDescription, localizedName, safetyLevel, source, type, versions);
 
     public Category Category { get; set; }
     public ScriptCode Code { get; }
@@ -24,8 +24,8 @@ public sealed class Script : IEquatable<Script?>
         get => LocalizedName[CurrentUICulture];
         set => LocalizedName[CurrentUICulture] = value;
     }
-
     public SafetyLevel SafetyLevel { get; set; }
+    public string Source { get; }
     public ScriptType Type { get; }
 
     /// <summary>Supported Windows versions range.</summary>

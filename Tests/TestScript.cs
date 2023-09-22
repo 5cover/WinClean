@@ -53,19 +53,21 @@ public sealed partial class ScriptXmlSerializerTests
 </Script>");
 
         public static TestScript Create(string category,
-                                 string impact,
-                                 string safetyLevel,
-                                 LocalizedString name,
-                                 LocalizedString description,
-                                 ScriptCode code,
-                                 ScriptType type,
-                                 SemVersionRange versions) => new(new(
+                                        string impact,
+                                        string safetyLevel,
+                                        LocalizedString localizedName,
+                                        LocalizedString localizedDescription,
+                                        ScriptCode code,
+                                        ScriptType type,
+                                        SemVersionRange versions,
+                                        string source) => new(new(
                category: Metadatas.GetMetadata<Category>(category),
                impact: Metadatas.GetMetadata<Impact>(impact),
-               versions: versions,
+               localizedDescription: localizedDescription,
+               localizedName: localizedName,
                safetyLevel: Metadatas.GetMetadata<SafetyLevel>(safetyLevel),
-               localizedName: name,
-               localizedDescription: description,
+               source: source,
+               versions: versions,
                type: type,
                code: code));
     }

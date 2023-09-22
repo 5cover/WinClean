@@ -157,6 +157,10 @@
     <value>No string was found for culture '{0}' or any of its parents.</value>
     <comment>0 : culture key@Invariant</comment>
   </data>
+  <data name="BuilderIncomplete" xml:space="preserve">
+    <value>Builder has missing data and cannot build.</value>
+    <comment>@Invariant</comment>
+  </data>
   <data name="RepoNotFound" xml:space="preserve">
     <value>No repository found for script type '{0}'.</value>
     <comment>0 : script type InvariantName@Invariant</comment>
@@ -179,8 +183,8 @@
     <comment>0 : script InvariantName@Invariant</comment>
   </data>
   <data name="ScriptNotFoundAtSource" xml:space="preserve">
-    <value>The script at '{source}' could not be found.</value>
-    <comment>@Invariant</comment>
+    <value>The script at '{0}' could not be found.</value>
+    <comment>0 : script source@Invariant</comment>
   </data>
   <data name="ScriptNotInRepo" xml:space="preserve">
     <value>The script is not present in the repository.</value>

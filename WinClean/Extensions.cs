@@ -200,6 +200,30 @@ public static class Extensions
         UseShellExecute = true
     })?.Dispose();
 
+    public static void PerformFileSystemOperation(this string fsObject, Action<string> fsOperation, FSVerb verb, string? message = null)
+    {
+        try
+        {
+            fsOperation(fsObject);
+        }
+        catch (Exception e) when (e.IsFileSystemExogenous())
+        {
+            throw new FileSystemException(e, verb, fsObject, message);
+        }
+    }
+
+    public static T PerformFileSystemOperation<T>(this string fsObject, Func<string, T> fsOperation, FSVerb verb, string? message = null)
+    {
+        try
+        {
+            return fsOperation(fsObject);
+        }
+        catch (Exception e) when (e.IsFileSystemExogenous())
+        {
+            throw new FileSystemException(e, verb, fsObject, message);
+        }
+    }
+
     public static void Resume(this Process process)
     {
         NtResumeProcess(process.Handle);
@@ -299,7 +323,7 @@ public static class Extensions
     public static IEnumerable<T> WhereSome<T>(this IEnumerable<Option<T>> source) => source.Where(o => o.HasValue).Select(o => o.ValueOrFailure());
 
     public static IEnumerable<TSource> WithoutNull<TSource>(this IEnumerable<TSource?> source)
-                                           => source.Aggregate(Enumerable.Empty<TSource>(), (accumulator, next) => next == null ? accumulator : accumulator.Append(next));
+        => source.Aggregate(Enumerable.Empty<TSource>(), (accumulator, next) => next == null ? accumulator : accumulator.Append(next));
 
     public static Version WithoutRevision(this Version version) => version.Revision != -1 ? new(version.Major, version.Minor, version.Build) : version;
 

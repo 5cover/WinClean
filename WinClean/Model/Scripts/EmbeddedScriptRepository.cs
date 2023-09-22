@@ -14,17 +14,17 @@ public class EmbeddedScriptRepository : ScriptRepository
         // Add a dot to only load resources inside the namespace.
         _namespace = @namespace + '.';
 
-    public override Script GetScript(string source)
+    public override Script RetrieveScript(string source)
     {
         using Stream? stream  = ServiceProvider.Get<IApplicationInfo>().Assembly.GetManifestResourceStream(source);
-        return Serializer.Deserialize(Type, stream ?? throw new ArgumentException(ExceptionMessages.ScriptNotFoundAtSource.FormatWith(source), nameof(source)));
+        return Serializer.Deserialize(stream ?? throw new ArgumentException(ExceptionMessages.ScriptNotFoundAtSource.FormatWith(source), nameof(source))).Complete(Type, source);
     }
 
     public override Task LoadAsync()
     {
         foreach (var resName in ServiceProvider.Get<IApplicationInfo>().Assembly.GetManifestResourceNames().Where(name => name.StartsWith(_namespace, StringComparison.Ordinal)))
         {
-            AddItem(GetScript(resName));
+            Scripts.Add(RetrieveScript(resName));
         }
         return Task.CompletedTask;
     }
