@@ -132,21 +132,21 @@
   </data>
   <data name="ScriptAdded" xml:space="preserve">
     <value>Script at '{0}' added as '{1}'.</value>
-    <comment>0 : script filename
+    <comment>0 : script source
 1 : script InvariantName@Invariant</comment>
   </data>
   <data name="ScriptAlreadyExistsCannotAdd" xml:space="preserve">
     <value>Couldn't add script at '{0}' as script '{1}' already exists.</value>
-    <comment>0 : script filename
+    <comment>0 : script source
 1 : script InvariantName@Invariant</comment>
   </data>
   <data name="ScriptExecutionAborted" xml:space="preserve">
-    <value>Execution '{0}' ('{1}') aborted.</value>
+    <value>Execution of '{0}' ('{1}') aborted.</value>
     <comment>0 : script InvariantName
 1 : capability InvariantName@Invariant</comment>
   </data>
   <data name="ScriptExecutionCompleted" xml:space="preserve">
-    <value>Execution of script '{0}' ('{1}') completed (exit code: {2}, succeeded? : {3})</value>
+    <value>Execution of script '{0}' ('{1}') completed. (exit code: {2}, success: {3})</value>
     <comment>0 : script InvariantName
 1 : capability InvariantName
 2 : script execution result exit code
@@ -164,22 +164,22 @@
   </data>
   <data name="ScriptLoadError" xml:space="preserve">
     <value>Script at '{0}' could not be loaded: {1}</value>
-    <comment>0 : script filename
+    <comment>0 : script source
 1 : exception@Invariant</comment>
   </data>
   <data name="ScriptNotLoaded" xml:space="preserve">
     <value>Script at '{0}' was not loaded: {1}</value>
-    <comment>0 : script filename
+    <comment>0 : script source
 1 : exception@Invariant</comment>
   </data>
   <data name="ScriptOverwritten" xml:space="preserve">
     <value>Script '{1}' overwritten by script at {0}.</value>
-    <comment>0 : script filename
+    <comment>0 : script source
 1 : script InvariantName@Invariant</comment>
   </data>
   <data name="ScriptRemoved" xml:space="preserve">
     <value>Script '{0}' removed.</value>
-    <comment>0 : script filename or InvariantName@Invariant</comment>
+    <comment>0 : script InvariantName@Invariant</comment>
   </data>
   <data name="ScriptsSaved" xml:space="preserve">
     <value>Scripts saved.</value>

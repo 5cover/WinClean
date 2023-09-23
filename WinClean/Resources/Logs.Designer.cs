@@ -106,7 +106,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Execution &apos;{0}&apos; (&apos;{1}&apos;) aborted..
+        ///   Recherche une chaîne localisée semblable à Execution of &apos;{0}&apos; (&apos;{1}&apos;) aborted..
         /// </summary>
         public static string ScriptExecutionAborted {
             get {
@@ -115,7 +115,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Execution of script &apos;{0}&apos; (&apos;{1}&apos;) completed (exit code: {2}, succeeded? : {3}).
+        ///   Recherche une chaîne localisée semblable à Execution of script &apos;{0}&apos; (&apos;{1}&apos;) completed. (exit code: {2}, success: {3}).
         /// </summary>
         public static string ScriptExecutionCompleted {
             get {

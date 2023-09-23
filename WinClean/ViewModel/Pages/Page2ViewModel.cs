@@ -48,7 +48,8 @@ public sealed class Page2ViewModel : WizardPageViewModel
         {
             if (DialogFactory.ShowConfirmation(DialogFactory.MakeConfirmAbortOperation))
             {
-                ExecutingExecutionInfo.NotNull().Abort();
+                // Might be null if the script finishes execution while the confirmation dialog is shown.
+                ExecutingExecutionInfo?.Abort();
             }
         }, () => ExecutingExecutionInfo is not null);
 

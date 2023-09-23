@@ -27,6 +27,7 @@ public sealed class CsvLogger : Logger, IDisposable
         _csvWriter = new(() =>
         {
             CsvWriter writer = new(new StreamWriter(_currentLogFile, false, Encoding.Unicode), new CsvConfiguration(CultureInfo.InvariantCulture));
+            writer.WriteHeader<LogEntry>();
             return writer;
         });
     }
