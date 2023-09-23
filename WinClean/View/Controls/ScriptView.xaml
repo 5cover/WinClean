@@ -61,7 +61,7 @@
                     <DockPanel.Style>
                         <Style TargetType="DockPanel">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Versions, Converter={StaticResource CurrentVersionSatisfiesRange}, TargetNullValue=True}" Value="True">
+                                <DataTrigger Binding="{Binding Versions, Converter={StaticResource CurrentVersionSatisfiesRange}, FallbackValue=True}" Value="True">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </Style.Triggers>
