@@ -13,17 +13,18 @@
   <a href="https://github.com/5cover/WinClean/blob/master/LICENSE"><img alt="License" src="https://img.shields.io/github/license/5cover/winclean?label=License&color=00ac6d" /></a>
 </p>
 
-
 ---
 
 WinClean allows the average user as well as system administrators to turn Windows into a safe, reliable and performant operating system in a few clicks.
+
+More informating and tutorials on the [wiki](https://github.com/5cover/WinClean/Wiki).
 
 ![Screenshot of WinClean's main window](https://raw.githubusercontent.com/wiki/5cover/WinClean/img/MainWindow.png)
 
 ## ~~Yet Another PC Optimizer Scam~~
 
 ## Features
-- Run 37 *Batch*, *PowerShell*, and *Registry Editor* scripts directly from the GUI.
+- Run 39 *Batch*, *PowerShell*, and *Registry Editor* scripts directly from the GUI.
 - Add custom scripts to further clean the system.
 
 ## Specs
