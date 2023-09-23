@@ -17,7 +17,7 @@
 
 WinClean allows the average user as well as system administrators to turn Windows into a safe, reliable and performant operating system in a few clicks.
 
-More informating and tutorials on the [wiki](https://github.com/5cover/WinClean/Wiki).
+More information and tutorials on the [wiki](https://github.com/5cover/WinClean/Wiki).
 
 ![Screenshot of WinClean's main window](https://raw.githubusercontent.com/wiki/5cover/WinClean/img/MainWindow.png)
 

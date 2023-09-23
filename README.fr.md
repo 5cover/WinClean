@@ -9,7 +9,7 @@
 <p align="center">Utilitaire d'optimisation et de nettoyage Windows.</p>
 <p align="center">
   <a href="https://www.codefactor.io/repository/github/5cover/WinClean"><img src="https://www.codefactor.io/repository/github/5cover/winclean/badge" alt="CodeFactor" /></a>
-  <a href="https://github.com/5cover/WinClean/releases/l    test"><img alt="Télécharger" src="https://img.shields.io/github/downloads/5cover/WinClean/total?color=00ac6d&label=T%C3%A9l%C3%A9charger&logo=windows&logoColor=00abef"></a>
+  <a href="https://github.com/5cover/WinClean/releases/latest"><img alt="Télécharger" src="https://img.shields.io/github/downloads/5cover/WinClean/total?color=00ac6d&label=T%C3%A9l%C3%A9charger&logo=windows&logoColor=00abef"></a>
   <a href="https://github.com/5cover/WinClean/blob/master/LICENSE"><img alt="Licence" src="https://img.shields.io/github/license/5cover/winclean?label=Licence&color=00ac6d" /></a>
 </p>
 
