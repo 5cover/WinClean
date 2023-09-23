@@ -37,7 +37,12 @@ public sealed partial class App
 
     private static Task LoadScripts(Callbacks callbacks) => ServiceProvider.Get<IScriptStorage>().LoadAsync(callbacks.ScriptLoadError, callbacks.FSErrorReloadElseIgnore);
 
-    private void ApplicationExit(object? sender, ExitEventArgs? e) => Logs.Exiting.Log();
+    private void ApplicationExit(object? sender, ExitEventArgs e)
+    {
+        ServiceProvider.Get<ISettings>().Save();
+        Logs.SettingsSaved.Log();
+        Logs.Exiting.FormatWith(e.ApplicationExitCode).Log();
+    }
 
     private async void ApplicationStartup(object? sender, StartupEventArgs? e)
     {
@@ -48,9 +53,7 @@ public sealed partial class App
         else
         {
             await StartGui();
-            // don't save changed settings in console mode.
-            ServiceProvider.Get<ISettings>().Save();
-            Logs.SettingsSaved.Log();
+
         }
     }
 

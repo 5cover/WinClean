@@ -70,7 +70,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Exiting the application..
+        ///   Recherche une chaîne localisée semblable à Exiting the application with code {0}..
         /// </summary>
         public static string Exiting {
             get {
