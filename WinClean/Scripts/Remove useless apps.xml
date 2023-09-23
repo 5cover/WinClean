@@ -2,31 +2,172 @@
 <Script>
   <Name>Remove useless apps</Name>
   <Name xml:lang="fr">Supprimer les applications inutiles</Name>
-  <Description>Dozens of useless application packages are installed by default. Removing them frees up disk space.</Description>
-  <Description xml:lang="fr">Plusieurs dizaines de packages d'application inutiles sont installés par défaut. Les supprimer libère de l'epace disque.</Description>
+  <Description>Dozens of useless application packages are installed by default. Removing them frees up disk space.
+The following app packages will be removed from your system:
+- 3D Builder
+- 3D Viewer
+- Actipro Software LLC
+- Adobe Photoshop Express
+- Asphalt 8: Airborne
+- Autodesk SketchBook
+- Bing Finance
+- Bing Sports
+- Bing Weather
+- Camera
+- Candy Crush
+- Cartes
+- Chat (Microsoft Teams)
+- Connectivity Store
+- Drawboard PDF
+- Duolingo
+- Eclipse Manager
+- Facebook
+- Fallout Shelter
+- FarmVille 2 Country Escape
+- Feedback hub
+- Films et TV
+- Flipboard
+- Groove Music
+- Microsoft Adverstising XAML
+- Microsoft Messaging
+- Microsoft News
+- Microsoft OneConnect
+- Microsoft Solitaire Collection
+- Microsoft Sticky Notes
+- Microsoft To Do
+- Microsoft Wallet
+- Minecraft
+- Netflix
+- Network Speed Test
+- Office Hub
+- Office Sway
+- One Note
+- Paint 3D
+- Pandora Media Inc
+- People
+- Phone
+- Print 3D
+- Royal Revolt 2
+- Skype
+- Snip &amp; Sketch
+- Spotify
+- Twitter
+- Voice recorder
+- Windows Clock
+- Windows Phone
+- Windows Scan
+- Wunderlist
+- Xbox
+- Xbox Game Bar
+- Xbox Identity Provider
+- Xbox One Smart Glass
+- Xbox Speed To Text Overlay
+- Your Phone</Description>
+  <Description xml:lang="fr">Plusieurs dizaines de packages d'application inutiles sont installés par défaut. Les supprimer libère de l'epace disque.
+Les packages d'application suivants seront supprimés :
+- 3D Builder
+- Actipro Software LLC
+- Adobe Photoshop Express
+- Alarmes et horloge
+- Asphalt8: Airborne
+- Autodesk SketchBook
+- Bing Finance
+- Bing Sports
+- Caméra
+- Candy Crush
+- Capture et croquis
+- Cartes
+- Chat (Microsoft Teams)
+- Connectivity Store
+- Drawboard PDF
+- Duolingo
+- Eclipse Manager
+- Enregistreur vocal
+- Facebook
+- Fallout Shelter
+- FarmVille 2 Country Escape
+- Films et TV
+- Flipboard
+- Groove Music
+- Hub de commentaires
+- Imprimer en 3D
+- Messagerie
+- Météo
+- Microsoft Adverstising XAML
+- Microsoft News
+- Microsoft OneConnect
+- Microsoft Solitaire Collection
+- Microsoft Sticky Notes
+- Microsoft To Do
+- Microsoft Wallet
+- Minecraft
+- Netflix
+- Network Speed Test
+- Office Hub
+- Office Sway
+- One Note
+- Paint 3D
+- Pandora Media Inc
+- People
+- Phone
+- Royal Revolt 2
+- Skype
+- Spotify
+- Twitter
+- Visionneuse 3D
+- Votre téléphone
+- Windows Phone
+- Windows Scan
+- Wunderlist
+- Xbox
+- Xbox Game Bar
+- Xbox Identity Provider
+- Xbox One Smart Glass
+- Xbox Speed To Text Overlay</Description>
   <Category>Debloating</Category>
-  <SafetyLevel>Safe</SafetyLevel>
+  <SafetyLevel>Limited</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Versions>>=6.2.9200</Versions>
   <Code>
-    <Execute Host="PowerShell"># Based on https://github.com/Sycnex/Windows10Debloater/blob/master/Individual%20Scripts/Debloat%20Windows
-Import-Module Microsoft.PowerShell.Core
+    <Execute Host="PowerShell"># Based on https://github.com/Sycnex/Windows10Debloater/blob/master/Individual%20Scripts/Debloat%20Windows/
 Import-Module Appx
 Import-Module DISM
 $AppXApps = @(
+"*ActiproSoftwareLLC*"
+"*AdobeSystemsIncorporated.AdobePhotoshopExpress*"
+"*AutodeskSketchBook*"
+"*BethesdaSoftworks.FalloutShelter*"
+"*bingsports*"
+"*CandyCrush*"
+"*CommsPhone*"
+"*ConnectivityStore*"
+"*Duolingo-LearnLanguagesforFree*"
+"*EclipseManager*"
+"*Facebook*"
+"*FarmVille2CountryEscape*"
+"*flaregamesGmbH.RoyalRevolt2*"
+"*Flipboard*"
+"*Microsoft.3dbuilder*"
+"*Microsoft.Advertising*"
+"*Microsoft.Asphalt8Airborne*"
+"*Microsoft.BingFinance*"
 "*Microsoft.BingNews*"
-"*Microsoft.GetHelp*"
-"*Microsoft.Getstarted*"
+"*Microsoft.BingWeather*"
+"*Microsoft.DrawboardPDF*"
 "*Microsoft.Messaging*"
 "*Microsoft.Microsoft3DViewer*"
 "*Microsoft.MicrosoftOfficeHub*"
 "*Microsoft.MicrosoftSolitaireCollection*"
+"*Microsoft.MicrosoftStickyNotes*"
+"*Microsoft.MSPaint*"
 "*Microsoft.NetworkSpeedTest*"
 "*Microsoft.Office.Sway*"
 "*Microsoft.OneConnect*"
 "*Microsoft.People*"
 "*Microsoft.Print3D*"
+"*Microsoft.ScreenSketch*"
 "*Microsoft.SkypeApp*"
+"*Microsoft.Wallet*"
 "*Microsoft.WindowsAlarms*"
 "*Microsoft.WindowsCamera*"
 "*microsoft.windowscommunicationsapps*"
@@ -38,36 +179,26 @@ $AppXApps = @(
 "*Microsoft.XboxGameOverlay*"
 "*Microsoft.XboxIdentityProvider*"
 "*Microsoft.XboxSpeechToTextOverlay*"
+"*Microsoft.YourPhone*"
 "*Microsoft.ZuneMusic*"
 "*Microsoft.ZuneVideo*"
-"*EclipseManager*"
-"*ActiproSoftwareLLC*"
-"*AdobeSystemsIncorporated.AdobePhotoshopExpress*"
-"*Duolingo-LearnLanguagesforFree*"
+"*Microsoft3DViewer*"
+"*MicrosoftTeams*"
+"*MinecraftUWP*"
+"*Netflix*"
+"*OneNote*"
 "*PandoraMediaInc*"
-"*CandyCrush*"
-"*Wunderlist*"
-"*Flipboard*"
-"*Twitter*"
-"*Facebook*"
 "*Spotify*"
-"*Microsoft.Advertising.Xaml_10.1712.5.0x64__8wekyb3d8bbwe*"
-"*Microsoft.Advertising.Xaml_10.1712.5.0x86__8wekyb3d8bbwe*"
-"*Microsoft.BingWeather*"
-"*Microsoft.MicrosoftStickyNotes*"
-"*Microsoft.WindowsStore*"
+"*Todos*"
+"*Twitter*"
+"*windowsphone*"
+"*WindowsScan*"
+"*Wunderlist*"
+"*XboxOneSmartGlass*"
 )
 foreach ($App in $AppXApps) {
-Get-AppxPackage -Name $App | Remove-AppxPackage -ErrorAction SilentlyContinue
-Get-AppxPackage -Name $App -AllUsers | Remove-AppxPackage -AllUsers -ErrorAction SilentlyContinue
-Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like $App | Remove-AppxProvisionedPackage -Online -ErrorAction SilentlyContinue
-}
-
-# Removes AppxPackages
-# Credit to /u/GavinEke for a modified version of my whitelist code
-[regex]$WhitelistedApps = 'Microsoft.Paint3D|Microsoft.WindowsCalculator|Microsoft.WindowsStore|Microsoft.Windows.Photos|CanonicalGroupLimited.UbuntuonWindows|Microsoft.XboxGameCallableUI|Microsoft.XboxGamingOverlay|Microsoft.Xbox.TCUI|Microsoft.XboxGamingOverlay|Microsoft.XboxIdentityProvider|Microsoft.MicrosoftStickyNotes|Microsoft.MSPaint*'
-Get-AppxPackage -AllUsers | Where-Object {$_.Name -NotMatch $WhitelistedApps} | Remove-AppxPackage
-Get-AppxPackage | Where-Object {$_.Name -NotMatch $WhitelistedApps} | Remove-AppxPackage
-Get-AppxProvisionedPackage -Online | Where-Object {$_.PackageName -NotMatch $WhitelistedApps} | Remove-AppxProvisionedPackage -Online</Execute>
+Get-AppxPackage -Name $App -AllUsers | Remove-AppxPackage -AllUsers -ErrorAction Continue
+Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like $App | Remove-AppxProvisionedPackage -Online -ErrorAction Continue
+}</Execute>
   </Code>
 </Script>

@@ -53,24 +53,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
     <PackageReference Include="CsvHelper" Version="30.0.1" />
     <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.103" />
     <PackageReference Include="Humanizer" Version="2.14.1" />
     <PackageReference Include="Jab" Version="0.8.6" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
-    <PackageReference Include="Octokit" Version="6.0.0" />
+    <PackageReference Include="Octokit" Version="8.0.0" />
     <PackageReference Include="Optional" Version="4.0.0" />
     <PackageReference Include="Scover.Dialogs" Version="1.4.3" />
     <PackageReference Include="Semver" Version="2.3.0" />
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
-    <PackageReference Include="System.Management" Version="7.0.1" />
-    <PackageReference Include="Vanara.Core" Version="3.4.15" />
-    <PackageReference Include="Vanara.PInvoke.Security" Version="3.4.15" />
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.15" />
-    <PackageReference Include="Vanara.PInvoke.UxTheme" Version="3.4.15" />
+    <PackageReference Include="System.Management" Version="7.0.2" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.16" />
+    <PackageReference Include="Vanara.PInvoke.UxTheme" Version="3.4.16" />
   </ItemGroup>
   
   <ItemGroup>
