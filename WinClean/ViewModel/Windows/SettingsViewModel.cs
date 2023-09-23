@@ -3,7 +3,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+using Scover.WinClean.Resources;
 using Scover.WinClean.Services;
+using Scover.WinClean.ViewModel.Logging;
 
 namespace Scover.WinClean.ViewModel.Windows;
 
@@ -13,6 +15,7 @@ public sealed class SettingsViewModel : ObservableObject
     {
         Settings.Reset();
         OnPropertyChanged(nameof(Settings));
+        Logs.SettingsReset.Log();
     });
 
     public IRelayCommand Reset { get; }

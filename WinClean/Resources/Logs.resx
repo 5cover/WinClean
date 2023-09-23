@@ -185,6 +185,10 @@
     <value>Scripts saved.</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="SettingsReset" xml:space="preserve">
+    <value>Settings reset.</value>
+    <comment>@Invariant</comment>
+  </data>
   <data name="SettingsSaved" xml:space="preserve">
     <value>Settings saved.</value>
     <comment>@Invariant</comment>
