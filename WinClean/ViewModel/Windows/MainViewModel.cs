@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
@@ -104,7 +103,7 @@ public sealed partial class MainViewModel : ObservableObject
         {
             if (SelectedScript is not null && SelectedScript.Type.IsMutable && DialogFactory.ShowConfirmation(DialogFactory.MakeConfirmScriptDeletion))
             {
-                Debug.Assert(Scripts.Source.Remove(SelectedScript));
+                _ = Scripts.Source.Remove(SelectedScript);
             }
         });
 
@@ -199,7 +198,7 @@ public sealed partial class MainViewModel : ObservableObject
                 if (retry)
                 {
                     Logs.ScriptOverwritten.FormatWith(path, e.ExistingScript.InvariantName).Log(LogLevel.Info);
-                    Debug.Assert(ScriptStorage.Scripts.Remove(e.ExistingScript));
+                    _ = ScriptStorage.Scripts.Remove(e.ExistingScript);
                 }
             }
         } while (retry);
