@@ -102,9 +102,9 @@ public sealed partial class MainViewModel : ObservableObject
 
         RemoveCurrentScript = new RelayCommand(() =>
         {
-            if (DialogFactory.ShowConfirmation(DialogFactory.MakeConfirmScriptDeletion))
+            if (SelectedScript is not null && SelectedScript.Type.IsMutable && DialogFactory.ShowConfirmation(DialogFactory.MakeConfirmScriptDeletion))
             {
-                Debug.Assert(Scripts.Source.Remove(SelectedScript.NotNull()));
+                Debug.Assert(Scripts.Source.Remove(SelectedScript));
             }
         });
 
@@ -168,7 +168,7 @@ public sealed partial class MainViewModel : ObservableObject
             {
                 var script = ScriptStorage.RetrieveScript(ScriptType.Custom, path);
 
-                return ScriptStorage.Scripts.Contains(script)
+                return ScriptStorage.Scripts.Any(s => s.InvariantName == script.InvariantName)
                     ? throw new ScriptAlreadyExistsException(script)
                     : new ScriptViewModel(script).Some();
             }
@@ -181,7 +181,8 @@ public sealed partial class MainViewModel : ObservableObject
             catch (Exception e) when (e is FileSystemException or ArgumentException)
             {
                 Logs.ScriptLoadError.FormatWith(path, e).Log(LogLevel.Error);
-                using Page fsErrorPage = DialogFactory.MakeFSError(new FileSystemException(e, FSVerb.Access, path), new() { Button.TryAgain, Button.Ignore });
+                //                                              avoid nesting FileSystemException
+                using Page fsErrorPage = DialogFactory.MakeFSError((e as FileSystemException) ?? new FileSystemException(e, FSVerb.Access, path), new() { Button.TryAgain, Button.Ignore });
                 fsErrorPage.MainInstruction = Resources.UI.Dialogs.FSErrorAddingCustomScriptMainInstruction;
                 retry = Button.TryAgain.Equals(new Dialog(fsErrorPage).ShowDialog());
             }

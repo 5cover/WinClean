@@ -11,6 +11,7 @@ using System.Security;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
@@ -81,7 +82,7 @@ public static class Extensions
     /// <inheritdoc cref="GetSingleChildOrDefault(XmlElement, string)"/>
     /// <returns>The single child element.</returns>
     public static XmlElement GetSingleChild(this XmlElement parent, string name)
-        => parent.GetSingleChildOrDefault(name) ?? throw new XmlException(ExceptionMessages.ElementHasNoChild.FormatWith(parent.Name, name));
+        => parent.GetSingleChildOrDefault(name) ?? throw new XmlException(ExceptionMessages.ElementHasNoNamedChild.FormatWith(parent.Name, name));
 
     /// <inheritdoc cref="GetSingleChild(XmlElement, string)"/>
     public static XmlElement GetSingleChild(this XmlDocument parent, string name)
@@ -127,6 +128,26 @@ public static class Extensions
         return elements.Count > 1
             ? throw new XmlException(ExceptionMessages.ElementHasMultipleNamedChilds.FormatWith(parent.Name, name, elements.Count))
             : elements[0]?.InnerText;
+    }
+
+    public static T? GetVisualChild<T>(this DependencyObject depObj) where T : DependencyObject
+    {
+        if (depObj is null)
+        {
+            return null;
+        }
+
+        for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); ++i)
+        {
+            var child = VisualTreeHelper.GetChild(depObj, i);
+
+            var result = (child as T) ?? GetVisualChild<T>(child);
+            if (result is not null)
+            {
+                return result;
+            }
+        }
+        return null;
     }
 
     /// <summary>

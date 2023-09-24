@@ -10,9 +10,10 @@ using Scover.WinClean.Resources;
 
 namespace Tests;
 
+[TestOf(typeof(Extensions))]
 public sealed class ExtensionsTests
 {
-    private static readonly TestCaseData[] getSingleNodeExceptionCases =
+    private static readonly TestCaseData[] getSingleChildExceptionCases =
     {
         new("<Tests/>", "Test", ExceptionMessages.ElementHasNoNamedChild.FormatWith("Tests", "Test")),
         new("<Tests><Test/><Test/></Tests>", "Test", ExceptionMessages.ElementHasMultipleNamedChilds.FormatWith("Tests", "Test", 2)),
@@ -27,7 +28,7 @@ public sealed class ExtensionsTests
     };
 
     [TestCase("Test", "value", "<Tests><Test>value</Test></Tests>")]
-    public void TestGetSingleNode(string name, string innerText, string xml)
+    public void TestGetSingleChild(string name, string innerText, string xml)
     {
         XmlDocument doc = new();
         doc.LoadXml(xml);
@@ -35,8 +36,8 @@ public sealed class ExtensionsTests
         Assert.That(doc.GetSingleChildText(name), Is.EqualTo(innerText));
     }
 
-    [TestCaseSource(nameof(getSingleNodeExceptionCases))]
-    public void TestGetSingleNodeException(string xml, string elementName, string exceptionMessage)
+    [TestCaseSource(nameof(getSingleChildExceptionCases))]
+    public void TestGetSingleChildException(string xml, string elementName, string exceptionMessage)
     {
         XmlDocument doc = new();
         doc.LoadXml(xml);

@@ -24,7 +24,7 @@ Plus d'informations et tutoriels dispnibles sur le [wiki](https://github.com/5co
 ## ~~Encore une arnaque~~
 
 ## Fonctionnalités
-- Exécuter 39 scripts *Batch*, *PowerShell* et *Éditeur du Registre* directement depuis l'interface utilisateur.
+- Exécuter 40 scripts *Batch*, *PowerShell* et *Éditeur du Registre* directement depuis l'interface utilisateur.
 - Ajouter des scripts personnalisés pour aller plus loin dans le nettoyage et l'optimisation.
 
 ## Spécifications

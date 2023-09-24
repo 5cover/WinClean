@@ -1,0 +1,11 @@
+﻿<?xml version="1.0"?>
+<Script>
+  <Name>Hello World</Name>
+  <Description>Prints "Hello World!".</Description>
+  <Category>Maintenance</Category>
+  <SafetyLevel>Safe</SafetyLevel>
+  <Impact>Ergonomics</Impact>
+  <Code>
+    <Execute Host="Cmd">echo Hello World!</Execute>
+  </Code>
+</Script>

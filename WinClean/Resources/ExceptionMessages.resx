@@ -120,10 +120,6 @@
 1 : children elements name
 2 : actual child element count@Invariant</comment>
   </data>
-  <data name="ElementHasNoChild" xml:space="preserve">
-    <value>Element '{0}' has no child element.</value>
-    <comment>0 : parent element name@Invariant</comment>
-  </data>
   <data name="ElementHasNoNamedChild" xml:space="preserve">
     <value>Element '{0}' has no child element named '{1}'.</value>
     <comment>0 : parent element name

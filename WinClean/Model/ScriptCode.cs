@@ -6,7 +6,7 @@ using Scover.WinClean.Model.Metadatas;
 
 namespace Scover.WinClean.Model;
 
-public sealed class ScriptCode : IDictionary<Capability, ScriptAction>
+public sealed class ScriptCode : IDictionary<Capability, ScriptAction>, IEquatable<ScriptCode?>
 {
     private readonly Dictionary<Capability, ScriptAction> _actions;
 
@@ -17,6 +17,10 @@ public sealed class ScriptCode : IDictionary<Capability, ScriptAction>
     public ICollection<ScriptAction> Values => _actions.Values;
     bool ICollection<KeyValuePair<Capability, ScriptAction>>.IsReadOnly => ((ICollection<KeyValuePair<Capability, ScriptAction>>)_actions).IsReadOnly;
     public ScriptAction this[Capability key] { get => _actions[key]; set => _actions[key] = value; }
+
+    public static bool operator !=(ScriptCode? left, ScriptCode? right) => !(left == right);
+
+    public static bool operator ==(ScriptCode? left, ScriptCode? right) => EqualityComparer<ScriptCode>.Default.Equals(left, right);
 
     public void Add(Capability key, ScriptAction value) => _actions.Add(key, value);
 
@@ -59,7 +63,13 @@ public sealed class ScriptCode : IDictionary<Capability, ScriptAction>
         return Capability.FromInteger(process.ExitCode);
     }
 
+    public override bool Equals(object? obj) => Equals(obj as ScriptCode);
+
+    public bool Equals(ScriptCode? other) => other is not null && _actions.ItemsEqual(other._actions);
+
     public IEnumerator<KeyValuePair<Capability, ScriptAction>> GetEnumerator() => ((IEnumerable<KeyValuePair<Capability, ScriptAction>>)_actions).GetEnumerator();
+
+    public override int GetHashCode() => HashCode.Combine(_actions);
 
     public bool Remove(Capability key) => _actions.Remove(key);
 

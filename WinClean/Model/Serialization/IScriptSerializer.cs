@@ -26,4 +26,11 @@ public interface IScriptSerializer
     /// <param name="script">The script to serialize.</param>
     /// <param name="stream">A stream with write access.</param>
     void Serialize(Script script, Stream stream);
+
+    /// <summary>
+    /// Serializes a script.
+    /// </summary>
+    /// <param name="script">The script to serialize.</param>
+    /// <returns>The string containing the serialization result.</returns>
+    string Serialize(Script script);
 }

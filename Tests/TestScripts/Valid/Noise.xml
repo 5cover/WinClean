@@ -1,0 +1,17 @@
+﻿<?xml version="1.0"?>
+<Script noiseAttribute="OnSupportedElement">
+  <Name>Hello World</Name>
+  <Description>Prints "Hello World!".</Description>
+  <Category>Maintenance</Category>
+  <SafetyLevel>Safe</SafetyLevel>
+  <Impact>Ergonomics</Impact>
+  <UselessElement uselessAttrib="uselessValue"/>
+  <whatever isNoise="True"/>
+  <ThisShouldNotBeAProblem>
+    <Hopefully/>
+    <azrfkfoezkpfkpeafakof dsfdlsmfd="dazd^mzqd"/>
+  </ThisShouldNotBeAProblem>
+  <Code>
+    <Execute Host="Cmd">echo Hello World!</Execute>
+  </Code>
+</Script>

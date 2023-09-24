@@ -115,15 +115,6 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Element &apos;{0}&apos; has no child element..
-        /// </summary>
-        public static string ElementHasNoChild {
-            get {
-                return ResourceManager.GetString("ElementHasNoChild", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Element &apos;{0}&apos; has no child element named &apos;{1}&apos;..
         /// </summary>
         public static string ElementHasNoNamedChild {

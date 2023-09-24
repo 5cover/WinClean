@@ -11,5 +11,6 @@
   <Code>
     <Enable Host="Execute">powercfg -h off</Enable>
     <Disable Host="Execute">powercfg -h on</Disable>
+    <Detect Host="PowerShell">exit [int]![System.IO.File]::Exists('C:\hiberfil.sys')</Detect>
   </Code>
 </Script>

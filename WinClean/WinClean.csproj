@@ -151,10 +151,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Update="Resources\ElementFor.Designer.cs">
+    <Compile Update="Resources\NameFor.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>ElementFor.resx</DependentUpon>
+      <DependentUpon>NameFor.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\ExceptionMessages.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -279,9 +279,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Dialog.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\ElementFor.resx">
+    <EmbeddedResource Update="Resources\NameFor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ElementFor.Designer.cs</LastGenOutput>
+      <LastGenOutput>NameFor.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\ExceptionMessages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

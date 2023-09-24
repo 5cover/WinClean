@@ -42,4 +42,6 @@ public abstract class Metadata : IComparable, IComparable<Metadata>
     public override bool Equals(object? obj) => obj is Metadata m && InvariantName == m.InvariantName && InvariantDescription == m.InvariantDescription;
 
     public override int GetHashCode() => HashCode.Combine(InvariantName, InvariantDescription);
+
+    public override string ToString() => InvariantName;
 }

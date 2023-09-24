@@ -6,18 +6,56 @@
     <Nullable>enable</Nullable>
     <TargetFramework>net6.0-windows7.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="TestScripts\CreateOrDeleteFile.xml" />
+    <None Remove="TestScripts\EmptyScript.xml" />
+    <None Remove="TestScripts\Invalid\Garbage.xml" />
+    <None Remove="TestScripts\Invalid\Incomplete.xml" />
+    <None Remove="TestScripts\Invalid\InvalidData1.xml" />
+    <None Remove="TestScripts\Invalid\InvalidData2.xml" />
+    <None Remove="TestScripts\Launch Notepad.xml" />
+    <None Remove="TestScripts\Valid\Hello World.xml" />
+    <None Remove="TestScripts\Valid\Noise.xml" />
+    <None Remove="TestScripts\Valid\WhitespaceMadness.xml" />
+    <None Remove="TestScripts\Wait 1 second.xml" />
+    <None Remove="TestScripts\Wait 2 seconds.xml" />
+    <None Remove="TestScripts\Wait 3 seconds.xml" />
+    <None Remove="TestScripts\Wait 4 seconds.xml" />
+    <None Remove="TestScripts\Wait 5 seconds.xml" />
+    <None Remove="TestScripts\Write Unicode.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="TestScripts\Invalid\InvalidData2.xml" />
+    <EmbeddedResource Include="TestScripts\Invalid\InvalidData1.xml" />
+    <EmbeddedResource Include="TestScripts\Invalid\Incomplete.xml" />
+    <EmbeddedResource Include="TestScripts\Invalid\Garbage.xml" />
+    <EmbeddedResource Include="TestScripts\Valid\WhitespaceMadness.xml" />
+    <EmbeddedResource Include="TestScripts\Valid\Noise.xml" />
+    <EmbeddedResource Include="TestScripts\Valid\Hello World.xml" />
+    <EmbeddedResource Include="TestScripts\Valid\CreateOrDeleteFile.xml" />
+    <EmbeddedResource Include="TestScripts\Invalid\Empty.xml" />
+    <EmbeddedResource Include="TestScripts\Valid\Launch Notepad.xml" />
+    <EmbeddedResource Include="TestScripts\Valid\Wait 1 second.xml" />
+    <EmbeddedResource Include="TestScripts\Valid\Wait 2 seconds.xml" />
+    <EmbeddedResource Include="TestScripts\Valid\Wait 3 seconds.xml" />
+    <EmbeddedResource Include="TestScripts\Valid\Wait 4 seconds.xml" />
+    <EmbeddedResource Include="TestScripts\Valid\Wait 5 seconds.xml" />
+    <EmbeddedResource Include="TestScripts\Valid\Write Unicode.xml" />
+  </ItemGroup>
   <ItemGroup>
     <Using Include="NUnit.Framework" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
     <PackageReference Include="NUnit" Version="3.13.3" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
-    <PackageReference Include="NUnit.Analyzers" Version="3.6.1">
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+    <PackageReference Include="NUnit.Analyzers" Version="3.7.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="3.2.0">
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

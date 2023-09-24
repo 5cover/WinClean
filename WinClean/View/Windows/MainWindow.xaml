@@ -129,7 +129,10 @@
                             ItemsSource="{Binding Items}">
                             <view:TabContent.Template>
                                 <DataTemplate DataType="{x:Type CollectionViewGroup}">
-                                    <controls:ScriptListView SelectedScript="{Binding DataContext.SelectedScript, ElementName=window, Mode=TwoWay}" Usage="{Binding Name}">
+                                    <controls:ScriptListView
+                                        DeleteCommand="{Binding DataContext.RemoveCurrentScript, ElementName=window}"
+                                        SelectedScript="{Binding DataContext.SelectedScript, ElementName=window, Mode=TwoWay}"
+                                        Usage="{Binding Name}">
                                         <controls:ScriptListView.Resources>
                                             <!--  Can't define this in DataTemplate.Resources because of Binding (governing FrameworkElement or FrameworkContent element cannot be found).  -->
                                             <CollectionViewSource x:Key="TheseScriptsGroupedByType" Source="{Binding Items}">

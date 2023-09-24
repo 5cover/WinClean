@@ -24,7 +24,7 @@ More information and tutorials on the [wiki](https://github.com/5cover/WinClean/
 ## ~~Yet Another PC Optimizer Scam~~
 
 ## Features
-- Run 39 *Batch*, *PowerShell*, and *Registry Editor* scripts directly from the GUI.
+- Run 40 *Batch*, *PowerShell*, and *Registry Editor* scripts directly from the GUI.
 - Add custom scripts to further clean the system.
 
 ## Specs

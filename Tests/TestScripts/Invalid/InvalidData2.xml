@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0"?>
 <Script>
-  <Name>Hello world</Name>
-  <Description>Writes "Hello World" to standard output.</Description>
+  <Name>Hello World</Name>
+  <Description>Prints "Hello World!".</Description>
   <Category>Maintenance</Category>
   <SafetyLevel>Safe</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>
-    <Execute Host="PowerShell">echo Hello World</Execute>
+    <Bar Host="Cmd">echo Hello World!</Bar> <!-- The invalid data is here -->
   </Code>
 </Script>

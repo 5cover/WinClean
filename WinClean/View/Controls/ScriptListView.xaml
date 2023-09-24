@@ -15,11 +15,12 @@
                 x:Name="scriptsDataGrid"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
-                CanUserDeleteRows="False"
+                CanUserDeleteRows="True"
                 CanUserReorderColumns="False"
                 CanUserResizeRows="False"
                 GridLinesVisibility="None"
                 HeadersVisibility="Column"
+                IsSynchronizedWithCurrentItem="True"
                 ItemsSource="{Binding}"
                 SelectedIndex="0"
                 SelectedItem="{Binding SelectedScript, Mode=TwoWay, ElementName=scriptListViewUserControl}"
@@ -28,6 +29,12 @@
                 VirtualizingPanel.IsContainerVirtualizable="True"
                 VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                 VirtualizingPanel.VirtualizationMode="Recycling">
+                <DataGrid.CommandBindings>
+                    <CommandBinding
+                        CanExecute="DeleteCanExecute"
+                        Command="Delete"
+                        Executed="DeleteExecuted" />
+                </DataGrid.CommandBindings>
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
                         <Setter Property="Background" Value="{Binding SafetyLevel.Color, Converter={StaticResource ColorToBrush}, ConverterParameter=0.15}" />

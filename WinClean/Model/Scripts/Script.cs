@@ -9,7 +9,7 @@ using static System.Globalization.CultureInfo;
 namespace Scover.WinClean.Model.Scripts;
 
 [DebuggerDisplay($"{{{nameof(InvariantName)}}}")]
-public sealed class Script : IEquatable<Script?>
+public record Script
 {
     public Script(Category category, ScriptCode code, Impact impact, LocalizedString localizedDescription, LocalizedString localizedName, SafetyLevel safetyLevel, string source, ScriptType type, SemVersionRange versions)
         => (Category, Code, Impact, LocalizedDescription, LocalizedName, SafetyLevel, Source, Type, Versions)
@@ -34,10 +34,4 @@ public sealed class Script : IEquatable<Script?>
 
     /// <summary>Supported Windows versions range.</summary>
     public SemVersionRange Versions { get; set; }
-
-    public override bool Equals(object? obj) => Equals(obj as Script);
-
-    public bool Equals(Script? other) => other is not null && InvariantName == other.InvariantName;
-
-    public override int GetHashCode() => InvariantName.GetHashCode();
 }

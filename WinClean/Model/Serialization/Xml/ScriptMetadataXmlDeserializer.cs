@@ -13,39 +13,39 @@ namespace Scover.WinClean.Model.Serialization.Xml;
 public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
 {
     public IEnumerable<Category> GetCategories(Stream stream)
-        => from category in GetLocalizable(stream, ElementFor.Category)
+        => from category in GetLocalizedElements(stream, NameFor.Category)
            select new Category(category.name, category.description, GetOrder(category.element));
 
     public IEnumerable<Host> GetHosts(Stream stream)
-        => from host in GetLocalizable(stream, ElementFor.Host)
+        => from host in GetLocalizedElements(stream, NameFor.Host)
 
-           let versions = host.element.GetSingleChildTextOrDefault(ElementFor.VersionRange) is { } versionsString
+           let versions = host.element.GetSingleChildTextOrDefault(NameFor.VersionRange) is { } versionsString
                ? SemVersionRange.Parse(versionsString)
                : ServiceProvider.Get<ISettings>().DefaultHostVersions
 
-           let icon = host.element.GetSingleChildOrDefault(ElementFor.Icon) is { } iconElement
-               ? (iconElement.GetAttribute(ElementFor.Filename), int.Parse(iconElement.GetAttribute(ElementFor.IconIndex), CultureInfo.InvariantCulture))
+           let icon = host.element.GetSingleChildOrDefault(NameFor.Icon) is { } iconElement
+               ? (iconElement.GetAttribute(NameFor.Filename), int.Parse(iconElement.GetAttribute(NameFor.IconIndex), CultureInfo.InvariantCulture))
                : ((string, int)?)null
 
-           let type = host.element.GetAttribute(ElementFor.Type)
+           let type = host.element.GetAttribute(NameFor.Type)
            select type switch
            {
-               _ when type == ElementFor.ProgramHost => (Host)new ProgramHost(host.name, host.description, versions, icon,
-                   host.element.GetSingleChildText(ElementFor.Executable),
-                   host.element.GetSingleChildText(ElementFor.Arguments),
-                   host.element.GetSingleChildText(ElementFor.Extension)),
-               _ when type == ElementFor.ShellHost => new ShellHost(host.name, host.description, versions, icon,
-                   host.element.GetSingleChildText(ElementFor.CommandLine)),
-               _ => throw new DeserializationException("Host", null, new InvalidDataException(ExceptionMessages.UnknownHostType.FormatWith(type))),
+               _ when type == NameFor.ProgramHost => (Host)new ProgramHost(host.name, host.description, versions, icon,
+                   host.element.GetSingleChildText(NameFor.Executable),
+                   host.element.GetSingleChildText(NameFor.Arguments),
+                   host.element.GetSingleChildText(NameFor.Extension)),
+               _ when type == NameFor.ShellHost => new ShellHost(host.name, host.description, versions, icon,
+                   host.element.GetSingleChildText(NameFor.CommandLine)),
+               _ => throw new DeserializationException(nameof(Host), null, new InvalidDataException(ExceptionMessages.UnknownHostType.FormatWith(type))),
            };
 
     public IEnumerable<Impact> GetImpacts(Stream stream)
-        => from impact in GetLocalizable(stream, ElementFor.Impact)
+        => from impact in GetLocalizedElements(stream, NameFor.Impact)
            select new Impact(impact.name, impact.description);
 
     public IEnumerable<SafetyLevel> GetSafetyLevels(Stream stream)
-        => from safetyLevel in GetLocalizable(stream, ElementFor.SafetyLevel)
-           select new SafetyLevel(safetyLevel.name, safetyLevel.description, GetOrder(safetyLevel.element), (Color)ColorConverter.ConvertFromString(safetyLevel.element.GetAttribute(ElementFor.Color)));
+        => from safetyLevel in GetLocalizedElements(stream, NameFor.SafetyLevel)
+           select new SafetyLevel(safetyLevel.name, safetyLevel.description, GetOrder(safetyLevel.element), (Color)ColorConverter.ConvertFromString(safetyLevel.element.GetAttribute(NameFor.Color)));
 
     private static IEnumerable<XmlElement> GetElements(Stream s, string name)
     {
@@ -54,7 +54,7 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
         return d.GetElementsByTagName(name).Cast<XmlElement>();
     }
 
-    private static IEnumerable<(XmlElement element, LocalizedString name, LocalizedString description)> GetLocalizable(Stream stream, string elementName)
+    private static IEnumerable<(XmlElement element, LocalizedString name, LocalizedString description)> GetLocalizedElements(Stream stream, string elementName)
     {
         foreach (var element in GetElements(stream, elementName))
         {
@@ -64,8 +64,8 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
             {
                 (child.Name switch
                 {
-                    _ when child.Name == ElementFor.Name => name,
-                    _ when child.Name == ElementFor.Description => description,
+                    _ when child.Name == NameFor.Name => name,
+                    _ when child.Name == NameFor.Description => description,
                     _ => null
                 })?.SetFromXml(child);
             }
@@ -73,5 +73,5 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
         }
     }
 
-    private static int GetOrder(XmlElement element) => int.Parse(element.GetAttribute(ElementFor.Order));
+    private static int GetOrder(XmlElement element) => int.Parse(element.GetAttribute(NameFor.Order));
 }
