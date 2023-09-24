@@ -11,8 +11,7 @@
   <Code>
     <Enable Host="Execute">sc config DoSvc start= demand</Enable>
     <Disable Host="Execute">sc config DoSvc start= auto</Disable>
-    <Detect Host="PowerShell">switch ((Get-Service -Name DoSvc).StartType)
-{
+    <Detect Host="PowerShell">switch ((Get-Service -Name DoSvc).StartType) {
     "Manual" { exit 1 }
     "Automatic" { exit 0 }
     default { exit -1 }

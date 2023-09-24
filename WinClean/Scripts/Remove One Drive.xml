@@ -12,19 +12,19 @@
     <Execute Host="PowerShell"># This script will remove and disable OneDrive integration.
 
 function New-FolderForced {
-[CmdletBinding(SupportsShouldProcess = $true)]
-param (
-[Parameter(Position = 0, Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-[string]
-$Path
-)
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param (
+    [Parameter(Position = 0, Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+    [string]
+    $Path
+    )
 
-process {
-if (-not (Test-Path $Path)) {
-Write-Verbose "-- Creating full path to:  $Path"
-New-Item -Path $Path -ItemType Directory -Force
-}
-}
+    process {
+        if (-not (Test-Path $Path)) {
+            Write-Verbose "-- Creating full path to:  $Path"
+            New-Item -Path $Path -ItemType Directory -Force
+        }
+    }
 }
 
 # Kill OneDrive process
@@ -33,10 +33,10 @@ taskkill.exe /F /IM "explorer.exe"
 
 # Remove OneDrive
 if (Test-Path "$env:systemroot\System32\OneDriveSetup.exe") {
-&amp; "$env:systemroot\System32\OneDriveSetup.exe" /uninstall
+    &amp; "$env:systemroot\System32\OneDriveSetup.exe" /uninstall
 }
 if (Test-Path "$env:systemroot\SysWOW64\OneDriveSetup.exe") {
-&amp; "$env:systemroot\SysWOW64\OneDriveSetup.exe" /uninstall
+    &amp; "$env:systemroot\SysWOW64\OneDriveSetup.exe" /uninstall
 }
 
 # Removing OneDrive leftovers
@@ -45,7 +45,7 @@ Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:programdata\Micr
 Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:systemdrive\OneDriveTemp"
 # check if directory is empty before removing:
 If ((Get-ChildItem "$env:userprofile\OneDrive" -Recurse | Measure-Object).Count -eq 0) {
-Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:userprofile\OneDrive"
+    Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:userprofile\OneDrive"
 }
 
 # Disable OneDrive via Group Policies

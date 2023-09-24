@@ -82,11 +82,9 @@ https://winaero.com/how-to-disable-ads-in-windows-11/
 "SubscribedContent-353696Enabled",
 "SystemPaneSuggestionsEnabled")
 
-$currentValues += Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name (
-    "ShowSyncProviderNotifications")
+$currentValues += Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name ("ShowSyncProviderNotifications")
 
-$currentValues += Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo" -Name (
-    "Enabled")
+$currentValues += Get-ItemPropertyValue -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo" -Name ("Enabled")
 
 if (($currentValues -eq 1).Count -eq $currentValues.Count) { exit 1 }
 elseif (($currentValues -eq 0).Count -eq $currentValues.Count) { exit 0 }

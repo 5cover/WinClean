@@ -18,8 +18,7 @@ Notez que dans de rares cas, la désactivation de l'atténuation du bureau peut 
     <Disable Host="Regedit">Windows Registry Editor Version 5.00
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
 "PromptOnSecureDesktop"=dword:1</Disable>
-    <Detect Host="PowerShell">switch (Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "PromptOnSecureDesktop")
-{
+    <Detect Host="PowerShell">switch (Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "PromptOnSecureDesktop") {
     0 {exit 1}
     1 {exit 0}
     default {exit -1}

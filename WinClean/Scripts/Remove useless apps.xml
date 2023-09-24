@@ -197,8 +197,8 @@ $AppXApps = @(
 "*XboxOneSmartGlass*"
 )
 foreach ($App in $AppXApps) {
-Get-AppxPackage -Name $App -AllUsers | Remove-AppxPackage -AllUsers -ErrorAction Continue
-Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like $App | Remove-AppxProvisionedPackage -Online -ErrorAction Continue
+    Get-AppxPackage -Name $App -AllUsers | Remove-AppxPackage -AllUsers -ErrorAction Continue
+    Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like $App | Remove-AppxProvisionedPackage -Online -ErrorAction Continue
 }</Execute>
   </Code>
 </Script>

@@ -9,10 +9,9 @@
   <Impact>Free storage space</Impact>
   <Versions>>=5.1.0</Versions>
   <Code>
-    <Execute Host="PowerShell">foreach ($_ in Get-ComputerRestorePoint | sort CreationTime -Descending | select -Skip 1)
-{
-echo "Deleting $_"
-echo "Result: $([SystemRestore.DeleteRestorePoint]::SRRemoveRestorePoint($_.SequenceNumber))"
+    <Execute Host="PowerShell">foreach ($_ in Get-ComputerRestorePoint | sort CreationTime -Descending | select -Skip 1) {
+    echo "Deleting $_"
+    echo "Result: $([SystemRestore.DeleteRestorePoint]::SRRemoveRestorePoint($_.SequenceNumber))"
 }</Execute>
   </Code>
 </Script>
