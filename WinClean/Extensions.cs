@@ -255,9 +255,6 @@ public static class Extensions
     public static void SendUpdatesTo<TSourceItem, TTargetItem>(this ObservableCollection<TSourceItem> source, ICollection<TTargetItem> collection, Func<TSourceItem, TTargetItem>? converter = null, Func<TSourceItem, bool>? filter = null)
            => SendUpdatesTo((INotifyCollectionChanged)source, collection, converter, filter);
 
-    public static void SendUpdatesTo<TSourceItem, TTargetItem>(this ReadOnlyObservableCollection<TSourceItem> source, ICollection<TTargetItem> collection, Func<TSourceItem, TTargetItem>? converter = null, Func<TSourceItem, bool>? filter = null)
-           => SendUpdatesTo((INotifyCollectionChanged)source, collection, converter, filter);
-
     public static void SendUpdatesTo<TSourceItem, TTargetItem>(this INotifyCollectionChanged source, ICollection<TTargetItem> collection, Func<TSourceItem, TTargetItem>? converter = null, Func<TSourceItem, bool>? filter = null)
            => source.CollectionChanged += (_, e) =>
            {
@@ -348,6 +345,8 @@ public static class Extensions
         => source.Aggregate(Enumerable.Empty<TSource>(), (accumulator, next) => next == null ? accumulator : accumulator.Append(next));
 
     public static Version WithoutRevision(this Version version) => version.Revision != -1 ? new(version.Major, version.Minor, version.Build) : version;
+
+    internal static int Test() => 5;
 
     [DllImport("ntdll.dll", SetLastError = true)]
     private static extern void NtResumeProcess(IntPtr processHandle);
