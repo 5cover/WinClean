@@ -24,7 +24,7 @@ $drives = Get-PSDrive -PSProvider FileSystem
 foreach ($drive in $drives) {
   Write-Host "Deleting files in $($drive.Name):"
   foreach ($extension in $extensions) {
-    $files = Get-ChildItem -Path "$($drive.Name):\" -Include $extension -Recurse -Force
+    $files = Get-ChildItem -Path "$($drive.Name):\" -Include $extension -Recurse -Force | where { !$_.PSisContainer }
     foreach ($file in $files) {
       Write-Host "Deleting $($file.FullName)"
       Remove-Item $file.FullName -Force
