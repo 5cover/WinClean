@@ -8,9 +8,9 @@
   <SafetyLevel>Limited</SafetyLevel>
   <Impact>Privacy</Impact>
   <Code>
-    <Execute Host="Cmd">del /F %APPDATA%\Microsoft\Windows\Recent\*
-del /F %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\*
-del /F %APPDATA%\Microsoft\Windows\Recent\CustomDestinations\*
+    <Execute Host="Cmd">del /F /Q %APPDATA%\Microsoft\Windows\Recent\*
+del /F /Q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\*
+del /F /Q %APPDATA%\Microsoft\Windows\Recent\CustomDestinations\*
 reg delete HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\RunMRU /VA /F
 reg delete HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths /VA /F</Execute>
   </Code>
