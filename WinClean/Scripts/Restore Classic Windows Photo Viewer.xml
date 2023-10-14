@@ -13,18 +13,18 @@
     <Enable Host="Regedit">Windows Registry Editor Version 5.00 
  
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations] 
-".bmp"="PhotoViewer.FileAssoc.BITMAP" 
-".dib"="PhotoViewer.FileAssoc.BITMAP" 
+".bmp"="PhotoViewer.FileAssoc.BITMAP"
+".dib"="PhotoViewer.FileAssoc.BITMAP"
 ".jpg"="PhotoViewer.FileAssoc.JPEG"
-".jpe"="PhotoViewer.FileAssoc.JPEG" 
-".jpeg"="PhotoViewer.FileAssoc.JPEG" 
-".jxr"="PhotoViewer.FileAssoc.JPEG"  
-".jfif"="PhotoViewer.FileAssoc.JFIF" 
-".wdp"="PhotoViewer.FileAssoc.WDP" 
-".png"="PhotoViewer.FileAssoc.PNG" 
-".gif"="PhotoViewer.FileAssoc.TIFF" 
-".tiff"="PhotoViewer.FileAssoc.TIFF" 
-".tif"="PhotoViewer.FileAssoc.TIFF" 
+".jpe"="PhotoViewer.FileAssoc.JPEG"
+".jpeg"="PhotoViewer.FileAssoc.JPEG"
+".jxr"="PhotoViewer.FileAssoc.JPEG"
+".jfif"="PhotoViewer.FileAssoc.JFIF"
+".wdp"="PhotoViewer.FileAssoc.WDP"
+".png"="PhotoViewer.FileAssoc.PNG"
+".gif"="PhotoViewer.FileAssoc.TIFF"
+".tiff"="PhotoViewer.FileAssoc.TIFF"
+".tif"="PhotoViewer.FileAssoc.TIFF"
 
 ; Bitmap
     
@@ -228,11 +228,18 @@ Windows Registry Editor Version 5.00
 [-HKEY_CLASSES_ROOT\PhotoViewer.FileAssoc.WDP]
 
 [-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations]</Disable>
-    <Detect Host="PowerShell">if (Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations') {
-    exit 1
-}
-else {
-    exit 0
-}</Detect>
+    <Detect Host="PowerShell">$path = 'HKLM:\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations'
+exit [int]((Get-ItemPropertyValue -Path $path -Name ".bmp") -eq "PhotoViewer.FileAssoc.BITMAP" -and
+           (Get-ItemPropertyValue -Path $path -Name ".dib") -eq "PhotoViewer.FileAssoc.BITMAP" -and
+           (Get-ItemPropertyValue -Path $path -Name ".jpg") -eq "PhotoViewer.FileAssoc.JPEG" -and
+           (Get-ItemPropertyValue -Path $path -Name ".jpe") -eq "PhotoViewer.FileAssoc.JPEG" -and
+           (Get-ItemPropertyValue -Path $path -Name ".jpeg") -eq "PhotoViewer.FileAssoc.JPEG" -and
+           (Get-ItemPropertyValue -Path $path -Name ".jxr") -eq "PhotoViewer.FileAssoc.JPEG" -and
+           (Get-ItemPropertyValue -Path $path -Name ".jfif") -eq "PhotoViewer.FileAssoc.JFIF" -and
+           (Get-ItemPropertyValue -Path $path -Name ".wdp") -eq "PhotoViewer.FileAssoc.WDP" -and
+           (Get-ItemPropertyValue -Path $path -Name ".png") -eq "PhotoViewer.FileAssoc.PNG" -and
+           (Get-ItemPropertyValue -Path $path -Name ".gif") -eq "PhotoViewer.FileAssoc.TIFF" -and
+           (Get-ItemPropertyValue -Path $path -Name ".tiff") -eq "PhotoViewer.FileAssoc.TIFF" -and
+           (Get-ItemPropertyValue -Path $path -Name ".tif") -eq "PhotoViewer.FileAssoc.TIFF"))</Detect>
   </Code>
 </Script>
