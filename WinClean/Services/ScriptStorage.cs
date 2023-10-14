@@ -44,7 +44,7 @@ public sealed class ScriptStorage : IScriptStorage
     {
         _repos.Add(repo.Type, repo);
         repo.Scripts.SendUpdatesTo(Scripts);
-        Scripts.SendUpdatesTo(repo.Scripts, filter: script => script.Type == repo.Type);
+        Scripts.SendUpdatesTo(repo.Scripts, filter: script => script.Type.Equals(repo.Type));
     }
 
     private MutableScriptRepository GetMutableRepository(ScriptType type)

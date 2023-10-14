@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace Scover.WinClean.View.Converters;
 
-public sealed class SelectiveValueConverter : IValueConverter
+public sealed class EqualsOrDoNothingConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         => Equals(value, parameter);

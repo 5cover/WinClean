@@ -6,9 +6,9 @@
   <SafetyLevel>Safe</SafetyLevel>
   <Impact>Ergonomics</Impact>
   <Code>
-    <Enable Host="Cmd">echo This is the file created by the "Create or delete file" script. > CreateOrDeleteFile.txt
+    <Enable Host="Cmd">write This is the file created by the "Create or delete file" script. > CreateOrDeleteFile.txt
 %windir%\System32\notepad.exe CreateOrDeleteFile.txt</Enable>
     <Disable Host="Cmd">del CreateOrDeleteFile.txt</Disable>
-    <Detect Host="PowerShell">return [int](Test-Path -Path ./CreateOrDeleteFile.txt -PathType Leaf)</Detect>
+    <Detect Host="PowerShell">exit [int](Test-Path -Path ./CreateOrDeleteFile.txt -PathType Leaf)</Detect>
   </Code>
 </Script>

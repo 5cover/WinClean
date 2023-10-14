@@ -29,7 +29,7 @@ public sealed partial class ScriptXmlSerializerTests
         new(new Script(Metadatas.GetMetadata<Category>("Debloating"),
             new(new()
             {
-                [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Cmd"), "DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.WordPad~~~~0.0.1.0")
+                [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Cmd"), "DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.WordPad~~~~0.0.1.0 /NoRestart")
             }),
             Metadatas.GetMetadata<Impact>("Free storage space"),
             new LocalizedString()

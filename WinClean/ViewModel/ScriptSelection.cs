@@ -6,7 +6,7 @@ namespace Scover.WinClean.ViewModel;
 
 public sealed class ScriptSelection : ObservableObject
 {
-    private Capability? _desiredCapability = Capability.Enable;
+    private Capability? _desiredCapability;
     private bool _isSelected;
 
     public Capability? DesiredCapability

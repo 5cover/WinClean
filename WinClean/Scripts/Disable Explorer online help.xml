@@ -9,12 +9,14 @@
   <Impact>Ergonomics</Impact>
   <Code>
     <Enable Host="Regedit">Windows Registry Editor Version 5.00
+    
 [HKEY_CURRENT_USER\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win32]
 @=""
 [HKEY_CURRENT_USER\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0\win64]
 @=""</Enable>
     <Disable Host="Regedit">Windows Registry Editor Version 5.00
+    
 [-HKEY_CURRENT_USER\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0]</Disable>
-    <Detect Host="PowerShell">exit [int](Test-Path "HKCU:\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0")</Detect>
+    <Detect Host="PowerShell">exit [int](Test-Path 'HKCU:\SOFTWARE\Classes\Typelib\{8cec5860-07a1-11d9-b15e-000d56bfe6ee}\1.0\0')</Detect>
   </Code>
 </Script>

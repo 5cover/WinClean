@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Script>
+  <Name>Run Service Pack cleanup</Name>
+  <Name xml:lang="fr">Exécuter le nettoyage des Service Packs</Name>
+  <Description>Storage space can be released by removing backup components needed for uninstallation of service packs. A service pack is a collection of cumulative updates for a particular release of Windows.
+Starting from Windows 10, this option will most likely never be needed  as service packs are no longer used.</Description>
+  <Description xml:lang="fr">L'espace de stockage peut être libéré en supprimant les composants de sauvegarde nécessaires à la désinstallation des service packs. Un service pack est un ensemble de mises à jour cumulatives pour une version particulière de Windows.
+À partir de Windows 10, cette option ne sera probablement jamais nécessaire car les service packs ne sont plus utilisés..</Description>
+  <Category>Maintenance</Category>
+  <SafetyLevel>Safe</SafetyLevel>
+  <Impact>Free storage space</Impact>
+  <Versions>>=6.1.7600</Versions>
+  <Code>
+    <Execute Host="Execute">Dism /Online /Cleanup-Image /SPSuperseded /NoRestart</Execute>
+  </Code>
+</Script>

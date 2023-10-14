@@ -16,10 +16,10 @@
     <Disable Host="Regedit">Windows Registry Editor Version 5.00
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
 "verbosestatus"=dword:0</Disable>
-    <Detect Host="PowerShell">if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "DisableStatusMessages") -eq 1) {
+    <Detect Host="PowerShell">if ((Get-ItemPropertyValue -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Name 'DisableStatusMessages') -eq 1) {
     exit 0
 }
-Switch (Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "verbosestatus") {
+Switch (Get-ItemPropertyValue -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Name 'verbosestatus') {
     0 {exit 0}
     1 {exit 1}
     default {exit -1}

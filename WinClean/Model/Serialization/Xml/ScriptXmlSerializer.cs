@@ -96,8 +96,8 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             Code = new ScriptCode(new()
             {
                 [Capability.Execute] = new ScriptAction(
-                    host: Metadatas.GetMetadata<Host>(d.GetSingleChildText(NameFor.Host)),
-                        code: d.GetSingleChildText(NameFor.Code))
+                    code: d.GetSingleChildText(NameFor.Code),
+                    host: Metadatas.GetMetadata<Host>(d.GetSingleChildText(NameFor.Host)))
             }),
             Impact = Metadatas.GetMetadata<Impact>(d.GetSingleChildText(NameFor.Impact) switch
             {

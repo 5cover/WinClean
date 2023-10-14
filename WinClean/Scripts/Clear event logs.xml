@@ -9,7 +9,6 @@
   <Impact>Free storage space</Impact>
   <Versions>>=6.1.7600</Versions>
   <Code>
-    <Execute Host="PowerShell">Import-Module Microsoft.PowerShell.Management
-Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }</Execute>
+    <Execute Host="PowerShell">Get-EventLog -LogName * | % { Clear-EventLog -LogName $_.Log }</Execute>
   </Code>
 </Script>

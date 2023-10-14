@@ -16,7 +16,7 @@
     <Disable Host="Regedit">Windows Registry Editor Version 5.00
 [HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments]
 "SaveZoneInformation"=dword:1</Disable>
-    <Detect Host="PowerShell">switch (Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments" -Name "SaveZoneInformation") {
+    <Detect Host="PowerShell">switch (Get-ItemPropertyValue -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments' -Name 'SaveZoneInformation') {
     2 {exit 1}
     1 {exit 0}
     default {exit -1}

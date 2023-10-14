@@ -36,7 +36,7 @@
     <DefineConstants>$(DefineConstants)</DefineConstants>
     <Optimize>True</Optimize>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <EmbeddedResource Include="Categories.xml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -79,6 +79,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Scripts\Run Service Pack cleanup.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Resources\Images\Checkmark.ico" />
     <Resource Include="Resources\Images\Cross.ico" />
     <Resource Include="Resources\Images\Gear.png" />
@@ -107,7 +111,7 @@
     <EmbeddedResource Include="Scripts\Hide ads and suggestions.xml" />
     <EmbeddedResource Include="Scripts\Keep thumbnail cache after reboot.xml" />
     <EmbeddedResource Include="Scripts\Optimize drives.xml" />
-    <EmbeddedResource Include="Scripts\Remove Cortana.xml" />
+    <EmbeddedResource Include="Scripts\Disable Cortana.xml" />
     <EmbeddedResource Include="Scripts\Remove Internet Explorer 11.xml" />
     <EmbeddedResource Include="Scripts\Remove Microsoft Edge.xml" />
     <EmbeddedResource Include="Scripts\Remove One Drive.xml" />
@@ -122,7 +126,7 @@
     <EmbeddedResource Include="Scripts\Run Component Store cleanup.xml" />
     <EmbeddedResource Include="Scripts\Run Disk Cleanup tool.xml" />
     <EmbeddedResource Include="Scripts\Run the System File Checker tool.xml" />
-    <EmbeddedResource Include="Scripts\Schedule Check Disk utility.xml" />
+    <EmbeddedResource Include="Scripts\Run Check Disk utility.xml" />
     <EmbeddedResource Include="Scripts\Show checkboxes near files and folders.xml" />
     <EmbeddedResource Include="Scripts\Show file extensions.xml" />
     <EmbeddedResource Include="Scripts\Show full path in Explorer title bar.xml" />

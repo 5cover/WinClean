@@ -9,8 +9,10 @@
   <Impact>Free storage space</Impact>
   <Versions>>=6.3.9600</Versions>
   <Code>
-    <Execute Host="PowerShell"># This script will remove and disable OneDrive integration.
-
+    <Execute Host="PowerShell">
+# License: https://github.com/W4RH4WK/Debloat-Windows-10/blob/master/LICENSE
+# Original code: https://github.com/W4RH4WK/Debloat-Windows-10/blob/master/scripts/remove-onedrive.ps1
+      
 function New-FolderForced {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param (
@@ -21,7 +23,7 @@ function New-FolderForced {
 
     process {
         if (-not (Test-Path $Path)) {
-            Write-Verbose "-- Creating full path to:  $Path"
+            Write-Output "Creating full path to: $Path"
             New-Item -Path $Path -ItemType Directory -Force
         }
     }
@@ -44,7 +46,7 @@ Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:localappdata\Mic
 Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:programdata\Microsoft OneDrive"
 Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:systemdrive\OneDriveTemp"
 # check if directory is empty before removing:
-If ((Get-ChildItem "$env:userprofile\OneDrive" -Recurse | Measure-Object).Count -eq 0) {
+if ((Get-ChildItem "$env:userprofile\OneDrive" -Recurse | measure).Count -eq 0) {
     Remove-Item -Recurse -Force -ErrorAction SilentlyContinue "$env:userprofile\OneDrive"
 }
 
@@ -54,9 +56,9 @@ Set-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Policies\Microsoft\Windows\On
 
 # Remove Onedrive from explorer sidebar
 New-PSDrive -PSProvider "Registry" -Root "HKEY_CLASSES_ROOT" -Name "HKCR"
-mkdir -Force "HKCR:\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
+New-Item -Force "HKCR:\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
 Set-ItemProperty -Path "HKCR:\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" "System.IsPinnedToNameSpaceTree" 0
-mkdir -Force "HKCR:\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
+New-Item -Force "HKCR:\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}"
 Set-ItemProperty -Path "HKCR:\Wow6432Node\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" "System.IsPinnedToNameSpaceTree" 0
 Remove-PSDrive "HKCR"
 
@@ -72,9 +74,6 @@ Remove-Item -Force -ErrorAction SilentlyContinue "$env:userprofile\AppData\Roami
 Get-ScheduledTask -TaskPath '\' -TaskName 'OneDrive*' -ea SilentlyContinue | Unregister-ScheduledTask -Confirm:$false
 
 # Restarting explorer
-Start-Process "explorer.exe"
-
-# Waiting for explorer to complete loading
-Start-Sleep 10</Execute>
+Start-Process 'explorer.exe'</Execute>
   </Code>
 </Script>

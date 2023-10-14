@@ -43,14 +43,14 @@
                     <RadioButton
                         Grid.Column="1"
                         Content="{Binding Name, Source={x:Static m:Capability.Enable}}"
-                        IsChecked="{Binding DesiredCapability, Converter={StaticResource SelectiveValue}, ConverterParameter={x:Static m:Capability.Enable}}"
+                        IsChecked="{Binding DesiredCapability, Converter={StaticResource EqualsOrDoNothing}, ConverterParameter={x:Static m:Capability.Enable}}"
                         IsEnabled="{Binding IsSelected}"
                         ToolTip="{Binding Description, Source={x:Static m:Capability.Enable}}" />
                     <RadioButton
                         Grid.Row="1"
                         Grid.Column="1"
                         Content="{Binding Name, Source={x:Static m:Capability.Disable}}"
-                        IsChecked="{Binding DesiredCapability, Converter={StaticResource SelectiveValue}, ConverterParameter={x:Static m:Capability.Disable}}"
+                        IsChecked="{Binding DesiredCapability, Converter={StaticResource EqualsOrDoNothing}, ConverterParameter={x:Static m:Capability.Disable}}"
                         IsEnabled="{Binding IsSelected}"
                         ToolTip="{Binding Description, Source={x:Static m:Capability.Disable}}" />
                 </Grid>

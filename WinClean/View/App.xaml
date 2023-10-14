@@ -32,6 +32,6 @@
         <converters:GetMetadatasConverter x:Key="GetMetadatas" />
         <converters:GoldenRatioConverter x:Key="GoldenRatio" />
         <converters:IsNotNullConverter x:Key="IsNotNull" />
-        <converters:SelectiveValueConverter x:Key="SelectiveValue" />
+        <converters:EqualsOrDoNothingConverter x:Key="EqualsOrDoNothing" />
     </Application.Resources>
 </Application>

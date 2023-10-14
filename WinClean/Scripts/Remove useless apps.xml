@@ -129,76 +129,78 @@ Les packages d'application suivants seront supprimés :
   <Impact>Free storage space</Impact>
   <Versions>>=6.2.9200</Versions>
   <Code>
-    <Execute Host="PowerShell"># Based on https://github.com/Sycnex/Windows10Debloater/blob/master/Individual%20Scripts/Debloat%20Windows/
-Import-Module Appx
-Import-Module DISM
+    <Execute Host="PowerShell">
+# License: https://github.com/Sycnex/Windows10Debloater/blob/master/LICENSE
+# Original code: https://github.com/Sycnex/Windows10Debloater/blob/master/Individual%20Scripts/Debloat%20Windows
+
 $AppXApps = @(
-"*ActiproSoftwareLLC*"
-"*AdobeSystemsIncorporated.AdobePhotoshopExpress*"
-"*AutodeskSketchBook*"
-"*BethesdaSoftworks.FalloutShelter*"
-"*bingsports*"
-"*CandyCrush*"
-"*CommsPhone*"
-"*ConnectivityStore*"
-"*Duolingo-LearnLanguagesforFree*"
-"*EclipseManager*"
-"*Facebook*"
-"*FarmVille2CountryEscape*"
-"*flaregamesGmbH.RoyalRevolt2*"
-"*Flipboard*"
-"*Microsoft.3dbuilder*"
-"*Microsoft.Advertising*"
-"*Microsoft.Asphalt8Airborne*"
-"*Microsoft.BingFinance*"
-"*Microsoft.BingNews*"
-"*Microsoft.BingWeather*"
-"*Microsoft.DrawboardPDF*"
-"*Microsoft.Messaging*"
-"*Microsoft.Microsoft3DViewer*"
-"*Microsoft.MicrosoftOfficeHub*"
-"*Microsoft.MicrosoftSolitaireCollection*"
-"*Microsoft.MicrosoftStickyNotes*"
-"*Microsoft.MSPaint*"
-"*Microsoft.NetworkSpeedTest*"
-"*Microsoft.Office.Sway*"
-"*Microsoft.OneConnect*"
-"*Microsoft.People*"
-"*Microsoft.Print3D*"
-"*Microsoft.ScreenSketch*"
-"*Microsoft.SkypeApp*"
-"*Microsoft.Wallet*"
-"*Microsoft.WindowsAlarms*"
-"*Microsoft.WindowsCamera*"
-"*microsoft.windowscommunicationsapps*"
-"*Microsoft.WindowsFeedbackHub*"
-"*Microsoft.WindowsMaps*"
-"*Microsoft.WindowsSoundRecorder*"
-"*Microsoft.Xbox.TCUI*"
-"*Microsoft.XboxApp*"
-"*Microsoft.XboxGameOverlay*"
-"*Microsoft.XboxIdentityProvider*"
-"*Microsoft.XboxSpeechToTextOverlay*"
-"*Microsoft.YourPhone*"
-"*Microsoft.ZuneMusic*"
-"*Microsoft.ZuneVideo*"
-"*Microsoft3DViewer*"
-"*MicrosoftTeams*"
-"*MinecraftUWP*"
-"*Netflix*"
-"*OneNote*"
-"*PandoraMediaInc*"
-"*Spotify*"
-"*Todos*"
-"*Twitter*"
-"*windowsphone*"
-"*WindowsScan*"
-"*Wunderlist*"
-"*XboxOneSmartGlass*"
+    '*ActiproSoftwareLLC*'
+    '*AdobeSystemsIncorporated.AdobePhotoshopExpress*'
+    '*AutodeskSketchBook*'
+    '*BethesdaSoftworks.FalloutShelter*'
+    '*bingsports*'
+    '*CandyCrush*'
+    '*CommsPhone*'
+    '*ConnectivityStore*'
+    '*Duolingo-LearnLanguagesforFree*'
+    '*EclipseManager*'
+    '*Facebook*'
+    '*FarmVille2CountryEscape*'
+    '*flaregamesGmbH.RoyalRevolt2*'
+    '*Flipboard*'
+    '*Microsoft.3dbuilder*'
+    '*Microsoft.Advertising*'
+    '*Microsoft.Asphalt8Airborne*'
+    '*Microsoft.BingFinance*'
+    '*Microsoft.BingNews*'
+    '*Microsoft.BingWeather*'
+    '*Microsoft.DrawboardPDF*'
+    '*Microsoft.Messaging*'
+    '*Microsoft.Microsoft3DViewer*'
+    '*Microsoft.MicrosoftOfficeHub*'
+    '*Microsoft.MicrosoftSolitaireCollection*'
+    '*Microsoft.MicrosoftStickyNotes*'
+    '*Microsoft.MSPaint*'
+    '*Microsoft.NetworkSpeedTest*'
+    '*Microsoft.Office.Sway*'
+    '*Microsoft.OneConnect*'
+    '*Microsoft.People*'
+    '*Microsoft.Print3D*'
+    '*Microsoft.ScreenSketch*'
+    '*Microsoft.SkypeApp*'
+    '*Microsoft.Wallet*'
+    '*Microsoft.WindowsAlarms*'
+    '*Microsoft.WindowsCamera*'
+    '*microsoft.windowscommunicationsapps*'
+    '*Microsoft.WindowsFeedbackHub*'
+    '*Microsoft.WindowsMaps*'
+    '*Microsoft.WindowsSoundRecorder*'
+    '*Microsoft.Xbox.TCUI*'
+    '*Microsoft.XboxApp*'
+    '*Microsoft.XboxGameOverlay*'
+    '*Microsoft.XboxIdentityProvider*'
+    '*Microsoft.XboxSpeechToTextOverlay*'
+    '*Microsoft.YourPhone*'
+    '*Microsoft.ZuneMusic*'
+    '*Microsoft.ZuneVideo*'
+    '*Microsoft3DViewer*'
+    '*MicrosoftTeams*'
+    '*MinecraftUWP*'
+    '*Netflix*'
+    '*OneNote*'
+    '*PandoraMediaInc*'
+    '*Spotify*'
+    '*Todos*'
+    '*Twitter*'
+    '*windowsphone*'
+    '*WindowsScan*'
+    '*Wunderlist*'
+    '*XboxOneSmartGlass*'
 )
 foreach ($App in $AppXApps) {
-    Get-AppxPackage -Name $App -AllUsers | Remove-AppxPackage -AllUsers -ErrorAction Continue
-    Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like $App | Remove-AppxProvisionedPackage -Online -ErrorAction Continue
+    # -AllUsers on Remove-AppxPackage seems to cause 0x80070002 errors
+    Get-AppxPackage -Name $App -AllUsers | Remove-AppxPackage -Verbose
+    Get-AppxProvisionedPackage -Online | where DisplayName -Like $App | Remove-AppxProvisionedPackage -Online
 }</Execute>
   </Code>
 </Script>

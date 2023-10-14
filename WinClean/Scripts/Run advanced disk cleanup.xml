@@ -14,74 +14,36 @@
   <SafetyLevel>Limited</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Code>
-    <Execute Host="Cmd">cd /d "%temp%"
-takeown /r /d o /f *
-icacls * /t /c /grant:r "%username%":F
-del /f /s /q *
+    <Execute Host="PowerShell">$userAccount = New-Object System.Security.Principal.NTAccount([System.Security.Principal.WindowsIdentity]::GetCurrent().Name)
 
-cd /d "%windir%\temp"
-takeown /r /d o /f *
-icacls * /t /c /grant:r "%username%":F
-del /f /s /q *
+$directories = @(
+    "$env:temp\",
+    "$env:windir\temp\",
+    "$env:windir\prefetch\",
+    "$env:windir\system32\dllcache\",
+    "$env:windir\Logs\",
+    "$env:windir\SoftwareDistribution\Download\",
+    "$env:windir\WinSXS\Backup\",
+    "$env:windir\servicing\LCU\",
+    "$env:userprofile\Recent\",
+    "$env:userprofile\Local Settings\History\",
+    "$env:userprofile\Local Settings\Temporary Internet Files\",
+    "$env:userprofile\Local Settings\Temp\",
+    "$env:userprofile\Recent\",
+    "$env:userprofile\Cookies\")
 
-cd /d "%windir%\prefetch"
-takeown /r /d o /f *
-icacls * /t /c /grant:r "%username%":F
-del /f /s /q *
-
-cd /d "%windir%\system32\dllcache"
-takeown /r /d o /f *
-icacls * /t /c /grant:r "%username%":F
-del /f /s /q *
-
-cd /d "%windir%\Logs"
-takeown /r /d o /f *
-icacls * /t /c /grant:r "%username%":F
-del /f /s /q *
-
-cd /d "%windir%\SoftwareDistribution\Download"
-takeown /r /d o /f *
-icacls * /t /c /grant:r "%username%":F
-del /f /s /q *
-
-cd /d "%windir%\WinSXS\Backup"
-takeown /r /d o /f *
-icacls * /t /c /grant:r "%username%":F
-del /f /s /q *
-
-cd /d "%windir%\servicing\LCU"
-takeown /r /d o /f *
-icacls * /t /c /grant:r "%username%":F
-del /f /s /q *
-
-cd /d "%userprofile%\Recent"
-takeown /r /d o /f *
-icacls * /t /c /grant:r "%username%":F
-del /f /s /q *
-
-cd /d "%userprofile%\Local Settings\History"
-takeown /r /d o /f *
-icacls * /t /c /grant:r "%username%":F
-del /f /s /q *
-
-cd /d "%userprofile%\Local Settings\Temporary Internet Files"
-takeown /r /d o /f *
-icacls * /t /c /grant:r "%username%":F
-del /f /s /q *
-
-cd /d "%userprofile%\Local Settings\Temp"
-takeown /r /d o /f *
-icacls * /t /c /grant:r "%username%":F
-del /f /s /q *
-
-cd /d "%userprofile%\Recent"
-takeown /r /d o /f *
-icacls * /t /c /grant:r "%username%":F
-del /f /s /q *
-
-cd /d "%userprofile%\Cookies"
-takeown /r /d o /f *
-icacls * /t /c /grant:r "%username%":F
-del /f /s /q *</Execute>
+foreach ($dir in $directories) {
+    $acl = Get-Acl $dir
+    $acl.SetOwner($userAccount)
+    $acl.AddAccessRule((New-Object System.Security.AccessControl.FileSystemAccessRule($userAccount, 'FullControl', 'Allow')))
+    Set-Acl $dir -AclObject $acl
+    foreach ($item in (Get-ChildItem $dir -Recurse -Force).FullName) {
+        $acl = Get-Acl $item
+        $acl.SetOwner($userAccount)
+        $acl.AddAccessRule((New-Object System.Security.AccessControl.FileSystemAccessRule($userAccount, 'FullControl', 'Allow')))
+        Set-Acl $item -AclObject $acl
+        Remove-Item $item -Force -Recurse -Verbose
+    }
+}</Execute>
   </Code>
 </Script>

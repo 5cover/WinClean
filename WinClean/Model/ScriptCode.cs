@@ -18,10 +18,6 @@ public sealed class ScriptCode : IDictionary<Capability, ScriptAction>, IEquatab
     bool ICollection<KeyValuePair<Capability, ScriptAction>>.IsReadOnly => ((ICollection<KeyValuePair<Capability, ScriptAction>>)_actions).IsReadOnly;
     public ScriptAction this[Capability key] { get => _actions[key]; set => _actions[key] = value; }
 
-    public static bool operator !=(ScriptCode? left, ScriptCode? right) => !(left == right);
-
-    public static bool operator ==(ScriptCode? left, ScriptCode? right) => EqualityComparer<ScriptCode>.Default.Equals(left, right);
-
     public void Add(Capability key, ScriptAction value) => _actions.Add(key, value);
 
     public bool ContainsKey(Capability key) => _actions.ContainsKey(key);

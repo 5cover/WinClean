@@ -8,6 +8,6 @@
   <SafetyLevel>Limited</SafetyLevel>
   <Impact>Free storage space</Impact>
   <Code>
-    <Execute Host="Execute">DISM /Online /Remove-Capability /CapabilityName:Browser.InternetExplorer~~~~0.0.11.0</Execute>
+    <Execute Host="Execute">Dism /Online /Remove-Capability /CapabilityName:Browser.InternetExplorer~~~~0.0.11.0 /NoRestart</Execute>
   </Code>
 </Script>

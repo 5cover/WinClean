@@ -8,8 +8,7 @@
   <SafetyLevel>Safe</SafetyLevel>
   <Impact>Privacy</Impact>
   <Code>
-    <Execute Host="PowerShell">Import-Module ScheduledTasks
-Get-ScheduledTask XblGameSaveTaskLogon | Disable-ScheduledTask
+    <Execute Host="PowerShell">Get-ScheduledTask XblGameSaveTaskLogon | Disable-ScheduledTask
 Get-ScheduledTask XblGameSaveTask | Disable-ScheduledTask
 Get-ScheduledTask Consolidator | Disable-ScheduledTask
 Get-ScheduledTask UsbCeip | Disable-ScheduledTask

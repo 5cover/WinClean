@@ -9,10 +9,6 @@
   <Impact>Storage speed</Impact>
   <Versions>>=6.1.7600</Versions>
   <Code>
-    <Execute Host="PowerShell">Get-WmiObject -Class Win32_Volume | ForEach-Object {
-    if ($_.DriveType -eq 3 -and $_.DriveLetter) {
-        fsutil dirty set $_.DriveLetter
-    }
-}</Execute>
+    <Execute Host="PowerShell">Get-Volume | % { fsutil dirty set $_.Path }</Execute>
   </Code>
 </Script>

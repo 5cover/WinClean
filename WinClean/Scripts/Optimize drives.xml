@@ -9,6 +9,6 @@
   <Impact>Storage speed</Impact>
   <Versions>>=10.0.15063</Versions>
   <Code>
-    <Execute Host="PowerShell">Get-Volume | Optimize-Volume -NormalPriority</Execute>
+    <Execute Host="PowerShell">Get-Volume | Optimize-Volume -NormalPriority -Verbose</Execute>
   </Code>
 </Script>

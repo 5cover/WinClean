@@ -9,6 +9,6 @@
   <Impact>Free storage space</Impact>
   <Versions>>=6.1.7600</Versions>
   <Code>
-    <Execute Host="Execute">dism /online /cleanup-image /StartComponentCleanup /ResetBase</Execute>
+    <Execute Host="Execute">Dism /Online /Cleanup-Image /StartComponentCleanup /ResetBase /NoRestart</Execute>
   </Code>
 </Script>
