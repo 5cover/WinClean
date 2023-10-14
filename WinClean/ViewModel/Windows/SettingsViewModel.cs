@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -14,12 +14,13 @@ public sealed class SettingsViewModel : ObservableObject
     public SettingsViewModel() => Reset = new RelayCommand(() =>
     {
         Settings.Reset();
-        OnPropertyChanged(nameof(Settings));
+        StaticPropertyChanged?.Invoke(this, new(nameof(Settings)));
         Logs.SettingsReset.Log();
     });
 
+    public static event PropertyChangedEventHandler? StaticPropertyChanged;
+
     public IRelayCommand Reset { get; }
 
-    [SuppressMessage("Performance", "CA1822", Justification = "Binding wouldn't update on PropertyChanged")]
-    public ISettings Settings => ServiceProvider.Get<ISettings>();
+    public static ISettings Settings => ServiceProvider.Get<ISettings>();
 }

@@ -13,6 +13,8 @@ namespace Scover.WinClean.Model.Serialization.Xml;
 
 public sealed class ScriptXmlSerializer : IScriptSerializer
 {
+    private static readonly int[] defaultSuccessExitCodes = { 0 };
+
     private static readonly Dictionary<string, Func<XmlDocument, ScriptBuilder>> deserializers = new()
     {
         ["Normal"] = DeserializeCurrent,
@@ -51,7 +53,10 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
     private static ScriptCode DeserializeCode(XmlDocument d)
         => d.GetSingleChild(NameFor.Code).ChildNodes.OfType<XmlElement>().ToDictionary(
             keySelector: e => Capability.FromResourceName(e.Name),
-            elementSelector: e => new ScriptAction(Metadatas.GetMetadata<Host>(e.GetAttribute(NameFor.Host)), e.InnerText))
+            elementSelector: e => new ScriptAction(Metadatas.GetMetadata<Host>(e.GetAttribute(NameFor.Host)),
+                e.GetAttribute(NameFor.SuccessExitCodes).Split(' ', StringSplitOptions.RemoveEmptyEntries) is { Length: > 0 } successExitCodes
+                ? successExitCodes.Select(s => int.Parse(s, CultureInfo.InvariantCulture))
+                : defaultSuccessExitCodes, e.InnerText))
         is { Count: > 0 } codeElements
             ? new ScriptCode(codeElements)
             : throw new InvalidDataException(ExceptionMessages.ElementHasNoNamedChild.FormatWith(NameFor.Code));
@@ -79,7 +84,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             {
                 return deserializer(loadedDocument);
             }
-            catch (Exception e) when (e is InvalidOperationException or XmlException or KeyNotFoundException or FormatException or InvalidDataException)
+            catch (Exception e) when (e is InvalidOperationException or XmlException or KeyNotFoundException or FormatException or InvalidDataException or OverflowException)
             {
                 deserializerExceptions[name] = e;
             }
@@ -97,6 +102,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             {
                 [Capability.Execute] = new ScriptAction(
                     code: d.GetSingleChildText(NameFor.Code),
+                    successsExitCodes: defaultSuccessExitCodes,
                     host: Metadatas.GetMetadata<Host>(d.GetSingleChildText(NameFor.Host)))
             }),
             Impact = Metadatas.GetMetadata<Impact>(d.GetSingleChildText(NameFor.Impact) switch

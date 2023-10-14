@@ -29,7 +29,7 @@ public sealed partial class ScriptXmlSerializerTests
         new(new Script(Metadatas.GetMetadata<Category>("Debloating"),
             new(new()
             {
-                [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Cmd"), "DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.WordPad~~~~0.0.1.0 /NoRestart")
+                [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Cmd"), new[] { 0 }, "DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.WordPad~~~~0.0.1.0 /NoRestart")
             }),
             Metadatas.GetMetadata<Impact>("Free storage space"),
             new LocalizedString()
@@ -49,9 +49,9 @@ public sealed partial class ScriptXmlSerializerTests
         new(new Script(Metadatas.GetMetadata<Category>("Maintenance"),
             new(new()
             {
-                [Capability.Enable] = new(Metadatas.GetMetadata<Host>("Regedit"), "Windows Registry Editor 5.00"),
-                [Capability.Disable] = new(Metadatas.GetMetadata<Host>("Cmd"), "echo %path%"),
-                [Capability.Detect] = new(Metadatas.GetMetadata<Host>("PowerShell"), "systray.exe")
+                [Capability.Enable] = new(Metadatas.GetMetadata<Host>("Regedit"), new[] { 0 }, "Windows Registry Editor 5.00"),
+                [Capability.Disable] = new(Metadatas.GetMetadata<Host>("Cmd"), new[] { 0 }, "echo %path%"),
+                [Capability.Detect] = new(Metadatas.GetMetadata<Host>("PowerShell"), new[] { 0 }, "systray.exe")
             }),
             Metadatas.GetMetadata<Impact>("Privacy"),
             new LocalizedString()
@@ -71,7 +71,7 @@ public sealed partial class ScriptXmlSerializerTests
         new(new Script(Metadatas.GetMetadata<Category>("Customization"),
             new(new()
             {
-                [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Regedit"), @"Windows Registry Editor Version 5.00
+                [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Regedit"), new[] { 0 }, @"Windows Registry Editor Version 5.00
     [HKEYCURRENTUSER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer]
     ""link""=hex:1b,00,00,00")
             }),

@@ -7,10 +7,11 @@ namespace Scover.WinClean.Model;
 [DebuggerDisplay($"{{{nameof(Host)},nq}} program")]
 public sealed class ScriptAction : IEquatable<ScriptAction?>
 {
-    public ScriptAction(Host host, string code)
-        => (Code, Host) = (code, host);
+    public ScriptAction(Host host, IEnumerable<int> successsExitCodes, string code)
+        => (Code, SuccessExitCodes, Host) = (code, successsExitCodes, host);
 
     public string Code { get; set; }
+    public IEnumerable<int> SuccessExitCodes { get; }
     public Host Host { get; set; }
 
     public HostStartInfo CreateHostStartInfo() => Host.CreateHostStartInfo(Code);

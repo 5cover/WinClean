@@ -241,6 +241,15 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à SuccessExitCodes.
+        /// </summary>
+        public static string SuccessExitCodes {
+            get {
+                return ResourceManager.GetString("SuccessExitCodes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Type.
         /// </summary>
         public static string Type {

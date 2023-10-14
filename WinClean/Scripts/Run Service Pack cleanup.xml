@@ -11,6 +11,6 @@ Starting from Windows 10, this option will most likely never be needed  as servi
   <Impact>Free storage space</Impact>
   <Versions>>=6.1.7600</Versions>
   <Code>
-    <Execute Host="Execute">Dism /Online /Cleanup-Image /SPSuperseded /NoRestart</Execute>
+    <Execute Host="Execute" SuccessExitCodes="0 3010">Dism /Online /Cleanup-Image /SPSuperseded /NoRestart</Execute>
   </Code>
 </Script>

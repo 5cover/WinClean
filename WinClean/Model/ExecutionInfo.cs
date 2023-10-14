@@ -19,10 +19,12 @@ public sealed class ExecutionInfo : IDisposable
     private readonly Lazy<Process> _hostProcess;
     private readonly HostStartInfo _hostStartInfo;
     private readonly Stopwatch _stopwatch = new();
+    private readonly ScriptAction _action;
     private bool _disposed;
 
     public ExecutionInfo(ScriptAction action, ISynchronizeInvoke? synchronizingObject = null)
     {
+        _action = action;
         _hostStartInfo = action.CreateHostStartInfo();
         _hostProcess = new(() => new Process()
         {
@@ -68,7 +70,7 @@ public sealed class ExecutionInfo : IDisposable
         HostProcess.WaitForExit();
         _stopwatch.Stop();
 
-        return new(HostProcess.ExitCode, _stopwatch.Elapsed);
+        return new(HostProcess.ExitCode, _action.SuccessExitCodes.Contains(HostProcess.ExitCode), _stopwatch.Elapsed);
     }
 
     /// <summary>Executes the script asynchronously.</summary>
@@ -100,7 +102,7 @@ public sealed class ExecutionInfo : IDisposable
             HostProcess.ErrorDataReceived -= OnErrorDataReceived;
         }
 
-        ExecutionResult result = new(HostProcess.ExitCode, _stopwatch.Elapsed);
+        ExecutionResult result = new(HostProcess.ExitCode, _action.SuccessExitCodes.Contains(HostProcess.ExitCode), _stopwatch.Elapsed);
 
         return result;
 

@@ -9,6 +9,6 @@
   <Impact>Free storage space</Impact>
   <Versions>>=4.0.950</Versions>
   <Code>
-    <Execute Host="Execute">Dism /Online /Remove-Capability /CapabilityName:Microsoft.Windows.WordPad~~~~0.0.1.0 /NoRestart</Execute>
+    <Execute Host="Execute" SuccessExitCodes="0 3010">Dism /Online /Remove-Capability /CapabilityName:Microsoft.Windows.WordPad~~~~0.0.1.0 /NoRestart</Execute>
   </Code>
 </Script>

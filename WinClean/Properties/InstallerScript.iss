@@ -18,7 +18,8 @@ AppSupportURL={#_RepoUrl}
 AppUpdatesURL={#_RepoUrl}/releases
 AppVerName={#Name} {#_Version}
 AppVersion={#_Version}
-DefaultDirName={autopf}\{#Name}
+ArchitecturesInstallIn64BitMode=x64 arm64 ia64
+DefaultDirName={code:GetProgramFiles}\{#Name}
 DisableProgramGroupPage=yes
 LicenseFile=..\..\LICENSE
 OutputBaseFilename={#SetupName}
@@ -99,6 +100,7 @@ function CompareVersionNumbers(V1: string; V2: string): integer; forward;
 function ExecuteCommand(const Filename: string; const Arguments: string; var ExitCode: integer): boolean; forward;
 function ExecuteWithOutput(const Filename: string; const Arguments: string; var ExitCode: integer; var Output: TArrayOfstring): boolean; forward;
 function GetInstalledNetVersions(): array of TVersion; forward;
+function GetProgramFiles(Param: string): string; forward;
 function InstallDotNetRuntime(): string; forward;
 function IsDotNetInstalled(const Product: string; const MinVersionNumber: string; const MaxVersionNumber: string): boolean; forward;
 function SplitString(Text: string; Separator: string): TArrayOfString; forward;
@@ -162,6 +164,18 @@ begin
 end;
 
 (* Misc functions *)
+
+function GetProgramFiles(Param: string): string;
+begin
+    case '{#_Arch}' of
+        'win-x86': begin
+            Result := ExpandConstant('{autopf32}');
+            end;
+        'win-x64': begin
+            Result := ExpandConstant('{autopf64}');
+            end;
+    end;
+end;
 
 // Installs the appropriate .NET Windows Desktop Runtime version.
 // Returns the error that occured while installing .NET runtime, or an empty string if the installation succeeded.

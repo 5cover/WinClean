@@ -185,6 +185,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Logs.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\UI\ScriptExecutionWizard.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ScriptExecutionWizard.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\ScriptTypes.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -316,6 +321,10 @@
     <EmbeddedResource Update="Resources\Logs.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Logs.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\UI\ScriptExecutionWizard.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ScriptExecutionWizard.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\ScriptTypes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

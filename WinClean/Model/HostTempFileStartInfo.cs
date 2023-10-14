@@ -16,10 +16,7 @@ public sealed class HostTempFileStartInfo : HostStartInfo, IDisposable
 
     public override void Dispose()
     {
-        if (_tempFile.IsValueCreated)
-        {
-            _tempFile.Value.Dispose();
-        }
+        _tempFile.DisposeIfCreated();
         base.Dispose();
     }
 }
