@@ -128,8 +128,6 @@ public sealed partial class MainViewModel : ObservableObject
             };
             _ = new Dialog(noScriptsSelected).ShowDialog();
         });
-
-        ReportIssue = new RelayCommand(ServiceProvider.Get<ISettings>().NewIssueUrl.Open);
     }
 
     public static string ApplicationName => ServiceProvider.Get<IApplicationInfo>().Name;
@@ -153,7 +151,7 @@ public sealed partial class MainViewModel : ObservableObject
     public IRelayCommand OpenLogsDir { get; } = new RelayCommand(AppDirectory.Logs.Open);
     public IRelayCommand OpenOnlineWiki { get; } = new RelayCommand(Settings.WikiUrl.Open);
     public IRelayCommand RemoveCurrentScript { get; }
-    public IRelayCommand ReportIssue { get; }
+    public IRelayCommand ReportIssue { get; } = new RelayCommand(ServiceProvider.Get<ISettings>().NewIssueUrl.Open);
     public CollectionWrapper<ObservableCollection<ScriptViewModel>, ScriptViewModel> Scripts { get; }
     public IRelayCommand ShowAboutWindow { get; } = new RelayCommand(() => _ = ServiceProvider.Get<IDialogCreator>().ShowDialog(new AboutViewModel()));
     public IRelayCommand ShowSettingsWindow { get; } = new RelayCommand(() => _ = ServiceProvider.Get<IDialogCreator>().ShowDialog(new SettingsViewModel()));
