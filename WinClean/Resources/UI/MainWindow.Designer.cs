@@ -187,6 +187,15 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à _Report issue....
+        /// </summary>
+        public static string MenuReportIssue {
+            get {
+                return ResourceManager.GetString("MenuReportIssue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Select s_cripts.
         /// </summary>
         public static string MenuSelectScripts {

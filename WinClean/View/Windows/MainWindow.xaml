@@ -95,6 +95,7 @@
             <MenuItem Command="{Binding ShowSettingsWindow}" Header="{x:Static ui:MainWindow.MenuSettings}" />
             <MenuItem Header="{x:Static ui:MainWindow.MenuHelp}">
                 <MenuItem Command="{Binding OpenOnlineWiki}" Header="{x:Static ui:MainWindow.MenuOnlineWiki}" />
+                <MenuItem Command="{Binding ReportIssue}" Header="{x:Static ui:MainWindow.MenuReportIssue}" />
                 <MenuItem Command="{Binding ShowAboutWindow}">
                     <MenuItem.Header>
                         <!--  HeaderStringFormat does not work with access keys  -->

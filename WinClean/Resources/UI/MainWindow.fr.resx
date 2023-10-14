@@ -168,6 +168,9 @@
     <value>_Ouvrir le dossier des logs</value>
     <comment />
   </data>
+  <data name="MenuReportIssue" xml:space="preserve">
+    <value>_Signaler un problème...</value>
+  </data>
   <data name="MenuSelectScripts" xml:space="preserve">
     <value>_Sélectionner scripts</value>
     <comment />

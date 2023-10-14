@@ -168,6 +168,9 @@
     <value>O_pen logs directory</value>
     <comment />
   </data>
+  <data name="MenuReportIssue" xml:space="preserve">
+    <value>_Report issue...</value>
+  </data>
   <data name="MenuSelectScripts" xml:space="preserve">
     <value>Select s_cripts</value>
     <comment />
