@@ -2,16 +2,38 @@
 
 namespace Scover.WinClean.Model.Metadatas;
 
+/// <summary>
+/// Specifies which script selection state a capability belongs to.
+/// </summary>
+public enum CapabilityCorrespondingSelectionState
+{
+    /// <summary>
+    /// The capability corresponds to a "Selected" selection state.
+    /// </summary>
+    Selected,
+
+    /// <summary>
+    /// The capability corresponds to an "Unselected" selection state.
+    /// </summary>
+    Unselected,
+
+    /// <summary>
+    /// The capability corresponds to an unspecified selection state.
+    /// </summary>
+    Unspecified
+}
+
 public sealed class Capability : Metadata
 {
-    private Capability(string resourceName) : base(new ResourceTextProvider(Capabilities.ResourceManager, resourceName))
-        => ResourceName = resourceName;
+    private Capability(string resourceName, CapabilityCorrespondingSelectionState correspondingSelectionState) : base(new ResourceTextProvider(Capabilities.ResourceManager, resourceName))
+        => (CorrespondingSelectionState, ResourceName) = (correspondingSelectionState, resourceName);
 
-    public static Capability Detect { get; } = new(nameof(Detect));
-    public static Capability Disable { get; } = new(nameof(Disable));
-    public static Capability Enable { get; } = new(nameof(Enable));
-    public static Capability Execute { get; } = new(nameof(Execute));
+    public static Capability Detect { get; } = new(nameof(Detect), CapabilityCorrespondingSelectionState.Unspecified);
+    public static Capability Disable { get; } = new(nameof(Disable), CapabilityCorrespondingSelectionState.Unselected);
+    public static Capability Enable { get; } = new(nameof(Enable), CapabilityCorrespondingSelectionState.Selected);
+    public static Capability Execute { get; } = new(nameof(Execute), CapabilityCorrespondingSelectionState.Selected);
     public static IReadOnlyCollection<Capability> Instances => Multiton<Capability, Capability>.Instances;
+    public CapabilityCorrespondingSelectionState CorrespondingSelectionState { get; }
     public string ResourceName { get; }
 
     public static Capability? FromInteger(int number) => number switch
