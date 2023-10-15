@@ -23,6 +23,7 @@
         <BitmapImage x:Key="Pause" UriSource="/Resources/Images/Pause.png" />
         <BitmapImage x:Key="Play" UriSource="/Resources/Images/Play.png" />
         <BitmapImage x:Key="WinClean" UriSource="/Resources/Images/WinClean.png" />
+        <BitmapImage x:Key="Skipped" UriSource="/Resources/Images/Skipped.png" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
         <converters:BooleanInvertConverter x:Key="BooleanInvert" />
         <converters:ColorToBrushConverter x:Key="ColorToBrush" />

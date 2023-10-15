@@ -157,18 +157,7 @@ public sealed class Page2ViewModel : WizardPageViewModel
 
         foreach (var executionInfo in ExecutionInfos.Source)
         {
-            if (await executionInfo.GetExecutionNeededAsync(cancellationToken))
-            {
-                executionInfo.Result = await executionInfo.ExecuteAsync(cancellationToken);
-                if (executionInfo.Result.Succeeded)
-                {
-                    executionInfo.Script.ExecutionTime = executionInfo.Result.ExecutionTime.Some();
-                }
-                // For aborted scripts, they might have changed system configuration before being aborted,
-                // that's why we still invalidate the cache.
-                executionInfo.Script.Code.EffectiveCapability.InvalidateValue();
-            }
-
+            await executionInfo.ExecuteAsync(cancellationToken);
             ++ScriptIndex;
         }
         if (RestartWhenFinished)

@@ -142,6 +142,15 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Execution of script &apos;{0}&apos; (&apos;{1}&apos;) skipped..
+        /// </summary>
+        public static string ScriptExecutionSkipped {
+            get {
+                return ResourceManager.GetString("ScriptExecutionSkipped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Script at &apos;{0}&apos; could not be loaded: {1}.
         /// </summary>
         public static string ScriptLoadError {

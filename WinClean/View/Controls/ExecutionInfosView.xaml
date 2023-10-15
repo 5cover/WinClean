@@ -35,6 +35,9 @@
                                                         <DataTrigger Binding="{Binding State}" Value="{x:Static viewModel:ScriptExecutionState.Paused}">
                                                             <Setter Property="Source" Value="{StaticResource Pause}" />
                                                         </DataTrigger>
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static viewModel:ScriptExecutionState.Skipped}">
+                                                            <Setter Property="Source" Value="{StaticResource Skipped}" />
+                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding Result.Succeeded, FallbackValue={x:Null}}" Value="False">
                                                             <Setter Property="Source" Value="{StaticResource Cross}" />
                                                         </DataTrigger>

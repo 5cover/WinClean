@@ -181,6 +181,11 @@
     <value>Script '{0}' removed.</value>
     <comment>0 : script InvariantName@Invariant</comment>
   </data>
+  <data name="ScriptExecutionSkipped" xml:space="preserve">
+    <value>Execution of script '{0}' ('{1}') skipped.</value>
+    <comment>0 : script InvariantName
+1 : capability InvariantName@Invariant</comment>
+  </data>
   <data name="ScriptsSaved" xml:space="preserve">
     <value>Scripts saved.</value>
     <comment>@Invariant</comment>

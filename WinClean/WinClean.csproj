@@ -38,6 +38,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\Skipped.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="Categories.xml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -89,6 +93,7 @@
     <Resource Include="Resources\Images\Gear.png" />
     <Resource Include="Resources\Images\Pause.png" />
     <Resource Include="Resources\Images\Play.png" />
+    <Resource Include="Resources\Images\Skipped.png" />
     <Resource Include="Resources\Images\WinClean.png" />
   </ItemGroup>
   

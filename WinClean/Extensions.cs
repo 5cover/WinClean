@@ -20,6 +20,8 @@ using CommandLine;
 
 using CommunityToolkit.Mvvm.Input;
 
+using Humanizer.Localisation;
+
 using Optional;
 using Optional.Unsafe;
 
@@ -27,8 +29,6 @@ using Scover.Dialogs;
 using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Resources;
-
-using Humanizer.Localisation;
 
 using Vanara.PInvoke;
 
@@ -51,8 +51,6 @@ public static class Extensions
             lazy.Value.Dispose();
         }
     }
-
-    public static string FormatToSeconds(this TimeSpan t) => t.RoundToSeconds().ToString();
 
     public static LocalizedString GetLocalizedString(this XmlDocument doc, string name)
     {
@@ -148,7 +146,11 @@ public static class Extensions
         return null;
     }
 
-    public static string HumanizeToSeconds(this TimeSpan t) => t.RoundToSeconds().Humanize(precision: 2, minUnit: TimeUnit.Second, maxUnit: TimeUnit.Hour);
+    public static string HumanizeToMilliseconds(this TimeSpan t)
+        => t.Humanize(minUnit: TimeUnit.Millisecond, maxUnit: TimeUnit.Hour);
+
+    public static string HumanizeToSeconds(this TimeSpan t)
+        => t.Humanize(precision: 2, minUnit: TimeUnit.Second, maxUnit: TimeUnit.Year);
 
     /// <summary>
     /// Checks if an exception is exogenous and could have been thrown by the filesystem API.
@@ -351,6 +353,4 @@ public static class Extensions
 
     [DllImport("ntdll.dll", SetLastError = true)]
     private static extern void NtSuspendProcess(IntPtr processHandle);
-
-    private static TimeSpan RoundToSeconds(this TimeSpan t) => Math.Round(t.TotalSeconds).Seconds();
 }

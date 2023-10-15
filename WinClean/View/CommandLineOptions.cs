@@ -1,4 +1,6 @@
-﻿using CommandLine;
+﻿using System.DirectoryServices.ActiveDirectory;
+
+using CommandLine;
 
 using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;
@@ -102,10 +104,11 @@ Script and capability names are case sensitive and follow ordinal string compari
         {
             Console.WriteLine(ConsoleMode.ExecutingScript.FormatWith(script.Name, capability.Name));
             var result = new ExecutionInfo(script.Code[capability]).Execute();
-            Console.WriteLine(ConsoleMode.ScriptExecuted.FormatWith(script.Name,
-                                                                    result.ExitCode,
-                                                                    result.ExecutionTime.FormatToSeconds(),
-                                                                    result.Succeeded));
+            Console.WriteLine(ConsoleMode.ScriptExecuted.FormatWith(
+                script.Name,
+                result.ExitCode,
+                Math.Round(result.ExecutionTime.TotalSeconds).Seconds().ToString("g"),
+                result.Succeeded));
         }
     }
 

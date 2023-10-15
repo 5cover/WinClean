@@ -6,6 +6,8 @@ using System.Windows.Controls.Primitives;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+using Optional;
+
 using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Resources;
@@ -16,10 +18,11 @@ namespace Scover.WinClean.ViewModel;
 
 public enum ScriptExecutionState
 {
+    Finished,
+    Paused,
     Pending,
     Running,
-    Paused,
-    Finished,
+    Skipped,
 }
 
 [DebuggerDisplay($"{nameof(State)}: {{{nameof(State)}}}")]
@@ -37,7 +40,7 @@ public sealed class ExecutionInfoViewModel : ObservableObject
         Capability = capabilityToExecute;
         _model = new(actionToExecute, synchronizationObject.Value);
         NotifyScroll = new RelayCommand<ScrollEventArgs>(e => UserIsNotScrolling = e.NotNull().ScrollEventType is ScrollEventType.EndScroll);
-        FormattedEstimatedExecutionTime = script.ExecutionTime.Match(t => t.FormatToSeconds(), () => TimeRemaining.Unknown);
+        FormattedEstimatedExecutionTime = script.ExecutionTime.Match(t => t.HumanizeToMilliseconds(), () => TimeRemaining.Unknown);
     }
 
     public Capability Capability { get; }
@@ -51,7 +54,7 @@ public sealed class ExecutionInfoViewModel : ObservableObject
     public ExecutionResultViewModel? Result
     {
         get => _result;
-        set
+        private set
         {
             _result = value;
             OnPropertyChanged();
@@ -88,17 +91,33 @@ public sealed class ExecutionInfoViewModel : ObservableObject
 
     public void Dispose() => _model.Dispose();
 
-    public async Task<ExecutionResultViewModel> ExecuteAsync(CancellationToken cancellationToken = default)
+    public async Task ExecuteAsync(CancellationToken cancellationToken = default)
     {
+        if (!await GetExecutionNeededAsync(cancellationToken))
+        {
+            State = ScriptExecutionState.Skipped;
+            Logs.ScriptExecutionSkipped.FormatWith(Script.InvariantName, Capability.InvariantName).Log();
+            Result = null;
+            return;
+        }
+
         State = ScriptExecutionState.Running;
-        var result = await _model.ExecuteAsync(Progress, cancellationToken);
-        Logs.ScriptExecutionCompleted.FormatWith(Script.InvariantName, Capability.InvariantName, result.ExitCode, result.Succeeded).Log();
+        Result = new(await _model.ExecuteAsync(Progress, cancellationToken));
+        Logs.ScriptExecutionCompleted.FormatWith(Script.InvariantName, Capability.InvariantName, Result.ExitCode, Result.Succeeded).Log();
         State = ScriptExecutionState.Finished;
-        return new(result);
+
+        if (Result.Succeeded)
+        {
+            Script.ExecutionTime = Result.ExecutionTime.Some();
+        }
+        // For aborted scripts, they might have changed system configuration before being aborted, that's why we still invalidate the cache.
+        Script.Code.EffectiveCapability.InvalidateValue();
     }
 
-    public async Task<bool> GetExecutionNeededAsync(CancellationToken cancellationToken)
-        => ServiceProvider.Get<ISettings>().ForceExecuteEffectiveScripts || !Capability.Equals(await Script.Code.EffectiveCapability.GetValueAsync(cancellationToken));
+    private async Task<bool> GetExecutionNeededAsync(CancellationToken cancellationToken)
+    {
+        return ServiceProvider.Get<ISettings>().ForceExecuteEffectiveScripts || !Capability.Equals(await Script.Code.EffectiveCapability.GetValueAsync(cancellationToken));
+    }
 
     public void Pause()
     {
