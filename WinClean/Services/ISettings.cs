@@ -16,6 +16,7 @@ public interface ISettings
     #endregion Readonly
 
     double Height { get; set; }
+    bool ForceExecuteEffectiveScripts { get; set; }
     bool IsLoggingEnabled { get; set; }
     bool IsMaximized { get; set; }
     double Left { get; set; }

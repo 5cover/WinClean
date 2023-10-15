@@ -70,6 +70,24 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à _Force execution of effective scripts.
+        /// </summary>
+        public static string ForceExecuteEffectiveScripts {
+            get {
+                return ResourceManager.GetString("ForceExecuteEffectiveScripts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Execute all scripts, even if they are already applied on the system..
+        /// </summary>
+        public static string ForceExecuteEffectiveScriptsDescription {
+            get {
+                return ResourceManager.GetString("ForceExecuteEffectiveScriptsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Show _update warning.
         /// </summary>
         public static string ShowUpdateDialog {
@@ -79,7 +97,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Settings.
+        ///   Recherche une chaîne localisée semblable à _Settings.
         /// </summary>
         public static string Title {
             get {

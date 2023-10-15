@@ -47,5 +47,8 @@
     <Setting Name="RepositoryId" Type="System.Int64" Scope="Application">
       <Value Profile="(Default)">511304031</Value>
     </Setting>
+    <Setting Name="ForceExecuteEffectiveScripts" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

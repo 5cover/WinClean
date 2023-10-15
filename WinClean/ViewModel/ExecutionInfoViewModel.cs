@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Resources;
+using Scover.WinClean.Services;
 using Scover.WinClean.ViewModel.Logging;
 
 namespace Scover.WinClean.ViewModel;
@@ -97,7 +98,7 @@ public sealed class ExecutionInfoViewModel : ObservableObject
     }
 
     public async Task<bool> GetExecutionNeededAsync(CancellationToken cancellationToken)
-        => !Capability.Equals(await Script.Code.EffectiveCapability.GetValueAsync(cancellationToken));
+        => ServiceProvider.Get<ISettings>().ForceExecuteEffectiveScripts || !Capability.Equals(await Script.Code.EffectiveCapability.GetValueAsync(cancellationToken));
 
     public void Pause()
     {

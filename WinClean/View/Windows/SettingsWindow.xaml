@@ -24,11 +24,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
         <CheckBox
-            x:Name="showUpdateDialogSetting"
             Grid.Row="0"
             Grid.ColumnSpan="2"
             Margin="0,6,0,6"
@@ -36,15 +36,30 @@
             IsChecked="{Binding Settings.ShowUpdateDialog, Mode=TwoWay}" />
 
         <CheckBox
-            x:Name="isLoggingEnabledSetting"
             Grid.Row="1"
             Grid.ColumnSpan="2"
             Margin="0,6,0,6"
             Content="{x:Static ui:SettingsWindow.EnableLogging}"
             IsChecked="{Binding Settings.IsLoggingEnabled, Mode=TwoWay}" />
 
-        <StackPanel
+        <CheckBox
             Grid.Row="2"
+            Grid.ColumnSpan="2"
+            Margin="0,6,0,6"
+            IsChecked="{Binding Settings.ForceExecuteEffectiveScripts, Mode=TwoWay}">
+            <StackPanel>
+                <Label Padding="0" Content="{x:Static ui:SettingsWindow.ForceExecuteEffectiveScripts}" />
+                <TextBlock Margin="0,3,0,0" Text="{x:Static ui:SettingsWindow.ForceExecuteEffectiveScriptsDescription}" />
+            </StackPanel>
+        </CheckBox>
+
+        <TextBlock
+            Grid.Row="3"
+            Grid.ColumnSpan="2"
+            Text="" />
+
+        <StackPanel
+            Grid.Row="4"
             Grid.Column="1"
             Margin="0,6,0,0"
             Orientation="Horizontal">
@@ -52,7 +67,10 @@
                 Margin="0,0,12,0"
                 Command="{Binding Reset}"
                 Content="{x:Static ui:Buttons.Reset}" />
-            <Button Content="{x:Static ui:Buttons.Close}" IsDefault="True">
+            <Button
+                Content="{x:Static ui:Buttons.Close}"
+                IsCancel="True"
+                IsDefault="True">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <i:CallMethodAction MethodName="Close" TargetObject="{Binding ElementName=settingsWindow}" />

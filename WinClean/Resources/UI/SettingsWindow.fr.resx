@@ -120,10 +120,16 @@
   <data name="EnableLogging" xml:space="preserve">
     <value>_Activer la journalisation</value>
   </data>
+  <data name="ForceExecuteEffectiveScripts" xml:space="preserve">
+    <value>_Forcer l'exécution des scripts effectifs</value>
+  </data>
+  <data name="ForceExecuteEffectiveScriptsDescription" xml:space="preserve">
+    <value>Exécuter tous les scripts, même s'ils sont déjà appliqués sur le système.</value>
+  </data>
   <data name="ShowUpdateDialog" xml:space="preserve">
     <value>Afficher l'a_vertissement de mise à jour</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Paramètres</value>
+    <value>_Paramètres</value>
   </data>
 </root>

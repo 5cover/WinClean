@@ -25,6 +25,7 @@ public sealed class Settings : ISettings
     public SemVersionRange DefaultHostVersions { get; private set; }
     public SemVersionRange DefaultScriptVersions { get; private set; }
     public double Height { get => AppSettings.Height; set => AppSettings.Height = value; }
+    public bool ForceExecuteEffectiveScripts { get => AppSettings.ForceExecuteEffectiveScripts; set => AppSettings.ForceExecuteEffectiveScripts = value; }
     public bool IsLoggingEnabled { get => AppSettings.IsLoggingEnabled; set => AppSettings.IsLoggingEnabled = value; }
     public bool IsMaximized { get => AppSettings.IsMaximized; set => AppSettings.IsMaximized = value; }
     public string LatestVersionUrl => AppSettings.LatestVersionUrl;
