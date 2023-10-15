@@ -28,6 +28,8 @@ using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Resources;
 
+using Humanizer.Localisation;
+
 using Vanara.PInvoke;
 
 using static Vanara.PInvoke.Shell32;
@@ -37,9 +39,6 @@ namespace Scover.WinClean;
 public static class Extensions
 {
     private static readonly Stack<object> handlingCollections = new();
-
-    public static Option<TAccumulate> AggregateOrNone<TSource, TAccumulate>(this IEnumerable<Option<TSource>> source, TAccumulate seed, Func<TAccumulate, TSource, TAccumulate> func)
-           => source.Aggregate(seed.Some(), (intermediate, next) => intermediate.FlatMap(intermediateValue => next.Map(newValue => func(intermediateValue, newValue))));
 
     public static bool CanExecute(this IRelayCommand relayCommand) => relayCommand.CanExecute(null);
 
@@ -53,8 +52,7 @@ public static class Extensions
         }
     }
 
-    public static string FormatToSeconds(this TimeSpan t)
-           => Convert.ToInt32(t.TotalSeconds).Seconds().ToString("g");
+    public static string FormatToSeconds(this TimeSpan t) => t.RoundToSeconds().ToString();
 
     public static LocalizedString GetLocalizedString(this XmlDocument doc, string name)
     {
@@ -149,6 +147,8 @@ public static class Extensions
         }
         return null;
     }
+
+    public static string HumanizeToSeconds(this TimeSpan t) => t.RoundToSeconds().Humanize(precision: 2, minUnit: TimeUnit.Second, maxUnit: TimeUnit.Hour);
 
     /// <summary>
     /// Checks if an exception is exogenous and could have been thrown by the filesystem API.
@@ -351,4 +351,6 @@ public static class Extensions
 
     [DllImport("ntdll.dll", SetLastError = true)]
     private static extern void NtSuspendProcess(IntPtr processHandle);
+
+    private static TimeSpan RoundToSeconds(this TimeSpan t) => Math.Round(t.TotalSeconds).Seconds();
 }

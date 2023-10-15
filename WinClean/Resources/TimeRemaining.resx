@@ -97,10 +97,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Action" xml:space="preserve">
-    <value>Action</value>
+  <data name="AtLeast" xml:space="preserve">
+    <value>at least {0}</value>
+    <comment>0 : duration</comment>
   </data>
-  <data name="TimeSpanUnknown" xml:space="preserve">
+  <data name="Unknown" xml:space="preserve">
     <value>unknown</value>
   </data>
 </root>

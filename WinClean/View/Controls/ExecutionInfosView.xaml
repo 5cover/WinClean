@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:res="clr-namespace:Scover.WinClean.Resources"
-    xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
     mc:Ignorable="d">
     <UserControl.ContentTemplate>
@@ -50,8 +49,8 @@
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
                             <GridViewColumn DisplayMemberBinding="{Binding Script.Name}" Header="{x:Static res:ScriptProperties.Name}" />
-                            <GridViewColumn DisplayMemberBinding="{Binding Capability.Name}" Header="{x:Static ui:ExecutionInfosView.Action}" />
-                            <GridViewColumn DisplayMemberBinding="{Binding FormattedOriginalEstimatedExecutionTime}" Header="{x:Static res:ExecutionResult.EstimatedTime}" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Capability.Name}" Header="{x:Static res:ScriptProperties.Action}" />
+                            <GridViewColumn DisplayMemberBinding="{Binding FormattedEstimatedExecutionTime}" Header="{x:Static res:ExecutionResult.EstimatedTime}" />
                             <!--  TargetNullValue doesn't work at all here for some reason  -->
                             <GridViewColumn DisplayMemberBinding="{Binding Result.FormattedExecutionTime, FallbackValue=-}" Header="{x:Static res:ExecutionResult.MeasuredTime}" />
                             <GridViewColumn DisplayMemberBinding="{Binding Result.ExitCode, FallbackValue=-}" Header="{x:Static res:ExecutionResult.ExitCode}" />

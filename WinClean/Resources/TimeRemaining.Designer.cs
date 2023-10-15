@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Scover.WinClean.Resources.UI {
+namespace Scover.WinClean.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Scover.WinClean.Resources.UI {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ExecutionInfosView {
+    public class TimeRemaining {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ExecutionInfosView() {
+        internal TimeRemaining() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Scover.WinClean.Resources.UI {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scover.WinClean.Resources.UI.ExecutionInfosView", typeof(ExecutionInfosView).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Scover.WinClean.Resources.TimeRemaining", typeof(TimeRemaining).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,20 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Action.
+        ///   Recherche une chaîne localisée semblable à at least {0}.
         /// </summary>
-        public static string Action {
+        public static string AtLeast {
             get {
-                return ResourceManager.GetString("Action", resourceCulture);
+                return ResourceManager.GetString("AtLeast", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Recherche une chaîne localisée semblable à unknown.
         /// </summary>
-        public static string TimeSpanUnknown {
+        public static string Unknown {
             get {
-                return ResourceManager.GetString("TimeSpanUnknown", resourceCulture);
+                return ResourceManager.GetString("Unknown", resourceCulture);
             }
         }
     }

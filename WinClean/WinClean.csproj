@@ -60,7 +60,7 @@
     <PackageReference Include="Humanizer" Version="2.14.1" />
     <PackageReference Include="Jab" Version="0.8.6" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
-    <PackageReference Include="Octokit" Version="8.0.0" />
+    <PackageReference Include="Octokit" Version="8.1.1" />
     <PackageReference Include="Optional" Version="4.0.0" />
     <PackageReference Include="Scover.Dialogs" Version="1.4.3" />
     <PackageReference Include="Semver" Version="2.3.0" />
@@ -68,6 +68,7 @@
     <PackageReference Include="System.Management" Version="7.0.2" />
     <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.16" />
     <PackageReference Include="Vanara.PInvoke.UxTheme" Version="3.4.16" />
+    <PackageReference Include="Vanara.WPF.Extensions" Version="3.4.16" />
   </ItemGroup>
   
   <ItemGroup>
@@ -185,6 +186,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Logs.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\TimeRemaining.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TimeRemaining.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\UI\ScriptExecutionWizard.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -204,11 +210,6 @@
       <DependentUpon>Buttons.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Resources\UI\ExecutionInfosView.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ExecutionInfosView.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\UI\ExecutionInfoView.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -322,6 +323,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Logs.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\TimeRemaining.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TimeRemaining.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\ScriptExecutionWizard.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ScriptExecutionWizard.Designer.cs</LastGenOutput>
@@ -337,10 +342,6 @@
     <EmbeddedResource Update="Resources\UI\Buttons.resx">
       <LastGenOutput>Buttons.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\UI\ExecutionInfosView.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExecutionInfosView.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\ExecutionInfoView.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

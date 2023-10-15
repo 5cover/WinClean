@@ -40,7 +40,21 @@
             Margin="0,0,0,10"
             DockPanel.Dock="Top"
             Maximum="{Binding ExecutionInfos.Source.Count, Mode=OneTime}"
-            Value="{Binding ScriptIndex, Mode=OneWay}" />
+            Value="{Binding ScriptIndex, Mode=OneWay}">
+            <ProgressBar.Style>
+                <Style TargetType="{x:Type ProgressBar}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ExecutionPaused}" Value="True">
+                            <Setter Property="TextElement.Foreground">
+                                <Setter.Value>
+                                    <Binding Path="PausedProgressBarBrush" />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ProgressBar.Style>
+        </ProgressBar>
         <StackPanel
             Margin="0,0,0,10"
             DockPanel.Dock="Top"

@@ -1,11 +1,10 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using System.Windows.Media;
 
-using Humanizer.Localisation;
+using CommunityToolkit.Mvvm.Input;
 
 using Optional;
 
 using Scover.WinClean.Resources;
-using Scover.WinClean.Resources.UI;
 using Scover.WinClean.Services;
 using Scover.WinClean.ViewModel.Logging;
 
@@ -14,9 +13,9 @@ namespace Scover.WinClean.ViewModel.Pages;
 public sealed class Page2ViewModel : WizardPageViewModel
 {
     private bool _executionPaused;
+    private string _formattedTimeRemaining = TimeRemaining.Unknown;
     private bool _restartWhenFinished;
     private int _scriptIndex = -1;
-    private Option<TimeSpan> _timeRemaining;
 
     public Page2ViewModel(CollectionWrapper<IList<ExecutionInfoViewModel>, ExecutionInfoViewModel> executionInfos)
     {
@@ -25,7 +24,6 @@ public sealed class Page2ViewModel : WizardPageViewModel
         {
             try
             {
-                _ = StartTimer(ct); // fire & forget
                 await ExecuteScripts(ct);
             }
             catch (OperationCanceledException)
@@ -65,6 +63,7 @@ public sealed class Page2ViewModel : WizardPageViewModel
         }, () => ExecutingExecutionInfo is not null && ExecutionPaused);
     }
 
+    public static Brush PausedProgressBarBrush => ServiceProvider.Get<IThemeProvider>().PausedProgressBarBrush;
     public IRelayCommand AbortScript { get; }
     public ExecutionInfoViewModel? ExecutingExecutionInfo => ScriptIndex == -1 || ScriptIndex == ExecutionInfos.Source.Count ? null : ExecutionInfos.Source[ScriptIndex];
     public CollectionWrapper<IList<ExecutionInfoViewModel>, ExecutionInfoViewModel> ExecutionInfos { get; }
@@ -81,7 +80,16 @@ public sealed class Page2ViewModel : WizardPageViewModel
         }
     }
 
-    public string FormattedTimeRemaining => TimeRemaining.Match(t => t.Humanize(precision: 3, minUnit: TimeUnit.Second), () => ExecutionInfosView.TimeSpanUnknown);
+    public string FormattedTimeRemaining
+    {
+        get => _formattedTimeRemaining;
+        private set
+        {
+            _formattedTimeRemaining = value;
+            OnPropertyChanged();
+        }
+    }
+
     public IRelayCommand Pause { get; }
 
     public bool RestartWhenFinished
@@ -102,10 +110,10 @@ public sealed class Page2ViewModel : WizardPageViewModel
         private set
         {
             _scriptIndex = value;
-            TimeRemaining = GetCumulatedExecutionTime(ExecutionInfos.Source.Skip(ScriptIndex).Select(e => e.Script));
             OnPropertyChanged();
             OnPropertyChanged(nameof(ExecutingExecutionInfo));
             OnPropertyChanged(nameof(ScriptsRemaining));
+            FormattedTimeRemaining = FormatTimeRemaining(ExecutionInfos.Source.Skip(ScriptIndex).Select(e => e.Script.ExecutionTime));
             AbortScript.NotifyCanExecuteChanged();
             Pause.NotifyCanExecuteChanged();
             Resume.NotifyCanExecuteChanged();
@@ -114,21 +122,34 @@ public sealed class Page2ViewModel : WizardPageViewModel
 
     public int ScriptsRemaining => ExecutionInfos.Source.Count - ScriptIndex;
     public IRelayCommand Stop { get; }
-    private static TimeSpan TimerInterval => 1.Seconds();
 
-    private Option<TimeSpan> TimeRemaining
+    public static string FormatTimeRemaining(IEnumerable<Option<TimeSpan>> durations)
     {
-        get => _timeRemaining;
-        set
+        int knownCount = 0;
+        int unknownCount = 0;
+        TimeSpan timeRemaining = durations.Aggregate(TimeSpan.Zero, (soFar, newVal) =>
         {
-            _timeRemaining = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(FormattedTimeRemaining));
-        }
-    }
+            if (newVal.HasValue)
+            {
+                ++knownCount;
+            }
+            else
+            {
+                ++unknownCount;
+            }
+            return soFar + newVal.ValueOr(TimeSpan.Zero);
+        });
 
-    private static Option<TimeSpan> GetCumulatedExecutionTime(IEnumerable<ScriptViewModel> scripts)
-        => scripts.Select(s => s.ExecutionTime).AggregateOrNone(TimeSpan.Zero, (sumSoFar, t) => sumSoFar + t);
+        if (knownCount == 0)
+        {
+            return TimeRemaining.Unknown;
+        }
+        else if (unknownCount > 0)
+        {
+            return TimeRemaining.AtLeast.FormatWith(timeRemaining.HumanizeToSeconds());
+        }
+        return timeRemaining.HumanizeToSeconds();
+    }
 
     private async Task ExecuteScripts(CancellationToken cancellationToken)
     {
@@ -158,24 +179,6 @@ public sealed class Page2ViewModel : WizardPageViewModel
         else
         {
             OnFinished();
-        }
-    }
-
-    private async Task StartTimer(CancellationToken cancellationToken)
-    {
-        using PeriodicTimer timer = new(TimerInterval);
-        while (await timer.WaitForNextTickAsync(cancellationToken))
-        {
-            if (ExecutionPaused)
-            {
-                continue;
-            }
-
-            // Prevent TimeRemaining from becoming negative. If we reach zero then it means we
-            // underestimated execution time.
-            TimeRemaining = TimeRemaining.FlatMap(t => t > TimerInterval
-                ? (t - TimerInterval).Some()
-                : Option.None<TimeSpan>());
         }
     }
 }
