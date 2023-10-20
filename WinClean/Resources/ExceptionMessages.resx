@@ -97,6 +97,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BuilderIncomplete" xml:space="preserve">
+    <value>Builder has missing data and cannot build.</value>
+    <comment>@Invariant</comment>
+  </data>
   <data name="CapabilityNotFound" xml:space="preserve">
     <value>No capability found for invariant name '{0}'.</value>
     <comment>0 : capability InvariantName@Invariant</comment>
@@ -152,10 +156,6 @@
   <data name="NoStringFoundForCultureTree" xml:space="preserve">
     <value>No string was found for culture '{0}' or any of its parents.</value>
     <comment>0 : culture key@Invariant</comment>
-  </data>
-  <data name="BuilderIncomplete" xml:space="preserve">
-    <value>Builder has missing data and cannot build.</value>
-    <comment>@Invariant</comment>
   </data>
   <data name="RepoNotFound" xml:space="preserve">
     <value>No repository found for script type '{0}'.</value>
