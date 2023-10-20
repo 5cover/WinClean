@@ -61,6 +61,15 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Canceled script execution.
+        /// </summary>
+        public static string CanceledScriptExecution {
+            get {
+                return ResourceManager.GetString("CanceledScriptExecution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Cleared logs folder..
         /// </summary>
         public static string ClearedLogsFolder {
@@ -84,6 +93,15 @@ namespace Scover.WinClean.Resources {
         public static string FailedToDeleteLogFile {
             get {
                 return ResourceManager.GetString("FailedToDeleteLogFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Finished script execution..
+        /// </summary>
+        public static string FinishedScriptExecution {
+            get {
+                return ResourceManager.GetString("FinishedScriptExecution", resourceCulture);
             }
         }
         
@@ -210,6 +228,15 @@ namespace Scover.WinClean.Resources {
         public static string SettingsSaved {
             get {
                 return ResourceManager.GetString("SettingsSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Started execution of {0} script(s)..
+        /// </summary>
+        public static string StartedScriptExecution {
+            get {
+                return ResourceManager.GetString("StartedScriptExecution", resourceCulture);
             }
         }
         

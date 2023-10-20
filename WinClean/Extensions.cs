@@ -341,6 +341,9 @@ public static class Extensions
     public static BitmapSource ToBitmapSource(this HICON hIcon)
         => Imaging.CreateBitmapSourceFromHIcon(hIcon.DangerousGetHandle(), Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
+    public static DisposableEnumerable<T> ToDisposableEnumerable<T>(this IEnumerable<T> disposables) where T : IDisposable
+                                                                                                                   => new(disposables);
+
     public static IEnumerable<T> WhereSome<T>(this IEnumerable<Option<T>> source) => source.Where(o => o.HasValue).Select(o => o.ValueOrFailure());
 
     public static IEnumerable<TSource> WithoutNull<TSource>(this IEnumerable<TSource?> source)

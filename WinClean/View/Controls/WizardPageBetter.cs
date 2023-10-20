@@ -7,6 +7,7 @@ namespace Scover.WinClean.View.Controls;
 
 public class WizardPageBetter : WizardPage
 {
+    public static readonly DependencyProperty ConfirmWindowClosingProperty = DependencyProperty.Register(nameof(ConfirmWindowClosing), typeof(bool), typeof(WizardPageBetter));
     public static readonly DependencyProperty EnterCommandProperty = DependencyProperty.Register(nameof(EnterCommand), typeof(ICommand), typeof(WizardPageBetter));
     public static readonly DependencyProperty LeaveCommandProperty = DependencyProperty.Register(nameof(LeaveCommand), typeof(ICommand), typeof(WizardPageBetter));
 
@@ -16,6 +17,12 @@ public class WizardPageBetter : WizardPage
     {
         Enter += (_, _) => EnterCommand?.Execute(null);
         Leave += (_, _) => LeaveCommand?.Execute(null);
+    }
+
+    public bool ConfirmWindowClosing
+    {
+        get => (bool)GetValue(ConfirmWindowClosingProperty);
+        set => SetValue(ConfirmWindowClosingProperty, value);
     }
 
     public ICommand? EnterCommand

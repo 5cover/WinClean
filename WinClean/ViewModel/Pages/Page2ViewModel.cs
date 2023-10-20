@@ -1,5 +1,6 @@
 ﻿using System.Windows.Media;
 
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using Optional;
@@ -10,11 +11,14 @@ using Scover.WinClean.ViewModel.Logging;
 
 namespace Scover.WinClean.ViewModel.Pages;
 
-public sealed class Page2ViewModel : WizardPageViewModel
+public sealed partial class Page2ViewModel : WizardPageViewModel
 {
     private bool _executionPaused;
     private string _formattedTimeRemaining = TimeRemaining.Unknown;
+
+    [ObservableProperty]
     private bool _restartWhenFinished;
+
     private int _scriptIndex = -1;
 
     public Page2ViewModel(CollectionWrapper<IList<ExecutionInfoViewModel>, ExecutionInfoViewModel> executionInfos)
@@ -22,14 +26,17 @@ public sealed class Page2ViewModel : WizardPageViewModel
         ExecutionInfos = executionInfos;
         AsyncRelayCommand start = new(async ct =>
         {
+            Logs.StartedScriptExecution.FormatWith(ExecutionInfos.Source.Count).Log();
             try
             {
                 await ExecuteScripts(ct);
             }
             catch (OperationCanceledException)
             {
-                // Make sure this doesn't go unhandled if a View isn't there to swallow the exception.
+                Logs.CanceledScriptExecution.Log();
+                // Make sure this doesn't go unhandled.
             }
+            Logs.FinishedScriptExecution.Log();
         });
         EnterCommand = start;
         LeaveCommand = new RelayCommand(start.Cancel);
@@ -91,16 +98,6 @@ public sealed class Page2ViewModel : WizardPageViewModel
     }
 
     public IRelayCommand Pause { get; }
-
-    public bool RestartWhenFinished
-    {
-        get => _restartWhenFinished;
-        set
-        {
-            _restartWhenFinished = value;
-            OnPropertyChanged();
-        }
-    }
 
     public IRelayCommand Resume { get; }
 

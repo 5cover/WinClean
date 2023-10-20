@@ -109,12 +109,17 @@ public sealed partial class MainViewModel : ObservableObject
 
         ExecuteScripts = new RelayCommand(() =>
         {
-            if (Scripts.Where(s => s.Selection.IsSelected)
+            var executionInfos = Scripts.Where(s => s.Selection.IsSelected)
                 .Select(s => s.TryCreateExecutionInfo())
-                .WhereSome().ToList() is { Count: > 0 } executionInfos)
+                .WhereSome().ToDisposableEnumerable();
+            ScriptExecutionWizardViewModel viewModel = new(executionInfos.ToList());
+            if (executionInfos.Any())
             {
-                using ScriptExecutionWizardViewModel viewModel = new(executionInfos);
                 _ = ServiceProvider.Get<IDialogCreator>().ShowDialog(viewModel);
+                foreach (var executionInfo in executionInfos)
+                {
+                    executionInfo.Dispose();
+                }
                 return;
             }
 

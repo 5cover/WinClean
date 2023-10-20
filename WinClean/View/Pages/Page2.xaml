@@ -12,6 +12,7 @@
     d:DataContext="{d:DesignInstance Type=pages:Page2ViewModel}"
     BackButtonVisibility="Collapsed"
     CancelButtonVisibility="Collapsed"
+    ConfirmWindowClosing="True"
     NextButtonVisibility="Collapsed"
     mc:Ignorable="d">
     <view:ButtonsArea.AdditionalContent>

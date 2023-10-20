@@ -37,7 +37,7 @@ public sealed class ScriptCode : IDictionary<Capability, ScriptAction>, IEquatab
             return Capability.FromInteger(process.ExitCode);
         }
 
-        // Detection took too long : kill process.
+        // Detection took too long: kill process.
         process.KillTree();
         return null;
     }

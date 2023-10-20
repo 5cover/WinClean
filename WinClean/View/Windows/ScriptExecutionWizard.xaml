@@ -21,8 +21,7 @@
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
-        <!--  If the wizard page allows cancellation, then it must be ok to close with the title bar button too.  -->
-        <view:WindowClosing IsEnabled="{Binding ElementName=wizard, Path=CurrentPage.CanCancel, TargetNullValue=True}" />
+        <view:ConfirmWindowClosing IsEnabled="{Binding ElementName=wizard, Path=CurrentPage.(controls:WizardPageBetter.ConfirmWindowClosing)}" />
     </i:Interaction.Behaviors>
     <Window.Resources>
         <ControlTemplate x:Key="PageTemplate" TargetType="controls:WizardPageBetter">

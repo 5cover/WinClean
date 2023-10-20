@@ -26,7 +26,7 @@ public enum ScriptExecutionState
 }
 
 [DebuggerDisplay($"{nameof(State)}: {{{nameof(State)}}}")]
-public sealed class ExecutionInfoViewModel : ObservableObject
+public sealed class ExecutionInfoViewModel : ObservableObject, IDisposable
 {
     private static readonly Lazy<ISynchronizeInvoke> synchronizationObject = new(Application.Current.CreateSynchronizationObject);
     private readonly ExecutionInfo _model;
@@ -101,6 +101,8 @@ public sealed class ExecutionInfoViewModel : ObservableObject
             return;
         }
 
+        using var reg = cancellationToken.Register(Abort);
+
         State = ScriptExecutionState.Running;
         Result = new(await _model.ExecuteAsync(Progress, cancellationToken));
         Logs.ScriptExecutionCompleted.FormatWith(Script.InvariantName, Capability.InvariantName, Result.ExitCode, Result.Succeeded).Log();
@@ -112,11 +114,6 @@ public sealed class ExecutionInfoViewModel : ObservableObject
         }
         // For aborted scripts, they might have changed system configuration before being aborted, that's why we still invalidate the cache.
         Script.Code.EffectiveCapability.InvalidateValue();
-    }
-
-    private async Task<bool> GetExecutionNeededAsync(CancellationToken cancellationToken)
-    {
-        return ServiceProvider.Get<ISettings>().ForceExecuteEffectiveScripts || !Capability.Equals(await Script.Code.EffectiveCapability.GetValueAsync(cancellationToken));
     }
 
     public void Pause()
@@ -134,4 +131,8 @@ public sealed class ExecutionInfoViewModel : ObservableObject
     }
 
     private string Format(string message) => message.FormatWith(Script.InvariantName, Capability.InvariantName);
+
+    private async Task<bool> GetExecutionNeededAsync(CancellationToken cancellationToken)
+                      => ServiceProvider.Get<ISettings>().ForceExecuteEffectiveScripts ||
+            !Capability.Equals(await Script.Code.EffectiveCapability.GetValueAsync(cancellationToken));
 }
