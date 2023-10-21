@@ -49,7 +49,6 @@ public sealed partial class App
 
     private async void ApplicationStartup(object? sender, StartupEventArgs? e)
     {
-        CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
         if (e?.Args.Any() ?? false)
         {
             await StartConsole(e.Args);
