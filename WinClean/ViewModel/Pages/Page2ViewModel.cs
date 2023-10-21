@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using Optional;
 
 using Scover.WinClean.Resources;
+using Scover.WinClean.Resources.UI;
 using Scover.WinClean.Services;
 using Scover.WinClean.ViewModel.Logging;
 
@@ -21,9 +22,10 @@ public sealed partial class Page2ViewModel : WizardPageViewModel
 
     private int _scriptIndex = -1;
 
-    public Page2ViewModel(CollectionWrapper<IList<ExecutionInfoViewModel>, ExecutionInfoViewModel> executionInfos)
+    public Page2ViewModel(CollectionWrapper<IReadOnlyList<ExecutionInfoViewModel>, ExecutionInfoViewModel> executionInfos)
     {
         ExecutionInfos = executionInfos;
+
         AsyncRelayCommand start = new(async ct =>
         {
             Logs.StartedScriptExecution.FormatWith(ExecutionInfos.Source.Count).Log();
@@ -73,7 +75,7 @@ public sealed partial class Page2ViewModel : WizardPageViewModel
     public static Brush PausedProgressBarBrush => ServiceProvider.Get<IThemeProvider>().PausedProgressBarBrush;
     public IRelayCommand AbortScript { get; }
     public ExecutionInfoViewModel? ExecutingExecutionInfo => ScriptIndex == -1 || ScriptIndex == ExecutionInfos.Source.Count ? null : ExecutionInfos.Source[ScriptIndex];
-    public CollectionWrapper<IList<ExecutionInfoViewModel>, ExecutionInfoViewModel> ExecutionInfos { get; }
+    public CollectionWrapper<IReadOnlyList<ExecutionInfoViewModel>, ExecutionInfoViewModel> ExecutionInfos { get; }
 
     public bool ExecutionPaused
     {
@@ -87,6 +89,15 @@ public sealed partial class Page2ViewModel : WizardPageViewModel
         }
     }
 
+    public string FormattedProgress => Page2.MsgProgress.FormatMessage(new()
+    {
+        ["executedCount"] = ScriptIndex,
+        ["scriptCount"] = ExecutionInfos.Source.Count,
+        ["remainingCount"] = ExecutionInfos.Source.Count - ScriptIndex,
+        ["currentScriptName"] = ExecutingExecutionInfo?.Script.Name,
+        ["remainingTime"] = FormattedTimeRemaining,
+    });
+
     public string FormattedTimeRemaining
     {
         get => _formattedTimeRemaining;
@@ -94,11 +105,11 @@ public sealed partial class Page2ViewModel : WizardPageViewModel
         {
             _formattedTimeRemaining = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(FormattedProgress));
         }
     }
 
     public IRelayCommand Pause { get; }
-
     public IRelayCommand Resume { get; }
 
     public int ScriptIndex
@@ -109,7 +120,7 @@ public sealed partial class Page2ViewModel : WizardPageViewModel
             _scriptIndex = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(ExecutingExecutionInfo));
-            OnPropertyChanged(nameof(ScriptsRemaining));
+            OnPropertyChanged(nameof(FormattedProgress));
             FormattedTimeRemaining = FormatTimeRemaining(ExecutionInfos.Source.Skip(ScriptIndex).Select(e => e.Script.ExecutionTime));
             AbortScript.NotifyCanExecuteChanged();
             Pause.NotifyCanExecuteChanged();
@@ -117,7 +128,6 @@ public sealed partial class Page2ViewModel : WizardPageViewModel
         }
     }
 
-    public int ScriptsRemaining => ExecutionInfos.Source.Count - ScriptIndex;
     public IRelayCommand Stop { get; }
 
     public static string FormatTimeRemaining(IEnumerable<Option<TimeSpan>> durations)
@@ -145,6 +155,7 @@ public sealed partial class Page2ViewModel : WizardPageViewModel
         {
             return TimeRemaining.AtLeast.FormatWith(timeRemaining.HumanizeToSeconds());
         }
+
         return timeRemaining.HumanizeToSeconds();
     }
 
@@ -160,7 +171,7 @@ public sealed partial class Page2ViewModel : WizardPageViewModel
         if (RestartWhenFinished)
         {
             Logs.SystemRestartInitiated.Log(LogLevel.Info);
-            ServiceProvider.Get<IOperatingSystem>().RestartForOSReconfig(true);
+            ServiceProvider.Get<IOperatingSystem>().RestartForOSReconfig(force: true);
         }
         else
         {

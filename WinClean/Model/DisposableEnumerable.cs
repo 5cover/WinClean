@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Scover.WinClean;
+namespace Scover.WinClean.Model;
 
 public sealed class DisposableEnumerable<T> : IEnumerable<T>, IDisposable where T : IDisposable
 {

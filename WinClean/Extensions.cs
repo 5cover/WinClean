@@ -29,6 +29,7 @@ using Scover.Dialogs;
 using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Resources;
+using Scover.WinClean.Services;
 
 using Vanara.PInvoke;
 
@@ -52,6 +53,9 @@ public static class Extensions
         }
     }
 
+    public static string FormatMessage(this string message, Dictionary<string, object?> args)
+                      => ServiceProvider.Get<IMessageFormatter>().Format(message, args);
+
     public static LocalizedString GetLocalizedString(this XmlDocument doc, string name)
     {
         LocalizedString localizedNodeTexts = new();
@@ -62,7 +66,7 @@ public static class Extensions
         return localizedNodeTexts;
     }
 
-    /// <summary>Get the process tree for this process.</summary>
+    /// <summary>Gets the process tree for this process.</summary>
     /// <param name="process"></param>
     /// <returns>
     /// The process tree for this process, starting from the deepest descendants to the children.
@@ -146,11 +150,11 @@ public static class Extensions
         return null;
     }
 
-    public static string HumanizeToMilliseconds(this TimeSpan t)
-        => t.Humanize(minUnit: TimeUnit.Millisecond, maxUnit: TimeUnit.Hour);
+    public static string HumanizeToMilliseconds(this TimeSpan t, CultureInfo? culture = null)
+        => t.Humanize(culture: culture, minUnit: TimeUnit.Millisecond, maxUnit: TimeUnit.Hour);
 
-    public static string HumanizeToSeconds(this TimeSpan t)
-        => t.Humanize(precision: 2, minUnit: TimeUnit.Second, maxUnit: TimeUnit.Year);
+    public static string HumanizeToSeconds(this TimeSpan t, CultureInfo? culture = null)
+        => t.Humanize(culture: culture, precision: 2, minUnit: TimeUnit.Second, maxUnit: TimeUnit.Year);
 
     /// <summary>
     /// Checks if an exception is exogenous and could have been thrown by the filesystem API.
@@ -207,7 +211,7 @@ public static class Extensions
            => new(argumentName, Convert.ToInt32(value, CultureInfo.InvariantCulture), typeof(TEnum));
 
     /// <summary>Asserts that <paramref name="t"/> isn't <see langword="null"/>.</summary>
-    /// <remarks>This is a safer replacement for the null-forgiving operator ( <c>!</c>).</remarks>
+    /// <remarks>This is a safer replacement for the null-forgiving operator (<c>!</c>).</remarks>
     /// <returns><paramref name="t"/>, not null.</returns>
     public static T NotNull<T>([NotNull] this T? t, string? message = null)
     {

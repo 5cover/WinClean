@@ -20,6 +20,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Invariant UI|Any CPU = Debug Invariant UI|Any CPU
+		Debug Invariant UI|x64 = Debug Invariant UI|x64
+		Debug Invariant UI|x86 = Debug Invariant UI|x86
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
@@ -28,6 +31,12 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{120C7C16-98F3-463F-B8C5-B666013B2547}.Debug Invariant UI|Any CPU.ActiveCfg = Debug Invariant UI|Any CPU
+		{120C7C16-98F3-463F-B8C5-B666013B2547}.Debug Invariant UI|Any CPU.Build.0 = Debug Invariant UI|Any CPU
+		{120C7C16-98F3-463F-B8C5-B666013B2547}.Debug Invariant UI|x64.ActiveCfg = Debug Invariant UI|Any CPU
+		{120C7C16-98F3-463F-B8C5-B666013B2547}.Debug Invariant UI|x64.Build.0 = Debug Invariant UI|Any CPU
+		{120C7C16-98F3-463F-B8C5-B666013B2547}.Debug Invariant UI|x86.ActiveCfg = Debug Invariant UI|Any CPU
+		{120C7C16-98F3-463F-B8C5-B666013B2547}.Debug Invariant UI|x86.Build.0 = Debug Invariant UI|Any CPU
 		{120C7C16-98F3-463F-B8C5-B666013B2547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{120C7C16-98F3-463F-B8C5-B666013B2547}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{120C7C16-98F3-463F-B8C5-B666013B2547}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -40,6 +49,12 @@ Global
 		{120C7C16-98F3-463F-B8C5-B666013B2547}.Release|x64.Build.0 = Release|Any CPU
 		{120C7C16-98F3-463F-B8C5-B666013B2547}.Release|x86.ActiveCfg = Release|Any CPU
 		{120C7C16-98F3-463F-B8C5-B666013B2547}.Release|x86.Build.0 = Release|Any CPU
+		{89F011BA-42B2-48F4-95E4-8D9547438918}.Debug Invariant UI|Any CPU.ActiveCfg = Debug Invariant UI|Any CPU
+		{89F011BA-42B2-48F4-95E4-8D9547438918}.Debug Invariant UI|Any CPU.Build.0 = Debug Invariant UI|Any CPU
+		{89F011BA-42B2-48F4-95E4-8D9547438918}.Debug Invariant UI|x64.ActiveCfg = Debug Invariant UI|Any CPU
+		{89F011BA-42B2-48F4-95E4-8D9547438918}.Debug Invariant UI|x64.Build.0 = Debug Invariant UI|Any CPU
+		{89F011BA-42B2-48F4-95E4-8D9547438918}.Debug Invariant UI|x86.ActiveCfg = Debug Invariant UI|Any CPU
+		{89F011BA-42B2-48F4-95E4-8D9547438918}.Debug Invariant UI|x86.Build.0 = Debug Invariant UI|Any CPU
 		{89F011BA-42B2-48F4-95E4-8D9547438918}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{89F011BA-42B2-48F4-95E4-8D9547438918}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89F011BA-42B2-48F4-95E4-8D9547438918}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -53,7 +68,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_SortFileContentOnSave = True
 		SolutionGuid = {A6BD83C2-667C-4D54-9AE5-66F0940AAA98}
+		RESX_SortFileContentOnSave = True
 	EndGlobalSection
 EndGlobal

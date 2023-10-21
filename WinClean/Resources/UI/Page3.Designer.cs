@@ -61,12 +61,12 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à {0} script(s) executed in {1}.
+        ///   Recherche une chaîne localisée semblable à {scriptCount, plural, one {# script} other {# scripts}} executed in {elapsedTime, time, humanize}.
         ///It is recommended to restart the system to finalize the operation..
         /// </summary>
-        public static string Description {
+        public static string MsgDescription {
             get {
-                return ResourceManager.GetString("Description", resourceCulture);
+                return ResourceManager.GetString("MsgDescription", resourceCulture);
             }
         }
         

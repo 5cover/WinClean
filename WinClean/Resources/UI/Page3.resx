@@ -97,11 +97,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Description" xml:space="preserve">
-    <value>{0} script(s) executed in {1}.
+  <data name="MsgDescription" xml:space="preserve">
+    <value>{scriptCount, plural, one {# script} other {# scripts}} executed in {elapsedTime, time, humanize}.
 It is recommended to restart the system to finalize the operation.</value>
-    <comment>0 : script count
-1 : elapsed time</comment>
+    <comment>scriptCount : script count
+elapsedTime : elapsed time</comment>
   </data>
   <data name="Restart" xml:space="preserve">
     <value>Restart</value>

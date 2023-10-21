@@ -25,17 +25,10 @@
         <Button Command="{Binding Stop, FallbackValue={x:Null}}" Content="{x:Static ui:Buttons.Stop}" />
     </view:ButtonsArea.AdditionalButtons>
     <DockPanel Margin="10">
-        <TextBlock Margin="0,0,0,10" DockPanel.Dock="Top">
-            <TextBlock.Text>
-                <MultiBinding StringFormat="{x:Static ui:Page2.ProgressFormat}">
-                    <Binding Path="ScriptIndex" UpdateSourceTrigger="PropertyChanged" />
-                    <Binding Path="ExecutionInfos.Source.Count" UpdateSourceTrigger="PropertyChanged" />
-                    <Binding Path="ScriptsRemaining" UpdateSourceTrigger="PropertyChanged" />
-                    <Binding Path="ExecutingExecutionInfo.Script.Name" UpdateSourceTrigger="PropertyChanged" />
-                    <Binding Path="FormattedTimeRemaining" UpdateSourceTrigger="PropertyChanged" />
-                </MultiBinding>
-            </TextBlock.Text>
-        </TextBlock>
+        <TextBlock
+            Margin="0,0,0,10"
+            DockPanel.Dock="Top"
+            Text="{Binding FormattedProgress}" />
         <ProgressBar
             Height="23"
             Margin="0,0,0,10"

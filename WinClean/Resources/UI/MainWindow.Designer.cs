@@ -214,6 +214,15 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à {scriptCount, plural, one {# script} other {# scripts}}..
+        /// </summary>
+        public static string MsgScriptCount {
+            get {
+                return ResourceManager.GetString("MsgScriptCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à _Name.
         /// </summary>
         public static string Name {
@@ -228,15 +237,6 @@ namespace Scover.WinClean.Resources.UI {
         public static string SafetyLevel {
             get {
                 return ResourceManager.GetString("SafetyLevel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à {0} script(s)..
-        /// </summary>
-        public static string ScriptCount {
-            get {
-                return ResourceManager.GetString("ScriptCount", resourceCulture);
             }
         }
     }

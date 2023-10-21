@@ -185,7 +185,7 @@
   <data name="SafetyLevel" xml:space="preserve">
     <value>Sû_reté</value>
   </data>
-  <data name="ScriptCount" xml:space="preserve">
-    <value>{0} script(s).</value>
+  <data name="MsgScriptCount" xml:space="preserve">
+    <value>{scriptCount, plural, one {# script} other {# scripts}}.</value>
   </data>
 </root>

@@ -79,6 +79,17 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à {executedCount} out of {scriptCount, plural, one {# script} other {# scripts}} executed ({remainingCount} remaining).
+        ///Currently executing: {currentScriptName}
+        ///Time remaining: {remainingTime}.
+        /// </summary>
+        public static string MsgProgress {
+            get {
+                return ResourceManager.GetString("MsgProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Pause.
         /// </summary>
         public static string Pause {
@@ -93,17 +104,6 @@ namespace Scover.WinClean.Resources.UI {
         public static string PauseDescription {
             get {
                 return ResourceManager.GetString("PauseDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à {0} out of {1} scripts executed ({2} remaining)
-        ///Currently executing: {3}
-        ///Time remaining: {4}.
-        /// </summary>
-        public static string ProgressFormat {
-            get {
-                return ResourceManager.GetString("ProgressFormat", resourceCulture);
             }
         }
         

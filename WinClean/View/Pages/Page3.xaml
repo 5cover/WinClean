@@ -14,15 +14,10 @@
     BackButtonVisibility="Collapsed"
     CanFinish="True"
     CancelButtonVisibility="Collapsed"
+    Description="{Binding FormattedDescription}"
     FinishButtonVisibility="Visible"
     NextButtonVisibility="Collapsed"
     mc:Ignorable="d">
-    <xctk:WizardPage.Description>
-        <MultiBinding StringFormat="{x:Static ui:Page3.Description}">
-            <Binding Path="ExecutionInfos.Source.Count" />
-            <Binding Path="FormattedElapsedTime" />
-        </MultiBinding>
-    </xctk:WizardPage.Description>
     <view:ButtonsArea.AdditionalButtons>
         <Button
             HorizontalAlignment="Right"

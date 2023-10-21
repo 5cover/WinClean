@@ -109,15 +109,15 @@
   <data name="PauseDescription" xml:space="preserve">
     <value>Suspends the processed associated with the current script.</value>
   </data>
-  <data name="ProgressFormat" xml:space="preserve">
-    <value>{0} out of {1} scripts executed ({2} remaining)
-Currently executing: {3}
-Time remaining: {4}</value>
-    <comment>0 : count of scripts executed
-1 : script count
-2 : count of scripts remaining
-3 : name of the currently executing script
-4 : estimated remaining time</comment>
+  <data name="MsgProgress" xml:space="preserve">
+    <value>{executedCount} out of {scriptCount, plural, one {# script} other {# scripts}} executed ({remainingCount} remaining).
+Currently executing: {currentScriptName}
+Time remaining: {remainingTime}</value>
+    <comment>executedCount : count of scripts executed
+scriptCount : script count
+remainingCount : count of scripts remaining
+currentScriptName : name of the currently executing script
+remainingTime : estimated remaining time</comment>
   </data>
   <data name="RestartWhenFinished" xml:space="preserve">
     <value>Automatically restart when finished</value>

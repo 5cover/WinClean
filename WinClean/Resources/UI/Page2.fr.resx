@@ -129,10 +129,10 @@
   <data name="PauseDescription" xml:space="preserve">
     <value>Suspend les processus associés au script actuel.</value>
   </data>
-  <data name="ProgressFormat" xml:space="preserve">
-    <value>{0} sur {1} scripts exécutés ({2} restants)
-Script actuel : {3}
-Temps restant : {4}</value>
+  <data name="MsgProgress" xml:space="preserve">
+    <value>{executedCount} sur {scriptCount, plural, one {# script exécuté} other {# scripts exécutés}} ({remainingCount, plural, one {# restant} other {# restants}}).
+Script actuel : {currentScriptName}
+Temps restant : {remainingTime}</value>
   </data>
   <data name="RestartWhenFinished" xml:space="preserve">
     <value>Redémarrer automatiquement une fois l'opération terminée</value>

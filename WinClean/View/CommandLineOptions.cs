@@ -1,6 +1,4 @@
-﻿using System.DirectoryServices.ActiveDirectory;
-
-using CommandLine;
+﻿using CommandLine;
 
 using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;

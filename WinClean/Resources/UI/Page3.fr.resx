@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Description" xml:space="preserve">
-    <value>{0} script(s) exécuté(s) en {1}.
+  <data name="MsgDescription" xml:space="preserve">
+    <value>{scriptCount, plural, one {# script exécuté} other {# scripts exécutés}} en {elapsedTime, time, humanize}.
 Il est recommandé de redémarrer le système pour finaliser l'opération.</value>
   </data>
   <data name="Restart" xml:space="preserve">

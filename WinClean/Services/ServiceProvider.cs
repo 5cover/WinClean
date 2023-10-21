@@ -12,6 +12,7 @@ namespace Scover.WinClean.Services;
 [Singleton(typeof(IMetadatasProvider), typeof(MetadatasProvider))]
 [Singleton(typeof(IScriptStorage), typeof(ScriptStorage))]
 [Singleton(typeof(IFilterBuilder), typeof(FilterBuilder))]
+[Singleton(typeof(IMessageFormatter), typeof(MessageFormatter))]
 public sealed partial class ServiceProvider
 {
     private static readonly ServiceProvider _instance = new();

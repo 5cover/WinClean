@@ -14,6 +14,7 @@ using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Model.Scripts;
 using Scover.WinClean.Model.Serialization;
 using Scover.WinClean.Resources;
+using Scover.WinClean.Resources.UI;
 using Scover.WinClean.Services;
 using Scover.WinClean.View;
 using Scover.WinClean.ViewModel.Logging;
@@ -35,6 +36,8 @@ public sealed partial class MainViewModel : ObservableObject
         {
             ObservableCollection<ScriptViewModel> scripts = new(ScriptStorage.Scripts.Select(s => new ScriptViewModel(s)));
 
+            scripts.CollectionChanged += (_, _) => OnPropertyChanged(nameof(FormattedScriptCount));
+
             ScriptStorage.Scripts.SendUpdatesTo(scripts, converter: script =>
             {
                 ScriptViewModel scriptViewModel = new(script);
@@ -46,6 +49,7 @@ public sealed partial class MainViewModel : ObservableObject
                         Scripts.View.Refresh();
                     }
                 };
+
                 return scriptViewModel;
             });
             scripts.SendUpdatesTo(ScriptStorage.Scripts, converter: s => s.Model);
@@ -148,10 +152,20 @@ public sealed partial class MainViewModel : ObservableObject
     }
 
     public IRelayCommand AddScripts { get; }
+
     public IRelayCommand CheckAllScripts { get; }
+
     public IRelayCommand<object> CheckScriptsByProperty { get; }
+
     public IAsyncRelayCommand ClearLogs { get; } = new AsyncRelayCommand(App.CurrentApp.Logger.ClearLogsAsync);
+
     public IRelayCommand ExecuteScripts { get; }
+
+    public string FormattedScriptCount => MainWindow.MsgScriptCount.FormatMessage(new()
+    {
+        ["scriptCount"] = Scripts.Source.Count,
+    });
+
     public IRelayCommand OpenCustomScriptsDir { get; } = new RelayCommand(AppDirectory.Scripts.Open);
     public IRelayCommand OpenLogsDir { get; } = new RelayCommand(AppDirectory.Logs.Open);
     public IRelayCommand OpenOnlineWiki { get; } = new RelayCommand(Settings.WikiUrl.Open);

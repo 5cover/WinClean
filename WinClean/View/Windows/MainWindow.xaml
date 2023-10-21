@@ -42,7 +42,7 @@
         <StatusBar Background="{x:Static SystemColors.ControlLightBrush}" DockPanel.Dock="Bottom">
             <TextBlock Text="{x:Static interopServices:RuntimeInformation.OSDescription}" />
             <Separator />
-            <TextBlock Text="{Binding Scripts.Source.Count, StringFormat={x:Static ui:MainWindow.ScriptCount}}" />
+            <TextBlock Text="{Binding FormattedScriptCount}" />
         </StatusBar>
         <Menu
             VerticalAlignment="Center"

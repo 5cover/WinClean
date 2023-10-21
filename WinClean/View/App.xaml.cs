@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
 
@@ -19,6 +18,9 @@ namespace Scover.WinClean.View;
 /// <summary>Handles the startup / shutdown strategy and holds data related to the View layer.</summary>
 public sealed partial class App
 {
+#if DEBUG_INVARIANT_UI
+    static App() => CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
+#endif
     public static App CurrentApp => (App)Current;
     public Logger Logger { get; private set; } = new MockLogger();
 
@@ -47,6 +49,7 @@ public sealed partial class App
 
     private async void ApplicationStartup(object? sender, StartupEventArgs? e)
     {
+        CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
         if (e?.Args.Any() ?? false)
         {
             await StartConsole(e.Args);
