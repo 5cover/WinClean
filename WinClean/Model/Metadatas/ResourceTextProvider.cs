@@ -11,7 +11,7 @@ public sealed class ResourceTextProvider : ITextProvider
 
     public string ResourceName { get; }
 
-    public string GetDescription(CultureInfo culture) => _resourceManager.GetString(ResourceName + "Description").NotNull();
+    public string GetDescription(CultureInfo culture) => _resourceManager.GetString(ResourceName + "Description", culture).NotNull();
 
-    public string GetName(CultureInfo culture) => _resourceManager.GetString(ResourceName).NotNull();
+    public string GetName(CultureInfo culture) => _resourceManager.GetString(ResourceName, culture).NotNull();
 }
