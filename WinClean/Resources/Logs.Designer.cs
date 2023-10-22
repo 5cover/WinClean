@@ -133,7 +133,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Execution of script &apos;{0}&apos; (&apos;{1}&apos;) completed. (exit code: {2}, success: {3}).
+        ///   Recherche une chaîne localisée semblable à Execution of &apos;{0}&apos; (&apos;{1}&apos;) completed. (exit code: {2}, success: {3}).
         /// </summary>
         public static string ScriptExecutionCompleted {
             get {
@@ -142,7 +142,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Execution of script &apos;{0}&apos; (&apos;{1}&apos;) paused..
+        ///   Recherche une chaîne localisée semblable à Execution of &apos;{0}&apos; (&apos;{1}&apos;) paused..
         /// </summary>
         public static string ScriptExecutionPaused {
             get {
@@ -151,7 +151,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Execution of script &apos;{0}&apos; (&apos;{1}&apos;) resumed..
+        ///   Recherche une chaîne localisée semblable à Execution of &apos;{0}&apos; (&apos;{1}&apos;) resumed..
         /// </summary>
         public static string ScriptExecutionResumed {
             get {
@@ -160,7 +160,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Execution of script &apos;{0}&apos; (&apos;{1}&apos;) skipped..
+        ///   Recherche une chaîne localisée semblable à Execution of &apos;{0}&apos; (&apos;{1}&apos;) skipped..
         /// </summary>
         public static string ScriptExecutionSkipped {
             get {
@@ -187,7 +187,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Script &apos;{1}&apos; overwritten by script at {0}..
+        ///   Recherche une chaîne localisée semblable à Script &apos;{1}&apos; overwritten by script at &apos;{0}&apos;..
         /// </summary>
         public static string ScriptOverwritten {
             get {

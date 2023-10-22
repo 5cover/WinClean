@@ -154,24 +154,24 @@
 1 : capability InvariantName@Invariant</comment>
   </data>
   <data name="ScriptExecutionCompleted" xml:space="preserve">
-    <value>Execution of script '{0}' ('{1}') completed. (exit code: {2}, success: {3})</value>
+    <value>Execution of '{0}' ('{1}') completed. (exit code: {2}, success: {3})</value>
     <comment>0 : script InvariantName
 1 : capability InvariantName
 2 : script execution result exit code
 3 : script execution result succeeded?@Invariant</comment>
   </data>
   <data name="ScriptExecutionPaused" xml:space="preserve">
-    <value>Execution of script '{0}' ('{1}') paused.</value>
+    <value>Execution of '{0}' ('{1}') paused.</value>
     <comment>0 : script InvariantName
 1 : capability InvariantName@Invariant</comment>
   </data>
   <data name="ScriptExecutionResumed" xml:space="preserve">
-    <value>Execution of script '{0}' ('{1}') resumed.</value>
+    <value>Execution of '{0}' ('{1}') resumed.</value>
     <comment>0 : script InvariantName
 1 : capability InvariantName@Invariant</comment>
   </data>
   <data name="ScriptExecutionSkipped" xml:space="preserve">
-    <value>Execution of script '{0}' ('{1}') skipped.</value>
+    <value>Execution of '{0}' ('{1}') skipped.</value>
     <comment>0 : script InvariantName
 1 : capability InvariantName@Invariant</comment>
   </data>
@@ -186,7 +186,7 @@
 1 : exception@Invariant</comment>
   </data>
   <data name="ScriptOverwritten" xml:space="preserve">
-    <value>Script '{1}' overwritten by script at {0}.</value>
+    <value>Script '{1}' overwritten by script at '{0}'.</value>
     <comment>0 : script source
 1 : script InvariantName@Invariant</comment>
   </data>
