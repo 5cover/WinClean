@@ -41,4 +41,6 @@ public sealed partial class ScriptListView
         // After deletion, focus the datagrid to allow for more deletions.
         _ = this.GetVisualChild<DataGrid>()?.Focus();
     }
+
+    private void DataGridRowRequestBringIntoViewSwallow(object sender, RequestBringIntoViewEventArgs e) => e.Handled = true;
 }

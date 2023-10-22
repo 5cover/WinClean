@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="Scover.WinClean.View.Controls.ExecutionInfosView"
+    x:Class="Scover.WinClean.View.Controls.ExecutionInfoListView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
@@ -17,12 +17,19 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <ListView IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Background" Value="{Binding Script.SafetyLevel.Color, Converter={StaticResource ColorToBrush}, ConverterParameter={StaticResource SafetyLevelOpacity}}" />
+                            <Setter Property="BorderBrush" Value="{Binding Script.SafetyLevel.Color, Converter={StaticResource ColorToBrush}, ConverterParameter={StaticResource SafetyLevelOpacity}}" />
+                            <Setter Property="Margin" Value="1" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.View>
                         <GridView>
                             <GridViewColumn>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate DataType="viewModel:ExecutionInfoViewModel">
-                                        <Image>
+                                        <Image Margin="0,2">
                                             <Image.Style>
                                                 <Style BasedOn="{StaticResource Icon}" TargetType="Image">
                                                     <Style.Triggers>

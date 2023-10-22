@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
+    xmlns:winclean="clr-namespace:Scover.WinClean"
     x:Name="scriptListViewUserControl"
     mc:Ignorable="d">
     <UserControl.ContentTemplate>
@@ -37,39 +38,31 @@
                 </DataGrid.CommandBindings>
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
-                        <Setter Property="Background" Value="{Binding SafetyLevel.Color, Converter={StaticResource ColorToBrush}, ConverterParameter=0.15}" />
-                        <!--  Prevent borders between cells  -->
+                        <!--  Prevent borders between cells when selected  -->
                         <Setter Property="BorderThickness" Value="0" />
-                        <!--  Prevent text from become white when item selected.  -->
+                        <!--  Prevent text from become white when item selected  -->
                         <Setter Property="Foreground" Value="Black" />
-                        <!--  Padding instead of Margin for a larger selection are  -->
-                        <Setter Property="Padding" Value="3,3" />
-                        <!--  This is necessary because the default ControlTemplate for DataGridCell doesn't tranfer Padding property.  -->
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="DataGridCell">
-                                    <Border
-                                        Padding="{TemplateBinding Padding}"
-                                        Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}">
-                                        <ContentPresenter />
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
+                        <!--  Center every cell. This will prevent the text from being misaligned with the check box.  -->
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <!--  No cell selection overlay  -->
+                        <Setter Property="Background" Value="Transparent" />
                     </Style>
                 </DataGrid.CellStyle>
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
-                        <!--  Prevent color from mixing with DataGridCell.Background  -->
-                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Background" Value="{Binding SafetyLevel.Color, Converter={StaticResource ColorToBrush}, ConverterParameter={StaticResource SafetyLevelOpacity}}" />
+                        <Setter Property="BorderBrush" Value="{Binding SafetyLevel.Color, Converter={StaticResource ColorToBrush}, ConverterParameter={StaticResource SafetyLevelOpacity}}" />
+                        <Setter Property="Margin" Value="1" />
                         <Setter Property="BorderThickness" Value="1" />
+                        <!--  Stops auto scrolling when a cell is clicked  -->
+                        <EventSetter Event="RequestBringIntoView" Handler="DataGridRowRequestBringIntoViewSwallow" />
                         <Style.Triggers>
+                            <!--  Hover  -->
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="#1F26A0DA" />
                                 <Setter Property="BorderBrush" Value="#A826A0DA" />
                             </Trigger>
+                            <!--  Selected inactive  -->
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="Selector.IsSelectionActive" Value="False" />
@@ -78,6 +71,7 @@
                                 <Setter Property="Background" Value="#3DDADADA" />
                                 <Setter Property="BorderBrush" Value="#DADADA" />
                             </MultiTrigger>
+                            <!--  Selected  -->
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="Selector.IsSelectionActive" Value="True" />
@@ -93,7 +87,10 @@
                     <DataGridTemplateColumn CanUserResize="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate DataType="viewModel:ScriptViewModel">
-                                <controls:ScriptSelectionView Content="{Binding Selection}" Usage="{Binding Usage, ElementName=scriptListViewUserControl}" />
+                                <controls:ScriptSelectionView
+                                    Margin="3"
+                                    Content="{Binding Selection}"
+                                    Usage="{Binding Usage, ElementName=scriptListViewUserControl}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

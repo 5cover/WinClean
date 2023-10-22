@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:Scover.WinClean.View.Converters"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
     Exit="ApplicationExit"
     ShutdownMode="OnLastWindowClose"
     Startup="ApplicationStartup">
@@ -34,5 +35,7 @@
         <converters:GoldenRatioConverter x:Key="GoldenRatio" />
         <converters:IsNotNullConverter x:Key="IsNotNull" />
         <converters:EqualsOrDoNothingConverter x:Key="EqualsOrDoNothing" />
+
+        <system:Double x:Key="SafetyLevelOpacity">0.15</system:Double>
     </Application.Resources>
 </Application>

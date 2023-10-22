@@ -82,7 +82,7 @@
                     ItemsSource="{Binding Source={x:Type metadatas:SafetyLevel}, Converter={StaticResource GetMetadatas}}">
                     <MenuItem.ItemContainerStyle>
                         <Style BasedOn="{StaticResource ScriptMetadataMenuItemStyle}" TargetType="MenuItem">
-                            <Setter Property="Background" Value="{Binding Color, Converter={StaticResource ColorToBrush}, ConverterParameter=0.15}" />
+                            <Setter Property="Background" Value="{Binding Color, Converter={StaticResource ColorToBrush}, ConverterParameter={StaticResource SafetyLevelOpacity}}" />
                         </Style>
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>

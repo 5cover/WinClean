@@ -1,7 +1,7 @@
 ﻿<!--  This dictionary must be merged in the local scope in order for TabControlFix to work properly.  -->
 
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <!--  Fixes the TabStripPlacement binding error that occures when remove items from a TabControl.  -->
+    <!--  Fixes the TabStripPlacement binding error that occurs when removing items from a TabControl.  -->
     <Style x:Key="TabControlFix" TargetType="{x:Type TabItem}">
         <Setter Property="Template" Value="{DynamicResource DefaultTabItemTemplate}" />
     </Style>

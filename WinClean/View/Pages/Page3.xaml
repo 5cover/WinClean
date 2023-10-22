@@ -25,6 +25,6 @@
             Content="{x:Static ui:Page3.Restart}" />
     </view:ButtonsArea.AdditionalButtons>
     <xctk:WizardPage.Content>
-        <controls:ExecutionInfosView Content="{Binding ExecutionInfos.View}" />
+        <controls:ExecutionInfoListView Content="{Binding ExecutionInfos.View}" />
     </xctk:WizardPage.Content>
 </controls:WizardPageBetter>

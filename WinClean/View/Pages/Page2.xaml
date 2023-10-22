@@ -95,6 +95,6 @@
                 </StackPanel>
             </Button>
         </StackPanel>
-        <controls:ExecutionInfosView Margin="0,0,0,10" Content="{Binding ExecutionInfos.View}" />
+        <controls:ExecutionInfoListView Margin="0,0,0,10" Content="{Binding ExecutionInfos.View}" />
     </DockPanel>
 </controls:WizardPageBetter>
