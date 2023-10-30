@@ -103,7 +103,7 @@ public sealed class FileScriptRepository : MutableScriptRepository
 
     private async Task LoadAsync(string source)
     {
-        string fileContents = await source.PerformFileSystemOperation(p => File.ReadAllTextAsync(p), FSVerb.Access);
+        string fileContents = await source.PerformFileSystemOperation(path => File.ReadAllTextAsync(path), FSVerb.Access);
         AddItemQuietly(Serializer.Deserialize(fileContents).Complete(Type, source));
     }
 

@@ -1,4 +1,6 @@
-// _Arch, _Path, _Output, _Version, _Description, _RepoUrl, _Publisher, _Copyright : emulated defines using the /D command line compiler option.
+// Emulated defines using the /D command line compiler option :
+// Mandatory : _Arch, _Path, _Output, _Version, _Description, _RepoUrl, _Publisher, _Copyright
+// Optional : _SignTool
 
 #include <idp.iss>
 #include <idplang\French.iss>
@@ -26,13 +28,16 @@ OutputBaseFilename={#SetupName}
 OutputDir={#_Output}
 PrivilegesRequiredOverridesAllowed = dialog
 SetupIconFile=..\WinClean.ico
-SignTool=signtool
 SolidCompression=yes
 Uninstallable=yes
 UninstallDisplayIcon={app}\{#ExeName}
 VersionInfoDescription={#_Description}
 VersionInfoOriginalFileName={#SetupName}.exe
 VersionInfoVersion={#_Version}
+
+#ifdef _SignTool
+SignTool={#_SignTool}
+#endif
 
 [CustomMessages]
 CreateStartMenuIcon=Create a &Start menu icon
