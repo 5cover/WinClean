@@ -9,14 +9,24 @@ namespace Scover.WinClean.ViewModel.Pages;
 
 public sealed class Page3ViewModel : WizardPageViewModel
 {
-    public Page3ViewModel(CollectionWrapper<IReadOnlyList<ExecutionInfoViewModel>, ExecutionInfoViewModel> executionInfos) => ExecutionInfos = executionInfos;
+    public Page3ViewModel(CollectionWrapper<IReadOnlyList<ExecutionInfoViewModel>, ExecutionInfoViewModel> executionInfos)
+    {
+        ExecutionInfos = executionInfos;
+        executionInfos.ItemPropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(ExecutionInfoViewModel.Result))
+            {
+                OnPropertyChanged(nameof(FormattedDescription));
+            }
+        };
+    }
 
     public CollectionWrapper<IReadOnlyList<ExecutionInfoViewModel>, ExecutionInfoViewModel> ExecutionInfos { get; }
 
     public string FormattedDescription => Page3.MsgDescription.FormatMessage(new()
     {
         ["scriptCount"] = ExecutionInfos.Source.Count,
-        ["elapsedTime"] = ExecutionInfos.Source.Sum(s => s.Script.ExecutionTime.ValueOr(TimeSpan.Zero)),
+        ["elapsedTime"] = ExecutionInfos.Source.Sum(s => s.Result?.ExecutionTime ?? TimeSpan.Zero),
     });
 
     public IRelayCommand Restart { get; } = new RelayCommand(() =>

@@ -54,11 +54,6 @@ public sealed partial class MainViewModel : ObservableObject
             });
             scripts.SendUpdatesTo(ScriptStorage.Scripts, converter: s => s.Model);
 
-            foreach (ScriptViewModel script in scripts)
-            {
-                script.PropertyChanged += (s, e) => ScriptStorage.Commit(script.Model);
-            }
-
             Scripts = new(new CollectionViewSource()
             {
                 Source = scripts,
@@ -68,6 +63,8 @@ public sealed partial class MainViewModel : ObservableObject
                     new PropertyGroupDescription(nameof(ScriptViewModel.Usages)).SortedBy(nameof(CollectionViewGroup.Name)),
                 },
             });
+
+            Scripts.ItemPropertyChanged += (s, e) => ScriptStorage.Commit(((ScriptViewModel)e.Item).Model);
         }
 
         CheckScriptsByProperty = new RelayCommand<object>(expectedPropertyValue => SelectScripts(s
@@ -113,17 +110,14 @@ public sealed partial class MainViewModel : ObservableObject
 
         ExecuteScripts = new RelayCommand(() =>
         {
-            var executionInfos = Scripts.Where(s => s.Selection.IsSelected)
+            using var executionInfos = Scripts.Where(s => s.Selection.IsSelected)
                 .Select(s => s.TryCreateExecutionInfo())
                 .WhereSome().ToDisposableEnumerable();
-            ScriptExecutionWizardViewModel viewModel = new(executionInfos.ToList());
+
             if (executionInfos.Any())
             {
+                ScriptExecutionWizardViewModel viewModel = new(executionInfos.ToList());
                 _ = ServiceProvider.Get<IDialogCreator>().ShowDialog(viewModel);
-                foreach (var executionInfo in executionInfos)
-                {
-                    executionInfo.Dispose();
-                }
                 return;
             }
 

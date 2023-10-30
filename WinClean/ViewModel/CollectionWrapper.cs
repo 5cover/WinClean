@@ -18,10 +18,17 @@ public sealed class CollectionWrapper<TSource, TItem> : ObservableObject, IEnume
         _collectionViewSource = collectionViewSource;
         View.CurrentChanged += (s, e) => OnPropertyChanged(nameof(CurrentItem));
         View.CurrentChanging += (s, e) => OnPropertyChanging(nameof(CurrentItem));
+        foreach (var item in Source.OfType<INotifyPropertyChanged>())
+        {
+            item.PropertyChanged += (s, e) => ItemPropertyChanged?.Invoke(this, new(e.PropertyName, s.NotNull()));
+        }
     }
 
-    public CollectionWrapper(TSource collection) => _collectionViewSource = new() { Source = collection };
+    public CollectionWrapper(TSource collection) : this(new CollectionViewSource() { Source = collection })
+    {
+    }
 
+    public event TypeEventHandler<CollectionWrapper<TSource, TItem>, ItemPropertyChangedEventArgs>? ItemPropertyChanged;
     public TItem? CurrentItem => (TItem?)View.CurrentItem;
     public TSource Source => (TSource)_collectionViewSource.Source;
     public ICollectionView View => _collectionViewSource.View;

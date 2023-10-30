@@ -5,7 +5,7 @@ using Scover.WinClean.ViewModel.Pages;
 
 namespace Scover.WinClean.ViewModel.Windows;
 
-public sealed class ScriptExecutionWizardViewModel : ObservableObject, IDisposable
+public sealed class ScriptExecutionWizardViewModel : ObservableObject
 {
     private readonly CollectionWrapper<IReadOnlyList<ExecutionInfoViewModel>, ExecutionInfoViewModel> _executionInfos;
 
@@ -24,12 +24,4 @@ public sealed class ScriptExecutionWizardViewModel : ObservableObject, IDisposab
     public Page1ViewModel Page1ViewModel { get; } = new();
     public Page2ViewModel Page2ViewModel { get; }
     public Page3ViewModel Page3ViewModel { get; }
-
-    public void Dispose()
-    {
-        foreach (var executionInfo in _executionInfos)
-        {
-            executionInfo.Dispose();
-        }
-    }
 }
