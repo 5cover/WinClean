@@ -64,23 +64,29 @@ https://winaero.com/how-to-disable-ads-in-windows-11/
 
 [HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo]
 "Enabled"=dword:1</Disable>
-    <Detect Host="PowerShell">$currentValues = Get-ItemPropertyValue -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager' -Name (
-    'FeatureManagementEnabled',
-    'OemPreInstalledAppsEnabled',
-    'PreInstalledAppsEnabled',
-    'PreInstalledAppsEverEnabled',
-    'RotatingLockScreenEnabled',
-    'RotatingLockScreenOverlayEnabled',
-    'SilentInstalledAppsEnabled',
-    'SoftLandingEnabled',
-    'SubscribedContent-310093Enabled',
-    'SubscribedContent-338387Enabled',
-    'SubscribedContent-338388Enabled',
-    'SubscribedContent-338389Enabled',
-    'SubscribedContent-338393Enabled',
-    'SubscribedContent-353694Enabled',
-    'SubscribedContent-353696Enabled',
-    'SystemPaneSuggestionsEnabled')
+    <Detect Host="PowerShell">$currentValues = @()
+@('FeatureManagementEnabled',
+  'OemPreInstalledAppsEnabled',
+  'PreInstalledAppsEnabled',
+  'PreInstalledAppsEverEnabled',
+  'RotatingLockScreenEnabled',
+  'RotatingLockScreenOverlayEnabled',
+  'SilentInstalledAppsEnabled',
+  'SoftLandingEnabled',
+  'SubscribedContent-310093Enabled',
+  'SubscribedContent-338387Enabled',
+  'SubscribedContent-338388Enabled',
+  'SubscribedContent-338389Enabled',
+  'SubscribedContent-338393Enabled',
+  'SubscribedContent-353694Enabled',
+  'SubscribedContent-353696Enabled',
+  'SystemPaneSuggestionsEnabled') | % {
+    $value = Get-ItemPropertyValue -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager' -Name $_
+    if ($value) {
+        $currentValues += $value
+    }
+}
+
 $currentValues += Get-ItemPropertyValue -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name 'ShowSyncProviderNotifications'
 $currentValues += Get-ItemPropertyValue -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\AdvertisingInfo' -Name 'Enabled'
 

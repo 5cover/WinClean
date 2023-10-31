@@ -10,7 +10,8 @@
   <Versions>>=6.1.7600</Versions>
   <Code>
     <!-- Not using Detect capability has the script may have never been executed before and the image be healthy -->
-    <Execute Host="PowerShell">$healthy = [Microsoft.Dism.Commands.ImageHealthState]'Healthy'
+    <Execute Host="PowerShell">Import-Module Dism
+$healthy = [Microsoft.Dism.Commands.ImageHealthState]'Healthy'
 if ((Repair-WindowsImage -Online -CheckHealth -Verbose).ImageHealthState -ne $healthy -or (Repair-WindowsImage -Online -ScanHealth -Verbose).ImageHealthState -ne $healthy) {
     Write-Output 'Dism detected image corruption. Starting repairs now...'
     Repair-WindowsImage -Online -RestoreHealth -Verbose -NoRestart
