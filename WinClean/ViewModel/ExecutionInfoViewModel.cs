@@ -116,7 +116,7 @@ public sealed class ExecutionInfoViewModel : ObservableObject, IDisposable
             Script.ExecutionTime = Result.ExecutionTime.Some();
         }
         // For aborted scripts, they might have changed system configuration before being aborted, that's why we still invalidate the cache.
-        Script.Code.EffectiveCapability.InvalidateValue();
+        Script.Actions.EffectiveCapability.InvalidateValue();
     }
 
     public void Pause()
@@ -137,5 +137,5 @@ public sealed class ExecutionInfoViewModel : ObservableObject, IDisposable
 
     private async Task<bool> GetExecutionNeededAsync(CancellationToken cancellationToken)
                       => ServiceProvider.Get<ISettings>().ForceExecuteEffectiveScripts ||
-            !Capability.Equals(await Script.Code.EffectiveCapability.GetValueAsync(cancellationToken));
+            !Capability.Equals(await Script.Actions.EffectiveCapability.GetValueAsync(cancellationToken));
 }

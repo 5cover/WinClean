@@ -9,11 +9,11 @@ using Scover.WinClean.Services;
 
 namespace Scover.WinClean.ViewModel;
 
-public sealed class ScriptCodeViewModel : ObservableObject, IDictionary<Capability, ScriptAction>
+public sealed class ScriptActionDictionaryViewModel : ObservableObject, IDictionary<Capability, ScriptAction>
 {
-    private readonly ScriptCode _model;
+    private readonly ScriptActionDictionary _model;
 
-    public ScriptCodeViewModel(ScriptCode model)
+    public ScriptActionDictionaryViewModel(ScriptActionDictionary model)
     {
         _model = model;
         EffectiveCapability = new(() => _model.DetectCapability(ServiceProvider.Get<ISettings>().ScriptDetectionTimeout), _model.DetectCapabilityAsync);

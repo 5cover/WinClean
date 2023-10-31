@@ -15,13 +15,13 @@ namespace Scover.WinClean.ViewModel;
 
 public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, IEquatable<Script?>
 {
-    private KeyValuePair<Capability, ScriptAction> _selectedCode;
+    private KeyValuePair<Capability, ScriptAction> _selectedAction;
 
     public ScriptViewModel(Script model)
     {
         Model = model;
-        Code = new(model.Code);
-        SelectedCode = model.Code.First();
+        Actions = new(model.Actions);
+        SelectedAction = model.Actions.First();
     }
 
     public Category Category
@@ -34,7 +34,7 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
         }
     }
 
-    public ScriptCodeViewModel Code { get; }
+    public ScriptActionDictionaryViewModel Actions { get; }
 
     public string Description
     {
@@ -85,12 +85,12 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
         }
     }
 
-    public KeyValuePair<Capability, ScriptAction> SelectedCode
+    public KeyValuePair<Capability, ScriptAction> SelectedAction
     {
-        get => _selectedCode;
+        get => _selectedAction;
         set
         {
-            _selectedCode = value;
+            _selectedAction = value;
             OnPropertyChanged();
         }
     }
@@ -122,7 +122,7 @@ public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, I
 
     public Option<ExecutionInfoViewModel> TryCreateExecutionInfo() =>
         Selection.DesiredCapability is { } desiredCapability // A capability has be choosen
-        && Code.TryGetValue(desiredCapability, out var action) // The capability exists
+        && Actions.TryGetValue(desiredCapability, out var action) // The capability exists
         ? new ExecutionInfoViewModel(this, desiredCapability, action).Some()
         : Option.None<ExecutionInfoViewModel>();
 }

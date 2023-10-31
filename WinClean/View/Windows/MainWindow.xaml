@@ -30,7 +30,7 @@
                 <ResourceDictionary Source="/View/ResourceDictionaries/Fixes.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Style
-                x:Key="MetadataStyle"
+                x:Key="TabItemMetadataStyle"
                 BasedOn="{StaticResource FixTabItemBindingErrors}"
                 TargetType="TabItem">
                 <Setter Property="Header" Value="{Binding Name.Name}" />
@@ -119,14 +119,14 @@
                 Grid.Row="0"
                 Margin="0,0,0,12"
                 view:TabContent.IsCached="True"
-                ItemContainerStyle="{StaticResource MetadataStyle}"
+                ItemContainerStyle="{StaticResource TabItemMetadataStyle}"
                 ItemsSource="{Binding Scripts.View.Groups}"
                 SelectedIndex="0">
                 <view:TabContent.Template>
                     <DataTemplate DataType="{x:Type CollectionViewGroup}">
                         <TabControl
                             view:TabContent.IsCached="True"
-                            ItemContainerStyle="{StaticResource MetadataStyle}"
+                            ItemContainerStyle="{StaticResource TabItemMetadataStyle}"
                             ItemsSource="{Binding Items}">
                             <view:TabContent.Template>
                                 <DataTemplate DataType="{x:Type CollectionViewGroup}">

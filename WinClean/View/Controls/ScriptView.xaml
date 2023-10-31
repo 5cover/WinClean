@@ -160,7 +160,7 @@
                     SelectedItem="{Binding Impact, Mode=TwoWay}"
                     Watermark="{x:Static res:ScriptProperties.Impact}" />
 
-                <controls:ScriptCodeView
+                <controls:ScriptActionDictionaryView
                     Grid.Row="5"
                     Grid.Column="0"
                     Grid.ColumnSpan="2"

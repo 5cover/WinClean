@@ -4,6 +4,7 @@
     </ResourceDictionary.MergedDictionaries>
     <!--  Fixes the TabStripPlacement binding error that occurs when removing items from a TabControl.  -->
     <Style x:Key="FixTabItemBindingErrors" TargetType="TabItem">
-        <Setter Property="Template" Value="{StaticResource DefaultTabItemTemplate}" />
+        <!--  Must be a DynamicResource for the fix to work.  -->
+        <Setter Property="Template" Value="{DynamicResource DefaultTabItemTemplate}" />
     </Style>
 </ResourceDictionary>

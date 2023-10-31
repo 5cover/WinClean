@@ -91,7 +91,7 @@ Script and capability names are case sensitive and follow ordinal string compari
             var script = scripts.FirstOrDefault(s => s.InvariantName == scriptInvariantName)
                 ?? throw new ConsoleArgumentException(ExceptionMessages.ScriptNotFound.FormatWith(scriptInvariantName), nameof(RunScripts));
 
-            return script.Code.ContainsKey(capability)
+            return script.Actions.ContainsKey(capability)
                 ? (script, capability)
                 : throw new ConsoleArgumentException(ExceptionMessages.ScriptDoesNotHaveCapability.FormatWith(scriptInvariantName, capabilityInvariantName), nameof(RunScripts));
         }).ToList();
@@ -101,7 +101,7 @@ Script and capability names are case sensitive and follow ordinal string compari
         foreach ((var script, var capability) in executionInfos)
         {
             Console.WriteLine(ConsoleMode.ExecutingScript.FormatWith(script.Name, capability.Name));
-            var result = new ExecutionInfo(script.Code[capability]).Execute();
+            var result = new ExecutionInfo(script.Actions[capability]).Execute();
             Console.WriteLine(ConsoleMode.ScriptExecuted.FormatWith(
                 script.Name,
                 result.ExitCode,

@@ -240,10 +240,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Page3.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\UI\ScriptCodeView.Designer.cs">
+    <Compile Update="Resources\UI\ScriptActionDictionaryView.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>ScriptCodeView.resx</DependentUpon>
+      <DependentUpon>ScriptActionDictionaryView.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\UI\ScriptView.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -368,9 +368,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Page3.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\UI\ScriptCodeView.resx">
+    <EmbeddedResource Update="Resources\UI\ScriptActionDictionaryView.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ScriptCodeView.Designer.cs</LastGenOutput>
+      <LastGenOutput>ScriptActionDictionaryView.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\UI\ScriptView.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

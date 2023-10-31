@@ -6,11 +6,11 @@ using Scover.WinClean.Model.Metadatas;
 
 namespace Scover.WinClean.Model;
 
-public sealed class ScriptCode : IDictionary<Capability, ScriptAction>, IEquatable<ScriptCode?>
+public sealed class ScriptActionDictionary : IDictionary<Capability, ScriptAction>, IEquatable<ScriptActionDictionary?>
 {
     private readonly Dictionary<Capability, ScriptAction> _actions;
 
-    public ScriptCode(Dictionary<Capability, ScriptAction> actions) => _actions = actions;
+    public ScriptActionDictionary(Dictionary<Capability, ScriptAction> actions) => _actions = actions;
 
     public int Count => _actions.Count;
     public ICollection<Capability> Keys => _actions.Keys;
@@ -59,9 +59,9 @@ public sealed class ScriptCode : IDictionary<Capability, ScriptAction>, IEquatab
         return Capability.FromInteger(process.ExitCode);
     }
 
-    public override bool Equals(object? obj) => Equals(obj as ScriptCode);
+    public override bool Equals(object? obj) => Equals(obj as ScriptActionDictionary);
 
-    public bool Equals(ScriptCode? other) => other is not null && _actions.ItemsEqual(other._actions);
+    public bool Equals(ScriptActionDictionary? other) => other is not null && _actions.ItemsEqual(other._actions);
 
     public IEnumerator<KeyValuePair<Capability, ScriptAction>> GetEnumerator() => ((IEnumerable<KeyValuePair<Capability, ScriptAction>>)_actions).GetEnumerator();
 

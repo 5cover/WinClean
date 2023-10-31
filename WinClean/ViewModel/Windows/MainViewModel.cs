@@ -243,7 +243,7 @@ public sealed partial class MainViewModel : ObservableObject
         foreach (var script in Scripts)
         {
             bool checkScript = check(script);
-            var capabilities = script.Code.Keys;
+            var capabilities = script.Actions.Keys;
             script.Selection.IsSelected = checkScript;
             script.Selection.DesiredCapability = checkScript
                 ? capabilities.FirstOrDefault(c => c.CorrespondingSelectionState is CapabilityCorrespondingSelectionState.Selected)

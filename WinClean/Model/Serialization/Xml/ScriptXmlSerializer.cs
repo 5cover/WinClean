@@ -51,8 +51,8 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
     private static void AppendLocalizable(XmlElement element, string name, string? innerText, string xmlLang)
             => Append(element, name, innerText, new() { ["xml:lang"] = xmlLang });
 
-    private static ScriptCode DeserializeCode(XmlDocument d)
-        => d.GetSingleChild(NameFor.Code).ChildNodes.OfType<XmlElement>().ToDictionary(
+    private static ScriptActionDictionary DeserializeActions(XmlDocument d)
+        => d.GetSingleChild(NameFor.Actions).ChildNodes.OfType<XmlElement>().ToDictionary(
             keySelector: e => Capability.FromResourceName(e.Name),
             elementSelector: e => new ScriptAction(
                 host: Metadatas.GetMetadata<Host>(e.GetAttribute(NameFor.Host)),
@@ -64,15 +64,15 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
                     ? int.Parse(order)
                     : DefaultCodeOrder))
            is { Count: > 0 } codeElements
-               ? new ScriptCode(codeElements)
-               : throw new InvalidDataException(ExceptionMessages.ElementHasNoNamedChild.FormatWith(NameFor.Code));
+               ? new ScriptActionDictionary(codeElements)
+               : throw new InvalidDataException(ExceptionMessages.ElementHasNoNamedChild.FormatWith(NameFor.Actions));
 
     /// <summary>Deserializes a script in the current format.</summary>
     private static ScriptBuilder DeserializeCurrent(XmlDocument d)
         => new()
         {
             Category = Metadatas.GetMetadata<Category>(d.GetSingleChildText(NameFor.Category)),
-            Code = DeserializeCode(d),
+            Actions = DeserializeActions(d),
             Impact = Metadatas.GetMetadata<Impact>(d.GetSingleChildText(NameFor.Impact)),
             LocalizedDescription = d.GetLocalizedString(NameFor.Description),
             LocalizedName = d.GetLocalizedString(NameFor.Name),
@@ -104,7 +104,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
         => new()
         {
             Category = Metadatas.GetMetadata<Category>(d.GetSingleChildText(NameFor.Category)),
-            Code = new ScriptCode(new()
+            Actions = new ScriptActionDictionary(new()
             {
                 [Capability.Execute] = new ScriptAction(
                     code: d.GetSingleChildText(NameFor.Code),
@@ -133,14 +133,14 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             ? SemVersionRange.Parse(versionsStr)
             : DefaultScriptVersions;
 
-    private static void SerializeCode(XmlElement parent, ScriptCode scriptCode)
+    private static void SerializeActions(XmlElement parent, ScriptActionDictionary scriptActions)
     {
-        var e = parent.OwnerDocument.CreateElement(NameFor.Code);
+        var e = parent.OwnerDocument.CreateElement(NameFor.Actions);
         _ = parent.AppendChild(e);
 
-        foreach ((Capability capability, ScriptAction code) in scriptCode)
+        foreach ((Capability capability, ScriptAction action) in scriptActions)
         {
-            Append(e, capability.ResourceName, code.Code, new() { [NameFor.Host] = code.Host.InvariantName });
+            Append(e, capability.ResourceName, action.Code, new() { [NameFor.Host] = action.Host.InvariantName });
         }
     }
 
@@ -171,7 +171,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
         Append(root, NameFor.Impact, script.Impact.InvariantName);
         Append(root, NameFor.VersionRange, script.Versions.ToString());
 
-        SerializeCode(root, script.Code);
+        SerializeActions(root, script.Actions);
 
         return d;
     }

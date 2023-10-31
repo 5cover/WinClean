@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="Scover.WinClean.View.Controls.ScriptCodeView"
+    x:Class="Scover.WinClean.View.Controls.ScriptActionDictionaryView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,7 +10,8 @@
     xmlns:view="clr-namespace:Scover.WinClean.View"
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-    x:Name="scriptCodeViewUserControl"
+    x:Name="scriptActionDictionaryViewUserControl"
+    d:DataContext="{d:DesignInstance Type=viewModel:ScriptActionDictionaryViewModel}"
     mc:Ignorable="d">
     <!--  UseLayoutRounding prevents blurry Host icons  -->
     <UserControl.Resources>
@@ -24,15 +25,15 @@
         <DataTemplate DataType="viewModel:ScriptViewModel">
             <TabControl
                 ItemContainerStyle="{StaticResource FixTabItemBindingErrors}"
-                ItemsSource="{Binding Code}"
-                SelectedItem="{Binding SelectedCode}">
+                ItemsSource="{Binding Actions}"
+                SelectedItem="{Binding SelectedAction}">
                 <TabControl.ContentTemplate>
                     <DataTemplate DataType="collections:KeyValuePair&lt;metadatas:Capability,model:ScriptAction&gt;">
                         <DockPanel>
                             <xctk:WatermarkComboBox
                                 Margin="0,0,0,3"
                                 DockPanel.Dock="Top"
-                                IsEnabled="{Binding IsReadOnly, ElementName=scriptCodeViewUserControl, Converter={StaticResource BooleanInvert}}"
+                                IsEnabled="{Binding IsReadOnly, ElementName=scriptActionDictionaryViewUserControl, Converter={StaticResource BooleanInvert}}"
                                 ItemsSource="{Binding Source={x:Type metadatas:Host}, Converter={StaticResource GetMetadatas}}"
                                 SelectedItem="{Binding Value.Host}"
                                 Watermark="{x:Static res:ScriptProperties.Host}">
@@ -50,7 +51,7 @@
                                                 Margin="6,0,0,0"
                                                 VerticalAlignment="Center"
                                                 Source="{x:Static view:StandardIcons.Warning}"
-                                                ToolTip="{x:Static ui:ScriptCodeView.IncompatibleHost}">
+                                                ToolTip="{x:Static ui:ScriptActionDictionaryView.IncompatibleHost}">
                                                 <Image.Style>
                                                     <Style BasedOn="{StaticResource Icon}" TargetType="Image">
                                                         <Style.Triggers>
@@ -69,7 +70,7 @@
                                 AcceptsReturn="True"
                                 FontFamily="Consolas"
                                 HorizontalScrollBarVisibility="Auto"
-                                IsReadOnly="{Binding IsReadOnly, ElementName=scriptCodeViewUserControl}"
+                                IsReadOnly="{Binding IsReadOnly, ElementName=scriptActionDictionaryViewUserControl}"
                                 Text="{Binding Value.Code}"
                                 VerticalScrollBarVisibility="Auto"
                                 Watermark="{x:Static res:ScriptProperties.Code}" />
@@ -82,7 +83,7 @@
                             <Image
                                 Margin="0,0,3,0"
                                 Source="{StaticResource Gear}"
-                                ToolTip="{x:Static ui:ScriptCodeView.EffectiveDescription}">
+                                ToolTip="{x:Static ui:ScriptActionDictionaryView.EffectiveDescription}">
                                 <Image.Style>
                                     <Style BasedOn="{StaticResource Icon}" TargetType="Image">
                                         <Style.Triggers>
@@ -91,9 +92,9 @@
                                                     <MultiBinding Converter="{StaticResource ItemsEqual}">
                                                         <Binding Path="Key" />
                                                         <Binding
-                                                            ElementName="scriptCodeViewUserControl"
+                                                            ElementName="scriptActionDictionaryViewUserControl"
                                                             IsAsync="True"
-                                                            Path="Content.Code.EffectiveCapability.Value" />
+                                                            Path="Content.Actions.EffectiveCapability.Value" />
                                                     </MultiBinding>
                                                 </DataTrigger.Binding>
                                                 <Setter Property="Visibility" Value="Collapsed" />
@@ -105,7 +106,7 @@
                             <Image
                                 Margin="0,0,3,0"
                                 Source="{StaticResource Checkmark}"
-                                ToolTip="{x:Static ui:ScriptCodeView.SelectedDescription}">
+                                ToolTip="{x:Static ui:ScriptActionDictionaryView.SelectedDescription}">
                                 <Image.Style>
                                     <Style BasedOn="{StaticResource Icon}" TargetType="Image">
                                         <Style.Triggers>
@@ -113,12 +114,12 @@
                                                 <DataTrigger.Binding>
                                                     <MultiBinding Converter="{StaticResource ItemsEqual}">
                                                         <Binding Path="Key" />
-                                                        <Binding ElementName="scriptCodeViewUserControl" Path="Content.Selection.DesiredCapability" />
+                                                        <Binding ElementName="scriptActionDictionaryViewUserControl" Path="Content.Selection.DesiredCapability" />
                                                     </MultiBinding>
                                                 </DataTrigger.Binding>
                                                 <Setter Property="Visibility" Value="Collapsed" />
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Content.Selection.IsSelected, ElementName=scriptCodeViewUserControl}" Value="False">
+                                            <DataTrigger Binding="{Binding Content.Selection.IsSelected, ElementName=scriptActionDictionaryViewUserControl}" Value="False">
                                                 <Setter Property="Visibility" Value="Collapsed" />
                                             </DataTrigger>
                                         </Style.Triggers>

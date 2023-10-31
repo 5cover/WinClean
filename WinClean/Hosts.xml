@@ -38,7 +38,7 @@
     <Name>Execute</Name>
     <Name xml:lang="en">Direct execution</Name>
     <Name xml:lang="fr">Exécution directe</Name>
-    <Description>Executes a script's code as an independent program.</Description>
+    <Description>Executes a script's code as a standalone program</Description>
     <Description xml:lang="fr">Exécute le code d'un script en tant que programme indépendant.</Description>
     <CommandLine>{0}</CommandLine>
     <Icon Filename="%SYSTEMROOT%\System32\shell32.dll" Index="-25" />

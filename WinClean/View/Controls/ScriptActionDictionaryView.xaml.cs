@@ -2,12 +2,12 @@
 
 namespace Scover.WinClean.View.Controls;
 
-public sealed partial class ScriptCodeView
+public sealed partial class ScriptActionDictionaryView
 {
     public static readonly DependencyProperty IsReadOnlyProperty
-        = DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(ScriptCodeView));
+        = DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(ScriptActionDictionaryView));
 
-    public ScriptCodeView() => InitializeComponent();
+    public ScriptActionDictionaryView() => InitializeComponent();
 
     public bool IsReadOnly
     {

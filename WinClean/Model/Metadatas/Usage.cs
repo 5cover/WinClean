@@ -16,7 +16,7 @@ public sealed class Usage : Metadata
     public static Usage Settings { get; } = new(1, nameof(Settings), Capability.Enable, Capability.Disable);
 
     public static IEnumerable<Usage> GetUsages(Script script)
-        => Instances.Where(usage => usage._capabilities.All(script.Code.Keys.Contains));
+        => Instances.Where(usage => usage._capabilities.All(script.Actions.Keys.Contains));
 
     public override int CompareTo(Metadata? other) => _order.CompareTo((other as Usage)?._order);
 }

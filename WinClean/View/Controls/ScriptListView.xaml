@@ -120,7 +120,7 @@
                             <Style TargetType="{x:Type GroupItem}">
                                 <Setter Property="Template">
                                     <Setter.Value>
-                                        <ControlTemplate d:DataContext="{x:Type CollectionViewGroup}" TargetType="{x:Type GroupItem}">
+                                        <ControlTemplate TargetType="{x:Type GroupItem}">
                                             <Expander IsExpanded="True">
                                                 <Expander.Header>
                                                     <TextBlock FontWeight="SemiBold" ToolTip="{Binding Name.Description}">
