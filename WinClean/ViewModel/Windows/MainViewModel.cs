@@ -34,25 +34,12 @@ public sealed partial class MainViewModel : ObservableObject
     public MainViewModel()
     {
         {
-            ObservableCollection<ScriptViewModel> scripts = new(ScriptStorage.Scripts.Select(s => new ScriptViewModel(s)));
+            ObservableCollection<ScriptViewModel> scripts = new(ScriptStorage.Scripts.Select(CreateScriptViewModel));
+
+            ScriptStorage.Scripts.SendUpdatesTo(scripts, converter: CreateScriptViewModel);
+            scripts.SendUpdatesTo(ScriptStorage.Scripts, converter: s => s.Model);
 
             scripts.CollectionChanged += (_, _) => OnPropertyChanged(nameof(FormattedScriptCount));
-
-            ScriptStorage.Scripts.SendUpdatesTo(scripts, converter: script =>
-            {
-                ScriptViewModel scriptViewModel = new(script);
-                scriptViewModel.PropertyChanged += (s, e) =>
-                {
-                    bool aGroupingCriterionChanged = Scripts.NotNull().View.GroupDescriptions.OfType<PropertyGroupDescription>().Any(g => g.PropertyName == e.PropertyName);
-                    if (aGroupingCriterionChanged)
-                    {
-                        Scripts.View.Refresh();
-                    }
-                };
-
-                return scriptViewModel;
-            });
-            scripts.SendUpdatesTo(ScriptStorage.Scripts, converter: s => s.Model);
 
             Scripts = new(new CollectionViewSource()
             {
@@ -63,8 +50,6 @@ public sealed partial class MainViewModel : ObservableObject
                     new PropertyGroupDescription(nameof(ScriptViewModel.Usages)).SortedBy(nameof(CollectionViewGroup.Name)),
                 },
             });
-
-            Scripts.ItemPropertyChanged += (s, e) => ScriptStorage.Commit(((ScriptViewModel)e.Item).Model);
         }
 
         CheckScriptsByProperty = new RelayCommand<object>(expectedPropertyValue => SelectScripts(s
@@ -82,7 +67,7 @@ public sealed partial class MainViewModel : ObservableObject
 
             var filter = builder.Combine(builder.Make(
                 new ExtensionGroup(Settings.ScriptFileExtension)),
-                builder.Make(Resources.UI.MainWindow.AllFiles, ".*"));
+                builder.Make(MainWindow.AllFiles, ".*"));
 
             var paths = ServiceProvider.Get<IDialogCreator>().ShowOpenFileDialog(filter, Settings.ScriptFileExtension,
                                                                                  multiselect: true, readonlyChecked: true);
@@ -100,13 +85,13 @@ public sealed partial class MainViewModel : ObservableObject
             lastAddedScript.MatchSome(s => SelectedScript = s);
         });
 
-        RemoveCurrentScript = new RelayCommand(() =>
+        DeleteCurrentScript = new RelayCommand(() =>
         {
-            if (SelectedScript is not null && SelectedScript.Type.IsMutable && DialogFactory.ShowConfirmation(DialogFactory.MakeConfirmScriptDeletion))
+            if (DialogFactory.ShowConfirmation(DialogFactory.MakeConfirmScriptDeletion))
             {
-                _ = Scripts.Source.Remove(SelectedScript);
+                _ = Scripts.Source.Remove(SelectedScript.NotNull());
             }
-        });
+        }, () => SelectedScript?.Type.IsMutable ?? false);
 
         ExecuteScripts = new RelayCommand(() =>
         {
@@ -134,9 +119,13 @@ public sealed partial class MainViewModel : ObservableObject
     }
 
     public static string ApplicationName => ServiceProvider.Get<IApplicationInfo>().Name;
+
     public static double Height { get => Settings.Height; set => Settings.Height = value; }
+
     public static double Left { get => Settings.Left; set => Settings.Left = value; }
+
     public static double Top { get => Settings.Top; set => Settings.Top = value; }
+
     public static double Width { get => Settings.Width; set => Settings.Width = value; }
 
     public static WindowState WindowState
@@ -161,15 +150,25 @@ public sealed partial class MainViewModel : ObservableObject
     });
 
     public IRelayCommand OpenCustomScriptsDir { get; } = new RelayCommand(AppDirectory.Scripts.Open);
+
     public IRelayCommand OpenLogsDir { get; } = new RelayCommand(AppDirectory.Logs.Open);
+
     public IRelayCommand OpenOnlineWiki { get; } = new RelayCommand(Settings.WikiUrl.Open);
-    public IRelayCommand RemoveCurrentScript { get; }
+
+    public IRelayCommand DeleteCurrentScript { get; }
+
     public IRelayCommand ReportIssue { get; } = new RelayCommand(ServiceProvider.Get<ISettings>().NewIssueUrl.Open);
+
     public CollectionWrapper<ObservableCollection<ScriptViewModel>, ScriptViewModel> Scripts { get; }
+
     public IRelayCommand ShowAboutWindow { get; } = new RelayCommand(() => _ = ServiceProvider.Get<IDialogCreator>().ShowDialog(new AboutViewModel()));
+
     public IRelayCommand ShowSettingsWindow { get; } = new RelayCommand(() => _ = ServiceProvider.Get<IDialogCreator>().ShowDialog(new SettingsViewModel()));
+
     public IRelayCommand UncheckAllScripts { get; }
+
     private static IScriptStorage ScriptStorage => ServiceProvider.Get<IScriptStorage>();
+
     private static ISettings Settings => ServiceProvider.Get<ISettings>();
 
     private static Option<ScriptViewModel> RetrieveNewScript(string path)
@@ -217,6 +216,22 @@ public sealed partial class MainViewModel : ObservableObject
             }
         } while (retry);
         return Option.None<ScriptViewModel>();
+    }
+
+    private ScriptViewModel CreateScriptViewModel(Script script)
+    {
+        ScriptViewModel scriptViewModel = new(script);
+        scriptViewModel.PropertyChanged += (s, e) =>
+        {
+            bool aGroupingCriterionChanged = Scripts.NotNull().View.GroupDescriptions.OfType<PropertyGroupDescription>().Any(g => g.PropertyName == e.PropertyName);
+            if (aGroupingCriterionChanged)
+            {
+                Scripts.View.Refresh();
+            }
+            ScriptStorage.Commit(scriptViewModel.Model);
+        };
+
+        return scriptViewModel;
     }
 
     private void SelectScripts(Predicate<ScriptViewModel> check)

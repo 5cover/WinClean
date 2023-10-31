@@ -136,8 +136,7 @@
     <EmbeddedResource Include="Scripts\Run advanced disk cleanup.xml" />
     <EmbeddedResource Include="Scripts\Run Component Store cleanup.xml" />
     <EmbeddedResource Include="Scripts\Run Disk Cleanup tool.xml" />
-    <EmbeddedResource Include="Scripts\Run the System File Checker tool.xml" />
-    <EmbeddedResource Include="Scripts\Run Check Disk utility.xml" />
+    <EmbeddedResource Include="Scripts\Schedule Check Disk utility.xml" />
     <EmbeddedResource Include="Scripts\Show checkboxes near files and folders.xml" />
     <EmbeddedResource Include="Scripts\Show file extensions.xml" />
     <EmbeddedResource Include="Scripts\Show full path in Explorer title bar.xml" />

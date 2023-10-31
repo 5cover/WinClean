@@ -9,10 +9,6 @@ public sealed class ScriptExecutionWizardViewModel : ObservableObject
 {
     private readonly CollectionWrapper<IReadOnlyList<ExecutionInfoViewModel>, ExecutionInfoViewModel> _executionInfos;
 
-    /// <remarks>
-    /// <paramref name="executionInfos"/> is considered to be owned by this class and will be disposed by
-    /// it.
-    /// </remarks>
     public ScriptExecutionWizardViewModel(IReadOnlyList<ExecutionInfoViewModel> executionInfos)
     {
         _executionInfos = new(executionInfos);

@@ -49,7 +49,7 @@ public sealed class FileScriptRepository : MutableScriptRepository
                 catch (DeserializationException e)
                 {
                     var action = _scriptLoadError(e, scriptFile);
-                    if (action is InvalidScriptDataAction.Remove)
+                    if (action is InvalidScriptDataAction.Delete)
                     {
                         scriptFile.PerformFileSystemOperation(File.Delete, FSVerb.Delete);
                     }

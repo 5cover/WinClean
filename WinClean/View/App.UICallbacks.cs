@@ -43,8 +43,8 @@ public partial class App
 
             if (deleteScriptButton.Equals(clicked))
             {
-                Logs.ScriptRemoved.FormatWith(path).Log();
-                return InvalidScriptDataAction.Remove;
+                Logs.ScriptDeleted.FormatWith(path).Log();
+                return InvalidScriptDataAction.Delete;
             }
 
             return Button.TryAgain.Equals(clicked) ? InvalidScriptDataAction.Reload : InvalidScriptDataAction.Ignore;

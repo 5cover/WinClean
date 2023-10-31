@@ -12,13 +12,9 @@ public sealed class Page3ViewModel : WizardPageViewModel
     public Page3ViewModel(CollectionWrapper<IReadOnlyList<ExecutionInfoViewModel>, ExecutionInfoViewModel> executionInfos)
     {
         ExecutionInfos = executionInfos;
-        executionInfos.ItemPropertyChanged += (_, e) =>
-        {
-            if (e.PropertyName == nameof(ExecutionInfoViewModel.Result))
-            {
-                OnPropertyChanged(nameof(FormattedDescription));
-            }
-        };
+        // Recompute the property to ensure the correct FormattedDescription is displayed.
+        // The items of executionInfos may have changed between the instantiation and the actual usage of the view model.
+        EnterCommand = new RelayCommand(() => OnPropertyChanged(nameof(FormattedDescription)));
     }
 
     public CollectionWrapper<IReadOnlyList<ExecutionInfoViewModel>, ExecutionInfoViewModel> ExecutionInfos { get; }

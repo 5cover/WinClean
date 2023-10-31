@@ -131,7 +131,7 @@
                             <view:TabContent.Template>
                                 <DataTemplate DataType="{x:Type CollectionViewGroup}">
                                     <controls:ScriptListView
-                                        DeleteCommand="{Binding DataContext.RemoveCurrentScript, ElementName=window}"
+                                        DeleteCommand="{Binding DataContext.DeleteCurrentScript, ElementName=window}"
                                         SelectedScript="{Binding DataContext.SelectedScript, ElementName=window, Mode=TwoWay}"
                                         Usage="{Binding Name}">
                                         <controls:ScriptListView.Resources>
@@ -169,13 +169,8 @@
                 Grid.Row="0"
                 Grid.Column="2"
                 Margin="0,0,0,12"
-                Content="{Binding SelectedScript}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="ScriptRemoved" SourceName="scriptView">
-                        <i:InvokeCommandAction Command="{Binding RemoveCurrentScript}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </controls:ScriptView>
+                Content="{Binding SelectedScript}"
+                DeleteScriptCommand="{Binding DeleteCurrentScript}" />
             <Button
                 Grid.Row="1"
                 HorizontalAlignment="Center"

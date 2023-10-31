@@ -173,7 +173,7 @@
                     Grid.ColumnSpan="2"
                     Margin="0,6,0,0"
                     HorizontalAlignment="Right"
-                    Click="ButtonDelete_Click"
+                    Command="{Binding DeleteScriptCommand, ElementName=scriptViewUserControl}"
                     Content="{x:Static ui:Buttons.Delete}">
                     <Button.Style>
                         <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">

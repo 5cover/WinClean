@@ -9,7 +9,7 @@ namespace Scover.WinClean.View.Controls;
 
 public sealed partial class ScriptListView
 {
-    public static readonly DependencyProperty RemoveCommandProperty = DependencyProperty.Register(nameof(DeleteCommand), typeof(ICommand), typeof(ScriptListView));
+    public static readonly DependencyProperty DeleteCommandProperty = DependencyProperty.Register(nameof(DeleteCommand), typeof(ICommand), typeof(ScriptListView));
     public static readonly DependencyProperty SelectedScriptProperty = DependencyProperty.Register(nameof(SelectedScript), typeof(ScriptViewModel), typeof(ScriptListView));
     public static readonly DependencyProperty UsageProperty = DependencyProperty.Register(nameof(Usage), typeof(Usage), typeof(ScriptListView));
 
@@ -17,8 +17,8 @@ public sealed partial class ScriptListView
 
     public ICommand DeleteCommand
     {
-        get => (ICommand)GetValue(RemoveCommandProperty);
-        set => SetValue(RemoveCommandProperty, value);
+        get => (ICommand)GetValue(DeleteCommandProperty);
+        set => SetValue(DeleteCommandProperty, value);
     }
 
     public ScriptViewModel SelectedScript

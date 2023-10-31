@@ -228,6 +228,14 @@ public static class Extensions
         UseShellExecute = true
     })?.Dispose();
 
+    /// <summary>
+    /// Performs a file system operation and wraps any filesystem exception thrown in a <see cref="FileSystemException"/>.
+    /// </summary>
+    /// <param name="fsObject">The filesystem object operated on represented a string</param>
+    /// <param name="fsOperation">The opeation to perform</param>
+    /// <param name="verb">The verb corrresponding to the type of operation</param>
+    /// <param name="message">The message to give to the <see cref="FileSystemException"/>.</param>
+    /// <exception cref="FileSystemException">A filesystem exception occured.</exception>
     public static void PerformFileSystemOperation(this string fsObject, Action<string> fsOperation, FSVerb verb, string? message = null)
     {
         try
@@ -240,6 +248,7 @@ public static class Extensions
         }
     }
 
+    /// <inheritdoc cref="Extensions.PerformFileSystemOperation(string, Action{string}, FSVerb, string?)"/>
     public static T PerformFileSystemOperation<T>(this string fsObject, Func<string, T> fsOperation, FSVerb verb, string? message = null)
     {
         try

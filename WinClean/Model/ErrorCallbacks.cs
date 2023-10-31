@@ -29,6 +29,6 @@ public enum InvalidScriptDataAction
     /// <summary>Ignore the script.</summary>
     Ignore,
 
-    /// <summary>Remove the script.</summary>
-    Remove,
+    /// <summary>Delete the script.</summary>
+    Delete,
 }

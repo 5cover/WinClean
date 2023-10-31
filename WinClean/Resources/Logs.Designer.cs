@@ -124,6 +124,15 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Script &apos;{0}&apos; deleted..
+        /// </summary>
+        public static string ScriptDeleted {
+            get {
+                return ResourceManager.GetString("ScriptDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Execution of &apos;{0}&apos; (&apos;{1}&apos;) aborted..
         /// </summary>
         public static string ScriptExecutionAborted {
@@ -192,15 +201,6 @@ namespace Scover.WinClean.Resources {
         public static string ScriptOverwritten {
             get {
                 return ResourceManager.GetString("ScriptOverwritten", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Script &apos;{0}&apos; removed..
-        /// </summary>
-        public static string ScriptRemoved {
-            get {
-                return ResourceManager.GetString("ScriptRemoved", resourceCulture);
             }
         }
         

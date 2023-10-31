@@ -119,7 +119,6 @@ public sealed partial class Page2ViewModel : WizardPageViewModel
         {
             _scriptIndex = value;
             OnPropertyChanged();
-            OnPropertyChanged(nameof(ExecutingExecutionInfo));
             OnPropertyChanged(nameof(FormattedProgress));
             FormattedTimeRemaining = FormatTimeRemaining(ExecutionInfos.Source.Skip(ScriptIndex).Select(e => e.Script.ExecutionTime));
             AbortScript.NotifyCanExecuteChanged();
@@ -147,16 +146,11 @@ public sealed partial class Page2ViewModel : WizardPageViewModel
             return soFar + newVal.ValueOr(TimeSpan.Zero);
         });
 
-        if (knownCount == 0)
-        {
-            return TimeRemaining.Unknown;
-        }
-        else if (unknownCount > 0)
-        {
-            return TimeRemaining.AtLeast.FormatWith(timeRemaining.HumanizeToSeconds());
-        }
-
-        return timeRemaining.HumanizeToSeconds();
+        return knownCount == 0
+            ? TimeRemaining.Unknown
+            : unknownCount > 0
+            ? TimeRemaining.AtLeast.FormatWith(timeRemaining.HumanizeToSeconds())
+            : timeRemaining.HumanizeToSeconds();
     }
 
     private async Task ExecuteScripts(CancellationToken cancellationToken)
@@ -168,6 +162,7 @@ public sealed partial class Page2ViewModel : WizardPageViewModel
             await executionInfo.ExecuteAsync(cancellationToken);
             ++ScriptIndex;
         }
+
         if (RestartWhenFinished)
         {
             Logs.SystemRestartInitiated.Log(LogLevel.Info);

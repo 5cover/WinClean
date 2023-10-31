@@ -240,6 +240,6 @@ exit [int]((Get-ItemPropertyValue -Path $path -Name ".bmp") -eq "PhotoViewer.Fil
            (Get-ItemPropertyValue -Path $path -Name ".png") -eq "PhotoViewer.FileAssoc.PNG" -and
            (Get-ItemPropertyValue -Path $path -Name ".gif") -eq "PhotoViewer.FileAssoc.TIFF" -and
            (Get-ItemPropertyValue -Path $path -Name ".tiff") -eq "PhotoViewer.FileAssoc.TIFF" -and
-           (Get-ItemPropertyValue -Path $path -Name ".tif") -eq "PhotoViewer.FileAssoc.TIFF"))</Detect>
+           (Get-ItemPropertyValue -Path $path -Name ".tif") -eq "PhotoViewer.FileAssoc.TIFF")</Detect>
   </Code>
 </Script>

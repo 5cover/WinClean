@@ -190,8 +190,8 @@
     <comment>0 : script source
 1 : script InvariantName@Invariant</comment>
   </data>
-  <data name="ScriptRemoved" xml:space="preserve">
-    <value>Script '{0}' removed.</value>
+  <data name="ScriptDeleted" xml:space="preserve">
+    <value>Script '{0}' deleted.</value>
     <comment>0 : script InvariantName@Invariant</comment>
   </data>
   <data name="ScriptsSaved" xml:space="preserve">
