@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/View/ResourceDictionaries/ControlTemplates.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <!--  Fixes the TabStripPlacement binding error that occurs when removing items from a TabControl.  -->
+    <Style x:Key="FixTabItemBindingErrors" TargetType="TabItem">
+        <Setter Property="Template" Value="{StaticResource DefaultTabItemTemplate}" />
+    </Style>
+</ResourceDictionary>

@@ -27,11 +27,11 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/View/ResourceDictionaries/FixBindingErrors.xaml" />
+                <ResourceDictionary Source="/View/ResourceDictionaries/Fixes.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Style
                 x:Key="MetadataStyle"
-                BasedOn="{StaticResource TabControlFix}"
+                BasedOn="{StaticResource FixTabItemBindingErrors}"
                 TargetType="TabItem">
                 <Setter Property="Header" Value="{Binding Name.Name}" />
                 <Setter Property="ToolTip" Value="{Binding Name.Description}" />

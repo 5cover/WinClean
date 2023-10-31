@@ -9,6 +9,13 @@
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
     x:Name="scriptListViewUserControl"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/View/ResourceDictionaries/ControlTemplates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <UserControl.ContentTemplate>
         <DataTemplate>
             <DataGrid
@@ -42,10 +49,10 @@
                         <!--  Prevent text from become white when item selected  -->
                         <Setter Property="Foreground" Value="Black" />
                         <!--  Center every cell's content. This will prevent the text from being misaligned with the check box.  -->
-                        <!--  We still want the cell to occupy all vertical space in the row since DataGridRows aren't focusable.  -->
                         <Setter Property="VerticalContentAlignment" Value="Center" />
                         <!--  No cell selection overlay  -->
                         <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Template" Value="{StaticResource ImprovedDataGridCellTemplate}" />
                     </Style>
                 </DataGrid.CellStyle>
                 <DataGrid.RowStyle>

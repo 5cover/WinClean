@@ -16,14 +16,14 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/View/ResourceDictionaries/FixBindingErrors.xaml" />
+                <ResourceDictionary Source="/View/ResourceDictionaries/Fixes.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.ContentTemplate>
         <DataTemplate DataType="viewModel:ScriptViewModel">
             <TabControl
-                ItemContainerStyle="{StaticResource TabControlFix}"
+                ItemContainerStyle="{StaticResource FixTabItemBindingErrors}"
                 ItemsSource="{Binding Code}"
                 SelectedItem="{Binding SelectedCode}">
                 <TabControl.ContentTemplate>
