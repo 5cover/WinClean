@@ -12,6 +12,7 @@
     xmlns:windows="clr-namespace:Scover.WinClean.ViewModel.Windows"
     xmlns:xceedConverters="clr-namespace:Xceed.Wpf.Toolkit.Core.Converters;assembly=DotNetProjects.Wpf.Extended.Toolkit"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    x:Name="window"
     Title="{x:Static ui:ScriptExecutionWizard.Title}"
     Width="800"
     Height="600"
@@ -74,6 +75,9 @@
                         PropertyName="CurrentPage"
                         TargetName="wizard"
                         Value="{DynamicResource Page3}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="ClosingRequested" SourceObject="{Binding}">
+                    <i:CallMethodAction MethodName="Close" TargetObject="{Binding ElementName=window}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </pages:Page2>

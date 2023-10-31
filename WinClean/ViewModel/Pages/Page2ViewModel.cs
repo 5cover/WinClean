@@ -43,13 +43,7 @@ public sealed partial class Page2ViewModel : WizardPageViewModel
         EnterCommand = start;
         LeaveCommand = new RelayCommand(start.Cancel);
 
-        Stop = new RelayCommand(() =>
-        {
-            if (DialogFactory.ShowConfirmation(DialogFactory.MakeConfirmAbortOperation))
-            {
-                OnFinished();
-            }
-        });
+        Stop = new RelayCommand(() => OnClosingRequested());
 
         AbortScript = new RelayCommand(() =>
         {

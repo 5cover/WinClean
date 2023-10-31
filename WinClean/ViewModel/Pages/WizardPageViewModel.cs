@@ -19,5 +19,11 @@ public partial class WizardPageViewModel : ObservableObject
     /// </summary>
     public event TypeEventHandler<WizardPageViewModel>? Finished;
 
+    /// <summary>
+    /// Indicates that a page has requested cancelation of the wizard.
+    /// </summary>
+    public event TypeEventHandler<WizardPageViewModel>? ClosingRequested;
+
     protected void OnFinished() => Finished?.Invoke(this, EventArgs.Empty);
+    protected void OnClosingRequested() => ClosingRequested?.Invoke(this, EventArgs.Empty);
 }
