@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Modified version of Shadow Whisperer's Remove-Edge-Chromium script. See https://github.com/ShadowWhisperer/Remove-Edge-Chromium -->
 <Script>
   <Name>Remove Microsoft Edge</Name>
   <Name xml:lang="fr">Supprimer Microsoft Edge</Name>
@@ -9,7 +10,7 @@
   <Impact>Free storage space</Impact>
   <Versions>>=10.0.19042</Versions>
   <Code>
-    <Execute Host="Cmd">:: Modified version of Shadow Whisperer's Remove-Edge-Chromium script. See https://github.com/ShadowWhisperer/Remove-Edge-Chromium
+    <Execute Host="Cmd">@echo off
 
 :: Stop Edge Task
 taskkill /im "msedge.exe" /f  >nul 2>&amp;1
@@ -17,32 +18,34 @@ taskkill /im "msedge.exe" /f  >nul 2>&amp;1
 :: Do not install Edge from Windows Updates (Does not appear to work anymore)
 reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\EdgeUpdate /t REGDWORD /v DoNotUpdateToEdgeWithChromium /d 1 /f >nul 2>&amp;1
 
-:: Uninstall - 32Bit
+echo Uninstalling 32Bit...
 if exist "C:\Program Files (x86)\Microsoft\Edge\Application\" (
-for /f "delims=" %%a in ('dir /b "C:\Program Files (x86)\Microsoft\Edge\Application\"') do (
-cd /d "C:\Program Files (x86)\Microsoft\Edge\Application\%%a\Installer\"
-if exist "setup.exe" (
-echo - Removing Microsoft Edge
-start /w setup.exe --uninstall --system-level --force-uninstall)
-echo Finished
-exit
-))
+  for /f "delims=" %%a in ('dir /b "C:\Program Files (x86)\Microsoft\Edge\Application\"') do (
+    cd /d "C:\Program Files (x86)\Microsoft\Edge\Application\%%a\Installer\"
+    if exist "setup.exe" (
+      echo - Removing Microsoft Edge
+      start /w setup.exe --uninstall --system-level --force-uninstall
+    )
+  )
+)
 
-:: Uninstall - 64Bit
+echo Uninstalling 64Bit...
 if exist "C:\Program Files\Microsoft\Edge\Application\" (
-for /f "delims=" %%a in ('dir /b "C:\Program Files\Microsoft\Edge\Application\"') do (
-cd /d "C:\Program Files\Microsoft\Edge\Application\%%a\Installer\"
-if exist "setup.exe" (
-echo - Removing Microsoft Edge
-start /w setup.exe --uninstall --system-level --force-uninstall)
-echo Finished
-exit
-))
+  for /f "delims=" %%a in ('dir /b "C:\Program Files\Microsoft\Edge\Application\"') do (
+    cd /d "C:\Program Files\Microsoft\Edge\Application\%%a\Installer\"
+    if exist "setup.exe" (
+      echo - Removing Microsoft Edge
+      start /w setup.exe --uninstall --system-level --force-uninstall
+    )
+  )
+)
 
-:: Delete Edge icon from the desktop of all users
+echo Deleting Edge icon from the desktop of all users...
 for /f "delims=" %%a in ('dir /b "C:\Users"') do (
-del /F /S /Q /A "C:\Users\%%a\Desktop\edge.lnk" >nul 2>&amp;1
-del /F /S /Q /A "C:\Users\%%a\Desktop\Microsoft Edge.lnk" >nul 2>&amp;1
-)</Execute>
+  del /F /S /Q /A "C:\Users\%%a\Desktop\edge.lnk" >nul 2>&amp;1
+  del /F /S /Q /A "C:\Users\%%a\Desktop\Microsoft Edge.lnk" >nul 2>&amp;1
+)
+
+echo Removed Microsoft Edge successfully</Execute>
   </Code>
 </Script>

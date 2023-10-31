@@ -228,8 +228,12 @@ public sealed partial class MainViewModel : ObservableObject
             {
                 Scripts.View.Refresh();
             }
-            ScriptStorage.Commit(scriptViewModel.Model);
         };
+
+        if (script.Type.IsMutable)
+        {
+            scriptViewModel.PropertyChanged += (s, e) => ScriptStorage.Commit(scriptViewModel.Model);
+        }
 
         return scriptViewModel;
     }
