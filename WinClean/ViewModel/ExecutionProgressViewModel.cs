@@ -9,13 +9,49 @@ namespace Scover.WinClean.ViewModel;
 public sealed class ExecutionProgressViewModel : ObservableObject, IProgress<ProcessOutput>
 {
     private readonly StringBuilder _fullOutput = new(), _standardError = new(), _standardOutput = new();
-    public string FullOutput => _fullOutput.ToString();
-    public string StandardError => _standardError.ToString();
-    public string StandardOutput => _standardOutput.ToString();
+
+    // StringBuilder is not thread-safe : locks are necessary
+
+    public string FullOutput
+    {
+        get
+        {
+            lock (_fullOutput)
+            {
+                return _fullOutput.ToString();
+            }
+        }
+    }
+
+    public string StandardError
+    {
+        get
+        {
+            lock (_standardError)
+            {
+                return _standardError.ToString();
+            }
+        }
+    }
+
+    public string StandardOutput
+    {
+        get
+        {
+            lock (_standardOutput)
+            {
+                return _standardOutput.ToString();
+            }
+        }
+    }
 
     public void Report(ProcessOutput value)
     {
-        _ = _fullOutput.AppendLine(value.Text);
+        lock (_fullOutput)
+        {
+            _ = _fullOutput.AppendLine(value.Text);
+        }
+
         OnPropertyChanged(nameof(FullOutput));
 
         (var builder, var propName) = value.Kind switch
@@ -24,7 +60,12 @@ public sealed class ExecutionProgressViewModel : ObservableObject, IProgress<Pro
             ProcessOutputKind.Standard => (_standardOutput, nameof(StandardOutput)),
             _ => throw value.Kind.NewInvalidEnumArgumentException()
         };
-        _ = builder.AppendLine(value.Text);
+
+        lock (builder)
+        {
+            _ = builder.AppendLine(value.Text);
+        }
+
         OnPropertyChanged(propName);
     }
 }
