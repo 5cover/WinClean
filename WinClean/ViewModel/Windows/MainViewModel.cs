@@ -97,7 +97,7 @@ public sealed partial class MainViewModel : ObservableObject
         {
             using var executionInfos = Scripts.Where(s => s.Selection.IsSelected)
                 .Select(s => s.TryCreateExecutionInfo())
-                .WhereSome().ToDisposableEnumerable();
+                .WhereSome().OrderBy(einfo => einfo.Action.Order).ToDisposableEnumerable();
 
             if (executionInfos.Any())
             {

@@ -9,6 +9,6 @@
   <Impact>Free storage space</Impact>
   <Versions>>=6.1.7600</Versions>
   <Code>
-    <Execute Host="Execute" SuccessExitCodes="0 3010 87">Dism /Online /Remove-Capability /CapabilityName:Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0 /NoRestart</Execute>
+    <Execute Host="Execute" SuccessExitCodes="0 3010 87" Order="1000">Dism /Online /Remove-Capability /CapabilityName:Microsoft.Windows.PowerShell.ISE~~~~0.0.1.0 /NoRestart</Execute>
   </Code>
 </Script>

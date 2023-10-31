@@ -7,11 +7,17 @@ namespace Scover.WinClean.Model;
 [DebuggerDisplay($"{{{nameof(Host)},nq}} program")]
 public sealed class ScriptAction : IEquatable<ScriptAction?>
 {
-    public ScriptAction(Host host, IEnumerable<int> successsExitCodes, string code)
-        => (Code, SuccessExitCodes, Host) = (code, successsExitCodes, host);
+    public ScriptAction(Host host, IEnumerable<int> successsExitCodes, string code, int order)
+        => (Code, SuccessExitCodes, Host, Order) = (code, successsExitCodes, host, order);
 
     public string Code { get; set; }
     public IEnumerable<int> SuccessExitCodes { get; }
+
+    /// <summary>
+    /// Gets or sets the order of execution. Actions with a lower order should be executed first.
+    /// </summary>
+    public int Order { get; set; }
+
     public Host Host { get; set; }
 
     public HostStartInfo CreateHostStartInfo() => Host.CreateHostStartInfo(Code);

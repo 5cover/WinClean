@@ -37,6 +37,7 @@ public sealed class ExecutionInfoViewModel : ObservableObject, IDisposable
     public ExecutionInfoViewModel(ScriptViewModel script, Capability capabilityToExecute, ScriptAction actionToExecute)
     {
         Script = script;
+        Action = actionToExecute;
         Capability = capabilityToExecute;
         _model = new(actionToExecute, synchronizationObject.Value);
         NotifyScroll = new RelayCommand<ScrollEventArgs>(e => UserIsNotScrolling = e.NotNull().ScrollEventType is ScrollEventType.EndScroll);
@@ -44,6 +45,8 @@ public sealed class ExecutionInfoViewModel : ObservableObject, IDisposable
     }
 
     public Capability Capability { get; }
+
+    public ScriptAction Action { get; }
 
     public string FormattedEstimatedExecutionTime { get; }
 

@@ -13,7 +13,8 @@ namespace Scover.WinClean.Model.Serialization.Xml;
 
 public sealed class ScriptXmlSerializer : IScriptSerializer
 {
-    private static readonly int[] defaultSuccessExitCodes = { 0 };
+    private static readonly int[] defaultCodeSuccessExitCodes = { 0 };
+    private const int DefaultCodeOrder = 0;
 
     private static readonly Dictionary<string, Func<XmlDocument, ScriptBuilder>> deserializers = new()
     {
@@ -53,13 +54,18 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
     private static ScriptCode DeserializeCode(XmlDocument d)
         => d.GetSingleChild(NameFor.Code).ChildNodes.OfType<XmlElement>().ToDictionary(
             keySelector: e => Capability.FromResourceName(e.Name),
-            elementSelector: e => new ScriptAction(Metadatas.GetMetadata<Host>(e.GetAttribute(NameFor.Host)),
-                e.GetAttribute(NameFor.SuccessExitCodes).Split(' ', StringSplitOptions.RemoveEmptyEntries) is { Length: > 0 } successExitCodes
-                ? successExitCodes.Select(s => int.Parse(s, CultureInfo.InvariantCulture))
-                : defaultSuccessExitCodes, e.InnerText))
-        is { Count: > 0 } codeElements
-            ? new ScriptCode(codeElements)
-            : throw new InvalidDataException(ExceptionMessages.ElementHasNoNamedChild.FormatWith(NameFor.Code));
+            elementSelector: e => new ScriptAction(
+                host: Metadatas.GetMetadata<Host>(e.GetAttribute(NameFor.Host)),
+                successsExitCodes: e.GetAttribute(NameFor.SuccessExitCodes).Split(' ', StringSplitOptions.RemoveEmptyEntries) is { Length: > 0 } successExitCodes
+                    ? successExitCodes.Select(s => int.Parse(s, CultureInfo.InvariantCulture))
+                    : defaultCodeSuccessExitCodes,
+                code: e.InnerText,
+                order: e.GetAttribute(NameFor.Order) is { Length: > 0 } order
+                    ? int.Parse(order)
+                    : DefaultCodeOrder))
+           is { Count: > 0 } codeElements
+               ? new ScriptCode(codeElements)
+               : throw new InvalidDataException(ExceptionMessages.ElementHasNoNamedChild.FormatWith(NameFor.Code));
 
     /// <summary>Deserializes a script in the current format.</summary>
     private static ScriptBuilder DeserializeCurrent(XmlDocument d)
@@ -102,8 +108,9 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             {
                 [Capability.Execute] = new ScriptAction(
                     code: d.GetSingleChildText(NameFor.Code),
-                    successsExitCodes: defaultSuccessExitCodes,
-                    host: Metadatas.GetMetadata<Host>(d.GetSingleChildText(NameFor.Host)))
+                    successsExitCodes: defaultCodeSuccessExitCodes,
+                    host: Metadatas.GetMetadata<Host>(d.GetSingleChildText(NameFor.Host)),
+                    order: DefaultCodeOrder)
             }),
             Impact = Metadatas.GetMetadata<Impact>(d.GetSingleChildText(NameFor.Impact) switch
             {
