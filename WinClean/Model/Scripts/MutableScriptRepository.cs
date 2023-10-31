@@ -5,12 +5,12 @@ namespace Scover.WinClean.Model.Scripts;
 
 public abstract class MutableScriptRepository : ScriptRepository
 {
-    private bool _quietUpdate;
+    private bool _updatesEnabled;
 
     protected MutableScriptRepository(IScriptSerializer serializer, ScriptType type) : base(serializer, type)
         => Scripts.CollectionChanged += (_, e) =>
         {
-            if (_quietUpdate)
+            if (!_updatesEnabled)
             {
                 return;
             }
@@ -47,13 +47,13 @@ public abstract class MutableScriptRepository : ScriptRepository
     protected abstract void Add(Script script);
 
     /// <summary>
-    /// Adds an item to the scripts collection without triggering the collection changed event handler.
+    /// Adds an item to the script collection without triggering the CollectionChanged event handler.
     /// </summary>
-    protected void AddItemQuietly(Script script)
+    protected void AddItemInternally(Script script)
     {
-        _quietUpdate = true;
+        _updatesEnabled = false;
         Scripts.Add(script);
-        _quietUpdate = false;
+        _updatesEnabled = true;
     }
 
     /// <summary>Removes a script from a repository.</summary>
