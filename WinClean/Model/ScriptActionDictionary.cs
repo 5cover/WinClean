@@ -30,7 +30,7 @@ public sealed class ScriptActionDictionary : IDictionary<Capability, ScriptActio
         }
 
         using HostStartInfo startInfo = detect.CreateHostStartInfo();
-        using Process process = StartProcess(startInfo);
+        using Process process = StartDetectionProcess(startInfo);
 
         if (process.WaitForExit(Convert.ToInt32(timeout.TotalMilliseconds)))
         {
@@ -44,13 +44,13 @@ public sealed class ScriptActionDictionary : IDictionary<Capability, ScriptActio
 
     public async Task<Capability?> DetectCapabilityAsync(CancellationToken cancellationToken)
     {
-        if (!TryGetValue(Capability.Detect, out var detect))
+        if (!TryGetValue(Capability.Detect, out ScriptAction? detect))
         {
             return null;
         }
 
         using HostStartInfo startInfo = detect.CreateHostStartInfo();
-        using var process = StartProcess(startInfo);
+        using var process = StartDetectionProcess(startInfo);
 
         using var reg = cancellationToken.Register(process.KillTree);
 
@@ -83,7 +83,7 @@ public sealed class ScriptActionDictionary : IDictionary<Capability, ScriptActio
 
     bool ICollection<KeyValuePair<Capability, ScriptAction>>.Remove(KeyValuePair<Capability, ScriptAction> item) => ((ICollection<KeyValuePair<Capability, ScriptAction>>)_actions).Remove(item);
 
-    private static Process StartProcess(HostStartInfo startInfo) => Process.Start(new ProcessStartInfo()
+    private static Process StartDetectionProcess(HostStartInfo startInfo) => Process.Start(new ProcessStartInfo()
     {
         FileName = startInfo.Filename,
         Arguments = startInfo.Arguments,
