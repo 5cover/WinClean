@@ -5,7 +5,7 @@ namespace Scover.WinClean.Model.Scripts;
 
 public abstract class MutableScriptRepository : ScriptRepository
 {
-    private bool _updatesEnabled;
+    private bool _updatesEnabled = true;
 
     protected MutableScriptRepository(IScriptSerializer serializer, ScriptType type) : base(serializer, type)
         => Scripts.CollectionChanged += (_, e) =>
