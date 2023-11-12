@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 using Microsoft.Xaml.Behaviors;
 
-namespace Scover.WinClean.View;
+namespace Scover.WinClean.View.Behaviors;
 
 public sealed class DataGridLastColumnFill : Behavior<DataGrid>
 {

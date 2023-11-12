@@ -5,7 +5,7 @@ using Microsoft.Xaml.Behaviors;
 
 using Scover.WinClean.ViewModel;
 
-namespace Scover.WinClean.View;
+namespace Scover.WinClean.View.Behaviors;
 
 public sealed class ConfirmWindowClosing : Behavior<Window>
 {

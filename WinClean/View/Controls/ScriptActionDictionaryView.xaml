@@ -32,12 +32,11 @@
                         <DockPanel>
                             <Grid Margin="0,0,0,3" DockPanel.Dock="Top">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2.5*" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
                                 </Grid.ColumnDefinitions>
                                 <xctk:WatermarkComboBox
-                                    Margin="3,0"
                                     IsReadOnly="{Binding IsReadOnly, ElementName=scriptActionDictionaryViewUserControl}"
                                     ItemsSource="{Binding Source={x:Type metadatas:Host}, Converter={StaticResource GetMetadatas}}"
                                     SelectedItem="{Binding Value.Host}"
@@ -72,22 +71,22 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </xctk:WatermarkComboBox>
-                                <xctk:IntegerUpDown
-                                    Grid.Column="1"
-                                    Margin="3,0"
-                                    IsReadOnly="{Binding IsReadOnly, ElementName=scriptActionDictionaryViewUserControl}"
-                                    ToolTip="{x:Static res:ScriptProperties.Order}"
-                                    Watermark="{x:Static res:ScriptProperties.Order}"
-                                    Value="{Binding Value.Order}" />
                                 <xctk:PrimitiveTypeCollectionControl
-                                    Grid.Column="2"
-                                    Margin="3,0"
+                                    Grid.Column="1"
+                                    Margin="6,0,0,0"
                                     Content="{x:Static res:ScriptProperties.SuccessExitCodes}"
                                     IsReadOnly="{Binding IsReadOnly, ElementName=scriptActionDictionaryViewUserControl}"
                                     ItemType="{x:Type system:Int32}"
                                     ItemsSource="{Binding Value.SuccessExitCodes}"
                                     ItemsSourceType="{x:Type system:Int32}"
                                     ToolTip="{x:Static res:ScriptProperties.SuccessExitCodes}" />
+                                <xctk:IntegerUpDown
+                                    Grid.Column="2"
+                                    Margin="6,0,0,0"
+                                    IsReadOnly="{Binding IsReadOnly, ElementName=scriptActionDictionaryViewUserControl}"
+                                    ToolTip="{x:Static res:ScriptProperties.Order}"
+                                    Watermark="{x:Static res:ScriptProperties.Order}"
+                                    Value="{Binding Value.Order}" />
                             </Grid>
                             <xctk:WatermarkTextBox
                                 AcceptsReturn="True"
