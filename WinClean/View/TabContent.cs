@@ -195,7 +195,7 @@ public static class TabContent
         EnsureContentTemplateIsNotModified(tabControl);
     }
 
-    public class ContentManager
+    public sealed class ContentManager
     {
         private readonly TabControl _tabControl;
         private Decorator _border;

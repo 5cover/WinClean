@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Scover.WinClean.Model;
 
-public class TypedEnumerableDictionary : IReadOnlyDictionary<Type, IEnumerable>
+public sealed class TypedEnumerableDictionary : IReadOnlyDictionary<Type, IEnumerable>
 {
     private readonly Dictionary<Type, IEnumerable> _dic = new();
 

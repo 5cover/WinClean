@@ -7,7 +7,7 @@ using Scover.WinClean.ViewModel;
 
 namespace Scover.WinClean.View;
 
-public class ConfirmWindowClosing : Behavior<Window>
+public sealed class ConfirmWindowClosing : Behavior<Window>
 {
     public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register(nameof(IsEnabled), typeof(bool), typeof(ConfirmWindowClosing));
 

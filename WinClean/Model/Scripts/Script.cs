@@ -9,7 +9,7 @@ using static System.Globalization.CultureInfo;
 namespace Scover.WinClean.Model.Scripts;
 
 [DebuggerDisplay($"{{{nameof(InvariantName)}}}")]
-public record Script
+public sealed record Script
 {
     public Script(Category category, ScriptActionDictionary actions, Impact impact, LocalizedString localizedDescription, LocalizedString localizedName, SafetyLevel safetyLevel, string source, ScriptType type, SemVersionRange versions)
         => (Category, Actions, Impact, LocalizedDescription, LocalizedName, SafetyLevel, Source, Type, Versions)

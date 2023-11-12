@@ -5,7 +5,7 @@ using Scover.WinClean.Services;
 
 namespace Scover.WinClean.Model.Scripts;
 
-public class EmbeddedScriptRepository : ScriptRepository
+public sealed class EmbeddedScriptRepository : ScriptRepository
 {
     private readonly string _namespace;
 

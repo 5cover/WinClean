@@ -13,7 +13,7 @@ using static System.Globalization.CultureInfo;
 
 namespace Scover.WinClean.ViewModel;
 
-public class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, IEquatable<Script?>
+public sealed class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, IEquatable<Script?>
 {
     private KeyValuePair<Capability, ScriptAction> _selectedAction;
 

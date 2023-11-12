@@ -9,7 +9,7 @@ namespace Scover.WinClean.Model;
 /// <summary>
 /// Used to interact with the remote source control system hosting the application online (such as GitHub).
 /// </summary>
-public class SourceControlClient
+public sealed class SourceControlClient
 {
     private SourceControlClient(string latestVersionName)
         => LatestVersionName = latestVersionName;
