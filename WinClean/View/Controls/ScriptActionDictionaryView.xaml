@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:metadatas="clr-namespace:Scover.WinClean.Model.Metadatas"
     xmlns:res="clr-namespace:Scover.WinClean.Resources"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
     xmlns:view="clr-namespace:Scover.WinClean.View"
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
@@ -13,7 +14,6 @@
     x:Name="scriptActionDictionaryViewUserControl"
     d:DataContext="{d:DesignInstance Type=viewModel:ScriptActionDictionaryViewModel}"
     mc:Ignorable="d">
-    <!--  UseLayoutRounding prevents blurry Host icons  -->
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -30,42 +30,63 @@
                 <TabControl.ContentTemplate>
                     <DataTemplate DataType="collections:KeyValuePair&lt;metadatas:Capability,model:ScriptAction&gt;">
                         <DockPanel>
-                            <xctk:WatermarkComboBox
-                                Margin="0,0,0,3"
-                                DockPanel.Dock="Top"
-                                IsEnabled="{Binding IsReadOnly, ElementName=scriptActionDictionaryViewUserControl, Converter={StaticResource BooleanInvert}}"
-                                ItemsSource="{Binding Source={x:Type metadatas:Host}, Converter={StaticResource GetMetadatas}}"
-                                SelectedItem="{Binding Value.Host}"
-                                Watermark="{x:Static res:ScriptProperties.Host}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate DataType="metadatas:Host">
-                                        <StackPanel Orientation="Horizontal" ToolTip="{Binding Description}">
-                                            <!--  NearestNeighbor prevents image blurriness.  -->
-                                            <Image
-                                                VerticalAlignment="Center"
-                                                RenderOptions.BitmapScalingMode="NearestNeighbor"
-                                                Source="{Binding Icon}"
-                                                Style="{StaticResource Icon}" />
-                                            <TextBlock Margin="6,0,0,0" Text="{Binding Name}" />
-                                            <Image
-                                                Margin="6,0,0,0"
-                                                VerticalAlignment="Center"
-                                                Source="{x:Static view:StandardIcons.Warning}"
-                                                ToolTip="{x:Static ui:ScriptActionDictionaryView.IncompatibleHost}">
-                                                <Image.Style>
-                                                    <Style BasedOn="{StaticResource Icon}" TargetType="Image">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Versions, Converter={StaticResource CurrentVersionSatisfiesRange}}" Value="True">
-                                                                <Setter Property="Visibility" Value="Collapsed" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Image.Style>
-                                            </Image>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </xctk:WatermarkComboBox>
+                            <Grid Margin="0,0,0,3" DockPanel.Dock="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2.5*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <xctk:WatermarkComboBox
+                                    Margin="3,0"
+                                    IsReadOnly="{Binding IsReadOnly, ElementName=scriptActionDictionaryViewUserControl}"
+                                    ItemsSource="{Binding Source={x:Type metadatas:Host}, Converter={StaticResource GetMetadatas}}"
+                                    SelectedItem="{Binding Value.Host}"
+                                    ToolTip="{x:Static res:ScriptProperties.Host}"
+                                    Watermark="{x:Static res:ScriptProperties.Host}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate DataType="metadatas:Host">
+                                            <StackPanel Orientation="Horizontal" ToolTip="{Binding Description}">
+                                                <!--  NearestNeighbor prevents image blurriness.  -->
+                                                <Image
+                                                    VerticalAlignment="Center"
+                                                    RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                                    Source="{Binding Icon}"
+                                                    Style="{StaticResource Icon}" />
+                                                <TextBlock Margin="6,0,0,0" Text="{Binding Name}" />
+                                                <Image
+                                                    Margin="6,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Source="{x:Static view:StandardIcons.Warning}"
+                                                    ToolTip="{x:Static ui:ScriptActionDictionaryView.IncompatibleHost}">
+                                                    <Image.Style>
+                                                        <Style BasedOn="{StaticResource Icon}" TargetType="Image">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Versions, Converter={StaticResource CurrentVersionSatisfiesRange}}" Value="True">
+                                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Image.Style>
+                                                </Image>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </xctk:WatermarkComboBox>
+                                <xctk:IntegerUpDown
+                                    Grid.Column="1"
+                                    Margin="3,0"
+                                    IsReadOnly="{Binding IsReadOnly, ElementName=scriptActionDictionaryViewUserControl}"
+                                    ToolTip="Order"
+                                    Value="{Binding Value.Order}" />
+                                <xctk:PrimitiveTypeCollectionControl
+                                    Grid.Column="2"
+                                    Margin="3,0"
+                                    IsReadOnly="{Binding IsReadOnly, ElementName=scriptActionDictionaryViewUserControl}"
+                                    ItemType="{x:Type system:Int32}"
+                                    ItemsSource="{Binding Value.SuccessExitCodes}"
+                                    ItemsSourceType="{x:Type system:Int32}"
+                                    ToolTip="Success exit codes" />
+                            </Grid>
                             <xctk:WatermarkTextBox
                                 AcceptsReturn="True"
                                 FontFamily="Consolas"
