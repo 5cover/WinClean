@@ -233,10 +233,12 @@
     <ControlTemplate x:Key="ImprovedDataGridCellTemplate" TargetType="{x:Type DataGridCell}">
         <Border
             Name="Bd"
+            Margin="{TemplateBinding Margin}"
+            Padding="{TemplateBinding Padding}"
             Background="{TemplateBinding Panel.Background}"
             BorderBrush="{TemplateBinding Border.BorderBrush}"
             BorderThickness="{TemplateBinding Border.BorderThickness}"
-            SnapsToDevicePixels="True">
+            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
             <ContentPresenter
                 HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"

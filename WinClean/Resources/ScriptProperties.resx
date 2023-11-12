@@ -118,8 +118,14 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
   <data name="SafetyLevel" xml:space="preserve">
     <value>Safety</value>
+  </data>
+  <data name="SuccessExitCodes" xml:space="preserve">
+    <value>Success exit codes</value>
   </data>
   <data name="Versions" xml:space="preserve">
     <value>Versions</value>

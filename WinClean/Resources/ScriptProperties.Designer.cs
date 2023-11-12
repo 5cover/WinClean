@@ -124,11 +124,29 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Order.
+        /// </summary>
+        public static string Order {
+            get {
+                return ResourceManager.GetString("Order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Safety.
         /// </summary>
         public static string SafetyLevel {
             get {
                 return ResourceManager.GetString("SafetyLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Success exit codes.
+        /// </summary>
+        public static string SuccessExitCodes {
+            get {
+                return ResourceManager.GetString("SuccessExitCodes", resourceCulture);
             }
         }
         

@@ -4,8 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
+    xmlns:view="clr-namespace:Scover.WinClean.View"
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
     x:Name="scriptListViewUserControl"
     mc:Ignorable="d">
@@ -36,6 +38,9 @@
                 VirtualizingPanel.IsContainerVirtualizable="True"
                 VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                 VirtualizingPanel.VirtualizationMode="Recycling">
+                <i:Interaction.Behaviors>
+                    <view:DataGridLastColumnFill />
+                </i:Interaction.Behaviors>
                 <DataGrid.CommandBindings>
                     <CommandBinding
                         CanExecute="DeleteCanExecute"
@@ -44,32 +49,31 @@
                 </DataGrid.CommandBindings>
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
-                        <!--  Prevent borders between cells when selected  -->
+                        <Setter Property="Background" Value="{Binding SafetyLevel.Color, Converter={StaticResource ColorToBrush}, ConverterParameter={StaticResource SafetyLevelOpacity}}" />
+                        <!--  Prevent borders between cells  -->
                         <Setter Property="BorderThickness" Value="0" />
-                        <!--  Prevent text from become white when item selected  -->
+                        <!--  Prevent text from become white when item selected.  -->
                         <Setter Property="Foreground" Value="Black" />
-                        <!--  Center every cell's content. This will prevent the text from being misaligned with the check box.  -->
+                        <!--  Padding instead of Margin for a larger selection area  -->
+                        <Setter Property="Padding" Value="1" />
+
                         <Setter Property="VerticalContentAlignment" Value="Center" />
-                        <!--  No cell selection overlay  -->
-                        <Setter Property="Background" Value="Transparent" />
+                        <!--  This is necessary because the default ControlTemplate for DataGridCell doesn't tranfer Padding property.  -->
                         <Setter Property="Template" Value="{StaticResource ImprovedDataGridCellTemplate}" />
                     </Style>
                 </DataGrid.CellStyle>
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
-                        <Setter Property="Background" Value="{Binding SafetyLevel.Color, Converter={StaticResource ColorToBrush}, ConverterParameter={StaticResource SafetyLevelOpacity}}" />
-                        <Setter Property="BorderBrush" Value="{Binding SafetyLevel.Color, Converter={StaticResource ColorToBrush}, ConverterParameter={StaticResource SafetyLevelOpacity}}" />
-                        <Setter Property="Margin" Value="1" />
                         <Setter Property="BorderThickness" Value="1" />
+                        <!--  Prevent color from mixing with DataGridCell.Background  -->
+                        <Setter Property="Background" Value="Transparent" />
                         <!--  Stops auto scrolling when a cell is clicked  -->
                         <EventSetter Event="RequestBringIntoView" Handler="DataGridRowRequestBringIntoViewSwallow" />
                         <Style.Triggers>
-                            <!--  Hover  -->
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="#1F26A0DA" />
                                 <Setter Property="BorderBrush" Value="#A826A0DA" />
                             </Trigger>
-                            <!--  Selected inactive  -->
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="Selector.IsSelectionActive" Value="False" />
@@ -78,7 +82,6 @@
                                 <Setter Property="Background" Value="#3DDADADA" />
                                 <Setter Property="BorderBrush" Value="#DADADA" />
                             </MultiTrigger>
-                            <!--  Selected  -->
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="Selector.IsSelectionActive" Value="True" />
@@ -120,7 +123,7 @@
                             <Style TargetType="{x:Type GroupItem}">
                                 <Setter Property="Template">
                                     <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type GroupItem}">
+                                        <ControlTemplate d:DataContext="{x:Type CollectionViewGroup}" TargetType="{x:Type GroupItem}">
                                             <Expander IsExpanded="True">
                                                 <Expander.Header>
                                                     <TextBlock FontWeight="SemiBold" ToolTip="{Binding Name.Description}">
