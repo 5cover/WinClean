@@ -26,7 +26,7 @@ namespace Scover.WinClean.ViewModel.Windows;
 
 public sealed partial class MainViewModel : ObservableObject
 {
-    private readonly Lazy<PropertyInfo[]> _scriptProperties = new(typeof(ScriptViewModel).GetProperties(BindingFlags.Public | BindingFlags.Instance));
+    private readonly Lazy<PropertyInfo[]> _scriptProperties = new(() => typeof(ScriptViewModel).GetProperties(BindingFlags.Public | BindingFlags.Instance));
 
     [ObservableProperty]
     private ScriptViewModel? _selectedScript;
