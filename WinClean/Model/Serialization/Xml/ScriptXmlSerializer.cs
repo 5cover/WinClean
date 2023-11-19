@@ -13,7 +13,7 @@ namespace Scover.WinClean.Model.Serialization.Xml;
 
 public sealed class ScriptXmlSerializer : IScriptSerializer
 {
-    private static readonly int[] defaultCodeSuccessExitCodes = { 0 };
+    private static readonly HashSet<int> defaultCodeSuccessExitCodes = new() { 0 };
     private const int DefaultCodeOrder = 0;
     private const char SuccessExitCodesSeparator = ' ';
 
@@ -58,7 +58,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             elementSelector: e => new ScriptAction(
                 host: Metadatas.GetMetadata<Host>(e.GetAttribute(NameFor.Host)),
                 successsExitCodes: e.GetAttribute(NameFor.SuccessExitCodes).Split(SuccessExitCodesSeparator, StringSplitOptions.RemoveEmptyEntries) is { Length: > 0 } successExitCodes
-                    ? successExitCodes.Select(s => int.Parse(s, CultureInfo.InvariantCulture))
+                    ? successExitCodes.Select(s => int.Parse(s, CultureInfo.InvariantCulture)).ToHashSet()
                     : defaultCodeSuccessExitCodes,
                 code: e.InnerText,
                 order: e.GetAttribute(NameFor.Order) is { Length: > 0 } order

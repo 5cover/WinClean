@@ -28,7 +28,7 @@ public sealed partial class ScriptXmlSerializerTests
     {
         new(new Script(new Dictionary<Capability, ScriptAction>
         {
-            [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Cmd"), new[] { 0 }, "DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.WordPad~~~~0.0.1.0 /NoRestart", 0)
+            [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Cmd"), new HashSet<int> { 0, 3010 }, "DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.WordPad~~~~0.0.1.0 /NoRestart", 1)
         },
         Metadatas.GetMetadata<Category>("Debloating"),
         Metadatas.GetMetadata<Impact>("Free storage space"),
@@ -49,9 +49,9 @@ public sealed partial class ScriptXmlSerializerTests
 
         new(new Script(new Dictionary<Capability, ScriptAction>
         {
-            [Capability.Enable] = new(Metadatas.GetMetadata<Host>("Regedit"), new[] { 0 }, "Windows Registry Editor 5.00", 0),
-            [Capability.Disable] = new(Metadatas.GetMetadata<Host>("Cmd"), new[] { 0 }, "echo %path%", 0),
-            [Capability.Detect] = new(Metadatas.GetMetadata<Host>("PowerShell"), new[] { 0 }, "systray.exe", 0)
+            [Capability.Enable] = new(Metadatas.GetMetadata<Host>("Regedit"), new HashSet<int> { 0 }, "Windows Registry Editor 5.00", 0),
+            [Capability.Disable] = new(Metadatas.GetMetadata<Host>("Cmd"), new HashSet<int> { 0 }, "echo %path%", 0),
+            [Capability.Detect] = new(Metadatas.GetMetadata<Host>("PowerShell"), new HashSet<int> { 0 }, "systray.exe", 0)
         },
         Metadatas.GetMetadata<Category>("Maintenance"),
         Metadatas.GetMetadata<Impact>("Privacy"),
@@ -72,7 +72,7 @@ public sealed partial class ScriptXmlSerializerTests
 
         new(new Script(new Dictionary<Capability, ScriptAction>
         {
-            [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Regedit"), new[] { 0 }, @"Windows Registry Editor Version 5.00
+            [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Regedit"), new HashSet<int> { 0 }, @"Windows Registry Editor Version 5.00
 [HKEYCURRENTUSER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer]
 ""link""=hex:1b,00,00,00", 0)
         },

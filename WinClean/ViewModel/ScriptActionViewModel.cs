@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;
@@ -29,7 +27,7 @@ public sealed class ScriptActionViewModel : ObservableObject, IEquatable<ScriptA
         }
     }
 
-    public ObservableCollection<int> SuccessExitCodes { get; }
+    public ObservableSet<int> SuccessExitCodes { get; }
 
     public int Order
     {

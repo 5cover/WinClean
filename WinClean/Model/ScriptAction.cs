@@ -8,11 +8,11 @@ namespace Scover.WinClean.Model;
 public sealed class ScriptAction : IEquatable<ScriptAction?>
 {
     /// <param name="successsExitCodes">Success exit codes. The collection is cloned.</param>
-    public ScriptAction(Host host, IEnumerable<int> successsExitCodes, string code, int order)
-        => (Code, SuccessExitCodes, Host, Order) = (code, successsExitCodes.ToList(), host, order);
+    public ScriptAction(Host host, ISet<int> successsExitCodes, string code, int order)
+        => (Code, SuccessExitCodes, Host, Order) = (code, successsExitCodes, host, order);
 
     public string Code { get; set; }
-    public ICollection<int> SuccessExitCodes { get; }
+    public ISet<int> SuccessExitCodes { get; }
 
     /// <summary>
     /// Gets or sets the order of execution. Actions with a lower order should be executed first.
