@@ -12,7 +12,7 @@
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     x:Name="scriptActionDictionaryViewUserControl"
-    d:DataContext="{d:DesignInstance Type=viewModel:ScriptActionDictionaryViewModel}"
+    d:DataContext="{d:DesignInstance Type=viewModel:ScriptViewModel}"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -40,7 +40,7 @@
                                     IsReadOnly="{Binding IsReadOnly, ElementName=scriptActionDictionaryViewUserControl}"
                                     ItemsSource="{Binding Source={x:Type metadatas:Host}, Converter={StaticResource GetMetadatas}}"
                                     SelectedItem="{Binding Value.Host}"
-                                    ToolTip=""
+                                    ToolTip="{x:Static res:ScriptProperties.Host}"
                                     Watermark="{x:Static res:ScriptProperties.Host}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate DataType="metadatas:Host">
@@ -74,7 +74,7 @@
                                 <xctk:PrimitiveTypeCollectionControl
                                     Grid.Column="1"
                                     Margin="6,0,0,0"
-                                    Content="{x:Static res:ScriptProperties.SuccessExitCodes}"
+                                    Content="{Binding Value.SuccessExitCodes, Converter={StaticResource IntEnumerableToString}, UpdateSourceTrigger=PropertyChanged}"
                                     IsReadOnly="{Binding IsReadOnly, ElementName=scriptActionDictionaryViewUserControl}"
                                     ItemType="{x:Type system:Int32}"
                                     ItemsSource="{Binding Value.SuccessExitCodes}"
@@ -116,7 +116,7 @@
                                                         <Binding
                                                             ElementName="scriptActionDictionaryViewUserControl"
                                                             IsAsync="True"
-                                                            Path="Content.Actions.EffectiveCapability.Value" />
+                                                            Path="Content.EffectiveCapability.Value" />
                                                     </MultiBinding>
                                                 </DataTrigger.Binding>
                                                 <Setter Property="Visibility" Value="Collapsed" />

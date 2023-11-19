@@ -43,7 +43,7 @@ public sealed partial class Page2ViewModel : WizardPageViewModel
         EnterCommand = start;
         LeaveCommand = new RelayCommand(start.Cancel);
 
-        Stop = new RelayCommand(() => OnClosingRequested());
+        Stop = new RelayCommand(OnClosingRequested);
 
         AbortScript = new RelayCommand(() =>
         {

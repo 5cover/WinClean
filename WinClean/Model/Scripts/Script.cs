@@ -9,14 +9,14 @@ using static System.Globalization.CultureInfo;
 namespace Scover.WinClean.Model.Scripts;
 
 [DebuggerDisplay($"{{{nameof(InvariantName)}}}")]
-public sealed record Script
+public sealed class Script
 {
-    public Script(Category category, ScriptActionDictionary actions, Impact impact, LocalizedString localizedDescription, LocalizedString localizedName, SafetyLevel safetyLevel, string source, ScriptType type, SemVersionRange versions)
-        => (Category, Actions, Impact, LocalizedDescription, LocalizedName, SafetyLevel, Source, Type, Versions)
-            = (category, actions, impact, localizedDescription, localizedName, safetyLevel, source, type, versions);
+    public Script(IReadOnlyDictionary<Capability, ScriptAction> actions, Category category, Impact impact, LocalizedString localizedDescription, LocalizedString localizedName, SafetyLevel safetyLevel, string source, ScriptType type, SemVersionRange versions)
+        => (Actions, Category, Impact, LocalizedDescription, LocalizedName, SafetyLevel, Source, Type, Versions)
+            = (actions, category, impact, localizedDescription, localizedName, safetyLevel, source, type, versions);
 
+    public IReadOnlyDictionary<Capability, ScriptAction> Actions { get; }
     public Category Category { get; set; }
-    public ScriptActionDictionary Actions { get; }
     public Impact Impact { get; set; }
     public string InvariantName => LocalizedName[InvariantCulture];
     public LocalizedString LocalizedDescription { get; init; }

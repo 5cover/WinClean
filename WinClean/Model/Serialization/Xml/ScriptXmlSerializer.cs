@@ -15,6 +15,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
 {
     private static readonly int[] defaultCodeSuccessExitCodes = { 0 };
     private const int DefaultCodeOrder = 0;
+    private const char SuccessExitCodesSeparator = ' ';
 
     private static readonly Dictionary<string, Func<XmlDocument, ScriptBuilder>> deserializers = new()
     {
@@ -51,12 +52,12 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
     private static void AppendLocalizable(XmlElement element, string name, string? innerText, string xmlLang)
             => Append(element, name, innerText, new() { ["xml:lang"] = xmlLang });
 
-    private static ScriptActionDictionary DeserializeActions(XmlDocument d)
+    private static IReadOnlyDictionary<Capability, ScriptAction> DeserializeActions(XmlDocument d)
         => d.GetSingleChild(NameFor.Actions).ChildNodes.OfType<XmlElement>().ToDictionary(
             keySelector: e => Capability.FromResourceName(e.Name),
             elementSelector: e => new ScriptAction(
                 host: Metadatas.GetMetadata<Host>(e.GetAttribute(NameFor.Host)),
-                successsExitCodes: e.GetAttribute(NameFor.SuccessExitCodes).Split(' ', StringSplitOptions.RemoveEmptyEntries) is { Length: > 0 } successExitCodes
+                successsExitCodes: e.GetAttribute(NameFor.SuccessExitCodes).Split(SuccessExitCodesSeparator, StringSplitOptions.RemoveEmptyEntries) is { Length: > 0 } successExitCodes
                     ? successExitCodes.Select(s => int.Parse(s, CultureInfo.InvariantCulture))
                     : defaultCodeSuccessExitCodes,
                 code: e.InnerText,
@@ -64,7 +65,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
                     ? int.Parse(order)
                     : DefaultCodeOrder))
            is { Count: > 0 } codeElements
-               ? new ScriptActionDictionary(codeElements)
+               ? codeElements
                : throw new InvalidDataException(ExceptionMessages.ElementHasNoNamedChild.FormatWith(NameFor.Actions));
 
     /// <summary>Deserializes a script in the current format.</summary>
@@ -104,14 +105,14 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
         => new()
         {
             Category = Metadatas.GetMetadata<Category>(d.GetSingleChildText(NameFor.Category)),
-            Actions = new ScriptActionDictionary(new()
+            Actions = new Dictionary<Capability, ScriptAction>
             {
                 [Capability.Execute] = new ScriptAction(
                     code: d.GetSingleChildText(NameFor.Code),
                     successsExitCodes: defaultCodeSuccessExitCodes,
                     host: Metadatas.GetMetadata<Host>(d.GetSingleChildText(NameFor.Host)),
                     order: DefaultCodeOrder)
-            }),
+            },
             Impact = Metadatas.GetMetadata<Impact>(d.GetSingleChildText(NameFor.Impact) switch
             {
                 var s when s.Equals("Debloat", Metadatas.Comparison) => "Debloating",
@@ -133,14 +134,19 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             ? SemVersionRange.Parse(versionsStr)
             : DefaultScriptVersions;
 
-    private static void SerializeActions(XmlElement parent, ScriptActionDictionary scriptActions)
+    private static void SerializeActions(XmlElement parent, IReadOnlyDictionary<Capability, ScriptAction> scriptActions)
     {
         var e = parent.OwnerDocument.CreateElement(NameFor.Actions);
         _ = parent.AppendChild(e);
 
         foreach ((Capability capability, ScriptAction action) in scriptActions)
         {
-            Append(e, capability.ResourceName, action.Code, new() { [NameFor.Host] = action.Host.InvariantName });
+            Append(e, capability.ResourceName, action.Code, new()
+            {
+                [NameFor.Host] = action.Host.InvariantName,
+                [NameFor.SuccessExitCodes] = string.Join(SuccessExitCodesSeparator, action.SuccessExitCodes),
+                [NameFor.Order] = action.Order.ToString(),
+            });
         }
     }
 

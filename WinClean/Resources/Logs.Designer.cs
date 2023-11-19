@@ -70,6 +70,33 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Capability detection of &apos;{0}&apos; canceled..
+        /// </summary>
+        public static string CapabilityDetectionCanceled {
+            get {
+                return ResourceManager.GetString("CapabilityDetectionCanceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Capability detection of &apos;{0}&apos; done. Effective : &apos;{1}&apos;.
+        /// </summary>
+        public static string CapabilityDetectionDone {
+            get {
+                return ResourceManager.GetString("CapabilityDetectionDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Capability detection of &apos;{0}&apos; started..
+        /// </summary>
+        public static string CapabilityDetectionStarted {
+            get {
+                return ResourceManager.GetString("CapabilityDetectionStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Cleared logs folder..
         /// </summary>
         public static string ClearedLogsFolder {

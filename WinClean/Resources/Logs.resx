@@ -121,6 +121,19 @@
     <value>Canceled script execution</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="CapabilityDetectionDone" xml:space="preserve">
+    <value>Capability detection of '{0}' done. Effective : '{1}'</value>
+    <comment>0 : script InvariantName
+1 : effective capability InvariantName@Invariant</comment>
+  </data>
+  <data name="CapabilityDetectionStarted" xml:space="preserve">
+    <value>Capability detection of '{0}' started.</value>
+    <comment>0 : script InvariantName@Invariant</comment>
+  </data>
+  <data name="CapabilityDetectionCanceled" xml:space="preserve">
+    <value>Capability detection of '{0}' canceled.</value>
+    <comment>0 : script InvariantName@Invariant</comment>
+  </data>
   <data name="ClearedLogsFolder" xml:space="preserve">
     <value>Cleared logs folder.</value>
     <comment>@Invariant</comment>
@@ -147,6 +160,10 @@
     <value>Couldn't add script at '{0}' as script '{1}' already exists.</value>
     <comment>0 : script source
 1 : script InvariantName@Invariant</comment>
+  </data>
+  <data name="ScriptDeleted" xml:space="preserve">
+    <value>Script '{0}' deleted.</value>
+    <comment>0 : script InvariantName@Invariant</comment>
   </data>
   <data name="ScriptExecutionAborted" xml:space="preserve">
     <value>Execution of '{0}' ('{1}') aborted.</value>
@@ -189,10 +206,6 @@
     <value>Script '{1}' overwritten by script at '{0}'.</value>
     <comment>0 : script source
 1 : script InvariantName@Invariant</comment>
-  </data>
-  <data name="ScriptDeleted" xml:space="preserve">
-    <value>Script '{0}' deleted.</value>
-    <comment>0 : script InvariantName@Invariant</comment>
   </data>
   <data name="ScriptsSaved" xml:space="preserve">
     <value>Scripts saved.</value>

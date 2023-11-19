@@ -39,7 +39,7 @@ namespace Scover.WinClean;
 
 public static class Extensions
 {
-    private static readonly Stack<object> handlingCollections = new();
+    private static readonly Stack<object> handlingCollectionsSendUpdatesTo = new();
 
     public static bool CanExecute(this IRelayCommand relayCommand) => relayCommand.CanExecute(null);
 
@@ -268,12 +268,12 @@ public static class Extensions
     }
 
     public static void SendUpdatesTo<TSourceItem, TTargetItem>(this ObservableCollection<TSourceItem> source, ICollection<TTargetItem> collection, Func<TSourceItem, TTargetItem>? converter = null, Func<TSourceItem, bool>? filter = null)
-           => SendUpdatesTo((INotifyCollectionChanged)source, collection, converter, filter);
+           => SendUpdatesTo<ObservableCollection<TSourceItem>, TSourceItem, TTargetItem>(source, collection, converter, filter);
 
-    public static void SendUpdatesTo<TSourceItem, TTargetItem>(this INotifyCollectionChanged source, ICollection<TTargetItem> collection, Func<TSourceItem, TTargetItem>? converter = null, Func<TSourceItem, bool>? filter = null)
+    public static void SendUpdatesTo<TSourceCollection, TSourceItem, TTargetItem>(this TSourceCollection source, ICollection<TTargetItem> collection, Func<TSourceItem, TTargetItem>? converter = null, Func<TSourceItem, bool>? filter = null) where TSourceCollection : IEnumerable<TSourceItem>, INotifyCollectionChanged
            => source.CollectionChanged += (_, e) =>
            {
-               if (handlingCollections.TryPeek(out var top) && top == collection)
+               if (handlingCollectionsSendUpdatesTo.TryPeek(out var top) && top == collection)
                {
                    return;
                }
@@ -281,24 +281,37 @@ public static class Extensions
                converter ??= i => i.Cast<TTargetItem>();
                filter ??= i => true;
 
-               handlingCollections.Push(source);
+               handlingCollectionsSendUpdatesTo.Push(source);
 
-               if (e.NewItems is not null)
+               // When the action is Reset, no other properties of the event arguments are valid.
+               // This means that we cannot use e.OldItems.
+               if (e.Action is NotifyCollectionChangedAction.Reset)
                {
-                   foreach (var item in e.NewItems.Cast<TSourceItem>().Where(filter).Select(converter))
+                   collection.Clear();
+                   foreach (var item in source.Where(filter).Select(converter))
                    {
                        collection.Add(item);
                    }
                }
-               if (e.OldItems is not null)
+               else
                {
-                   foreach (var item in e.OldItems.Cast<TSourceItem>().Where(filter).Select(converter))
+                   if (e.NewItems is not null)
                    {
-                       _ = collection.Remove(item);
+                       foreach (var item in e.NewItems.Cast<TSourceItem>().Where(filter).Select(converter))
+                       {
+                           collection.Add(item);
+                       }
+                   }
+                   if (e.OldItems is not null)
+                   {
+                       foreach (var item in e.OldItems.Cast<TSourceItem>().Where(filter).Select(converter))
+                       {
+                           _ = collection.Remove(item);
+                       }
                    }
                }
 
-               _ = handlingCollections.Pop();
+               _ = handlingCollectionsSendUpdatesTo.Pop();
            };
 
     public static void SetFromXml(this LocalizedString str, XmlNode node)

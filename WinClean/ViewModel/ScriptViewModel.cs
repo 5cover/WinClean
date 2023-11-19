@@ -1,11 +1,16 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Diagnostics;
+
+using CommunityToolkit.Mvvm.ComponentModel;
 
 using Optional;
+using Optional.Collections;
 
 using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;
 using Scover.WinClean.Model.Scripts;
+using Scover.WinClean.Resources;
 using Scover.WinClean.Services;
+using Scover.WinClean.ViewModel.Logging;
 
 using Semver;
 
@@ -15,14 +20,30 @@ namespace Scover.WinClean.ViewModel;
 
 public sealed class ScriptViewModel : ObservableObject, IEquatable<ScriptViewModel?>, IEquatable<Script?>
 {
-    private KeyValuePair<Capability, ScriptAction> _selectedAction;
+    private KeyValuePair<Capability, ScriptActionViewModel> _selectedAction;
 
     public ScriptViewModel(Script model)
     {
         Model = model;
-        Actions = new(model.Actions);
-        SelectedAction = model.Actions.First();
+        Actions = model.Actions.ToDictionary(kv => kv.Key, kv => CreateScriptActionViewModel(kv.Value));
+        SelectedAction = Actions.First();
+        EffectiveCapability = new(() => DetectCapability(Settings.ScriptDetectionTimeout), ct =>
+        {
+            using CancellationTokenSource cts = new();
+            using var regCt = ct.Register(cts.Cancel);
+            cts.CancelAfter(Settings.ScriptDetectionTimeout);
+            return DetectCapabilityAsync(cts.Token);
+        });
     }
+
+    private ScriptActionViewModel CreateScriptActionViewModel(ScriptAction action)
+    {
+        ScriptActionViewModel viewModel = new(action);
+        viewModel.PropertyChanged += (s, e) => OnPropertyChanged(nameof(Actions));
+        return viewModel;
+    }
+
+    public IReadOnlyDictionary<Capability, ScriptActionViewModel> Actions { get; }
 
     public Category Category
     {
@@ -34,13 +55,13 @@ public sealed class ScriptViewModel : ObservableObject, IEquatable<ScriptViewMod
         }
     }
 
-    public ScriptActionDictionaryViewModel Actions { get; }
-
     public string Description
     {
         get => Model.LocalizedDescription[CurrentUICulture];
         set => Model.LocalizedDescription[CurrentUICulture] = value;
     }
+
+    public Cached<Capability?> EffectiveCapability { get; }
 
     public Option<TimeSpan> ExecutionTime
     {
@@ -85,7 +106,7 @@ public sealed class ScriptViewModel : ObservableObject, IEquatable<ScriptViewMod
         }
     }
 
-    public KeyValuePair<Capability, ScriptAction> SelectedAction
+    public KeyValuePair<Capability, ScriptActionViewModel> SelectedAction
     {
         get => _selectedAction;
         set
@@ -112,6 +133,8 @@ public sealed class ScriptViewModel : ObservableObject, IEquatable<ScriptViewMod
     internal Script Model { get; }
     private static ISettings Settings => ServiceProvider.Get<ISettings>();
 
+    private Option<ScriptAction> DetectAction => Actions.GetValueOrNone(Capability.Detect).Map(a => a.Model);
+
     public override bool Equals(object? obj) => Equals(obj as ScriptViewModel);
 
     public bool Equals(ScriptViewModel? other) => other is not null && Model.Equals(other.Model);
@@ -123,6 +146,64 @@ public sealed class ScriptViewModel : ObservableObject, IEquatable<ScriptViewMod
     public Option<ExecutionInfoViewModel> TryCreateExecutionInfo() =>
         Selection.DesiredCapability is { } desiredCapability // A capability has be choosen
         && Actions.TryGetValue(desiredCapability, out var action) // The capability exists
-        ? new ExecutionInfoViewModel(this, desiredCapability, action).Some()
+        ? new ExecutionInfoViewModel(this, desiredCapability, action.Model).Some()
         : Option.None<ExecutionInfoViewModel>();
+
+    private Capability? DetectCapability(TimeSpan timeout) => DetectAction.Match(detect =>
+    {
+        using HostStartInfo startInfo = detect.CreateHostStartInfo();
+        using Process process = StartDetection(startInfo);
+
+        if (process.WaitForExit(Convert.ToInt32(timeout.TotalMilliseconds)))
+        {
+            var effectiveCapability = Capability.FromInteger(process.ExitCode);
+            LogCapabilityDetectionDone(effectiveCapability);
+            return effectiveCapability;
+        }
+
+        // Detection took too long: kill process.
+        process.KillTree();
+        LogCapabilityDetectionCanceled();
+
+        return null;
+    }, () => null);
+
+    private Task<Capability?> DetectCapabilityAsync(CancellationToken cancellationToken) => DetectAction.Match(async detect =>
+    {
+
+        using HostStartInfo startInfo = detect.CreateHostStartInfo();
+        using var process = StartDetection(startInfo);
+
+        using var reg = cancellationToken.Register(() =>
+        {
+            process.KillTree();
+            LogCapabilityDetectionCanceled();
+        });
+
+        await process.WaitForExitAsync(cancellationToken);
+
+        var effectiveCapability = Capability.FromInteger(process.ExitCode);
+
+        if (!cancellationToken.IsCancellationRequested)
+        {
+            LogCapabilityDetectionDone(effectiveCapability);
+        }
+
+        return effectiveCapability;
+
+    }, () => Task.FromResult<Capability?>(null));
+
+    private Process StartDetection(HostStartInfo startInfo)
+    {
+        Logs.CapabilityDetectionStarted.FormatWith(InvariantName).Log();
+        return Process.Start(new ProcessStartInfo()
+        {
+            FileName = startInfo.Filename,
+            Arguments = startInfo.Arguments,
+            CreateNoWindow = true,
+        }).NotNull();
+    }
+
+    private void LogCapabilityDetectionCanceled() => Logs.CapabilityDetectionCanceled.FormatWith(InvariantName).Log(LogLevel.Error);
+    private void LogCapabilityDetectionDone(Capability? result) => Logs.CapabilityDetectionDone.FormatWith(InvariantName, result?.InvariantName).Log();
 }

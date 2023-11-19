@@ -30,6 +30,7 @@
         <converters:ColorToBrushConverter x:Key="ColorToBrush" />
         <converters:CurrentVersionSatisfiesRangeConverter x:Key="CurrentVersionSatisfiesRange" />
         <converters:DictionaryLookupConverter x:Key="DictionaryLookup" />
+        <converters:IntEnumerableToStringConverter x:Key="IntEnumerableToString" />
         <converters:ItemsEqualConverter x:Key="ItemsEqual" />
         <converters:GetMetadatasConverter x:Key="GetMetadatas" />
         <converters:GoldenRatioConverter x:Key="GoldenRatio" />

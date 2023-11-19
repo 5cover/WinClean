@@ -9,7 +9,7 @@ namespace Scover.WinClean.Model.Serialization;
 public sealed class ScriptBuilder
 {
     public Category? Category { get; set; }
-    public ScriptActionDictionary? Actions { get; set; }
+    public IReadOnlyDictionary<Capability, ScriptAction>? Actions { get; set; }
     public Impact? Impact { get; set; }
     public LocalizedString? LocalizedDescription { get; set; }
     public LocalizedString? LocalizedName { get; set; }
@@ -20,5 +20,5 @@ public sealed class ScriptBuilder
     public Script Complete(ScriptType type, string source)
         => Category is null || Actions is null || Impact is null || LocalizedDescription is null || LocalizedName is null || SafetyLevel is null || Versions is null
             ? throw new InvalidOperationException(ExceptionMessages.BuilderIncomplete)
-            : new Script(Category, Actions, Impact, LocalizedDescription, LocalizedName, SafetyLevel, source, type, Versions);
+            : new Script(Actions, Category, Impact, LocalizedDescription, LocalizedName, SafetyLevel, source, type, Versions);
 }

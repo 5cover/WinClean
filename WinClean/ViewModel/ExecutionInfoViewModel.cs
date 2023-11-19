@@ -44,10 +44,8 @@ public sealed class ExecutionInfoViewModel : ObservableObject, IDisposable
         FormattedEstimatedExecutionTime = script.ExecutionTime.Match(t => t.HumanizeToMilliseconds(), () => TimeRemaining.Unknown);
     }
 
-    public Capability Capability { get; }
-
     public ScriptAction Action { get; }
-
+    public Capability Capability { get; }
     public string FormattedEstimatedExecutionTime { get; }
 
     public IRelayCommand<ScrollEventArgs> NotifyScroll { get; }
@@ -116,7 +114,7 @@ public sealed class ExecutionInfoViewModel : ObservableObject, IDisposable
             Script.ExecutionTime = Result.ExecutionTime.Some();
         }
         // For aborted scripts, they might have changed system configuration before being aborted, that's why we still invalidate the cache.
-        Script.Actions.EffectiveCapability.InvalidateValue();
+        Script.EffectiveCapability.InvalidateValue();
     }
 
     public void Pause()
@@ -136,6 +134,6 @@ public sealed class ExecutionInfoViewModel : ObservableObject, IDisposable
     private string Format(string message) => message.FormatWith(Script.InvariantName, Capability.InvariantName);
 
     private async Task<bool> GetExecutionNeededAsync(CancellationToken cancellationToken)
-                      => ServiceProvider.Get<ISettings>().ForceExecuteEffectiveScripts ||
-            !Capability.Equals(await Script.Actions.EffectiveCapability.GetValueAsync(cancellationToken));
+        => ServiceProvider.Get<ISettings>().ForceExecuteEffectiveScripts
+        || !Capability.Equals(await Script.EffectiveCapability.GetValueAsync(cancellationToken));
 }
