@@ -142,6 +142,7 @@ public sealed partial class MainViewModel : ObservableObject
 
     public IAsyncRelayCommand ClearLogs { get; } = new AsyncRelayCommand(App.CurrentApp.Logger.ClearLogsAsync);
 
+    public IRelayCommand DeleteCurrentScript { get; }
     public IRelayCommand ExecuteScripts { get; }
 
     public string FormattedScriptCount => MainWindow.MsgScriptCount.FormatMessage(new()
@@ -154,9 +155,6 @@ public sealed partial class MainViewModel : ObservableObject
     public IRelayCommand OpenLogsDir { get; } = new RelayCommand(AppDirectory.Logs.Open);
 
     public IRelayCommand OpenOnlineWiki { get; } = new RelayCommand(Settings.WikiUrl.Open);
-
-    public IRelayCommand DeleteCurrentScript { get; }
-
     public IRelayCommand ReportIssue { get; } = new RelayCommand(ServiceProvider.Get<ISettings>().NewIssueUrl.Open);
 
     public CollectionWrapper<ObservableCollection<ScriptViewModel>, ScriptViewModel> Scripts { get; }
@@ -171,6 +169,14 @@ public sealed partial class MainViewModel : ObservableObject
 
     private static ISettings Settings => ServiceProvider.Get<ISettings>();
 
+    private static bool PromptScriptOverwrite(Script existingScript) => DialogFactory.ShowConfirmation(() => new Page()
+    {
+        WindowTitle = ServiceProvider.Get<IApplicationInfo>().Name,
+        Icon = DialogIcon.Warning,
+        Content = Resources.UI.Dialogs.ConfirmScriptOverwriteContent.FormatWith(existingScript.Name),
+        Buttons = { Button.Yes, Button.No },
+    });
+
     private static Option<ScriptViewModel> RetrieveNewScript(string path)
     {
         bool retry;
@@ -180,9 +186,20 @@ public sealed partial class MainViewModel : ObservableObject
             {
                 var script = ScriptStorage.RetrieveScript(ScriptType.Custom, path);
 
-                return ScriptStorage.Scripts.Any(s => s.InvariantName == script.InvariantName)
-                    ? throw new ScriptAlreadyExistsException(script)
-                    : new ScriptViewModel(script).Some();
+                if (ScriptStorage.Scripts.FirstOrDefault(s => s.InvariantName == script.InvariantName) is { } existingScript)
+                {
+                    Logs.ScriptAlreadyExistsCannotAdd.FormatWith(path, existingScript.InvariantName).Log();
+                    retry = PromptScriptOverwrite(existingScript);
+                    if (retry)
+                    {
+                        Logs.ScriptOverwritten.FormatWith(path, existingScript.InvariantName).Log(LogLevel.Info);
+                        _ = ScriptStorage.Scripts.Remove(existingScript);
+                    }
+                }
+                else
+                {
+                    return new ScriptViewModel(script).Some();
+                }
             }
             catch (DeserializationException e)
             {
@@ -197,22 +214,6 @@ public sealed partial class MainViewModel : ObservableObject
                 using Page fsErrorPage = DialogFactory.MakeFSError((e as FileSystemException) ?? new FileSystemException(e, FSVerb.Access, path), new() { Button.TryAgain, Button.Ignore });
                 fsErrorPage.MainInstruction = Resources.UI.Dialogs.FSErrorAddingCustomScriptMainInstruction;
                 retry = Button.TryAgain.Equals(new Dialog(fsErrorPage).ShowDialog());
-            }
-            catch (ScriptAlreadyExistsException e)
-            {
-                Logs.ScriptAlreadyExistsCannotAdd.FormatWith(path, e.ExistingScript.InvariantName).Log();
-                retry = DialogFactory.ShowConfirmation(() => new Page()
-                {
-                    WindowTitle = ServiceProvider.Get<IApplicationInfo>().Name,
-                    Icon = DialogIcon.Warning,
-                    Content = Resources.UI.Dialogs.ConfirmScriptOverwriteContent.FormatWith(e.ExistingScript.Name),
-                    Buttons = { Button.Yes, Button.No },
-                });
-                if (retry)
-                {
-                    Logs.ScriptOverwritten.FormatWith(path, e.ExistingScript.InvariantName).Log(LogLevel.Info);
-                    _ = ScriptStorage.Scripts.Remove(e.ExistingScript);
-                }
             }
         } while (retry);
         return Option.None<ScriptViewModel>();
