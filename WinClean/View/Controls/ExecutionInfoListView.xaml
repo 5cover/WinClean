@@ -5,6 +5,7 @@
     xmlns:controls="clr-namespace:Scover.WinClean.View.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:metadatas="clr-namespace:Scover.WinClean.Model.Metadatas"
     xmlns:res="clr-namespace:Scover.WinClean.Resources"
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
     mc:Ignorable="d">
@@ -29,20 +30,20 @@
                             <GridViewColumn>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate DataType="viewModel:ExecutionInfoViewModel">
-                                        <Image Margin="0,2">
+                                        <Image Margin="0,2" ToolTip="{Binding State.Description}">
                                             <Image.Style>
                                                 <Style BasedOn="{StaticResource Icon}" TargetType="Image">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static viewModel:ScriptExecutionState.Pending}">
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static metadatas:ScriptExecutionState.Pending}">
                                                             <Setter Property="Source" Value="{x:Null}" />
                                                         </DataTrigger>
-                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static viewModel:ScriptExecutionState.Running}">
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static metadatas:ScriptExecutionState.Running}">
                                                             <Setter Property="Source" Value="{StaticResource Gear}" />
                                                         </DataTrigger>
-                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static viewModel:ScriptExecutionState.Paused}">
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static metadatas:ScriptExecutionState.Paused}">
                                                             <Setter Property="Source" Value="{StaticResource Pause}" />
                                                         </DataTrigger>
-                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static viewModel:ScriptExecutionState.Skipped}">
+                                                        <DataTrigger Binding="{Binding State}" Value="{x:Static metadatas:ScriptExecutionState.Skipped}">
                                                             <Setter Property="Source" Value="{StaticResource Skipped}" />
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding Result.Succeeded, FallbackValue={x:Null}}" Value="False">

@@ -16,15 +16,6 @@ using Scover.WinClean.ViewModel.Logging;
 
 namespace Scover.WinClean.ViewModel;
 
-public enum ScriptExecutionState
-{
-    Finished,
-    Paused,
-    Pending,
-    Running,
-    Skipped,
-}
-
 [DebuggerDisplay($"{nameof(State)}: {{{nameof(State)}}}")]
 public sealed class ExecutionInfoViewModel : ObservableObject, IDisposable
 {

@@ -195,6 +195,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Logs.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\ScriptExecutionStates.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ScriptExecutionStates.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\TimeRemaining.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -331,6 +336,10 @@
     <EmbeddedResource Update="Resources\Logs.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Logs.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\ScriptExecutionStates.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ScriptExecutionStates.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\TimeRemaining.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
