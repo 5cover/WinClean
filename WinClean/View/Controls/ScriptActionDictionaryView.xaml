@@ -94,6 +94,7 @@
                                 HorizontalScrollBarVisibility="Auto"
                                 IsReadOnly="{Binding IsReadOnly, ElementName=scriptActionDictionaryViewUserControl}"
                                 Text="{Binding Value.Code}"
+                                ToolTip="{x:Static res:ScriptProperties.Code}"
                                 VerticalScrollBarVisibility="Auto"
                                 Watermark="{x:Static res:ScriptProperties.Code}" />
                         </DockPanel>

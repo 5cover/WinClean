@@ -76,6 +76,7 @@
                     Margin="0,0,0,6"
                     MaxLines="1"
                     Text="{Binding Name, Mode=TwoWay}"
+                    ToolTip="{x:Static res:ScriptProperties.Name}"
                     Watermark="{x:Static res:ScriptProperties.Name}" />
 
                 <xctk:WatermarkTextBox
@@ -86,6 +87,7 @@
                     AcceptsReturn="True"
                     Text="{Binding Description, Mode=TwoWay}"
                     TextWrapping="Wrap"
+                    ToolTip="{x:Static res:ScriptProperties.Description}"
                     VerticalScrollBarVisibility="Auto"
                     Watermark="{x:Static res:ScriptProperties.Description}" />
 
@@ -95,6 +97,7 @@
                     Margin="0,0,3,6"
                     ItemsSource="{Binding Source={x:Type metadatas:Category}, Converter={StaticResource GetMetadatas}}"
                     SelectedItem="{Binding Category, Mode=TwoWay}"
+                    ToolTip="{x:Static res:ScriptProperties.Category}"
                     Watermark="{x:Static res:ScriptProperties.Category}" />
 
                 <xctk:WatermarkComboBox
@@ -103,6 +106,7 @@
                     Margin="3,0,0,6"
                     ItemsSource="{Binding Source={x:Type metadatas:SafetyLevel}, Converter={StaticResource GetMetadatas}}"
                     SelectedItem="{Binding SafetyLevel, Mode=TwoWay}"
+                    ToolTip="{x:Static res:ScriptProperties.SafetyLevel}"
                     Watermark="{x:Static res:ScriptProperties.SafetyLevel}">
                     <ComboBox.ItemContainerStyle>
                         <Style BasedOn="{StaticResource {x:Type ComboBoxItem}}" TargetType="ComboBoxItem">
@@ -136,6 +140,7 @@
                         MaxLength="2048"
                         MaxLines="1"
                         TextChanged="TextBoxVersionsTextChanged"
+                        ToolTip="{x:Static res:ScriptProperties.Versions}"
                         Watermark="{x:Static res:ScriptProperties.Versions}">
                         <TextBox.Text>
                             <Binding
@@ -158,6 +163,7 @@
                     Margin="3,0,0,6"
                     ItemsSource="{Binding Source={x:Type metadatas:Impact}, Converter={StaticResource GetMetadatas}}"
                     SelectedItem="{Binding Impact, Mode=TwoWay}"
+                    ToolTip="{x:Static res:ScriptProperties.Impact}"
                     Watermark="{x:Static res:ScriptProperties.Impact}" />
 
                 <controls:ScriptActionDictionaryView
