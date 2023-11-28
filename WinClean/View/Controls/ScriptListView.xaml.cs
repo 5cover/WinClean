@@ -43,4 +43,17 @@ public sealed partial class ScriptListView
     }
 
     private void DataGridRowRequestBringIntoViewSwallow(object sender, RequestBringIntoViewEventArgs e) => e.Handled = true;
+
+    private void DataGridIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        var dg = (DataGrid)sender;
+        // This is required to make the SelectedItem binding update
+        // Indeed, when a data grid is brought into view, the binding doesn't update when it's focused and the selected script doesn't change.
+        // So the selected script from before this data grid became visible doesn't change.
+        // This is a way to ensure that SelectedScript is always one of scripts displayed.
+        if (e.NewValue is bool visible && visible)
+        {
+            dg.SelectedItem = dg.SelectedItem;
+        }
+    }
 }

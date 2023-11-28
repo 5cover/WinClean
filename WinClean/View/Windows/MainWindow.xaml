@@ -120,8 +120,7 @@
                 Margin="0,0,0,12"
                 view:TabContent.IsCached="True"
                 ItemContainerStyle="{StaticResource TabItemMetadataStyle}"
-                ItemsSource="{Binding Scripts.View.Groups}"
-                SelectedIndex="0">
+                ItemsSource="{Binding Scripts.View.Groups}">
                 <view:TabContent.Template>
                     <DataTemplate DataType="{x:Type CollectionViewGroup}">
                         <TabControl

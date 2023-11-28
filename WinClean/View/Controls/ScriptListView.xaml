@@ -21,7 +21,6 @@
     <UserControl.ContentTemplate>
         <DataTemplate>
             <DataGrid
-                x:Name="scriptsDataGrid"
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
                 CanUserDeleteRows="True"
@@ -29,10 +28,9 @@
                 CanUserResizeRows="False"
                 GridLinesVisibility="None"
                 HeadersVisibility="Column"
-                IsSynchronizedWithCurrentItem="True"
+                IsVisibleChanged="DataGridIsVisibleChanged"
                 ItemsSource="{Binding}"
-                SelectedIndex="0"
-                SelectedItem="{Binding SelectedScript, Mode=TwoWay, ElementName=scriptListViewUserControl}"
+                SelectedItem="{Binding SelectedScript, Mode=TwoWay, ElementName=scriptListViewUserControl, UpdateSourceTrigger=PropertyChanged}"
                 SelectionMode="Single"
                 SelectionUnit="FullRow"
                 VirtualizingPanel.IsContainerVirtualizable="True"
@@ -56,7 +54,6 @@
                         <Setter Property="Foreground" Value="Black" />
                         <!--  Padding instead of Margin for a larger selection area  -->
                         <Setter Property="Padding" Value="1" />
-
                         <Setter Property="VerticalContentAlignment" Value="Center" />
                         <!--  This is necessary because the default ControlTemplate for DataGridCell doesn't tranfer Padding property.  -->
                         <Setter Property="Template" Value="{StaticResource ImprovedDataGridCellTemplate}" />
