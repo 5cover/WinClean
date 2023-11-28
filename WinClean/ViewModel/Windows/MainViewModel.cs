@@ -177,7 +177,7 @@ public sealed partial class MainViewModel : ObservableObject
         Buttons = { Button.Yes, Button.No },
     });
 
-    private static Option<ScriptViewModel> RetrieveNewScript(string path)
+    private Option<ScriptViewModel> RetrieveNewScript(string path)
     {
         bool retry;
         do
@@ -198,7 +198,7 @@ public sealed partial class MainViewModel : ObservableObject
                 }
                 else
                 {
-                    return new ScriptViewModel(script).Some();
+                    return CreateScriptViewModel(script).Some();
                 }
             }
             catch (DeserializationException e)
