@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-using Scover.Dialogs;
+﻿using Scover.Dialogs;
 using Scover.WinClean.Model;
 using Scover.WinClean.Services;
 
@@ -29,7 +27,7 @@ public static class DialogFactory
         Buttons = new()
         {
             Button.Yes,
-            Button.No
+            Button.No,
         },
     };
 
@@ -48,7 +46,7 @@ public static class DialogFactory
             e.Element,
             e.Message),
         Buttons = buttons,
-        Expander = new(e.ToString())
+        Expander = new(e.ToString()),
     };
 
     /// <summary>
@@ -77,14 +75,13 @@ public static class DialogFactory
     /// <summary></summary>
     /// <param name="pageFactory"></param>
     /// <remarks>
-    /// This method takes ownership of the return value of <paramref name="pageFactory"/>. The page must
+    /// This method takes ownership of the return value of <paramref name="pageFactory"/>. The page should
     /// contain the <see cref="Button.Yes"/> and <see cref="Button.No"/> buttons.
     /// </remarks>
     /// <returns></returns>
     public static bool ShowConfirmation(Func<Page> pageFactory)
     {
         using Page page = pageFactory();
-        Debug.Assert(page.Buttons.ItemsEqual(new[] { Button.Yes, Button.No }));
         return Button.Yes.Equals(new Dialog(page).ShowDialog());
     }
 }

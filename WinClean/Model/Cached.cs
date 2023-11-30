@@ -1,7 +1,7 @@
 ﻿namespace Scover.WinClean.Model;
 
 /// <summary>
-/// A cached, laziliy-initialized value that can be retrieved synchronously or asynchronously.
+/// A cached, lazily-initialized value that can be retrieved synchronously or asynchronously.
 /// </summary>
 public sealed class Cached<T>
 {

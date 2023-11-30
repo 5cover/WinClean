@@ -97,7 +97,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à _Settings.
+        ///   Recherche une chaîne localisée semblable à Settings.
         /// </summary>
         public static string Title {
             get {

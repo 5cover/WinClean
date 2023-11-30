@@ -21,8 +21,6 @@ public sealed partial class App
 #if DEBUG_INVARIANT_UI
     static App() => CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 #endif
-    public static App CurrentApp => (App)Current;
-    public Logger Logger { get; private set; } = new MockLogger();
 
     private static async Task CheckForUpdates(Callbacks callbacks)
     {
@@ -70,11 +68,13 @@ public sealed partial class App
         viewFactory.Register<SettingsViewModel, SettingsWindow>();
         viewFactory.Register<ScriptExecutionWizardViewModel, ScriptExecutionWizard>();
 
-        DispatcherUnhandledException += (s, e) => e.Handled = callbacks.WarnOnUnhandledException(e.Exception);
+        DispatcherUnhandledException += (_, e) => e.Handled = callbacks.WarnOnUnhandledException(e.Exception);
     }
 
     private async Task StartConsole(IEnumerable<string> args)
     {
+        Logging.InitializeLogger(LoggingType.Console);
+
         // Attach or create the console.
         if (!Kernel32.AttachConsole(Kernel32.ATTACH_PARENT_PROCESS))
         {
@@ -86,8 +86,6 @@ public sealed partial class App
 
         // Enable logging in all circumstances.
         ServiceProvider.Get<ISettings>().IsLoggingEnabled = true;
-
-        Logger = new ConsoleLogger();
 
         Initialize(consoleCallbacks);
         await CheckForUpdates(consoleCallbacks);
@@ -105,7 +103,7 @@ public sealed partial class App
 
     private Task StartGui()
     {
-        Logger = new CsvLogger();
+        Logging.InitializeLogger(LoggingType.Csv);
         Initialize(uiCallbacks);
         MainWindow mainWindow = new() { DataContext = new MainViewModel() };
         mainWindow.Show();

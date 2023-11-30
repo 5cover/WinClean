@@ -25,7 +25,7 @@ public sealed class EmbeddedScriptRepository : ScriptRepository
 
     public override Script RetrieveScript(string source)
     {
-        using Stream? stream  = ServiceProvider.Get<IApplicationInfo>().Assembly.GetManifestResourceStream(source);
+        using Stream? stream = ServiceProvider.Get<IApplicationInfo>().Assembly.GetManifestResourceStream(source);
         return Serializer.Deserialize(stream ?? throw new ArgumentException(ExceptionMessages.ScriptNotFoundAtSource.FormatWith(source), nameof(source))).Complete(Type, source);
     }
 }

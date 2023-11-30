@@ -19,8 +19,8 @@ public sealed class Script
     public Category Category { get; set; }
     public Impact Impact { get; set; }
     public string InvariantName => LocalizedName[InvariantCulture];
-    public LocalizedString LocalizedDescription { get; init; }
-    public LocalizedString LocalizedName { get; init; }
+    public LocalizedString LocalizedDescription { get; }
+    public LocalizedString LocalizedName { get; }
 
     public string Name
     {

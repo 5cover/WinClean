@@ -5,7 +5,7 @@ namespace Scover.WinClean.Model;
 /// <summary>Multiton pattern. Uses cached reflection to fetch instances.</summary>
 public static class Multiton<TEnum, TInstance>
 {
-    public static IReadOnlyCollection<TInstance> Instances => Cache.Instances.Value;
+    public static IReadOnlyCollection<TInstance> Instances => Cache.ReflectedInstances.Value;
 
     /// <exception cref="InvalidOperationException">
     /// No or more than one element satisfied the predicate.
@@ -19,7 +19,7 @@ public static class Multiton<TEnum, TInstance>
 
     private static class Cache
     {
-        public static Lazy<List<TInstance>> Instances = new(()
+        public static readonly Lazy<List<TInstance>> ReflectedInstances = new(()
             => typeof(TEnum).GetProperties(BindingFlags.Public | BindingFlags.Static)
                 // Check type before querying value to prevent useless evaluations. Also prevents infinite
                 // recursion when TEnum has a property that calls Instances.

@@ -9,8 +9,8 @@ namespace Scover.WinClean.Services;
 
 public sealed class OperatingSystem : IOperatingSystem
 {
-    public void OpenSytemPropertiesProtection()
-        => Process.Start(new ProcessStartInfo()
+    public void OpenSystemPropertiesProtection()
+        => Process.Start(new ProcessStartInfo
         {
             FileName = Environment.ExpandEnvironmentVariables("%SYSTEMROOT%\\System32\\SystemPropertiesProtection.exe"),
             UseShellExecute = true, // This will show an UAC prompt if administrative privileges are required instead of throwing an exception

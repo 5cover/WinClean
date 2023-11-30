@@ -7,20 +7,20 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Scover.WinClean.ViewModel;
 
-/// <summary>Typesafe wrapper over <see cref="ICollectionView"/>.</summary>
+/// <summary>Type-safe wrapper over <see cref="ICollectionView"/>.</summary>
 public sealed class CollectionWrapper<TSource, TItem> : ObservableObject, IEnumerable<TItem> where TSource : IEnumerable<TItem>
 {
     private readonly CollectionViewSource _collectionViewSource;
 
     public CollectionWrapper(CollectionViewSource collectionViewSource)
     {
-        Debug.Assert(typeof(TSource).IsAssignableFrom(collectionViewSource.Source.GetType()));
+        Debug.Assert(collectionViewSource.Source is TSource);
         _collectionViewSource = collectionViewSource;
-        View.CurrentChanged += (s, e) => OnPropertyChanged(nameof(CurrentItem));
-        View.CurrentChanging += (s, e) => OnPropertyChanging(nameof(CurrentItem));
+        View.CurrentChanged += (_, _) => OnPropertyChanged(nameof(CurrentItem));
+        View.CurrentChanging += (_, _) => OnPropertyChanging(nameof(CurrentItem));
     }
 
-    public CollectionWrapper(TSource collection) : this(new CollectionViewSource() { Source = collection })
+    public CollectionWrapper(TSource collection) : this(new CollectionViewSource { Source = collection })
     {
     }
 

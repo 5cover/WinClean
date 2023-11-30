@@ -7,13 +7,11 @@ namespace Scover.WinClean.ViewModel.Windows;
 
 public sealed class ScriptExecutionWizardViewModel : ObservableObject
 {
-    private readonly CollectionWrapper<IReadOnlyList<ExecutionInfoViewModel>, ExecutionInfoViewModel> _executionInfos;
-
     public ScriptExecutionWizardViewModel(IReadOnlyList<ExecutionInfoViewModel> executionInfos)
     {
-        _executionInfos = new(executionInfos);
-        Page2ViewModel = new(_executionInfos);
-        Page3ViewModel = new(_executionInfos);
+        CollectionWrapper<IReadOnlyList<ExecutionInfoViewModel>, ExecutionInfoViewModel> executionInfosWrapper = new(executionInfos);
+        Page2ViewModel = new(executionInfosWrapper);
+        Page3ViewModel = new(executionInfosWrapper);
     }
 
     public static TextStyle MainInstruction => ServiceProvider.Get<IThemeProvider>().MainInstruction;

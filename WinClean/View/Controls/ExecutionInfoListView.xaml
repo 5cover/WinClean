@@ -10,7 +10,7 @@
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
     mc:Ignorable="d">
     <UserControl.ContentTemplate>
-        <DataTemplate>
+        <DataTemplate DataType="{x:Type CollectionView}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -19,14 +19,14 @@
                 </Grid.ColumnDefinitions>
                 <ListView IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}">
                     <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
+                        <Style d:DataContext="{d:DesignInstance viewModel:ExecutionInfoViewModel}" TargetType="ListViewItem">
                             <Setter Property="Background" Value="{Binding Script.SafetyLevel.Color, Converter={StaticResource ColorToBrush}, ConverterParameter={StaticResource SafetyLevelOpacity}}" />
                             <Setter Property="BorderBrush" Value="{Binding Script.SafetyLevel.Color, Converter={StaticResource ColorToBrush}, ConverterParameter={StaticResource SafetyLevelOpacity}}" />
                             <Setter Property="Margin" Value="1" />
                         </Style>
                     </ListView.ItemContainerStyle>
                     <ListView.View>
-                        <GridView>
+                        <GridView d:DataContext="{d:DesignInstance viewModel:ExecutionInfoViewModel}">
                             <GridViewColumn>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate DataType="viewModel:ExecutionInfoViewModel">

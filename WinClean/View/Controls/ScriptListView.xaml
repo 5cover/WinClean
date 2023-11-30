@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:metadatas="clr-namespace:Scover.WinClean.Model.Metadatas"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
     xmlns:viewModel="clr-namespace:Scover.WinClean.ViewModel"
     x:Name="scriptListViewUserControl"
@@ -19,7 +20,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.ContentTemplate>
-        <DataTemplate>
+        <DataTemplate DataType="viewModel:ScriptViewModel">
             <DataGrid
                 AutoGenerateColumns="False"
                 CanUserAddRows="False"
@@ -55,7 +56,7 @@
                         <!--  Padding instead of Margin for a larger selection area  -->
                         <Setter Property="Padding" Value="1" />
                         <Setter Property="VerticalContentAlignment" Value="Center" />
-                        <!--  This is necessary because the default ControlTemplate for DataGridCell doesn't tranfer Padding property.  -->
+                        <!--  This is necessary because the default ControlTemplate for DataGridCell doesn't transfer the Padding property.  -->
                         <Setter Property="Template" Value="{StaticResource ImprovedDataGridCellTemplate}" />
                     </Style>
                 </DataGrid.CellStyle>
@@ -120,13 +121,13 @@
                             <Style TargetType="{x:Type GroupItem}">
                                 <Setter Property="Template">
                                     <Setter.Value>
-                                        <ControlTemplate d:DataContext="{x:Type CollectionViewGroup}" TargetType="{x:Type GroupItem}">
-                                            <Expander IsExpanded="True">
+                                        <ControlTemplate TargetType="{x:Type GroupItem}">
+                                            <Expander d:DataContext="{d:DesignInstance CollectionViewGroup}" IsExpanded="True">
                                                 <Expander.Header>
-                                                    <TextBlock FontWeight="SemiBold" ToolTip="{Binding Name.Description}">
+                                                    <TextBlock FontWeight="SemiBold" ToolTip="{Binding Path=Name.(metadatas:ScriptType.Description)}">
                                                         <TextBlock.Text>
                                                             <MultiBinding StringFormat="{}{0} ({1})">
-                                                                <Binding Path="Name.Name" />
+                                                                <Binding Path="Name.(metadatas:ScriptType.Name)" />
                                                                 <Binding Path="ItemCount" />
                                                             </MultiBinding>
                                                         </TextBlock.Text>

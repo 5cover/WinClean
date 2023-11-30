@@ -91,7 +91,7 @@ namespace Scover.WinClean.Resources {
         ///   Recherche une chaîne localisée semblable à Script &apos;{0}&apos; executed
         ///Exit code: {1}
         ///Execution time: {2}
-        ///Succeded?: {3}.
+        ///Succeeded?: {3}.
         /// </summary>
         public static string ScriptExecuted {
             get {

@@ -7,7 +7,7 @@ public sealed class IntEnumerableToStringConverter : IValueConverter
 {
     private const char SeparatorChar = ' ';
 
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => string.Join(SeparatorChar, (IEnumerable<int>)value);
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => string.Join(SeparatorChar, (IEnumerable<int>)value.NotNull());
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotSupportedException();
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
 }

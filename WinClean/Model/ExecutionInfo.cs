@@ -8,7 +8,7 @@ namespace Scover.WinClean.Model;
 public enum ProcessOutputKind
 {
     Error,
-    Standard
+    Standard,
 }
 
 public sealed record ProcessOutput(ProcessOutputKind Kind, string? Text);
@@ -16,17 +16,17 @@ public sealed record ProcessOutput(ProcessOutputKind Kind, string? Text);
 /// <summary>Information about a script's execution.</summary>
 public sealed class ExecutionInfo : IDisposable
 {
+    private readonly ScriptAction _action;
     private readonly Lazy<Process> _hostProcess;
     private readonly HostStartInfo _hostStartInfo;
     private readonly Stopwatch _stopwatch = new();
-    private readonly ScriptAction _action;
     private bool _disposed;
 
     public ExecutionInfo(ScriptAction action, ISynchronizeInvoke? synchronizingObject = null)
     {
         _action = action;
         _hostStartInfo = action.CreateHostStartInfo();
-        _hostProcess = new(() => new Process()
+        _hostProcess = new(() => new Process
         {
             EnableRaisingEvents = true,
             SynchronizingObject = synchronizingObject,
@@ -91,7 +91,7 @@ public sealed class ExecutionInfo : IDisposable
             _stopwatch.Restart();
 
             // Register after starting in case of cancellation before starting
-            using var reg = cancellationToken.Register(HostProcess.KillTree);
+            await using var reg = cancellationToken.Register(HostProcess.KillTree);
 
             await HostProcess.WaitForExitAsync(cancellationToken);
         }

@@ -93,7 +93,7 @@ public sealed class ExecutionInfoViewModel : ObservableObject, IDisposable
             return;
         }
 
-        using var reg = cancellationToken.Register(Abort);
+        await using var reg = cancellationToken.Register(Abort);
 
         State = ScriptExecutionState.Running;
         Result = new(await _model.ExecuteAsync(Progress, cancellationToken));

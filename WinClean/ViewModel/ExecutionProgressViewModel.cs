@@ -54,11 +54,11 @@ public sealed class ExecutionProgressViewModel : ObservableObject, IProgress<Pro
 
         OnPropertyChanged(nameof(FullOutput));
 
-        (var builder, var propName) = value.Kind switch
+        var (builder, propName) = value.Kind switch
         {
             ProcessOutputKind.Error => (_standardError, nameof(StandardError)),
             ProcessOutputKind.Standard => (_standardOutput, nameof(StandardOutput)),
-            _ => throw value.Kind.NewInvalidEnumArgumentException()
+            _ => throw value.Kind.NewInvalidEnumArgumentException(),
         };
 
         lock (builder)

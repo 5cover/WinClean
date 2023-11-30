@@ -23,7 +23,7 @@ public abstract class ScriptRepository
     /// <exception cref="ArgumentException">
     /// The script at <paramref name="source"/> could not be found.
     /// </exception>
-    /// <exception cref="FileSystemException">A filesystem error occured.</exception>
+    /// <exception cref="FileSystemException">A filesystem error occurred.</exception>
     /// <returns>A new <see cref="Script"/> object.</returns>
     public abstract Script RetrieveScript(string source);
 }

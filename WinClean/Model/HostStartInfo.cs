@@ -7,7 +7,7 @@ public class HostStartInfo : IDisposable
         => (Filename, Arguments) = (filename, arguments);
 
     public virtual string Arguments { get; }
-    public virtual string Filename { get; }
+    public string Filename { get; }
 
     public virtual void Dispose() => GC.SuppressFinalize(this);
 }

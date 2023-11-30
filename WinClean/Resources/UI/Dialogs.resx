@@ -152,7 +152,7 @@
     <value>Cannot load script</value>
   </data>
   <data name="UnhandledExceptionContent" xml:space="preserve">
-	  <value>An unhandled exception occured: {0}
+	  <value>An unhandled exception occurred: {0}
 &lt;A HREF="CopyDetails"&gt;Copy details&lt;/A&gt;
 &lt;A HREF="ReportIssue"&gt;Report this issue...&lt;/A&gt;</value>
     <comment>0 : exception message</comment>

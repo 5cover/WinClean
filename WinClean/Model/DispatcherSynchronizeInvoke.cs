@@ -29,18 +29,18 @@ public sealed class DispatcherSynchronizeInvoke : ISynchronizeInvoke
     // We also could use the DispatcherOperation.Task directly
     private sealed class DispatcherAsyncResult : IAsyncResult
     {
-        private readonly IAsyncResult result;
+        private readonly IAsyncResult _result;
 
         public DispatcherAsyncResult(DispatcherOperation operation)
         {
             Operation = operation;
-            result = operation.Task;
+            _result = operation.Task;
         }
 
-        public object? AsyncState => result.AsyncState;
-        public WaitHandle AsyncWaitHandle => result.AsyncWaitHandle;
-        public bool CompletedSynchronously => result.CompletedSynchronously;
-        public bool IsCompleted => result.IsCompleted;
+        public object? AsyncState => _result.AsyncState;
+        public WaitHandle AsyncWaitHandle => _result.AsyncWaitHandle;
+        public bool CompletedSynchronously => _result.CompletedSynchronously;
+        public bool IsCompleted => _result.IsCompleted;
         public DispatcherOperation Operation { get; }
     }
 }

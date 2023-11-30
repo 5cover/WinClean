@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Globalization;
 using System.Xml;
 
@@ -21,10 +20,10 @@ public sealed class ExtensionsTests
 
     private static readonly TestCaseData[] sumCases =
     {
-        new(10.Hours(), new[]{ 10.Hours() }),
-        new(10.Hours(), new[]{ 5.Hours(), 5.Hours() }),
-        new(10.Hours(), new[]{ 5, 3, 2 }.Select(s => s.Hours())),
-        new(10.Hours(), new[]{ 0.3, 1.7, 4.6, 3.4 }.Select(s => s.Hours()))
+        new(10.Hours(), new[] { 10.Hours() }),
+        new(10.Hours(), new[] { 5.Hours(), 5.Hours() }),
+        new(10.Hours(), new[] { 5, 3, 2 }.Select(s => s.Hours())),
+        new(10.Hours(), new[] { 0.3, 1.7, 4.6, 3.4 }.Select(s => s.Hours())),
     };
 
     [TestCase("Test", "value", "<Tests><Test>value</Test></Tests>")]
@@ -43,12 +42,8 @@ public sealed class ExtensionsTests
         doc.LoadXml(xml);
 
         var e = Assert.Throws<XmlException>(() => doc.GetSingleChildText(elementName));
-        Assert.That(e!.Message, Is.EqualTo(exceptionMessage));
+        Assert.That(e.NotNull().Message, Is.EqualTo(exceptionMessage));
     }
-
-    [TestCaseSource(typeof(ItemsEqualCases))]
-    public void TestItemsEqual<T>(IEnumerable<T> e1, IEnumerable<T> e2, bool areEquals)
-        => Assert.That(e1.ItemsEqual(e2), Is.EqualTo(areEquals));
 
     [TestCase("<Test>value</Test>", "", "value")]
     [TestCase("<Test xml:lang=\"fr\">valueFr</Test>", "fr", "valueFr")]
@@ -76,48 +71,13 @@ public sealed class ExtensionsTests
     [TestCase(new object[] { new object?[] { null, "", 0, 10.9, null } })]
     public void TestWithoutNull(IEnumerable<object?> sequence)
     {
-        var sequenceWithoutNull = sequence.WithoutNull();
-        Assert.That(sequenceWithoutNull, Does.Not.Contains(null));
-        Assert.That(sequenceWithoutNull.Count(), Is.EqualTo(sequence.Count() - sequence.Count(o => o is null)));
+        var seq = sequence.ToList();
+        var withoutNull = seq.WithoutNull().ToList();
+        Assert.That(withoutNull, Does.Not.Contains(null));
+        Assert.That(withoutNull, Has.Count.EqualTo(seq.Count - seq.Count(o => o is null)));
     }
 
     [TestCase("1.2.3")]
     [TestCase("1.2.3.4")]
     public void TestWithoutRevision(string version) => Assert.That(new Version(version).WithoutRevision().Revision, Is.EqualTo(-1));
-
-    private sealed class ItemsEqualCases : IEnumerable<TestCaseData>
-    {
-        private static List<(int, string)> Abc => new()
-        {
-            (1, "a"),
-            (2, "b"),
-            (3, "c"),
-        };
-
-        private static List<(int, string)> Acb => new()
-        {
-            (1, "a"),
-            (3, "c"),
-            (2, "b"),
-        };
-
-        private static List<(int, object)> Obj => new()
-        {
-            (1, new()),
-            (2, new()),
-            (3, new()),
-        };
-
-        public IEnumerator<TestCaseData> GetEnumerator()
-        {
-            yield return new(Enumerable.Empty<object>(), Enumerable.Empty<object>(), true);
-            yield return new(Abc, Abc, true);
-            yield return new(Obj, Obj, false);
-            yield return new(Abc, Enumerable.Empty<(int, string)>(), false);
-            yield return new(Abc, Acb, true);
-            yield return new(Obj, Enumerable.Empty<(int, object)>(), false);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    }
 }

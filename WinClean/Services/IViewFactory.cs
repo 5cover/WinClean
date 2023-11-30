@@ -4,7 +4,7 @@ namespace Scover.WinClean.Services;
 
 /// <summary>Creates views by view model.</summary>
 /// <remarks>
-/// Used for instantiating views from view models without refering to a specific view type.
+/// Used for instantiating views from view models without referring to a specific view type.
 /// </remarks>
 public interface IViewFactory
 {

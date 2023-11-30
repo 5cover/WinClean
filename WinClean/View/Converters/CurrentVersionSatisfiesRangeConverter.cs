@@ -8,11 +8,11 @@ namespace Scover.WinClean.View.Converters;
 
 public sealed class CurrentVersionSatisfiesRangeConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        bool satisfies = SemVersion.FromVersion(Environment.OSVersion.Version.WithoutRevision()).Satisfies((SemVersionRange)value);
+        bool satisfies = SemVersion.FromVersion(Environment.OSVersion.Version.WithoutRevision()).Satisfies((SemVersionRange)value.NotNull());
         return parameter is bool expected ? satisfies == expected : satisfies;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotSupportedException();
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotSupportedException();
 }

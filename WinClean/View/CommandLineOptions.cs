@@ -1,4 +1,6 @@
-﻿using CommandLine;
+﻿using System.Globalization;
+
+using CommandLine;
 
 using Scover.WinClean.Model;
 using Scover.WinClean.Model.Metadatas;
@@ -35,9 +37,11 @@ Script and capability names are case sensitive and follow ordinal string compari
         SetName = nameof(RunScripts))]
     public IEnumerable<string> RunScripts { get; }
 
-    public int Execute(IEnumerable<Script> scripts)
+    public int Execute(IEnumerable<Script> scriptsEnumerable)
     {
-        ((App)System.Windows.Application.Current).Logger.MinLevel = LogLevel;
+        Logging.Logger.MinLevel = LogLevel;
+
+        var scripts = scriptsEnumerable.ToList();
 
         try
         {
@@ -98,14 +102,14 @@ Script and capability names are case sensitive and follow ordinal string compari
 
         Console.WriteLine(ConsoleMode.StartingExecution.FormatWith(executionInfos.Count));
 
-        foreach ((var script, var capability) in executionInfos)
+        foreach (var (script, capability) in executionInfos)
         {
             Console.WriteLine(ConsoleMode.ExecutingScript.FormatWith(script.Name, capability.Name));
             var result = new ExecutionInfo(script.Actions[capability]).Execute();
             Console.WriteLine(ConsoleMode.ScriptExecuted.FormatWith(
                 script.Name,
                 result.ExitCode,
-                Math.Round(result.ExecutionTime.TotalSeconds).Seconds().ToString("g"),
+                Math.Round(result.ExecutionTime.TotalSeconds).Seconds().ToString("g", CultureInfo.CurrentCulture),
                 result.Succeeded));
         }
     }

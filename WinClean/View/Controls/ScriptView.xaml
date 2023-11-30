@@ -19,7 +19,7 @@
         <DataTemplate DataType="viewModel:ScriptViewModel">
             <DataTemplate.Resources>
                 <Style TargetType="ComboBoxItem">
-                    <Setter Property="ToolTip" Value="{Binding Content.Description, RelativeSource={RelativeSource Self}}" />
+                    <Setter Property="ToolTip" Value="{Binding Path=Content.(viewModel:ScriptViewModel.Description), RelativeSource={RelativeSource Self}}" />
                 </Style>
                 <Style TargetType="xctk:WatermarkComboBox">
                     <Setter Property="DisplayMemberPath" Value="Name" />
@@ -110,7 +110,7 @@
                     Watermark="{x:Static res:ScriptProperties.SafetyLevel}">
                     <ComboBox.ItemContainerStyle>
                         <Style BasedOn="{StaticResource {x:Type ComboBoxItem}}" TargetType="ComboBoxItem">
-                            <Setter Property="Background" Value="{Binding Color, Converter={StaticResource ColorToBrush}, ConverterParameter={StaticResource SafetyLevelOpacity}}" />
+                            <Setter Property="Background" Value="{Binding Path=(metadatas:SafetyLevel.Color), Converter={StaticResource ColorToBrush}, ConverterParameter={StaticResource SafetyLevelOpacity}}" />
                         </Style>
                     </ComboBox.ItemContainerStyle>
                 </xctk:WatermarkComboBox>

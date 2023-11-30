@@ -187,7 +187,7 @@
     <comment>@Invariant</comment>
   </data>
   <data name="UnknownHostType" xml:space="preserve">
-    <value>Unknwon host type '{0}'.</value>
+    <value>Unknown host type '{0}'.</value>
     <comment>0 : host type designation@Invariant</comment>
   </data>
 </root>

@@ -53,13 +53,8 @@
             </StackPanel>
         </CheckBox>
 
-        <TextBlock
-            Grid.Row="3"
-            Grid.ColumnSpan="2"
-            Text="" />
-
         <StackPanel
-            Grid.Row="4"
+            Grid.Row="3"
             Grid.Column="1"
             Margin="0,6,0,0"
             Orientation="Horizontal">

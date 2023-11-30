@@ -10,6 +10,7 @@
     xmlns:pages="clr-namespace:Scover.WinClean.View.Pages"
     xmlns:ui="clr-namespace:Scover.WinClean.Resources.UI"
     xmlns:view="clr-namespace:Scover.WinClean.View"
+    xmlns:viewModelPages="clr-namespace:Scover.WinClean.ViewModel.Pages"
     xmlns:windows="clr-namespace:Scover.WinClean.ViewModel.Windows"
     xmlns:xceedConverters="clr-namespace:Xceed.Wpf.Toolkit.Core.Converters;assembly=DotNetProjects.Wpf.Extended.Toolkit"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
@@ -55,7 +56,10 @@
                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
             </Grid>
         </ControlTemplate>
-        <Style x:Key="PageStyle" TargetType="controls:WizardPageBetter">
+        <Style
+            x:Key="PageStyle"
+            d:DataContext="{d:DesignInstance viewModelPages:WizardPageViewModel}"
+            TargetType="controls:WizardPageBetter">
             <Setter Property="PageType" Value="Interior" />
             <Setter Property="Template" Value="{StaticResource PageTemplate}" />
             <Setter Property="CanSelectNextPage" Value="{Binding CanSelectNextPage}" />

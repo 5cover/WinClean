@@ -277,7 +277,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à An unhandled exception occured: {0}.
+        ///   Recherche une chaîne localisée semblable à An unhandled exception occurred: {0}.
         /// </summary>
         public static string UnhandledException {
             get {

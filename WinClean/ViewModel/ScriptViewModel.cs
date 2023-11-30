@@ -36,13 +36,6 @@ public sealed class ScriptViewModel : ObservableObject, IEquatable<ScriptViewMod
         });
     }
 
-    private ScriptActionViewModel CreateScriptActionViewModel(ScriptAction action)
-    {
-        ScriptActionViewModel viewModel = new(action);
-        viewModel.PropertyChanged += (s, e) => OnPropertyChanged(nameof(Actions));
-        return viewModel;
-    }
-
     public IReadOnlyDictionary<Capability, ScriptActionViewModel> Actions { get; }
 
     public Category Category
@@ -117,7 +110,9 @@ public sealed class ScriptViewModel : ObservableObject, IEquatable<ScriptViewMod
     }
 
     public ScriptSelection Selection { get; } = new();
+
     public ScriptType Type => Model.Type;
+
     public IReadOnlyCollection<Usage> Usages => Usage.GetUsages(Model).ToList();
 
     public SemVersionRange Versions
@@ -131,6 +126,7 @@ public sealed class ScriptViewModel : ObservableObject, IEquatable<ScriptViewMod
     }
 
     internal Script Model { get; }
+
     private static ISettings Settings => ServiceProvider.Get<ISettings>();
 
     private Option<ScriptAction> DetectAction => Actions.GetValueOrNone(Capability.Detect).Map(a => a.Model);
@@ -144,10 +140,17 @@ public sealed class ScriptViewModel : ObservableObject, IEquatable<ScriptViewMod
     public override int GetHashCode() => Model.GetHashCode();
 
     public Option<ExecutionInfoViewModel> TryCreateExecutionInfo() =>
-        Selection.DesiredCapability is { } desiredCapability // A capability has be choosen
+        Selection.DesiredCapability is { } desiredCapability // A capability has to be chosen
         && Actions.TryGetValue(desiredCapability, out var action) // The capability exists
         ? new ExecutionInfoViewModel(this, desiredCapability, action.Model).Some()
         : Option.None<ExecutionInfoViewModel>();
+
+    private ScriptActionViewModel CreateScriptActionViewModel(ScriptAction action)
+    {
+        ScriptActionViewModel viewModel = new(action);
+        viewModel.PropertyChanged += (_, _) => OnPropertyChanged(nameof(Actions));
+        return viewModel;
+    }
 
     private Capability? DetectCapability(TimeSpan timeout) => DetectAction.Match(detect =>
     {
@@ -170,11 +173,10 @@ public sealed class ScriptViewModel : ObservableObject, IEquatable<ScriptViewMod
 
     private Task<Capability?> DetectCapabilityAsync(CancellationToken cancellationToken) => DetectAction.Match(async detect =>
     {
-
         using HostStartInfo startInfo = detect.CreateHostStartInfo();
         using var process = StartDetection(startInfo);
 
-        using var reg = cancellationToken.Register(() =>
+        await using var reg = cancellationToken.Register(() =>
         {
             process.KillTree();
             LogCapabilityDetectionCanceled();
@@ -190,20 +192,20 @@ public sealed class ScriptViewModel : ObservableObject, IEquatable<ScriptViewMod
         }
 
         return effectiveCapability;
-
     }, () => Task.FromResult<Capability?>(null));
+
+    private void LogCapabilityDetectionCanceled() => Logs.CapabilityDetectionCanceled.FormatWith(InvariantName).Log(LogLevel.Error);
+
+    private void LogCapabilityDetectionDone(Capability? result) => Logs.CapabilityDetectionDone.FormatWith(InvariantName, result?.InvariantName).Log();
 
     private Process StartDetection(HostStartInfo startInfo)
     {
         Logs.CapabilityDetectionStarted.FormatWith(InvariantName).Log();
-        return Process.Start(new ProcessStartInfo()
+        return Process.Start(new ProcessStartInfo
         {
             FileName = startInfo.Filename,
             Arguments = startInfo.Arguments,
             CreateNoWindow = true,
         }).NotNull();
     }
-
-    private void LogCapabilityDetectionCanceled() => Logs.CapabilityDetectionCanceled.FormatWith(InvariantName).Log(LogLevel.Error);
-    private void LogCapabilityDetectionDone(Capability? result) => Logs.CapabilityDetectionDone.FormatWith(InvariantName, result?.InvariantName).Log();
 }

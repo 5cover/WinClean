@@ -134,7 +134,7 @@
     <value>Script '{0}' executed
 Exit code: {1}
 Execution time: {2}
-Succeded?: {3}</value>
+Succeeded?: {3}</value>
     <comment>0 : script name
 1 : execution exit code
 2 : execution time

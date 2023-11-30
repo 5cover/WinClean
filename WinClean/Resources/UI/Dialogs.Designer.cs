@@ -151,7 +151,7 @@ namespace Scover.WinClean.Resources.UI {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à An unhandled exception occured: {0}
+        ///   Recherche une chaîne localisée semblable à An unhandled exception occurred: {0}
         ///&lt;A HREF=&quot;CopyDetails&quot;&gt;Copy details&lt;/A&gt;
         ///&lt;A HREF=&quot;ReportIssue&quot;&gt;Report this issue...&lt;/A&gt;.
         /// </summary>

@@ -18,7 +18,7 @@
     <Description>Microsoft PowerShell is a shell and scripting language built on top of Microsoft .NET technology.</Description>
     <Description xml:lang="fr">Microsoft PowerShell est un shell et un langage de script construit sur la technologie Microsoft .NET.</Description>
     <Executable>%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\powershell.exe</Executable>
-    <Arguments>-ExecutionPolicy Unrestricted -File "{0}"</Arguments>
+    <Arguments>-NoProfile -ExecutionPolicy Unrestricted -File "{0}"</Arguments>
     <Extension>.ps1</Extension>
     <Icon Filename="%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\powershell.exe" Index="0" />
     <Versions>>=6.1.0</Versions>

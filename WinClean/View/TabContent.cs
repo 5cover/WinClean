@@ -17,7 +17,7 @@ namespace Scover.WinClean.View;
 /// <summary>Attached properties for persistent tab control</summary>
 /// <remarks>
 /// By default WPF TabControl bound to an ItemsSource destroys visual state of invisible tabs. Set
-/// ikriv:TabContent.IsCached="True" to preserve visual state of each tab.
+/// TabContent.IsCached="True" to preserve visual state of each tab.
 /// </remarks>
 public static class TabContent
 {
@@ -55,10 +55,10 @@ public static class TabContent
         DependencyProperty.RegisterAttached("TemplateSelector", typeof(DataTemplateSelector), typeof(TabContent), new UIPropertyMetadata(null));
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public static ContentControl GetInternalCachedContent(DependencyObject obj) => (ContentControl)obj.GetValue(InternalCachedContentProperty);
+    public static ContentControl? GetInternalCachedContent(DependencyObject obj) => (ContentControl?)obj.GetValue(InternalCachedContentProperty);
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public static object GetInternalContentManager(DependencyObject obj) => obj.GetValue(InternalContentManagerProperty);
+    public static object? GetInternalContentManager(DependencyObject obj) => obj.GetValue(InternalContentManagerProperty);
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static TabControl GetInternalTabControl(DependencyObject obj) => (TabControl)obj.GetValue(InternalTabControlProperty);
@@ -86,26 +86,26 @@ public static class TabContent
 
     private static DataTemplate CreateContentTemplate()
     {
-        const string xaml =
+        const string Xaml =
             "<DataTemplate><Border b:TabContent.InternalTabControl=\"{Binding RelativeSource={RelativeSource AncestorType=TabControl}}\" /></DataTemplate>";
 
         ParserContext context = new()
         {
-            XamlTypeMapper = new XamlTypeMapper(Array.Empty<string>())
+            XamlTypeMapper = new XamlTypeMapper(Array.Empty<string>()),
         };
-        context.XamlTypeMapper.AddMappingProcessingInstruction("b", typeof(TabContent).Namespace, typeof(TabContent).Assembly.FullName);
+        context.XamlTypeMapper.AddMappingProcessingInstruction("b", typeof(TabContent).Namespace.NotNull(), typeof(TabContent).Assembly.FullName.NotNull());
 
         context.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
         context.XmlnsDictionary.Add("b", "b");
 
-        DataTemplate template = (DataTemplate)XamlReader.Parse(xaml, context);
+        DataTemplate template = (DataTemplate)XamlReader.Parse(Xaml, context);
         return template;
     }
 
     private static void EnsureContentTemplateIsNotModified(TabControl tabControl)
     {
         DependencyPropertyDescriptor descriptor = DependencyPropertyDescriptor.FromProperty(TabControl.ContentTemplateProperty, typeof(TabControl));
-        descriptor.AddValueChanged(tabControl, (sender, args)
+        descriptor.AddValueChanged(tabControl, (_, _)
             => throw new InvalidOperationException("Cannot assign to TabControl.ContentTemplate when TabContent.IsCached is True. Use TabContent.Template instead"));
     }
 
@@ -119,7 +119,7 @@ public static class TabContent
 
     private static ContentManager GetContentManager(TabControl tabControl, Decorator container)
     {
-        ContentManager? contentManager = (ContentManager)GetInternalContentManager(tabControl);
+        var contentManager = (ContentManager?)GetInternalContentManager(tabControl);
         if (contentManager is not null)
         {
             /*
@@ -141,11 +141,6 @@ public static class TabContent
 
     private static void OnInternalTabControlChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
     {
-        if (obj is null)
-        {
-            return;
-        }
-
         if (obj is not Decorator container)
         {
             string message = "Cannot set TabContent.InternalTabControl on object of type " + obj.GetType().Name +
@@ -158,29 +153,21 @@ public static class TabContent
             return;
         }
 
-        if (args.NewValue is not TabControl)
+        if (args.NewValue is not TabControl tabControl)
         {
             throw new InvalidOperationException("Value of TabContent.InternalTabControl cannot be of type " + args.NewValue.GetType().Name + ", it must be of type TabControl");
         }
 
-        TabControl tabControl = (TabControl)args.NewValue;
         ContentManager contentManager = GetContentManager(tabControl, container);
         contentManager.UpdateSelectedTab();
     }
 
     private static void OnIsCachedChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
     {
-        if (obj is null)
-        {
-            return;
-        }
-
         TabControl tabControl = obj as TabControl ?? throw new InvalidOperationException("Cannot set TabContent.IsCached on object of type " + args.NewValue.GetType().Name +
                    ". Only objects of type TabControl can have TabContent.IsCached property.");
 
-        bool newValue = (bool)args.NewValue;
-
-        if (!newValue)
+        if (!(bool)args.NewValue)
         {
             if (args.OldValue is not null && (bool)args.OldValue)
             {
@@ -204,7 +191,7 @@ public static class TabContent
         {
             _tabControl = tabControl;
             _border = border;
-            _tabControl.SelectionChanged += (sender, args) => UpdateSelectedTab();
+            _tabControl.SelectionChanged += (_, _) => UpdateSelectedTab();
         }
 
         public void ReplaceContainer(Decorator newBorder)
@@ -235,18 +222,20 @@ public static class TabContent
             }
 
             ContentControl? cachedContent = GetInternalCachedContent(tabItem);
-            if (cachedContent is null)
+            if (cachedContent is not null)
             {
-                cachedContent = new ContentControl
-                {
-                    DataContext = item,
-                    ContentTemplate = GetTemplate(_tabControl),
-                    ContentTemplateSelector = GetTemplateSelector(_tabControl)
-                };
-
-                _ = cachedContent.SetBinding(ContentControl.ContentProperty, new Binding());
-                SetInternalCachedContent(tabItem, cachedContent);
+                return cachedContent;
             }
+
+            cachedContent = new ContentControl
+            {
+                DataContext = item,
+                ContentTemplate = GetTemplate(_tabControl),
+                ContentTemplateSelector = GetTemplateSelector(_tabControl),
+            };
+
+            _ = cachedContent.SetBinding(ContentControl.ContentProperty, new Binding());
+            SetInternalCachedContent(tabItem, cachedContent);
 
             return cachedContent;
         }

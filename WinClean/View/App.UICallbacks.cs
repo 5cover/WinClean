@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 
 using Scover.Dialogs;
 using Scover.WinClean.Model;
@@ -23,7 +24,7 @@ public partial class App
                 Sizing = Sizing.Content,
                 Icon = DialogIcon.Information,
                 Content = Update.Content.FormatWith(latestVersionName),
-                Verification  = new(Update.Verification),
+                Verification = new(Update.Verification),
             };
             update.HyperlinkClicked += (_, _) => ServiceProvider.Get<ISettings>().LatestVersionUrl.Open();
             update.Verification.Checked += (_, _) => ServiceProvider.Get<ISettings>().ShowUpdateDialog ^= true;
@@ -34,9 +35,9 @@ public partial class App
             Logs.ScriptLoadError.FormatWith(path, e).Log(LogLevel.Error);
 
             Button deleteScriptButton = new(Buttons.DeleteScript);
-            deleteScriptButton.Clicked += (s, e) => e.Cancel = !DialogFactory.ShowConfirmation(DialogFactory.MakeConfirmScriptDeletion);
+            deleteScriptButton.Clicked += (_, args) => args.Cancel = !DialogFactory.ShowConfirmation(DialogFactory.MakeConfirmScriptDeletion);
 
-            using Page invalidScriptDataPage = DialogFactory.MakeScriptLoadError(e, path, new(defaultItem: Button.TryAgain){ deleteScriptButton, Button.TryAgain, Button.Ignore });
+            using Page invalidScriptDataPage = DialogFactory.MakeScriptLoadError(e, path, new(defaultItem: Button.TryAgain) { deleteScriptButton, Button.TryAgain, Button.Ignore });
 
             Dialog invalidScriptData = new(invalidScriptDataPage);
             var clicked = invalidScriptData.ShowDialog();
@@ -51,7 +52,7 @@ public partial class App
         },
         FSErrorReloadElseIgnore: e =>
         {
-            using Page fsError = DialogFactory.MakeFSError(e, new(){ Button.TryAgain, Button.Ignore });
+            using Page fsError = DialogFactory.MakeFSError(e, new() { Button.TryAgain, Button.Ignore });
             fsError.MainInstruction = WinClean.Resources.UI.Dialogs.FSErrorLoadingCustomScriptMainInstruction;
             return Button.TryAgain.Equals(new Dialog(fsError).ShowDialog());
         },
@@ -68,16 +69,19 @@ public partial class App
                 Expander = new(ex.ToString()),
                 Buttons = { Button.Ignore, Buttons.Exit },
             };
-            unhandledException.HyperlinkClicked += (s, e) =>
+            unhandledException.HyperlinkClicked += (_, e) =>
             {
+                // Dialog href links are used as link identifiers
                 switch (e.Href)
                 {
                     case "CopyDetails":
                         Clipboard.SetText(ex.ToString());
                         break;
-
                     case "ReportIssue":
                         ServiceProvider.Get<ISettings>().NewIssueUrl.Open();
+                        break;
+                    default:
+                        Debug.Fail("Unknown href");
                         break;
                 }
             };

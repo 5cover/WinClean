@@ -10,8 +10,8 @@ public sealed class SemVersionRangeValidationRule : ValidationRule
     public int MaxLength { get; set; } = 2048;
     public SemVersionRangeOptions Options { get; set; }
 
-    public override ValidationResult Validate(object value, CultureInfo cultureInfo)
-        => SemVersionRange.TryParse((string)value, Options, out var _, MaxLength)
+    public override ValidationResult Validate(object? value, CultureInfo cultureInfo)
+        => SemVersionRange.TryParse((string)value.NotNull(), Options, out _, MaxLength)
             ? ValidationResult.ValidResult
             : new(false, Resources.UI.ScriptView.InvalidVersionRange);
 }

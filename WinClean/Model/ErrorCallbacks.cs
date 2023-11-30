@@ -3,7 +3,7 @@
 namespace Scover.WinClean.Model;
 
 /// <summary>Callback called when a filesystem error occurs.</summary>
-/// <param name="e">The filesystem exception that occured.</param>
+/// <param name="e">The filesystem exception that occurred.</param>
 public delegate bool FSErrorCallback(FileSystemException e);
 
 /// <summary>
@@ -15,7 +15,7 @@ public delegate bool FSErrorCallback(FileSystemException e);
 public delegate InvalidScriptDataAction ScriptDeserializationErrorCallback(DeserializationException exception, string source);
 
 /// <summary>Callback called when an unhandled exception occurs.</summary>
-/// <param name="exception">The exception that occured</param>
+/// <param name="exception">The exception that occurred</param>
 /// <returns>
 /// <see langword="true"/> if the application should continue, <see langword="false"/> otherwise.
 /// </returns>

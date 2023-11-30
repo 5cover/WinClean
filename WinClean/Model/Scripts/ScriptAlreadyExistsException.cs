@@ -6,7 +6,6 @@ public sealed class ScriptAlreadyExistsException : Exception
 {
     public ScriptAlreadyExistsException(Script existingScript, Exception? innerException = null)
         : base(ExceptionMessages.ScriptAlreadyExists.FormatWith(existingScript.InvariantName), innerException)
-        => ExistingScript = existingScript;
-
-    public Script ExistingScript { get; }
+    {
+    }
 }

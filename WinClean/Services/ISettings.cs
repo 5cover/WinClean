@@ -15,8 +15,8 @@ public interface ISettings
     public string WikiUrl { get; }
     #endregion Readonly
 
-    double Height { get; set; }
     bool ForceExecuteEffectiveScripts { get; set; }
+    double Height { get; set; }
     bool IsLoggingEnabled { get; set; }
     bool IsMaximized { get; set; }
     double Left { get; set; }
@@ -24,7 +24,7 @@ public interface ISettings
     TimeSpan ScriptDetectionTimeout { get; }
 
     /// <summary>
-    /// Gets the script execution times dictionary, keyed by <see cref="IScript.InvariantName"/>.
+    /// Gets the script execution times dictionary, keyed by <see cref="Model.Scripts.Script.InvariantName"/>.
     /// </summary>
     public IDictionary<string, TimeSpan> ScriptExecutionTimes { get; }
 

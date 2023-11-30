@@ -8,14 +8,14 @@ public sealed class MessageFormatter : IMessageFormatter
 {
     private const string HumanizeStyle = "humanize";
 
-    private static readonly Jeffijoe.MessageFormat.MessageFormatter _msgFormatter = new(customValueFormatter: HumanizerValueFormatter.Instance);
+    private static readonly Jeffijoe.MessageFormat.MessageFormatter msgFormatter = new(customValueFormatter: HumanizerValueFormatter.Instance);
 
     public string Format(string message, IReadOnlyDictionary<string, object?> args) => Format(message, CultureInfo.CurrentCulture, args);
 
     public string Format(string message, CultureInfo culture, IReadOnlyDictionary<string, object?> args)
     {
-        _msgFormatter.Locale = culture.Name;
-        return _msgFormatter.FormatMessage(message, args);
+        msgFormatter.Locale = culture.Name;
+        return msgFormatter.FormatMessage(message, args);
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public sealed class MessageFormatter : IMessageFormatter
                 DateOnly d => d.Humanize(culture: culture),
                 DateTimeOffset dto => dto.Humanize(culture: culture),
                 TimeOnly t => t.Humanize(culture: culture),
-                _ => null
+                _ => null,
             }) is not null;
 
         public override bool TryFormatTime(CultureInfo culture, object? value, string? style, out string? formatted)
@@ -46,7 +46,7 @@ public sealed class MessageFormatter : IMessageFormatter
             {
                 _ when style != HumanizeStyle => null,
                 TimeSpan d => d.HumanizeToSeconds(),
-                _ => null
+                _ => null,
             }) is not null;
     }
 }

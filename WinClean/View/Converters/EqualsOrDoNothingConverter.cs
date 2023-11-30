@@ -6,11 +6,11 @@ namespace Scover.WinClean.View.Converters;
 
 public sealed class EqualsOrDoNothingConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         => Equals(value, parameter);
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        => (bool)value
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        => (bool)value.NotNull()
             ? parameter
             : Binding.DoNothing;
 }

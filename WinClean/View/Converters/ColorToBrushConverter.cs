@@ -6,7 +6,7 @@ namespace Scover.WinClean.View.Converters;
 
 public sealed class ColorToBrushConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => new SolidColorBrush((Color)value) { Opacity = System.Convert.ToDouble(parameter, culture) };
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => new SolidColorBrush((Color)value.NotNull()) { Opacity = System.Convert.ToDouble(parameter, culture) };
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => ((SolidColorBrush)value).Color;
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => ((SolidColorBrush)value.NotNull()).Color;
 }

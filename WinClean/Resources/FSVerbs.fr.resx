@@ -126,7 +126,4 @@
   <data name="Delete" xml:space="preserve">
     <value>de supprimer</value>
   </data>
-  <data name="Move" xml:space="preserve">
-    <value>de déplacer</value>
-  </data>
 </root>

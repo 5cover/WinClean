@@ -18,7 +18,7 @@ public sealed class MetadatasProvider : IMetadatasProvider
             d.GetCategories(ReadContentFile("Categories.xml")).ToList(),
             d.GetHosts(ReadContentFile("Hosts.xml")).ToList(),
             d.GetImpacts(ReadContentFile("Impacts.xml")).ToList(),
-            d.GetSafetyLevels(ReadContentFile("SafetyLevels.xml")).ToList()
+            d.GetSafetyLevels(ReadContentFile("SafetyLevels.xml")).ToList(),
         };
     });
 
@@ -27,9 +27,6 @@ public sealed class MetadatasProvider : IMetadatasProvider
 
     public T GetMetadata<T>(string invariantName) where T : Metadata
         => Metadatas.Get<T>().Single(m => m.InvariantName.Equals(invariantName, Comparison));
-
-    public T? GetMetadataOrDefault<T>(string invariantName) where T : Metadata
-        => Metadatas.Get<T>().SingleOrDefault(m => m.InvariantName.Equals(invariantName, Comparison));
 
     private static Stream ReadContentFile(string filename)
         => ServiceProvider.Get<IApplicationInfo>().Assembly.GetManifestResourceStream($"{MetadataContentFilesNamespace}.{filename}").NotNull();

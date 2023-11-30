@@ -7,14 +7,12 @@ namespace Scover.WinClean.ViewModel;
 
 public sealed class ScriptActionViewModel : ObservableObject, IEquatable<ScriptActionViewModel?>
 {
-    internal ScriptAction Model { get; }
-
     public ScriptActionViewModel(ScriptAction model)
     {
         Model = model;
         SuccessExitCodes = new(model.SuccessExitCodes);
         SuccessExitCodes.SendUpdatesTo(model.SuccessExitCodes);
-        SuccessExitCodes.CollectionChanged += (s, e) => OnPropertyChanged(nameof(SuccessExitCodes));
+        SuccessExitCodes.CollectionChanged += (_, _) => OnPropertyChanged(nameof(SuccessExitCodes));
     }
 
     public string Code
@@ -23,18 +21,6 @@ public sealed class ScriptActionViewModel : ObservableObject, IEquatable<ScriptA
         set
         {
             Model.Code = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public ObservableSet<int> SuccessExitCodes { get; }
-
-    public int Order
-    {
-        get => Model.Order;
-        set
-        {
-            Model.Order = value;
             OnPropertyChanged();
         }
     }
@@ -49,7 +35,22 @@ public sealed class ScriptActionViewModel : ObservableObject, IEquatable<ScriptA
         }
     }
 
+    public int Order
+    {
+        get => Model.Order;
+        set
+        {
+            Model.Order = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ObservableSet<int> SuccessExitCodes { get; }
+    internal ScriptAction Model { get; }
+
     public override bool Equals(object? obj) => Equals(obj as ScriptActionViewModel);
+
     public bool Equals(ScriptActionViewModel? other) => other is not null && Model.Equals(other.Model);
+
     public override int GetHashCode() => HashCode.Combine(Model);
 }

@@ -18,9 +18,9 @@ public sealed class SettingsViewModel : ObservableObject
         Logs.SettingsReset.Log();
     });
 
+    // This event is subscribed to automatically by the WPF framework
     public static event PropertyChangedEventHandler? StaticPropertyChanged;
 
-    public IRelayCommand Reset { get; }
-
     public static ISettings Settings => ServiceProvider.Get<ISettings>();
+    public IRelayCommand Reset { get; }
 }

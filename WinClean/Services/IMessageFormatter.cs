@@ -3,7 +3,7 @@
 namespace Scover.WinClean.Services;
 
 /// <summary>
-/// ICU Message formatter
+/// ICU Message formatter.
 /// </summary>
 /// <remarks>Supports the <c>humanize</c> Time and Date format.</remarks>
 public interface IMessageFormatter

@@ -20,7 +20,7 @@ public enum CapabilityCorrespondingSelectionState
     /// <summary>
     /// The capability corresponds to an unspecified selection state.
     /// </summary>
-    Unspecified
+    Unspecified,
 }
 
 public sealed class Capability : Metadata
@@ -32,7 +32,6 @@ public sealed class Capability : Metadata
     public static Capability Disable { get; } = new(nameof(Disable), CapabilityCorrespondingSelectionState.Unselected);
     public static Capability Enable { get; } = new(nameof(Enable), CapabilityCorrespondingSelectionState.Selected);
     public static Capability Execute { get; } = new(nameof(Execute), CapabilityCorrespondingSelectionState.Selected);
-    public static IReadOnlyCollection<Capability> Instances => Multiton<Capability, Capability>.Instances;
     public CapabilityCorrespondingSelectionState CorrespondingSelectionState { get; }
     public string ResourceName { get; }
 
@@ -42,11 +41,11 @@ public sealed class Capability : Metadata
         1 => Enable,
         2 => Execute,
         3 => Detect,
-        _ => null
+        _ => null,
     };
 
     /// <exception cref="InvalidOperationException">
-    /// No capabaility exists with the specified resource name.
+    /// No capability exists with the specified resource name.
     /// </exception>
     public static Capability FromResourceName(string resourceName) => Multiton<Capability, Capability>.GetInstance(i => i.ResourceName == resourceName);
 

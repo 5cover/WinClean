@@ -2,8 +2,8 @@
 
 public sealed class DeserializationChainException : DeserializationException
 {
-    public DeserializationChainException(string targetName, string erroneousData, IReadOnlyDictionary<string, Exception> deserializerExceptions)
-        : base(targetName, erroneousData)
+    public DeserializationChainException(string targetName, IReadOnlyDictionary<string, Exception> deserializerExceptions)
+        : base(targetName)
         => DeserializerExceptions = deserializerExceptions;
 
     public IReadOnlyDictionary<string, Exception> DeserializerExceptions { get; }

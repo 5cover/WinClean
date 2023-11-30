@@ -22,11 +22,11 @@ public abstract class Host : Metadata
     {
         get
         {
-            if (_icon is not (string filename, int index))
+            if (_icon is not { } icon)
             {
                 return null;
             }
-            _ = Shell32.ExtractIconEx(filename, index, 1, out var _, out var smallIcon);
+            _ = Shell32.ExtractIconEx(icon.filename, icon.index, 1, out _, out var smallIcon);
             return smallIcon[0].IsInvalid ? null : ((HICON)smallIcon[0]).ToBitmapSource();
         }
     }

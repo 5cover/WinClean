@@ -18,14 +18,14 @@ public sealed class Settings : ISettings
         ScriptExecutionTimes = ParseMockDictionary(PersistentSettings.ScriptExecutionTimes, ScriptExecutionTimesSeparator)
             .ToDictionary(kv => kv.Key, kv => TimeSpan.ParseExact(kv.Value, ScriptExecutionTimesFormatString, CultureInfo.InvariantCulture));
 
-        PersistentSettings.SettingsSaving += (s, e) => PersistentSettings.ScriptExecutionTimes = ToMockStringDic(ScriptExecutionTimes, ScriptExecutionTimesSeparator);
+        PersistentSettings.SettingsSaving += (_, _) => PersistentSettings.ScriptExecutionTimes = ToMockStringDic(ScriptExecutionTimes, ScriptExecutionTimesSeparator);
         SetComputedSettings();
     }
 
     public SemVersionRange DefaultHostVersions { get; private set; }
     public SemVersionRange DefaultScriptVersions { get; private set; }
-    public double Height { get => AppSettings.Height; set => AppSettings.Height = value; }
     public bool ForceExecuteEffectiveScripts { get => AppSettings.ForceExecuteEffectiveScripts; set => AppSettings.ForceExecuteEffectiveScripts = value; }
+    public double Height { get => AppSettings.Height; set => AppSettings.Height = value; }
     public bool IsLoggingEnabled { get => AppSettings.IsLoggingEnabled; set => AppSettings.IsLoggingEnabled = value; }
     public bool IsMaximized { get => AppSettings.IsMaximized; set => AppSettings.IsMaximized = value; }
     public string LatestVersionUrl => AppSettings.LatestVersionUrl;
@@ -33,7 +33,7 @@ public sealed class Settings : ISettings
     public string NewIssueUrl => AppSettings.NewIssueUrl;
     public long RepositoryId => AppSettings.RepositoryId;
     public TimeSpan ScriptDetectionTimeout => AppSettings.ScriptDetectionTimeout;
-    public IDictionary<string, TimeSpan> ScriptExecutionTimes { get; private set; }
+    public IDictionary<string, TimeSpan> ScriptExecutionTimes { get; }
     public string ScriptFileExtension => AppSettings.ScriptFileExtension;
     public bool ShowUpdateDialog { get => AppSettings.ShowUpdateDialog; set => AppSettings.ShowUpdateDialog = value; }
     public double Top { get => AppSettings.Top; set => AppSettings.Top = value; }

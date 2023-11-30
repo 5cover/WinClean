@@ -15,15 +15,15 @@ public partial class WizardPageViewModel : ObservableObject
     private IRelayCommand? _leaveCommand;
 
     /// <summary>
-    /// Indicates that a page has finised and that the wizard should navigate to the next page.
-    /// </summary>
-    public event TypeEventHandler<WizardPageViewModel>? Finished;
-
-    /// <summary>
     /// Indicates that a page has requested cancelation of the wizard.
     /// </summary>
     public event TypeEventHandler<WizardPageViewModel>? ClosingRequested;
+    /// <summary>
+    /// Indicates that a page has finished and that the wizard should navigate to the next page.
+    /// </summary>
+    public event TypeEventHandler<WizardPageViewModel>? Finished;
+
+    protected void OnClosingRequested() => ClosingRequested?.Invoke(this, EventArgs.Empty);
 
     protected void OnFinished() => Finished?.Invoke(this, EventArgs.Empty);
-    protected void OnClosingRequested() => ClosingRequested?.Invoke(this, EventArgs.Empty);
 }

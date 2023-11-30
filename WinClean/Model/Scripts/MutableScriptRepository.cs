@@ -8,7 +8,7 @@ public abstract class MutableScriptRepository : ScriptRepository
     private bool _updatesEnabled = true;
 
     protected MutableScriptRepository(IScriptSerializer serializer, ScriptType type) : base(serializer, type)
-        => Scripts.CollectionChanged += (_, e) =>
+        => Scripts.CollectionChanged += (s, e) =>
         {
             if (!_updatesEnabled)
             {
@@ -17,16 +17,16 @@ public abstract class MutableScriptRepository : ScriptRepository
 
             if (e.OldItems is not null)
             {
-                foreach (Script s in e.OldItems)
+                foreach (Script script in e.OldItems)
                 {
-                    _ = Remove(s);
+                    _ = Remove(script);
                 }
             }
             if (e.NewItems is not null)
             {
-                foreach (Script s in e.NewItems)
+                foreach (Script script in e.NewItems)
                 {
-                    Add(s);
+                    Add(script);
                 }
             }
         };
@@ -36,11 +36,11 @@ public abstract class MutableScriptRepository : ScriptRepository
     /// <exception cref="ArgumentException">
     /// <paramref name="script"/> is not present in the repository.
     /// </exception>
-    /// <exception cref="FileSystemException">A filesystem exception occured.</exception>
+    /// <exception cref="FileSystemException">A filesystem exception occurred.</exception>
     public abstract void Commit(Script script);
 
     /// <summary>Adds a script to the repository.</summary>
-    /// <exception cref="FileSystemException">A filesystem exception occured.</exception>
+    /// <exception cref="FileSystemException">A filesystem exception occurred.</exception>
     /// <exception cref="ScriptAlreadyExistsException">
     /// The script already exists in the repository.
     /// </exception>

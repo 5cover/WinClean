@@ -228,7 +228,7 @@
     <comment>@Invariant</comment>
   </data>
   <data name="UnhandledException" xml:space="preserve">
-    <value>An unhandled exception occured: {0}</value>
+    <value>An unhandled exception occurred: {0}</value>
     <comment>0 : exception@Invariant</comment>
   </data>
   <data name="UpdateAvailable" xml:space="preserve">

@@ -9,6 +9,4 @@ public interface IMetadatasProvider
     TypedEnumerableDictionary Metadatas { get; }
 
     T GetMetadata<T>(string invariantName) where T : Metadata;
-
-    T? GetMetadataOrDefault<T>(string invariantName) where T : Metadata;
 }

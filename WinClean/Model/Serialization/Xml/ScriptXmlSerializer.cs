@@ -13,9 +13,9 @@ namespace Scover.WinClean.Model.Serialization.Xml;
 
 public sealed class ScriptXmlSerializer : IScriptSerializer
 {
-    private static readonly HashSet<int> defaultCodeSuccessExitCodes = new() { 0 };
     private const int DefaultCodeOrder = 0;
     private const char SuccessExitCodesSeparator = ' ';
+    private static readonly HashSet<int> defaultCodeSuccessExitCodes = new() { 0 };
 
     private static readonly Dictionary<string, Func<XmlDocument, ScriptBuilder>> deserializers = new()
     {
@@ -52,19 +52,33 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
     private static void AppendLocalizable(XmlElement element, string name, string? innerText, string xmlLang)
             => Append(element, name, innerText, new() { ["xml:lang"] = xmlLang });
 
+    private static XmlDocument CreateDocument(Action<XmlDocument> load)
+    {
+        XmlDocument d = new();
+        try
+        {
+            load(d);
+        }
+        catch (XmlException e)
+        {
+            throw new DeserializationException(nameof(Script), innerException: e);
+        }
+        return d;
+    }
+
     private static IReadOnlyDictionary<Capability, ScriptAction> DeserializeActions(XmlDocument d)
-        => d.GetSingleChild(NameFor.Actions).ChildNodes.OfType<XmlElement>().ToDictionary(
+            => d.GetSingleChild(NameFor.Actions).ChildNodes.OfType<XmlElement>().ToDictionary(
             keySelector: e => Capability.FromResourceName(e.Name),
             elementSelector: e => new ScriptAction(
                 host: Metadatas.GetMetadata<Host>(e.GetAttribute(NameFor.Host)),
-                successsExitCodes: e.GetAttribute(NameFor.SuccessExitCodes).Split(SuccessExitCodesSeparator, StringSplitOptions.RemoveEmptyEntries) is { Length: > 0 } successExitCodes
+                successExitCodes: e.GetAttribute(NameFor.SuccessExitCodes).Split(SuccessExitCodesSeparator, StringSplitOptions.RemoveEmptyEntries) is { Length: > 0 } successExitCodes
                     ? successExitCodes.Select(s => int.Parse(s, CultureInfo.InvariantCulture)).ToHashSet()
                     : defaultCodeSuccessExitCodes,
                 code: e.InnerText,
                 order: e.GetAttribute(NameFor.Order) is { Length: > 0 } order
-                    ? int.Parse(order)
+                    ? int.Parse(order, CultureInfo.InvariantCulture)
                     : DefaultCodeOrder))
-           is { Count: > 0 } codeElements
+            is { Count: > 0 } codeElements
                ? codeElements
                : throw new InvalidDataException(ExceptionMessages.ElementHasNoNamedChild.FormatWith(NameFor.Actions));
 
@@ -85,7 +99,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
     {
         Dictionary<string, Exception> deserializerExceptions = new();
 
-        foreach ((var name, var deserializer) in deserializers)
+        foreach (var (name, deserializer) in deserializers)
         {
             try
             {
@@ -97,7 +111,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             }
         }
 
-        throw new DeserializationChainException(nameof(Script), loadedDocument.OuterXml, deserializerExceptions);
+        throw new DeserializationChainException(nameof(Script), deserializerExceptions);
     }
 
     /// <summary>Deserializes a script in the pre 1.3.0 format.</summary>
@@ -107,16 +121,16 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             Category = Metadatas.GetMetadata<Category>(d.GetSingleChildText(NameFor.Category)),
             Actions = new Dictionary<Capability, ScriptAction>
             {
-                [Capability.Execute] = new ScriptAction(
+                [Capability.Execute] = new(
                     code: d.GetSingleChildText(NameFor.Code),
-                    successsExitCodes: defaultCodeSuccessExitCodes,
+                    successExitCodes: defaultCodeSuccessExitCodes,
                     host: Metadatas.GetMetadata<Host>(d.GetSingleChildText(NameFor.Host)),
-                    order: DefaultCodeOrder)
+                    order: DefaultCodeOrder),
             },
             Impact = Metadatas.GetMetadata<Impact>(d.GetSingleChildText(NameFor.Impact) switch
             {
                 var s when s.Equals("Debloat", Metadatas.Comparison) => "Debloating",
-                var s => s
+                var s => s,
             }),
             LocalizedDescription = d.GetLocalizedString(NameFor.Description),
             LocalizedName = d.GetLocalizedString(NameFor.Name),
@@ -145,7 +159,7 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
             {
                 [NameFor.Host] = action.Host.InvariantName,
                 [NameFor.SuccessExitCodes] = string.Join(SuccessExitCodesSeparator, action.SuccessExitCodes),
-                [NameFor.Order] = action.Order.ToString(),
+                [NameFor.Order] = action.Order.ToString(CultureInfo.InvariantCulture),
             });
         }
     }
@@ -179,20 +193,6 @@ public sealed class ScriptXmlSerializer : IScriptSerializer
 
         SerializeActions(root, script.Actions);
 
-        return d;
-    }
-
-    private XmlDocument CreateDocument(Action<XmlDocument> load)
-    {
-        XmlDocument d = new();
-        try
-        {
-            load(d);
-        }
-        catch (XmlException e)
-        {
-            throw new DeserializationException(nameof(Script), innerException: e);
-        }
         return d;
     }
 }

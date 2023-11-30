@@ -36,7 +36,7 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
                    host.element.GetSingleChildText(NameFor.Extension)),
                _ when type == NameFor.ShellHost => new ShellHost(host.name, host.description, versions, icon,
                    host.element.GetSingleChildText(NameFor.CommandLine)),
-               _ => throw new DeserializationException(nameof(Host), null, new InvalidDataException(ExceptionMessages.UnknownHostType.FormatWith(type))),
+               _ => throw new DeserializationException(nameof(Host), new InvalidDataException(ExceptionMessages.UnknownHostType.FormatWith(type))),
            };
 
     public IEnumerable<Impact> GetImpacts(Stream stream)
@@ -66,12 +66,12 @@ public sealed class ScriptMetadataXmlDeserializer : IScriptMetadataDeserializer
                 {
                     _ when child.Name == NameFor.Name => name,
                     _ when child.Name == NameFor.Description => description,
-                    _ => null
+                    _ => null,
                 })?.SetFromXml(child);
             }
             yield return (element, name, description);
         }
     }
 
-    private static int GetOrder(XmlElement element) => int.Parse(element.GetAttribute(NameFor.Order));
+    private static int GetOrder(XmlElement element) => int.Parse(element.GetAttribute(NameFor.Order), CultureInfo.InvariantCulture);
 }

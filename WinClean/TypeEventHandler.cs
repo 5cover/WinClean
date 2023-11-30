@@ -7,11 +7,11 @@ namespace Scover.WinClean;
 /// <inheritdoc cref="EventHandler{TEventArgs}"/>
 [Serializable]
 [SuppressMessage("Naming", "CA1711", Justification = "Type-safe event handler pattern")]
-public delegate void TypeEventHandler<TSender, TEventArgs>(TSender sender, TEventArgs e);
+public delegate void TypeEventHandler<in TSender, in TEventArgs>(TSender sender, TEventArgs e);
 
 /// <typeparam name="TSender">The type of the source of the event.</typeparam>
 /// <remarks>Type-safe variation from <see cref="EventHandler"/>.</remarks>
 /// <inheritdoc cref="EventHandler"/>
 [Serializable]
 [SuppressMessage("Naming", "CA1711", Justification = "Type-safe event handler pattern")]
-public delegate void TypeEventHandler<TSender>(TSender sender, EventArgs e);
+public delegate void TypeEventHandler<in TSender>(TSender sender, EventArgs e);

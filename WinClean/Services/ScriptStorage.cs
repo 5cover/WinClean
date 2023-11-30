@@ -13,10 +13,10 @@ namespace Scover.WinClean.Services;
 public sealed class ScriptStorage : IScriptStorage
 {
     private const string DefaultScriptsResourceNamespace = $"{nameof(Scover)}.{nameof(WinClean)}.Scripts";
+    private static readonly IScriptSerializer serializer = new ScriptXmlSerializer();
     private readonly Dictionary<ScriptType, ScriptRepository> _repos = new();
     private bool _loaded;
     public ObservableCollection<Script> Scripts { get; } = new();
-    public IScriptSerializer Serializer => new ScriptXmlSerializer();
 
     /// <inheritdoc cref="MutableScriptRepository.Commit(Script)"/>
     public void Commit(Script script) => GetMutableRepository(script.Type).Commit(script);
@@ -28,8 +28,8 @@ public sealed class ScriptStorage : IScriptStorage
             return;
         }
 
-        AddRepo(new EmbeddedScriptRepository(DefaultScriptsResourceNamespace, Serializer, ScriptType.Default));
-        AddRepo(new FileScriptRepository(AppDirectory.Scripts, ServiceProvider.Get<ISettings>().ScriptFileExtension, scriptLoadError, fsErrorReloadElseIgnore, Serializer, ScriptType.Custom));
+        AddRepo(new EmbeddedScriptRepository(DefaultScriptsResourceNamespace, serializer, ScriptType.Default));
+        AddRepo(new FileScriptRepository(AppDirectory.Scripts, ServiceProvider.Get<ISettings>().ScriptFileExtension, scriptLoadError, fsErrorReloadElseIgnore, serializer, ScriptType.Custom));
 
         foreach (var repo in _repos.Values)
         {

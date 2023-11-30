@@ -16,7 +16,7 @@ public partial class App
             Logs.ScriptNotLoaded.FormatWith(path, e).Log(LogLevel.Error);
             return InvalidScriptDataAction.Ignore;
         },
-        FSErrorReloadElseIgnore: (e) =>
+        FSErrorReloadElseIgnore: e =>
         {
             Logs.ScriptNotLoaded.FormatWith(e.Element, e).Log(LogLevel.Error);
             return false;

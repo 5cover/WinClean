@@ -8,14 +8,14 @@ namespace Scover.WinClean.Model.Serialization;
 
 public sealed class ScriptBuilder
 {
-    public Category? Category { get; set; }
-    public IReadOnlyDictionary<Capability, ScriptAction>? Actions { get; set; }
-    public Impact? Impact { get; set; }
-    public LocalizedString? LocalizedDescription { get; set; }
-    public LocalizedString? LocalizedName { get; set; }
-    public SafetyLevel? SafetyLevel { get; set; }
+    public IReadOnlyDictionary<Capability, ScriptAction>? Actions { get; init; }
+    public Category? Category { get; init; }
+    public Impact? Impact { get; init; }
+    public LocalizedString? LocalizedDescription { get; init; }
+    public LocalizedString? LocalizedName { get; init; }
+    public SafetyLevel? SafetyLevel { get; init; }
 
-    public SemVersionRange? Versions { get; set; }
+    public SemVersionRange? Versions { get; init; }
 
     public Script Complete(ScriptType type, string source)
         => Category is null || Actions is null || Impact is null || LocalizedDescription is null || LocalizedName is null || SafetyLevel is null || Versions is null

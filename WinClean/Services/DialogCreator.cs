@@ -23,7 +23,7 @@ public sealed class DialogCreator : IDialogCreator
             Filter = filter,
             DefaultExt = defaultExtension,
             Multiselect = multiselect,
-            ReadOnlyChecked = readonlyChecked
+            ReadOnlyChecked = readonlyChecked,
         };
         return !ofd.ShowDialog(ActiveWindow) ?? true ? Array.Empty<string>() : ofd.FileNames;
     }

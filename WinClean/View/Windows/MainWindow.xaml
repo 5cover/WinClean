@@ -31,10 +31,11 @@
             </ResourceDictionary.MergedDictionaries>
             <Style
                 x:Key="TabItemMetadataStyle"
+                d:DataContext="{d:DesignInstance CollectionViewGroup}"
                 BasedOn="{StaticResource FixTabItemBindingErrors}"
                 TargetType="TabItem">
-                <Setter Property="Header" Value="{Binding Name.Name}" />
-                <Setter Property="ToolTip" Value="{Binding Name.Description}" />
+                <Setter Property="Header" Value="{Binding Path=Name.(metadatas:Metadata.Name)}" />
+                <Setter Property="ToolTip" Value="{Binding Path=Name.(metadatas:Metadata.Description)}" />
             </Style>
         </ResourceDictionary>
     </Window.Resources>
@@ -63,7 +64,10 @@
             </MenuItem>
             <MenuItem Header="{x:Static ui:MainWindow.MenuSelectScripts}">
                 <MenuItem.Resources>
-                    <Style x:Key="ScriptMetadataMenuItemStyle" TargetType="MenuItem">
+                    <Style
+                        x:Key="ScriptMetadataMenuItemStyle"
+                        d:DataContext="{d:DesignInstance metadatas:Metadata}"
+                        TargetType="MenuItem">
                         <Setter Property="Command" Value="{Binding DataContext.CheckScriptsByProperty, ElementName=window}" />
                         <Setter Property="CommandParameter" Value="{Binding}" />
                         <Setter Property="ToolTip" Value="{Binding Description}" />
@@ -82,7 +86,7 @@
                     ItemsSource="{Binding Source={x:Type metadatas:SafetyLevel}, Converter={StaticResource GetMetadatas}}">
                     <MenuItem.ItemContainerStyle>
                         <Style BasedOn="{StaticResource ScriptMetadataMenuItemStyle}" TargetType="MenuItem">
-                            <Setter Property="Background" Value="{Binding Color, Converter={StaticResource ColorToBrush}, ConverterParameter={StaticResource SafetyLevelOpacity}}" />
+                            <Setter Property="Background" Value="{Binding Path=(metadatas:SafetyLevel.Color), Converter={StaticResource ColorToBrush}, ConverterParameter={StaticResource SafetyLevelOpacity}}" />
                         </Style>
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>
@@ -164,7 +168,6 @@
                 Background="{x:Static SystemColors.ControlLightBrush}" />
 
             <controls:ScriptView
-                x:Name="scriptView"
                 Grid.Row="0"
                 Grid.Column="2"
                 Margin="0,0,0,12"

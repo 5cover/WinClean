@@ -250,7 +250,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Unknwon host type &apos;{0}&apos;..
+        ///   Recherche une chaîne localisée semblable à Unknown host type &apos;{0}&apos;..
         /// </summary>
         public static string UnknownHostType {
             get {

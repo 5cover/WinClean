@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-using Scover.WinClean;
 using Scover.WinClean.Services;
 
 namespace Scover.WinClean.ViewModel.Windows;

@@ -15,11 +15,11 @@ namespace Scover.WinClean.Services;
 [Singleton(typeof(IMessageFormatter), typeof(MessageFormatter))]
 public sealed partial class ServiceProvider
 {
-    private static readonly ServiceProvider _instance = new();
+    private static readonly ServiceProvider instance = new();
 
     private ServiceProvider()
     {
     }
 
-    public static T Get<T>() => _instance.GetService<T>();
+    public static T Get<T>() => instance.GetService<T>();
 }

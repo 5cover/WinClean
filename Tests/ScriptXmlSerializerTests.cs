@@ -16,7 +16,7 @@ using static System.Globalization.CultureInfo;
 namespace Tests;
 
 [TestOf(typeof(ScriptXmlSerializer))]
-public sealed partial class ScriptXmlSerializerTests
+public sealed class ScriptXmlSerializerTests
 {
     private const string InvalidScriptFilesResourceNamespace = $"{nameof(Tests)}.TestScripts.Invalid";
     private const string ScriptsResourceNamespace = $"{nameof(Scover)}.{nameof(Scover.WinClean)}.Scripts";
@@ -28,16 +28,16 @@ public sealed partial class ScriptXmlSerializerTests
     {
         new(new Script(new Dictionary<Capability, ScriptAction>
         {
-            [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Cmd"), new HashSet<int> { 0, 3010 }, "DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.WordPad~~~~0.0.1.0 /NoRestart", 1)
+            [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Cmd"), new HashSet<int> { 0, 3010 }, "DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.WordPad~~~~0.0.1.0 /NoRestart", 1),
         },
         Metadatas.GetMetadata<Category>("Debloating"),
         Metadatas.GetMetadata<Impact>("Free storage space"),
-        new LocalizedString()
+        new LocalizedString
         {
             [InvariantCulture] = "Remove WordPad",
             [GetCultureInfo("fr-FR")] = "Supprimer WordPad",
         },
-        new LocalizedString()
+        new LocalizedString
         {
             [InvariantCulture] = "WordPad can be deleted if you don't use it.",
             [GetCultureInfo("fr-FR")] = "WordPad peut être supprimé si vous ne l'utilisez pas.",
@@ -51,18 +51,18 @@ public sealed partial class ScriptXmlSerializerTests
         {
             [Capability.Enable] = new(Metadatas.GetMetadata<Host>("Regedit"), new HashSet<int> { 0 }, "Windows Registry Editor 5.00", 0),
             [Capability.Disable] = new(Metadatas.GetMetadata<Host>("Cmd"), new HashSet<int> { 0 }, "echo %path%", 0),
-            [Capability.Detect] = new(Metadatas.GetMetadata<Host>("PowerShell"), new HashSet<int> { 0 }, "systray.exe", 0)
+            [Capability.Detect] = new(Metadatas.GetMetadata<Host>("PowerShell"), new HashSet<int> { 0 }, "systray.exe", 0),
         },
         Metadatas.GetMetadata<Category>("Maintenance"),
         Metadatas.GetMetadata<Impact>("Privacy"),
-        new LocalizedString()
+        new LocalizedString
         {
             [InvariantCulture] = "Test script name",
             [GetCultureInfo("fr-FR")] = "Nom du script de test",
         },
-        new LocalizedString()
+        new LocalizedString
         {
-            [InvariantCulture] ="Test script description.",
+            [InvariantCulture] = "Test script description.",
             [GetCultureInfo("fr-FR")] = "Nom du script de description.",
         },
         Metadatas.GetMetadata<SafetyLevel>("Safe"),
@@ -74,11 +74,11 @@ public sealed partial class ScriptXmlSerializerTests
         {
             [Capability.Execute] = new(Metadatas.GetMetadata<Host>("Regedit"), new HashSet<int> { 0 }, @"Windows Registry Editor Version 5.00
 [HKEYCURRENTUSER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer]
-""link""=hex:1b,00,00,00", 0)
+""link""=hex:1b,00,00,00", 0),
         },
         Metadatas.GetMetadata<Category>("Customization"),
         Metadatas.GetMetadata<Impact>("Ergonomics"),
-        new LocalizedString()
+        new LocalizedString
         {
             [InvariantCulture] = "Remove shortcut suffix",
             [GetCultureInfo("fr-FR")] = "Supprimer le suffixe de raccourci",
@@ -94,7 +94,7 @@ public sealed partial class ScriptXmlSerializerTests
         DefaultVersions)),
     };
 
-    private static readonly ScriptXmlSerializer serializer = new();
+    private static readonly IScriptSerializer serializer = new ScriptXmlSerializer();
 
     private static readonly TestCaseData[] validScriptFileSerializationCases
         = GetManifestResources(Assembly.GetExecutingAssembly(), ValidScriptFilesResourceNamespace)
@@ -116,7 +116,20 @@ public sealed partial class ScriptXmlSerializerTests
         var d2 = serializer.Deserialize(s1).Complete(d1.Type, d1.Source);
         var s2 = serializer.Serialize(d2);
 
-        AssertEqual(s1, d1, s2, d2);
+        Assert.Multiple(() =>
+        {
+            Assert.That(XNode.DeepEquals(XDocument.Parse(s1), XDocument.Parse(s2)));
+            //Assert.That(ItemsEqual(d1.Actions, d2.Actions, ActionsComparer.Instance), Is.True);
+            Assert.That(d1.Actions, Is.EquivalentTo(d2.Actions).Using(ActionsComparer.Instance));
+            Assert.That(d1.Category, Is.EqualTo(d2.Category));
+            Assert.That(d1.Impact, Is.EqualTo(d2.Impact));
+            Assert.That(d1.LocalizedDescription, Is.EqualTo(d2.LocalizedDescription).Using(LocalizedStringComparer.Instance));
+            Assert.That(d1.LocalizedName, Is.EqualTo(d2.LocalizedName).Using(LocalizedStringComparer.Instance));
+            Assert.That(d1.SafetyLevel, Is.EqualTo(d2.SafetyLevel));
+            Assert.That(d1.Source, Is.EqualTo(d2.Source));
+            Assert.That(d1.Type, Is.EqualTo(d2.Type));
+            Assert.That(d1.Versions, Is.EqualTo(d2.Versions));
+        });
     }
 
     [TestCaseSource(nameof(validScriptFileSerializationCases))]
@@ -130,26 +143,47 @@ public sealed partial class ScriptXmlSerializerTests
         TestScriptSerialization(d1);
     }
 
-    private static void AssertEqual(string s1, Script d1, string s2, Script d2) => Assert.Multiple(() =>
-    {
-        Assert.That(XNode.DeepEquals(XDocument.Parse(s1), XDocument.Parse(s2)));
-        Assert.That(d1.Actions, Is.EquivalentTo(d2.Actions)); // Actions is a collection
-        Assert.That(d1.Category, Is.EqualTo(d2.Category));
-        Assert.That(d1.Impact, Is.EqualTo(d2.Impact));
-        Assert.That(d1.LocalizedDescription, Is.EqualTo(d2.LocalizedDescription));
-        Assert.That(d1.LocalizedName, Is.EqualTo(d2.LocalizedName));
-        Assert.That(d1.SafetyLevel, Is.EqualTo(d2.SafetyLevel));
-        Assert.That(d1.Source, Is.EqualTo(d2.Source));
-        Assert.That(d1.Type, Is.EqualTo(d2.Type));
-        Assert.That(d1.Versions, Is.EqualTo(d2.Versions));
-    });
-
     private static IEnumerable<string> GetManifestResources(Assembly assembly, string resourceNamespace)
     {
-        foreach (var name in assembly.GetManifestResourceNames().Where(name => name.StartsWith(resourceNamespace + '.')))
+        foreach (var name in assembly.GetManifestResourceNames().Where(name => name.StartsWith(resourceNamespace + '.', StringComparison.Ordinal)))
         {
             using StreamReader stream = new(assembly.GetManifestResourceStream(name).NotNull());
             yield return stream.ReadToEnd();
         }
+    }
+
+    // Unlique with LINQ SequenceEqual, the order of the elements isn't taken into account.
+    private static bool ItemsEqual<T>(IEnumerable<T> e1, IEnumerable<T> e2, IEqualityComparer<T>? comparer = null) => !e1.Except(e2, comparer).Any();
+
+    private sealed class ActionsComparer : IEqualityComparer<KeyValuePair<Capability, ScriptAction>>
+    {
+        private ActionsComparer()
+        {
+        }
+
+        public static ActionsComparer Instance { get; } = new();
+
+        public bool Equals(KeyValuePair<Capability, ScriptAction> x, KeyValuePair<Capability, ScriptAction> y)
+            => x.Key.Equals(y.Key)
+            && x.Value.Code == y.Value.Code
+            && x.Value.Host.Equals(y.Value.Host)
+            && x.Value.SuccessExitCodes.SetEquals(y.Value.SuccessExitCodes)
+            && x.Value.Order == y.Value.Order;
+
+        public int GetHashCode(KeyValuePair<Capability, ScriptAction> obj) => obj.GetHashCode();
+    }
+
+    private sealed class LocalizedStringComparer : IEqualityComparer<LocalizedString>
+    {
+        private LocalizedStringComparer()
+        {
+        }
+
+        public static LocalizedStringComparer Instance { get; } = new();
+
+        public bool Equals(LocalizedString? x, LocalizedString? y)
+            => ReferenceEquals(x, y) || x is not null && y is not null && ItemsEqual(x, y);
+
+        public int GetHashCode(LocalizedString obj) => obj.GetHashCode();
     }
 }

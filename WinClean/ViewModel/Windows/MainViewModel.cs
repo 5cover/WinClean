@@ -16,7 +16,6 @@ using Scover.WinClean.Model.Serialization;
 using Scover.WinClean.Resources;
 using Scover.WinClean.Resources.UI;
 using Scover.WinClean.Services;
-using Scover.WinClean.View;
 using Scover.WinClean.ViewModel.Logging;
 
 using Button = Scover.Dialogs.Button;
@@ -41,7 +40,7 @@ public sealed partial class MainViewModel : ObservableObject
 
             scripts.CollectionChanged += (_, _) => OnPropertyChanged(nameof(FormattedScriptCount));
 
-            Scripts = new(new CollectionViewSource()
+            Scripts = new(new CollectionViewSource
             {
                 Source = scripts,
                 GroupDescriptions =
@@ -52,9 +51,9 @@ public sealed partial class MainViewModel : ObservableObject
             });
         }
 
-        CheckScriptsByProperty = new RelayCommand<object>(expectedPropertyValue => SelectScripts(s
-            => expectedPropertyValue.NotNull().Equals(
-                _scriptProperties.Value.Single(p => p.PropertyType == expectedPropertyValue.GetType()).GetValue(s))));
+        CheckScriptsByProperty = new RelayCommand<object>(expectedPropertyValue => SelectScripts(
+            s => expectedPropertyValue.NotNull()
+                .Equals(_scriptProperties.Value.Single(p => p.PropertyType == expectedPropertyValue.GetType()).GetValue(s))));
 
         CheckAllScripts = new RelayCommand(() => SelectScripts(_ => true));
         UncheckAllScripts = new RelayCommand(() => SelectScripts(_ => false));
@@ -97,7 +96,7 @@ public sealed partial class MainViewModel : ObservableObject
         {
             using var executionInfos = Scripts.Where(s => s.Selection.IsSelected)
                 .Select(s => s.TryCreateExecutionInfo())
-                .WhereSome().OrderBy(einfo => einfo.Action.Order).ToDisposableEnumerable();
+                .WhereSome().OrderBy(executionInfo => executionInfo.Action.Order).ToDisposableEnumerable();
 
             if (executionInfos.Any())
             {
@@ -140,7 +139,7 @@ public sealed partial class MainViewModel : ObservableObject
 
     public IRelayCommand<object> CheckScriptsByProperty { get; }
 
-    public IAsyncRelayCommand ClearLogs { get; } = new AsyncRelayCommand(App.CurrentApp.Logger.ClearLogsAsync);
+    public IAsyncRelayCommand ClearLogs { get; } = new AsyncRelayCommand(Logging.Logging.Logger.ClearLogsAsync);
 
     public IRelayCommand DeleteCurrentScript { get; }
     public IRelayCommand ExecuteScripts { get; }
@@ -169,13 +168,33 @@ public sealed partial class MainViewModel : ObservableObject
 
     private static ISettings Settings => ServiceProvider.Get<ISettings>();
 
-    private static bool PromptScriptOverwrite(Script existingScript) => DialogFactory.ShowConfirmation(() => new Page()
+    private static bool PromptScriptOverwrite(Script existingScript) => DialogFactory.ShowConfirmation(() => new Page
     {
         WindowTitle = ServiceProvider.Get<IApplicationInfo>().Name,
         Icon = DialogIcon.Warning,
         Content = Resources.UI.Dialogs.ConfirmScriptOverwriteContent.FormatWith(existingScript.Name),
         Buttons = { Button.Yes, Button.No },
     });
+
+    private ScriptViewModel CreateScriptViewModel(Script script)
+    {
+        ScriptViewModel scriptViewModel = new(script);
+        scriptViewModel.PropertyChanged += (_, e) =>
+        {
+            bool aGroupingCriterionChanged = Scripts.NotNull().View.GroupDescriptions.OfType<PropertyGroupDescription>().Any(g => g.PropertyName == e.PropertyName);
+            if (aGroupingCriterionChanged)
+            {
+                Scripts.View.Refresh();
+            }
+        };
+
+        if (script.Type.IsMutable)
+        {
+            scriptViewModel.PropertyChanged += (_, _) => ScriptStorage.Commit(scriptViewModel.Model);
+        }
+
+        return scriptViewModel;
+    }
 
     private Option<ScriptViewModel> RetrieveNewScript(string path)
     {
@@ -211,32 +230,12 @@ public sealed partial class MainViewModel : ObservableObject
             {
                 Logs.ScriptLoadError.FormatWith(path, e).Log(LogLevel.Error);
                 //                                              avoid nesting FileSystemException
-                using Page fsErrorPage = DialogFactory.MakeFSError((e as FileSystemException) ?? new FileSystemException(e, FSVerb.Access, path), new() { Button.TryAgain, Button.Ignore });
+                using Page fsErrorPage = DialogFactory.MakeFSError(e as FileSystemException ?? new FileSystemException(e, FSVerb.Access, path), new() { Button.TryAgain, Button.Ignore });
                 fsErrorPage.MainInstruction = Resources.UI.Dialogs.FSErrorAddingCustomScriptMainInstruction;
                 retry = Button.TryAgain.Equals(new Dialog(fsErrorPage).ShowDialog());
             }
         } while (retry);
         return Option.None<ScriptViewModel>();
-    }
-
-    private ScriptViewModel CreateScriptViewModel(Script script)
-    {
-        ScriptViewModel scriptViewModel = new(script);
-        scriptViewModel.PropertyChanged += (s, e) =>
-        {
-            bool aGroupingCriterionChanged = Scripts.NotNull().View.GroupDescriptions.OfType<PropertyGroupDescription>().Any(g => g.PropertyName == e.PropertyName);
-            if (aGroupingCriterionChanged)
-            {
-                Scripts.View.Refresh();
-            }
-        };
-
-        if (script.Type.IsMutable)
-        {
-            scriptViewModel.PropertyChanged += (s, e) => ScriptStorage.Commit(scriptViewModel.Model);
-        }
-
-        return scriptViewModel;
     }
 
     private void SelectScripts(Predicate<ScriptViewModel> check)

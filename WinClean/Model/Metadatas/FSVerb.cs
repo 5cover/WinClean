@@ -16,7 +16,4 @@ public sealed class FSVerb : Metadata
 
     /// <summary>Deletion of a file system element.</summary>
     public static FSVerb Delete { get; } = new(nameof(FSVerbs.Delete));
-
-    /// <summary>Move of a file system element.</summary>
-    public static FSVerb Move { get; } = new(nameof(FSVerbs.Move));
 }

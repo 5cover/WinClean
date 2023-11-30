@@ -18,8 +18,6 @@ using System.Xml;
 
 using CommandLine;
 
-using CommunityToolkit.Mvvm.Input;
-
 using Humanizer.Localisation;
 
 using Optional;
@@ -41,8 +39,6 @@ public static class Extensions
 {
     private static readonly Stack<object> handlingCollectionsSendUpdatesTo = new();
 
-    public static bool CanExecute(this IRelayCommand relayCommand) => relayCommand.CanExecute(null);
-
     public static ISynchronizeInvoke CreateSynchronizationObject(this DispatcherObject dispatcherObject) => new DispatcherSynchronizeInvoke(dispatcherObject.Dispatcher);
 
     public static void DisposeIfCreated<T>(this Lazy<T> lazy) where T : IDisposable
@@ -54,7 +50,7 @@ public static class Extensions
     }
 
     public static string FormatMessage(this string message, Dictionary<string, object?> args)
-                      => ServiceProvider.Get<IMessageFormatter>().Format(message, args);
+        => ServiceProvider.Get<IMessageFormatter>().Format(message, args);
 
     public static LocalizedString GetLocalizedString(this XmlDocument doc, string name)
     {
@@ -75,9 +71,9 @@ public static class Extensions
     /// <inheritdoc cref="Process.Id" path="/exception"/>
     public static IEnumerable<Process> GetProcessTree(this Process process)
         => new ManagementObjectSearcher($"Select ProcessID From Win32_Process Where ParentProcessID={process.Id}")
-        .Get().Cast<ManagementObject>()
-        .SelectMany(m => Process.GetProcessById(Convert.ToInt32(m["ProcessID"])).GetProcessTree())
-        .Append(process);
+            .Get().Cast<ManagementObject>()
+            .SelectMany(m => Process.GetProcessById(Convert.ToInt32(m["ProcessID"], CultureInfo.InvariantCulture)).GetProcessTree())
+            .Append(process);
 
     /// <inheritdoc cref="GetSingleChildOrDefault(XmlElement, string)"/>
     /// <returns>The single child element.</returns>
@@ -99,9 +95,9 @@ public static class Extensions
     /// <exception cref="XmlException">There are multiple elements named <paramref name="name"/>.</exception>
     public static XmlElement? GetSingleChildOrDefault(this XmlElement parent, string name)
     {
-        var elements = parent.GetElementsByTagName(name).OfType<XmlElement>();
-        return elements.Count() > 1
-            ? throw new XmlException(ExceptionMessages.ElementHasMultipleNamedChilds.FormatWith(parent.Name, name, elements.Count()))
+        var elements = parent.GetElementsByTagName(name).OfType<XmlElement>().ToList();
+        return elements.Count > 1
+            ? throw new XmlException(ExceptionMessages.ElementHasMultipleNamedChilds.FormatWith(parent.Name, name, elements.Count))
             : elements.SingleOrDefault();
     }
 
@@ -132,16 +128,11 @@ public static class Extensions
 
     public static T? GetVisualChild<T>(this DependencyObject depObj) where T : DependencyObject
     {
-        if (depObj is null)
-        {
-            return null;
-        }
-
         for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); ++i)
         {
             var child = VisualTreeHelper.GetChild(depObj, i);
 
-            var result = (child as T) ?? GetVisualChild<T>(child);
+            var result = child as T ?? GetVisualChild<T>(child);
             if (result is not null)
             {
                 return result;
@@ -184,13 +175,6 @@ public static class Extensions
         return true;
     }
 
-    /// <summary>Checks if 2 collections are equivalent and hold the same content.</summary>
-    /// <remarks>
-    /// Contrarily to <see cref="Enumerable.SequenceEqual{TSource}(IEnumerable{TSource},
-    /// IEnumerable{TSource})"/>, the order of the elements isn't taken into account.
-    /// </remarks>
-    public static bool ItemsEqual<T>(this IEnumerable<T> e1, IEnumerable<T> e2) => !e1.Except(e2).Any();
-
     /// <inheritdoc cref="Process.Kill(bool)" path="/summary"/>
     public static void KillTree(this Process process)
     {
@@ -208,7 +192,7 @@ public static class Extensions
     }
 
     public static InvalidEnumArgumentException NewInvalidEnumArgumentException<TEnum>(this TEnum value, [CallerArgumentExpression(nameof(value))] string argumentName = "") where TEnum : struct, Enum
-           => new(argumentName, Convert.ToInt32(value, CultureInfo.InvariantCulture), typeof(TEnum));
+        => new(argumentName, Convert.ToInt32(value, CultureInfo.InvariantCulture), typeof(TEnum));
 
     /// <summary>Asserts that <paramref name="t"/> isn't <see langword="null"/>.</summary>
     /// <remarks>This is a safer replacement for the null-forgiving operator (<c>!</c>).</remarks>
@@ -225,17 +209,17 @@ public static class Extensions
     /// </remarks>
     public static void Open(this string path) => Process.Start(new ProcessStartInfo(path)
     {
-        UseShellExecute = true
+        UseShellExecute = true,
     })?.Dispose();
 
     /// <summary>
     /// Performs a file system operation and wraps any filesystem exception thrown in a <see cref="FileSystemException"/>.
     /// </summary>
     /// <param name="fsObject">The filesystem object operated on represented a string</param>
-    /// <param name="fsOperation">The opeation to perform</param>
-    /// <param name="verb">The verb corrresponding to the type of operation</param>
+    /// <param name="fsOperation">The operation to perform</param>
+    /// <param name="verb">The verb corresponding to the type of operation</param>
     /// <param name="message">The message to give to the <see cref="FileSystemException"/>.</param>
-    /// <exception cref="FileSystemException">A filesystem exception occured.</exception>
+    /// <exception cref="FileSystemException">A filesystem exception occurred.</exception>
     public static void PerformFileSystemOperation(this string fsObject, Action<string> fsOperation, FSVerb verb, string? message = null)
     {
         try
@@ -268,54 +252,54 @@ public static class Extensions
     }
 
     public static void SendUpdatesTo<TSourceItem, TTargetItem>(this ObservableCollection<TSourceItem> source, ICollection<TTargetItem> collection, Func<TSourceItem, TTargetItem>? converter = null, Func<TSourceItem, bool>? filter = null)
-           => SendUpdatesTo<ObservableCollection<TSourceItem>, TSourceItem, TTargetItem>(source, collection, converter, filter);
+        => SendUpdatesTo<ObservableCollection<TSourceItem>, TSourceItem, TTargetItem>(source, collection, converter, filter);
 
     public static void SendUpdatesTo<TSourceCollection, TSourceItem, TTargetItem>(this TSourceCollection source, ICollection<TTargetItem> collection, Func<TSourceItem, TTargetItem>? converter = null, Func<TSourceItem, bool>? filter = null) where TSourceCollection : IEnumerable<TSourceItem>, INotifyCollectionChanged
-           => source.CollectionChanged += (_, e) =>
-           {
-               if (handlingCollectionsSendUpdatesTo.TryPeek(out var top) && top == collection)
-               {
-                   return;
-               }
+        => source.CollectionChanged += (s, e) =>
+        {
+            if (handlingCollectionsSendUpdatesTo.TryPeek(out var top) && ReferenceEquals(top, collection))
+            {
+                return;
+            }
 
-               converter ??= i => i.Cast<TTargetItem>();
-               filter ??= i => true;
+            converter ??= i => i.Cast<TTargetItem>();
+            filter ??= _ => true;
 
-               handlingCollectionsSendUpdatesTo.Push(source);
+            handlingCollectionsSendUpdatesTo.Push(source);
 
-               // When the action is Reset, no other properties of the event arguments are valid.
-               // This means that we cannot use e.OldItems.
-               if (e.Action is NotifyCollectionChangedAction.Reset)
-               {
-                   collection.Clear();
-                   foreach (var item in source.Where(filter).Select(converter))
-                   {
-                       collection.Add(item);
-                   }
-               }
-               else
-               {
-                   if (e.NewItems is not null)
-                   {
-                       foreach (var item in e.NewItems.Cast<TSourceItem>().Where(filter).Select(converter))
-                       {
-                           collection.Add(item);
-                       }
-                   }
-                   if (e.OldItems is not null)
-                   {
-                       foreach (var item in e.OldItems.Cast<TSourceItem>().Where(filter).Select(converter))
-                       {
-                           _ = collection.Remove(item);
-                       }
-                   }
-               }
+            // When the action is Reset, no other properties of the event arguments are valid.
+            // This means that we cannot use e.OldItems.
+            if (e.Action is NotifyCollectionChangedAction.Reset)
+            {
+                collection.Clear();
+                foreach (var item in source.Where(filter).Select(converter))
+                {
+                    collection.Add(item);
+                }
+            }
+            else
+            {
+                if (e.NewItems is not null)
+                {
+                    foreach (var item in e.NewItems.Cast<TSourceItem>().Where(filter).Select(converter))
+                    {
+                        collection.Add(item);
+                    }
+                }
+                if (e.OldItems is not null)
+                {
+                    foreach (var item in e.OldItems.Cast<TSourceItem>().Where(filter).Select(converter))
+                    {
+                        _ = collection.Remove(item);
+                    }
+                }
+            }
 
-               _ = handlingCollectionsSendUpdatesTo.Pop();
-           };
+            _ = handlingCollectionsSendUpdatesTo.Pop();
+        };
 
     public static void SetFromXml(this LocalizedString str, XmlNode node)
-                  => str[CultureInfo.GetCultureInfo(node.Attributes?["xml:lang"]?.Value ?? "")] = node.InnerText;
+        => str[CultureInfo.GetCultureInfo(node.Attributes?["xml:lang"]?.Value ?? "")] = node.InnerText;
 
     public static void SetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dic, TKey key, TValue value) where TKey : notnull
     {
@@ -325,7 +309,7 @@ public static class Extensions
         }
     }
 
-    /// <summary>Shows a dialog modally. This is the default for interface consistency.</summary>
+    /// <summary>Shows a modal dialog. This is the default for interface consistency.</summary>
     public static ButtonBase? ShowDialog(this Dialog dialog)
     {
         dialog.StartupLocation = WindowLocation.CenterParent;
@@ -368,12 +352,12 @@ public static class Extensions
         => Imaging.CreateBitmapSourceFromHIcon(hIcon.DangerousGetHandle(), Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
 
     public static DisposableEnumerable<T> ToDisposableEnumerable<T>(this IEnumerable<T> disposables) where T : IDisposable
-                                                                                                                   => new(disposables);
+        => new(disposables);
 
     public static IEnumerable<T> WhereSome<T>(this IEnumerable<Option<T>> source) => source.Where(o => o.HasValue).Select(o => o.ValueOrFailure());
 
     public static IEnumerable<TSource> WithoutNull<TSource>(this IEnumerable<TSource?> source)
-        => source.Aggregate(Enumerable.Empty<TSource>(), (accumulator, next) => next == null ? accumulator : accumulator.Append(next));
+        => source.Aggregate(Enumerable.Empty<TSource>(), (accumulator, next) => next is null ? accumulator : accumulator.Append(next));
 
     public static Version WithoutRevision(this Version version) => version.Revision != -1 ? new(version.Major, version.Minor, version.Build) : version;
 

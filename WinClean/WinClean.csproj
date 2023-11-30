@@ -1,30 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <ApplicationIcon>WinClean.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
     <Authors>Scover</Authors>
     <Company>$(Authors)</Company>
     <Configurations>Debug;Release;Debug Invariant UI</Configurations>
+    <Copyright>© 2023 Scover</Copyright>
     <Description>Windows debloating and optimization utility.</Description>
+    <EnableWindowsTargeting>True</EnableWindowsTargeting>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <ImplicitUsings>enable</ImplicitUsings>
+    <IncludeSourceRevisionInInformationalVersion>False</IncludeSourceRevisionInInformationalVersion>
+    <LangVersion>latest</LangVersion>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Nullable>enable</Nullable>
     <OutputType>WinExe</OutputType>
     <Platforms>AnyCPU</Platforms>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
-    <EnableWindowsTargeting>True</EnableWindowsTargeting>
     <RepositoryUrl>https://github.com/5cover/WinClean</RepositoryUrl>
     <RootNamespace>Scover.WinClean</RootNamespace>
-    <LangVersion>latest</LangVersion>
     <SignAssembly>False</SignAssembly>
     <StartupObject>Scover.WinClean.View.App</StartupObject>
     <TargetFramework>net6.0-windows7.0</TargetFramework>
     <UseWindowsForms>False</UseWindowsForms>
     <UseWPF>true</UseWPF>
     <Version>1.3.1</Version>
-    <Copyright>© 2023 Scover</Copyright>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants)</DefineConstants>
@@ -142,6 +143,10 @@
     <EmbeddedResource Include="Scripts\Show full path in Explorer title bar.xml" />
     <EmbeddedResource Include="Scripts\Show seconds in taskbar clock.xml" />
     <EmbeddedResource Include="Scripts\Stop apps from running in the background.xml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
