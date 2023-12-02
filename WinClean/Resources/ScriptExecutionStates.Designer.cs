@@ -124,7 +124,7 @@ namespace Scover.WinClean.Resources {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à The execution is running..
+        ///   Recherche une chaîne localisée semblable à The execution is underway..
         /// </summary>
         public static string RunningDescription {
             get {

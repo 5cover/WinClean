@@ -139,7 +139,7 @@
     <value>Running</value>
   </data>
   <data name="RunningDescription" xml:space="preserve">
-    <value>The execution is running.</value>
+    <value>The execution is underway.</value>
   </data>
   <data name="Skipped" xml:space="preserve">
     <value>Skipped</value>

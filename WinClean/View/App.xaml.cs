@@ -99,6 +99,9 @@ public sealed partial class App
             s.ParsingCulture = CultureInfo.CurrentCulture;
         }).ParseArguments<CommandLineOptions>(args)
             .MapResult(options => options.Execute(ServiceProvider.Get<IScriptStorage>().Scripts), _ => 1);
+
+        // Since no window was created, the application must be explicitely shutdown.
+        Shutdown();
     }
 
     private Task StartGui()
