@@ -19,7 +19,7 @@
         <DataTemplate DataType="viewModel:ScriptViewModel">
             <DataTemplate.Resources>
                 <Style TargetType="ComboBoxItem">
-                    <Setter Property="ToolTip" Value="{Binding Path=Content.(viewModel:ScriptViewModel.Description), RelativeSource={RelativeSource Self}}" />
+                    <Setter Property="ToolTip" Value="{Binding Path=Content.(metadatas:Metadata.Description), RelativeSource={RelativeSource Self}}" />
                 </Style>
                 <Style TargetType="xctk:WatermarkComboBox">
                     <Setter Property="DisplayMemberPath" Value="Name" />
