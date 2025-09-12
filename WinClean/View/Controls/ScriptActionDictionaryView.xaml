@@ -93,7 +93,7 @@
                                 AcceptsReturn="True"
                                 FontFamily="Consolas"
                                 HorizontalScrollBarVisibility="Auto"
-                                IsReadOnly="{Binding IsReadOnly, ElementName=scriptActionDictionaryViewUserControl}"
+                                IsReadOnly="False"
                                 Text="{Binding Value.Code}"
                                 ToolTip="{x:Static res:ScriptProperties.Code}"
                                 VerticalScrollBarVisibility="Auto"
